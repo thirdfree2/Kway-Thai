@@ -488,25 +488,34 @@ class _FarmViewState extends State<FarmView> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 5),
                                       child: Container(
                                         height: screenHeight * 0.05,
                                         child: ListView.builder(
                                           itemCount: farmSouth.length,
                                           itemBuilder: (context, index) {
-                                            return Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                            return Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  farmSouth[index].farmId,
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      farmSouth[index].farmId,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Expanded(
+                                                        child: FittedBox(
+                                                            child: Text(
+                                                      farmSouth[index].farmName,
+                                                    ))),
+                                                  ],
                                                 ),
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(farmSouth[index].farmName,),
                                               ],
                                             );
                                           },

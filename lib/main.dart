@@ -3,6 +3,7 @@ import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/providers/selected_farm_owner.dart';
 import 'package:buffalo_thai/providers/selected_region.dart';
+import 'package:buffalo_thai/view/home/main_home_view.dart';
 import 'package:buffalo_thai/view/splash/main_splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         textTheme: GoogleFonts.chonburiTextTheme(textTheme)
       ),
-      home: const MainSplashView(),
+      home: const HomeView(),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/buffalo/main_buffalo_view.dart';
+import 'package:buffalo_thai/view/buffalo/main_buffalo_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stroke_text/stroke_text.dart';
@@ -107,7 +108,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MainBuffaloView(),
+                            builder: (context) => Buffalo(),
                           ),
                         );
                       },
