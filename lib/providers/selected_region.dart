@@ -1,15 +1,16 @@
+import 'package:buffalo_thai/model/farm_model.dart';
 import 'package:flutter/material.dart';
 
 class SelectedRegion with ChangeNotifier {
   String _region = '';
-  List<String> _farmNames = [];
+  List<FarmModel> _farms = [];
 
   String get region => _region;
-  List<String> get farmNames => _farmNames;
+  List<FarmModel> get farms => _farms;
 
-  void setSelectedRegion(String region, List<String> farmNames) {
+  void setSelectedRegion(String region, List<FarmModel> farms) {
     _region = region;
-    _farmNames = farmNames;
+    _farms = farms;
     notifyListeners();
   }
 }

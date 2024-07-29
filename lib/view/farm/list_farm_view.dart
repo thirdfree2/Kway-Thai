@@ -1,16 +1,19 @@
+import 'package:buffalo_thai/model/farm_model.dart';
+import 'package:buffalo_thai/services/farm_services.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/providers/selected_region.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:stroke_text/stroke_text.dart';
 
 class ListFarmView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final selectedFarm = Provider.of<SelectedRegion>(context);
-    final region = selectedFarm.region;
-    final farmNames = selectedFarm.farmNames;
+    final selectedRegion = Provider.of<SelectedRegion>(context);
+    final region = selectedRegion.region;
+    final farms = selectedRegion.farms;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -22,33 +25,56 @@ class ListFarmView extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+              const SizedBox(height: 10),
+              Row(
                 children: [
-                  Text(
-                    'คอก/ฟาร์ม',
-                    style: TextStyle(
-                        fontSize: ScreenUtils.calculateFontSize(context, 24)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    child: SizedBox(
-                      width: screenWidth * 0.45,
-                      child: const TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'ค้นหา',
-                        ),
-                      ),
+                  const SizedBox(width: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.arrow_back,
+                      size: 35,
                     ),
                   ),
                 ],
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    StrokeText(
+                      text: "คอก/ฟาร์ม",
+                      textStyle: TextStyle(
+                        fontSize: ScreenUtils.calculateFontSize(context, 28),
+                        color: Colors.red,
+                      ),
+                      strokeColor: Colors.white,
+                      strokeWidth: 4,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                      child: SizedBox(
+                        width: screenWidth * 0.4,
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey,
+                            prefixIcon: const Icon(Icons.search),
+                            hintText: 'ค้นหา',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15),
               child: Container(
@@ -76,7 +102,7 @@ class ListFarmView extends StatelessWidget {
                     children: [
                       Expanded(
                         child: ListView.builder(
-                          itemCount: farmNames.length,
+                          itemCount: farms.length,
                           itemBuilder: (context, index) {
                             return ListTile(
                               title: SizedBox(
@@ -86,19 +112,19 @@ class ListFarmView extends StatelessWidget {
                                     Provider.of<SelectedFarm>(context,
                                             listen: false)
                                         .setSelectedFarm(
-                                      'ภาคเหนือ',
-                                      farmNames[index],
+                                      region,
+                                      farms[index].farmName,
                                     );
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => DetailFarmView(),
+                                        builder: (context) => const DetailFarmView(),
                                       ),
                                     );
                                   },
                                   child: Card(
                                       child: Center(
-                                          child: Text(farmNames[index]))),
+                                          child: Text(farms[index].farmName))),
                                 ),
                               ),
                             );
@@ -110,7 +136,7 @@ class ListFarmView extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(right: 10),
                           child: InkWell(
-                              onTap: () {}, child: Text('เพิ่มเติม >>>')),
+                              onTap: () {}, child: const Text('เพิ่มเติม >>>')),
                         ),
                       ),
                     ],
@@ -121,22 +147,52 @@ class ListFarmView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomButton(label: 'ภาคเหนือ', onPressed: () {}),
-                CustomButton(label: 'ภาคอีสาน', onPressed: () {}),
-                CustomButton(label: 'ภาคตะวันออก', onPressed: () {}),
+                CustomButton(
+                    label: 'ภาคเหนือ',
+                    onPressed: () {
+                      loadRegionData(context, fetchFarmsNorth);
+                    }),
+                CustomButton(
+                    label: 'ภาคอีสาน',
+                    onPressed: () {
+                      loadRegionData(context, fetchFarmsNortheast);
+                    }),
+                CustomButton(
+                    label: 'ภาคตะวันออก',
+                    onPressed: () {
+                      loadRegionData(context, fetchFarmsEast);
+                    }),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomButton(label: 'ภาคตะวันตก', onPressed: () {}),
-                CustomButton(label: 'ภาคใต้', onPressed: () {}),
+                CustomButton(
+                    label: 'ภาคตะวันตก',
+                    onPressed: () {
+                      loadRegionData(context, fetchFarmsWest);
+                    }),
+                CustomButton(
+                    label: 'ภาคใต้',
+                    onPressed: () {
+                      loadRegionData(context, fetchFarmsSouth);
+                    }),
               ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  void loadRegionData(BuildContext context, Future<List<FarmModel>> Function() fetchFarms) async {
+    try {
+      List<FarmModel> farms = await fetchFarms();
+      Provider.of<SelectedRegion>(context, listen: false)
+          .setSelectedRegion(farms.isNotEmpty ? farms.first.region : '', farms);
+    } catch (e) {
+      print('Failed to load farms: $e');
+    }
   }
 }
 
@@ -156,12 +212,12 @@ class CustomButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         ),
         onPressed: onPressed,
         child: Text(
           label,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
       ),
     );
