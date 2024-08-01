@@ -19,3 +19,21 @@ Future<List<BuffaloModel>> fetchBuffaloes() async {
     throw Exception('Failed to load buffaloes');
   }
 }
+
+Future<List<BuffaloModel>> fetchBuffaloesByFarmId(String id) async {
+  final response =
+      await http.get(Uri.parse('${ApiUtils.baseUrl}/api/buffalo/?farmId=$id'));
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+    print(response.body);
+    if (jsonResponse['response_status'] == 'SUCCESS') {
+      List<dynamic> farmsList = jsonResponse['data'];
+      return farmsList.map((json) => BuffaloModel.fromJson(json)).toList();
+    } else {
+      throw Exception('API response status is not SUCCESS');
+    }
+  } else {
+    throw Exception('Failed to load buffaloes');
+  }
+}

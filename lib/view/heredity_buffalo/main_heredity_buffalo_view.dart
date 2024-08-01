@@ -103,8 +103,8 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
-                        Provider.of<SelectedBuffalo>(context, listen: false)
-                            .setSelectedBuffalo(buffaloNames[index]);
+                        // Provider.of<SelectedBuffalo>(context, listen: false)
+                        //     .setSelectedBuffalo(buffaloNames[index]);
                         Navigator.push(
                           context,
                           MaterialPageRoute(

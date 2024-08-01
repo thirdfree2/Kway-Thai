@@ -1,8 +1,11 @@
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
+import 'package:buffalo_thai/providers/selected_farm.dart';
+import 'package:buffalo_thai/providers/selected_farm_owner.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stroke_text/stroke_text.dart';
 
 class MainFarmOwner extends StatefulWidget {
   const MainFarmOwner({super.key});
@@ -14,8 +17,16 @@ class MainFarmOwner extends StatefulWidget {
 class _MainFarmOwnerState extends State<MainFarmOwner> {
   @override
   Widget build(BuildContext context) {
-    final selectedBuffalo = Provider.of<SelectedBuffalo>(context);
-    final farmerName = selectedBuffalo.buffalo;
+    final selectedFarm = Provider.of<SelectedFarm>(context);
+    final selectFarmOwener = Provider.of<SelectedFarmOwner>(context);
+    final farmerName = selectFarmOwener.farmOwner;
+
+    final lastName = selectFarmOwener.lastName;
+    final position = selectFarmOwener.position;
+    final phone = selectFarmOwener.phone;
+    final lineId = selectFarmOwener.lineId;
+    final farmName = selectedFarm.farmNames;
+
     return Scaffold(
       body: DecoratedBox(
         decoration: const BoxDecoration(
@@ -27,13 +38,20 @@ class _MainFarmOwnerState extends State<MainFarmOwner> {
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Column(
             children: [
+              SizedBox(
+                height: 20,
+              ),
               Center(
-                  child: Text(
-                'Farm Name',
-                style: TextStyle(
-                  fontSize: ScreenUtils.calculateFontSize(context, 26),
+                child: StrokeText(
+                  text: farmName,
+                  textStyle: TextStyle(
+                    fontSize: ScreenUtils.calculateFontSize(context, 26),
+                    color: Colors.red,
+                  ),
+                  strokeColor: Colors.white,
+                  strokeWidth: 3,
                 ),
-              )),
+              ),
               Padding(
                 padding: const EdgeInsets.all(40.0),
                 child: Row(
@@ -58,52 +76,67 @@ class _MainFarmOwnerState extends State<MainFarmOwner> {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          farmerName,
-                          style: TextStyle(
+                        StrokeText(
+                          text: farmerName,
+                          textStyle: TextStyle(
                             fontSize:
-                                ScreenUtils.calculateFontSize(context, 18),
+                                ScreenUtils.calculateFontSize(context, 22),
+                            color: Colors.black,
                           ),
+                          strokeColor: Colors.white,
+                          strokeWidth: 3,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          'ตำแหน่ง :',
-                          style: TextStyle(
+                        StrokeText(
+                          text: 'ตำแหน่ง : $position',
+                          textStyle: TextStyle(
                             fontSize:
-                                ScreenUtils.calculateFontSize(context, 18),
+                                ScreenUtils.calculateFontSize(context, 22),
+                            color: Colors.black,
                           ),
+                          strokeColor: Colors.white,
+                          strokeWidth: 3,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          'ชื่อ :',
-                          style: TextStyle(
+                        StrokeText(
+                          text: 'ชื่อ : $farmerName $lastName',
+                          textStyle: TextStyle(
                             fontSize:
                                 ScreenUtils.calculateFontSize(context, 18),
+                            color: Colors.black,
                           ),
+                          strokeColor: Colors.white,
+                          strokeWidth: 3,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          'เบอร์โทร :',
-                          style: TextStyle(
+                        StrokeText(
+                          text: 'เบอร์โทร : $phone',
+                          textStyle: TextStyle(
                             fontSize:
                                 ScreenUtils.calculateFontSize(context, 18),
+                            color: Colors.black,
                           ),
+                          strokeColor: Colors.white,
+                          strokeWidth: 3,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          'ID line :',
-                          style: TextStyle(
+                        StrokeText(
+                          text: 'ID line : $lineId',
+                          textStyle: TextStyle(
                             fontSize:
-                                ScreenUtils.calculateFontSize(context, 20),
+                                ScreenUtils.calculateFontSize(context, 18),
+                            color: Colors.black,
                           ),
+                          strokeColor: Colors.white,
+                          strokeWidth: 3,
                         ),
                       ],
                     ),
@@ -119,14 +152,13 @@ class _MainFarmOwnerState extends State<MainFarmOwner> {
                   child: Center(
                       child: Text(
                     'ย้อนกลับ',
-                    style: TextStyle(color: Colors.white, fontSize: ScreenUtils.calculateFontSize(context, 18)),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: ScreenUtils.calculateFontSize(context, 18)),
                   )),
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pop(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailFarmView(),
-                      ),
                     );
                   },
                 ),

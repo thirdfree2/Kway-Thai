@@ -1,4 +1,6 @@
+import 'package:buffalo_thai/model/buffalo_model.dart';
 import 'package:buffalo_thai/model/farm_model.dart';
+import 'package:buffalo_thai/services/buffalo_services.dart';
 import 'package:buffalo_thai/services/farm_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +10,20 @@ import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
 import 'package:stroke_text/stroke_text.dart';
 
-class ListFarmView extends StatelessWidget {
+class ListFarmView extends StatefulWidget {
+  @override
+  State<ListFarmView> createState() => _ListFarmViewState();
+}
+
+class _ListFarmViewState extends State<ListFarmView> {
+  late Future<List<BuffaloModel>> futureBuffaloes;
+
+  @override
+  void initState() {
+    super.initState();
+    futureBuffaloes = fetchBuffaloes();
+  }
+
   @override
   Widget build(BuildContext context) {
     final selectedRegion = Provider.of<SelectedRegion>(context);
@@ -25,56 +40,57 @@ class ListFarmView extends StatelessWidget {
         ),
         child: Column(
           children: [
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  const SizedBox(width: 20),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      Icons.arrow_back,
-                      size: 35,
-                    ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                const SizedBox(width: 20),
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.arrow_back,
+                    size: 35,
                   ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    StrokeText(
-                      text: "คอก/ฟาร์ม",
-                      textStyle: TextStyle(
-                        fontSize: ScreenUtils.calculateFontSize(context, 28),
-                        color: Colors.red,
-                      ),
-                      strokeColor: Colors.white,
-                      strokeWidth: 4,
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  StrokeText(
+                    text: "คอก/ฟาร์ม",
+                    textStyle: TextStyle(
+                      fontSize: ScreenUtils.calculateFontSize(context, 28),
+                      color: Colors.red,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                      child: SizedBox(
-                        width: screenWidth * 0.4,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.grey,
-                            prefixIcon: const Icon(Icons.search),
-                            hintText: 'ค้นหา',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
+                    strokeColor: Colors.white,
+                    strokeWidth: 4,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 15),
+                    child: SizedBox(
+                      width: screenWidth * 0.4,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.grey,
+                          prefixIcon: const Icon(Icons.search),
+                          hintText: 'ค้นหา',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15),
               child: Container(
@@ -114,11 +130,13 @@ class ListFarmView extends StatelessWidget {
                                         .setSelectedFarm(
                                       region,
                                       farms[index].farmName,
+                                      farms[index].farmId.toString(),
                                     );
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const DetailFarmView(),
+                                        builder: (context) =>
+                                            const DetailFarmView(),
                                       ),
                                     );
                                   },
@@ -185,7 +203,8 @@ class ListFarmView extends StatelessWidget {
     );
   }
 
-  void loadRegionData(BuildContext context, Future<List<FarmModel>> Function() fetchFarms) async {
+  void loadRegionData(BuildContext context,
+      Future<List<FarmModel>> Function() fetchFarms) async {
     try {
       List<FarmModel> farms = await fetchFarms();
       Provider.of<SelectedRegion>(context, listen: false)

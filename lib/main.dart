@@ -1,4 +1,5 @@
 import 'package:buffalo_thai/mainwrapper.dart';
+import 'package:buffalo_thai/providers/farm_data.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/providers/selected_farm_owner.dart';
@@ -16,7 +17,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => SelectedRegion()),
         ChangeNotifierProvider(create: (_) => SelectedFarm()),
         ChangeNotifierProvider(create: (_) => SelectedBuffalo()),
-        ChangeNotifierProvider(create: (_) => SelectedFarmOwner())
+        ChangeNotifierProvider(create: (_) => SelectedFarmOwner()),
+        ChangeNotifierProvider(create: (_) => FarmDataProvider()),
       ],
       child: MyApp(),
     ),

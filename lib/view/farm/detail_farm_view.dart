@@ -1,15 +1,19 @@
-import 'package:buffalo_thai/providers/selected_buffalo.dart';
-import 'package:buffalo_thai/providers/selected_farm.dart';
+import 'package:buffalo_thai/model/user_model.dart';
 import 'package:buffalo_thai/providers/selected_farm_owner.dart';
-import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/buffalo/main_buffalo_view.dart';
+import 'package:buffalo_thai/services/user_services.dart';
 import 'package:buffalo_thai/view/buffalo/main_buffalo_wrapper.dart';
 import 'package:buffalo_thai/view/farm_owner/main_farm_owner.dart';
-import 'package:buffalo_thai/view/farm_owner/register_buffalo.dart';
-import 'package:buffalo_thai/view/farm_owner/register_farm_owner.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stroke_text/stroke_text.dart';
+import 'package:buffalo_thai/model/buffalo_model.dart';
+import 'package:buffalo_thai/providers/selected_buffalo.dart';
+import 'package:buffalo_thai/providers/selected_farm.dart';
+import 'package:buffalo_thai/services/buffalo_services.dart';
+import 'package:buffalo_thai/utils/screen_utils.dart';
+import 'package:buffalo_thai/view/buffalo/main_buffalo_view.dart';
+import 'package:buffalo_thai/view/farm_owner/register_buffalo.dart';
+import 'package:buffalo_thai/view/farm_owner/register_farm_owner.dart';
 
 class DetailFarmView extends StatefulWidget {
   const DetailFarmView({super.key});
@@ -19,19 +23,23 @@ class DetailFarmView extends StatefulWidget {
 }
 
 class _DetailFarmViewState extends State<DetailFarmView> {
+  late Future<List<BuffaloModel>> futureBuffaloes;
+  late Future<List<UserModel>> futureUser;
+
+  @override
+  void initState() {
+    super.initState();
+    final selectedFarm = Provider.of<SelectedFarm>(context, listen: false);
+    futureBuffaloes = fetchBuffaloesByFarmId(selectedFarm.farmId);
+    futureUser = fetchUserByFarmId(selectedFarm.farmId);
+  }
+
   @override
   Widget build(BuildContext context) {
     final selectedFarm = Provider.of<SelectedFarm>(context);
     final region = selectedFarm.region;
+    final farmId = selectedFarm.farmId;
     final farmNames = selectedFarm.farmNames;
-    final List<String> buffaloNames = [
-      'Buffalo 1',
-      'Buffalo 2',
-      'Buffalo 3',
-      'Buffalo 4',
-      'Buffalo 5',
-      'Buffalo 6',
-    ];
 
     final List<String> farmerNames = [
       'John Doe 1',
@@ -51,7 +59,21 @@ class _DetailFarmViewState extends State<DetailFarmView> {
         ),
         child: Column(
           children: [
-            const SizedBox(height: 50),
+            const SizedBox(height: 10),
+              Row(
+                children: [
+                  const SizedBox(width: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.arrow_back,
+                      size: 35,
+                    ),
+                  ),
+                ],
+              ),
             StrokeText(
               text: farmNames,
               textStyle: TextStyle(
@@ -111,53 +133,77 @@ class _DetailFarmViewState extends State<DetailFarmView> {
               flex: 2,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.75,
-                  ),
-                  itemCount: farmerNames.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        Provider.of<SelectedBuffalo>(context, listen: false)
-                            .setSelectedBuffalo(farmerNames[index]);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MainFarmOwner(),
+                child: FutureBuilder<List<UserModel>>(
+                  future: futureUser,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('No buffaloes found.'));
+                    }
+
+                    final users = snapshot.data!;
+
+                    return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 0.75,
+                      ),
+                      itemCount: users.length,
+                      itemBuilder: (context, index) {
+                        final user = users[index];
+                        return InkWell(
+                          onTap: () {
+                            Provider.of<SelectedFarmOwner>(context,
+                                    listen: false)
+                                .setSelectedFarmOwner(
+                                    user.firstName,
+                                    user.lastName,
+                                    user.position,
+                                    user.phoneNumber,
+                                    user.lineId ?? '');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MainFarmOwner(),
+                              ),
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              AspectRatio(
+                                aspectRatio: 1,
+                                child: Container(
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Image.asset(
+                                    'assets/images/banner-1.jpg',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              StrokeText(
+                                text: user.firstName,
+                                textStyle: TextStyle(
+                                  fontSize: ScreenUtils.calculateFontSize(
+                                      context, 12),
+                                  color: Colors.white,
+                                ),
+                                strokeColor: Colors.black,
+                                strokeWidth: 3,
+                              ),
+                            ],
                           ),
                         );
                       },
-                      child: Column(
-                        children: [
-                          AspectRatio(
-                            aspectRatio: 1,
-                            child: Container(
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Image.asset(
-                                'assets/images/banner-1.jpg',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          StrokeText(
-                            text: farmerNames[index],
-                            textStyle: TextStyle(
-                              fontSize: ScreenUtils.calculateFontSize(context, 12),
-                              color: Colors.white,
-                            ),
-                            strokeColor: Colors.black,
-                            strokeWidth: 3,
-                          ),
-                        ],
-                      ),
                     );
                   },
                 ),
@@ -169,7 +215,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   StrokeText(
-                    text: 'ควาย (${buffaloNames.length})',
+                    text: 'ควาย',
                     textStyle: TextStyle(
                       fontSize: ScreenUtils.calculateFontSize(context, 14),
                       color: Colors.white,
@@ -210,53 +256,71 @@ class _DetailFarmViewState extends State<DetailFarmView> {
               flex: 3,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.75,
-                  ),
-                  itemCount: buffaloNames.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        Provider.of<SelectedBuffalo>(context, listen: false)
-                            .setSelectedBuffalo(buffaloNames[index]);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Buffalo(),
+                child: FutureBuilder<List<BuffaloModel>>(
+                  future: futureBuffaloes,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('No buffaloes found.'));
+                    }
+
+                    final buffaloes = snapshot.data!;
+
+                    return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 0.75,
+                      ),
+                      itemCount: buffaloes.length,
+                      itemBuilder: (context, index) {
+                        final buffalo = buffaloes[index];
+                        return InkWell(
+                          onTap: () {
+                            Provider.of<SelectedBuffalo>(context, listen: false)
+                                .setSelectedBuffalo(buffalo);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Buffalo(),
+                              ),
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              AspectRatio(
+                                aspectRatio: 1,
+                                child: Container(
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Image.asset(
+                                    'assets/images/banner-1.jpg',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              StrokeText(
+                                text: buffalo.name,
+                                textStyle: TextStyle(
+                                  fontSize: ScreenUtils.calculateFontSize(
+                                      context, 12),
+                                  color: Colors.white,
+                                ),
+                                strokeColor: Colors.black,
+                                strokeWidth: 3,
+                              ),
+                            ],
                           ),
                         );
                       },
-                      child: Column(
-                        children: [
-                          AspectRatio(
-                            aspectRatio: 1,
-                            child: Container(
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Image.asset(
-                                'assets/images/banner-1.jpg',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          StrokeText(
-                            text: buffaloNames[index],
-                            textStyle: TextStyle(
-                              fontSize: ScreenUtils.calculateFontSize(context, 12),
-                              color: Colors.white,
-                            ),
-                            strokeColor: Colors.black,
-                            strokeWidth: 3,
-                          ),
-                        ],
-                      ),
                     );
                   },
                 ),

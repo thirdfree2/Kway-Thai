@@ -34,7 +34,7 @@ class BuffaloModel {
   final DateTime updatedAt;
 
   final FarmModel? farm;
-  final BuffaloModel? currentFarm;
+  final FarmModel? currentFarm;
   final BuffaloModel? father;
   final BuffaloModel? mother;
   final BuffaloModel? grandfather;

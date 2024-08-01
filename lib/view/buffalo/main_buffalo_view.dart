@@ -18,8 +18,7 @@ class MainBuffaloView extends StatefulWidget {
 class _MainBuffaloViewState extends State<MainBuffaloView> {
   @override
   Widget build(BuildContext context) {
-    final selectedBuffalo = Provider.of<SelectedBuffalo>(context);
-    final buffaloNames = selectedBuffalo.buffalo;
+final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -78,7 +77,7 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                           ),
                           Center(
                             child: StrokeText(
-                              text: buffaloNames,
+                              text: buffalo?.name ?? '',
                               textStyle: TextStyle(
                                 fontSize:
                                     ScreenUtils.calculateFontSize(context, 24),
@@ -96,11 +95,11 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                           _buildInfoRow('เกิดที่ ลอก/ฟาร์ม ', 'บ้านคึกควายไทย',
                               Colors.green[800]),
                           _buildInfoRow(
-                              'โดยวิธีการ ', 'ผสมจริง', Colors.red[800]),
-                          _buildInfoRow('พ่อพันธุ์ ', 'เจ้าหนุ่ม(กำนันโป๊ด)',
+                              'โดยวิธีการ ',  buffalo?.birthMethod ?? '', Colors.red[800]),
+                          _buildInfoRow('พ่อพันธุ์ ', buffalo?.father?.name ?? '',
                               Colors.red[800]),
                           _buildInfoRow(
-                              'กับ แม่พันธุ์ ', 'แม่บุญมาก', Colors.red[800]),
+                              'กับ แม่พันธุ์ ', buffalo?.mother?.name ?? '', Colors.red[800]),
                           _buildInfoRow('สายเลือดทางปู่คือ ',
                               'ทองสุข(เปี่ยวใหญ่)', Colors.pink[800]),
                           _buildInfoRow('สายเลือดทางย่าคือ ', 'ควายสายอุทัย',
@@ -132,11 +131,11 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                                   ),
                                   Card(
                                     color: Colors.green[500],
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(8.0),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        'บ้านติ๊กควายไทย',
-                                        style: TextStyle(color: Colors.white),
+                                        buffalo?.currentFarm?.farmName ?? '',
+                                        style: const TextStyle(color: Colors.white),
                                       ),
                                     ),
                                   ),

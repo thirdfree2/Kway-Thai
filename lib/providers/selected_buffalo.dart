@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:buffalo_thai/model/buffalo_model.dart';
+import 'package:flutter/foundation.dart';
 
 class SelectedBuffalo with ChangeNotifier {
-  String _buffalo = '';
+  BuffaloModel? _buffalo;
 
-  String get buffalo => _buffalo;
+  BuffaloModel? get buffalo => _buffalo;
 
-  void setSelectedBuffalo(String buffalo) {
+  void setSelectedBuffalo(BuffaloModel buffalo) {
     _buffalo = buffalo;
     notifyListeners();
   }

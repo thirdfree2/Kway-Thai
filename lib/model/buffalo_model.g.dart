@@ -26,7 +26,7 @@ BuffaloModel _$BuffaloModelFromJson(Map<String, dynamic> json) => BuffaloModel(
           : FarmModel.fromJson(json['farm'] as Map<String, dynamic>),
       currentFarm: json['currentFarm'] == null
           ? null
-          : BuffaloModel.fromJson(json['currentFarm'] as Map<String, dynamic>),
+          : FarmModel.fromJson(json['currentFarm'] as Map<String, dynamic>),
       father: json['father'] == null
           ? null
           : BuffaloModel.fromJson(json['father'] as Map<String, dynamic>),

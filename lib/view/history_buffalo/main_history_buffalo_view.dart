@@ -111,7 +111,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                         return InkWell(
                           onTap: () {
                             Provider.of<SelectedBuffalo>(context, listen: false)
-                                .setSelectedBuffalo(buffalo.name); // Assuming 'name' is a property in BuffaloModel
+                                .setSelectedBuffalo(buffalo); // Assuming 'name' is a property in BuffaloModel
                             Navigator.push(
                               context,
                               MaterialPageRoute(

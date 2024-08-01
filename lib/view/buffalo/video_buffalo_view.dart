@@ -16,8 +16,7 @@ class VideoBuffaloView extends StatefulWidget {
 class _VideoBuffaloViewState extends State<VideoBuffaloView> {
   @override
   Widget build(BuildContext context) {
-    final selectedBuffalo = Provider.of<SelectedBuffalo>(context);
-    final buffaloNames = selectedBuffalo.buffalo;
+ final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
     return Scaffold(
       body: DecoratedBox(
         decoration: const BoxDecoration(
@@ -45,7 +44,7 @@ class _VideoBuffaloViewState extends State<VideoBuffaloView> {
               ],
             ),
             StrokeText(
-              text: buffaloNames,
+              text: buffalo?.name ?? '',
               textStyle: TextStyle(
                   fontSize: ScreenUtils.calculateFontSize(context, 26),
                   color: Colors.red),

@@ -35,7 +35,7 @@ class _PhotoBuffaloViewState extends State<PhotoBuffaloView> {
               children: <Widget>[
                 Center(
                   child: StrokeText(
-                    text: buffaloNames,
+                    text: 'buffaloNames',
                     textStyle: TextStyle(
                       fontSize: ScreenUtils.calculateFontSize(context, 14),
                       color: Colors.black,

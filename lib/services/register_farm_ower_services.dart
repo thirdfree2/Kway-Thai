@@ -16,17 +16,18 @@ Future<void> registerFarmOwner({
   final response = await http.post(
     Uri.parse(url),
     headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     },
-    body: jsonEncode(<String, dynamic>{
-      'firstName': firstName,
-      'lastName': lastName,
-      'nickname': nickname,
-      'position': position,
-      'phoneNumber': phoneNumber,
-      'selectedFarmId': farmId,
-    }),
+    body: {
+      'firstName': Uri.encodeComponent(firstName),
+      'lastName': Uri.encodeComponent(lastName),
+      'nickname': Uri.encodeComponent(nickname),
+      'position': Uri.encodeComponent(position),
+      'phoneNumber': Uri.encodeComponent(phoneNumber),
+      'farmId': Uri.encodeComponent(farmId),
+    },
   );
+
   print('Selected Farm ID: $farmId');
   print('Response status: ${response.statusCode}');
   print('Response body: ${response.body}');

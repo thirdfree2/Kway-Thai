@@ -1,9 +1,9 @@
+import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/services/register_farm_ower_services.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:provider/provider.dart';
 
 class RegisterFarmOwner extends StatefulWidget {
   const RegisterFarmOwner({super.key});
@@ -16,6 +16,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _farmNameController = TextEditingController();
+  final TextEditingController _farmIdController = TextEditingController();
   // final TextEditingController _farmProvinceController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -25,9 +26,16 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
   final TextEditingController _lineIdController = TextEditingController();
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final selectedFarm = Provider.of<SelectedFarm>(context);
+    _farmIdController.text = selectedFarm.farmId;
+    _farmNameController.text = selectedFarm.farmNames; // Assuming farmNames is a string
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: DecoratedBox(
         decoration: const BoxDecoration(
@@ -305,14 +313,12 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             registerFarmOwner(
-                              // farmId: _farmNameController.text,
-                              // farmProvince: _farmProvinceController.text,
                               firstName: _firstNameController.text,
                               lastName: _lastNameController.text,
                               nickname: _nicknameController.text,
                               position: _statusController.text,
                               phoneNumber: _phoneNumberController.text, 
-                              farmId: _farmNameController.text,
+                              farmId: _farmIdController.text,
                             );
                           }
                         },
