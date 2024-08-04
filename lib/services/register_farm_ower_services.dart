@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart';
 
 Future<String> registerFarmOwner({
   required String firstName,
@@ -9,34 +12,34 @@ Future<String> registerFarmOwner({
   required String position,
   required String phoneNumber,
   required String farmId,
+  required String lineId,
+  required File imageFile,
 }) async {
-  final String url = '${ApiUtils.baseUrl}/api/user/';
-  print('Sending POST request to: $url');
+  const String url = '${ApiUtils.baseUrl}/api/user/';
 
-  final response = await http.post(
-    Uri.parse(url),
-    headers: <String, String>{
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    },
-    body: {
-      'firstName': Uri.encodeComponent(firstName),
-      'lastName': Uri.encodeComponent(lastName),
-      'nickname': Uri.encodeComponent(nickname),
-      'position': Uri.encodeComponent(position),
-      'phoneNumber': Uri.encodeComponent(phoneNumber),
-      'farmId': Uri.encodeComponent(farmId),
-    },
-  );
+  final request = http.MultipartRequest('POST', Uri.parse(url))
+    ..fields['firstName'] = firstName
+    ..fields['lastName'] = lastName
+    ..fields['nickname'] = nickname
+    ..fields['position'] = position
+    ..fields['phoneNumber'] = phoneNumber
+    ..fields['farmId'] = farmId
+    ..fields['lineId'] = lineId
+    ..files.add(await http.MultipartFile.fromPath(
+      'image',
+      imageFile.path,
+      contentType: MediaType('image', basename(imageFile.path).split('.').last),
+    ));
 
-  print('Selected Farm ID: $farmId');
-  print('Response status: ${response.statusCode}');
-  print('Response body: ${response.body}');
+  final response = await request.send();
 
-  if (response.statusCode == 200) {
-    final Map<String, dynamic> responseData = json.decode(response.body);
-    return responseData['userId'];
+  if (response.statusCode == 201) {
+    final responseData = await response.stream.bytesToString();
+    print(responseData);
+    return responseData;
   } else {
-    throw Exception('Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}');
+    final responseData = await response.stream.bytesToString();
+    throw Exception('Failed to register farm owner. Status code: ${response.statusCode}. Response body: $responseData');
   }
 }
 
@@ -48,8 +51,8 @@ Future<String> registerBuffaloOwner({
   required String birthMethod,
   required String birthDate,
 }) async {
-  final String url = '${ApiUtils.baseUrl}/api/buffalo/';
-  print('Sending POST request to: $url');
+  
+  const String url = '${ApiUtils.baseUrl}/api/buffalo/';
 
   final response = await http.post(
     Uri.parse(url),
@@ -64,9 +67,6 @@ Future<String> registerBuffaloOwner({
     },
   );
 
-  print('Selected Farm ID: $farmId');
-  print('Response status: ${response.statusCode}');
-  print('Response body: ${response.body}');
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = json.decode(response.body);

@@ -1,15 +1,12 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/services/register_farm_ower_services.dart';
 import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
-import 'package:mime/mime.dart';
 
 class RegisterFarmOwner extends StatefulWidget {
   const RegisterFarmOwner({super.key});
@@ -25,10 +22,12 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _nicknameController = TextEditingController();
-  final TextEditingController _statusController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _lineIdController = TextEditingController();
   File? _selectedImage;
+  String? _selectedStatus;
+
+  final List<String> _statusOptions = ['เจ้าของฟาร์ม', 'ผู้จัดการ', 'สมาชิก'];
 
   @override
   void didChangeDependencies() {
@@ -49,33 +48,6 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
     }
   }
 
-  Future<void> _uploadImage(File image, String userId) async {
-    String apiUrl = "${ApiUtils.baseUrl}/api/user/$userId";
-    final mimeTypeData =
-        lookupMimeType(image.path, headerBytes: [0xFF, 0xD8])?.split('/');
-
-    final imageUploadRequest = http.MultipartRequest('PUT', Uri.parse(apiUrl));
-    final file = await http.MultipartFile.fromPath(
-      'file',
-      image.path,
-      contentType: MediaType(mimeTypeData![0], mimeTypeData[1]),
-    );
-
-    imageUploadRequest.files.add(file);
-
-    try {
-      final streamedResponse = await imageUploadRequest.send();
-      final response = await http.Response.fromStream(streamedResponse);
-      if (response.statusCode == 200) {
-        print("Upload success: ${response.body}");
-      } else {
-        print("Upload error: ${response.body}");
-      }
-    } catch (e) {
-      print("Upload error: $e");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -90,9 +62,9 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
         ),
         child: Form(
           key: _formKey,
-          child: SingleChildScrollView(
-            child: Container(
-              height: screenHeight,
+          child: Container(
+            height: screenHeight,
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -104,12 +76,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DetailFarmView(),
-                              ),
-                            );
+                            Navigator.pop(context);
                           },
                           child: Icon(Icons.arrow_back),
                         ),
@@ -152,31 +119,42 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                               BorderRadius.circular(10.0),
                                         ),
                                       ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
                                     ),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  const Text('จังหวัดฟาร์ม',
-                                      style: TextStyle(color: Colors.red)),
-                                  const SizedBox(width: 10),
-                                  SizedBox(
-                                    width: 80,
-                                    child: TextFormField(
-                                      decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: Colors.yellow,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     const Text('จังหวัดฟาร์ม', style: TextStyle(color: Colors.red)),
+                              //     const SizedBox(width: 10),
+                              //     SizedBox(
+                              //       width: 80,
+                              //       child: TextFormField(
+                              //         controller: _farmIdController,
+                              //         decoration: InputDecoration(
+                              //           filled: true,
+                              //           fillColor: Colors.yellow,
+                              //           border: OutlineInputBorder(
+                              //             borderRadius: BorderRadius.circular(10.0),
+                              //           ),
+                              //         ),
+                              //         validator: (value) {
+                              //           if (value == null || value.isEmpty) {
+                              //             return 'กรุณากรอกข้อมูล';
+                              //           }
+                              //           return null;
+                              //         },
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),
@@ -196,7 +174,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                       border: Border.all(color: Colors.black),
                                       color: Colors.white),
                                   child: _selectedImage == null
-                                      ? Column(
+                                      ? const Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
@@ -232,6 +210,12 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'กรุณากรอกข้อมูล';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                       ],
@@ -256,6 +240,12 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'กรุณากรอกข้อมูล';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                       ],
@@ -280,6 +270,12 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'กรุณากรอกข้อมูล';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                       ],
@@ -295,8 +291,19 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                         const SizedBox(width: 10),
                         SizedBox(
                           width: 200,
-                          child: TextFormField(
-                            controller: _statusController,
+                          child: DropdownButtonFormField<String>(
+                            value: _selectedStatus,
+                            items: _statusOptions.map((String status) {
+                              return DropdownMenuItem<String>(
+                                value: status,
+                                child: Text(status),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedStatus = newValue;
+                              });
+                            },
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.yellow,
@@ -304,6 +311,8 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
+                            validator: (value) =>
+                                value == null ? 'กรุณาเลือกสถานะ' : null,
                           ),
                         ),
                       ],
@@ -328,6 +337,12 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'กรุณากรอกข้อมูล';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                       ],
@@ -352,6 +367,12 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'กรุณากรอกข้อมูล';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                       ],
@@ -371,20 +392,66 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                           child: TextButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                try {
-                                  final userId = await registerFarmOwner(
-                                    firstName: _firstNameController.text,
-                                    lastName: _lastNameController.text,
-                                    nickname: _nicknameController.text,
-                                    position: _statusController.text,
-                                    phoneNumber: _phoneNumberController.text,
-                                    farmId: _farmIdController.text,
-                                  );
-                                  if (_selectedImage != null) {
-                                    await _uploadImage(_selectedImage!, userId);
+                                final imageFile = _selectedImage;
+                                if (imageFile != null) {
+                                  try {
+                                    final userId = await registerFarmOwner(
+                                      firstName: _firstNameController.text,
+                                      lastName: _lastNameController.text,
+                                      nickname: _nicknameController.text,
+                                      position: _selectedStatus ?? '',
+                                      phoneNumber: _phoneNumberController.text,
+                                      farmId: _farmIdController.text,
+                                      lineId: _lineIdController.text,
+                                      imageFile: imageFile,
+                                    );
+                                    print(
+                                        'User created successfully with ID: $userId');
+                                    Navigator.pop(
+                                        context); // Navigate back to the previous screen
+                                  } catch (e) {
+                                    print('Error: $e');
+                                    // You can show a dialog or a snackbar to inform the user about the error
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Error'),
+                                          content: Text(
+                                              'Failed to register. Please try again.'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: Text('OK'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   }
-                                } catch (e) {
-                                  print('Error: $e');
+                                } else {
+                                  print('Please select an image');
+                                  // Show a dialog or a snackbar to inform the user to select an image
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Image Required'),
+                                        content:
+                                            Text('Please select an image.'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text('OK'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 }
                               }
                             },
