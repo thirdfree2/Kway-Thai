@@ -11,7 +11,6 @@ import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/services/buffalo_services.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/buffalo/main_buffalo_view.dart';
 import 'package:buffalo_thai/view/farm_owner/register_buffalo.dart';
 import 'package:buffalo_thai/view/farm_owner/register_farm_owner.dart';
 
@@ -165,7 +164,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                     user.firstName,
                                     user.lastName,
                                     user.position,
-                                    user.phoneNumber,
+                                    user.phoneNumber ?? '',
                                     user.lineId ?? '');
                             Navigator.push(
                               context,

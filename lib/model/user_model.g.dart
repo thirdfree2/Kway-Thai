@@ -10,14 +10,14 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       userId: (json['userId'] as num).toInt(),
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
-      nickname: json['nickname'] as String,
-      lineId: json['lineId'] as String?,
-      position: json['position'] as String,
-      phoneNumber: json['phoneNumber'] as String,
+      nickname: json['nickname'] as String? ?? '',
+      lineId: json['lineId'] as String? ?? '',
+      position: json['position'] as String? ?? '',
+      phoneNumber: json['phoneNumber'] as String? ?? '',
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       farmId: (json['farmId'] as num).toInt(),
-      userImages: json['UserImages'] as List<dynamic>,
+      userImages: json['UserImages'] as List<dynamic>? ?? [],
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{

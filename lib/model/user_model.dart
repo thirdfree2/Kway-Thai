@@ -13,17 +13,17 @@ class UserModel {
   @JsonKey(name: 'lastName')
   final String lastName;
 
-  @JsonKey(name: 'nickname')
-  final String nickname;
+  @JsonKey(name: 'nickname', defaultValue: '')
+  final String? nickname;
 
-  @JsonKey(name: 'lineId')
+  @JsonKey(name: 'lineId', defaultValue: '')
   final String? lineId;
 
-  @JsonKey(name: 'position')
+  @JsonKey(name: 'position', defaultValue: '')
   final String position;
 
-  @JsonKey(name: 'phoneNumber')
-  final String phoneNumber;
+  @JsonKey(name: 'phoneNumber', defaultValue: '')
+  final String? phoneNumber;
 
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;
@@ -34,7 +34,7 @@ class UserModel {
   @JsonKey(name: 'farmId')
   final int farmId;
 
-  @JsonKey(name: 'UserImages')
+  @JsonKey(name: 'UserImages', defaultValue: [])
   final List<dynamic> userImages;
 
   UserModel({
@@ -42,7 +42,7 @@ class UserModel {
     required this.firstName,
     required this.lastName,
     required this.nickname,
-    this.lineId,
+    required this.lineId,
     required this.position,
     required this.phoneNumber,
     required this.createdAt,

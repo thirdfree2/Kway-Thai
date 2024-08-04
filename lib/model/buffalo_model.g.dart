@@ -8,9 +8,11 @@ part of 'buffalo_model.dart';
 
 BuffaloModel _$BuffaloModelFromJson(Map<String, dynamic> json) => BuffaloModel(
       id: (json['buffaloId'] as num).toInt(),
-      name: json['name'] as String,
-      birthDate: DateTime.parse(json['birthDate'] as String),
-      birthMethod: json['birthMethod'] as String,
+      name: json['name'] as String? ?? '',
+      birthMethod: json['birthMethod'] as String? ?? '',
+      birthDate: json['birthDate'] == null
+          ? null
+          : DateTime.parse(json['birthDate'] as String),
       fatherId: (json['fatherId'] as num?)?.toInt(),
       motherId: (json['motherId'] as num?)?.toInt(),
       grandfatherId: (json['grandfatherId'] as num?)?.toInt(),
@@ -47,17 +49,17 @@ BuffaloModel _$BuffaloModelFromJson(Map<String, dynamic> json) => BuffaloModel(
           ? null
           : BuffaloModel.fromJson(
               json['greatGrandmother'] as Map<String, dynamic>),
-      buffaloImages: json['BuffaloImages'] as List<dynamic>? ?? const [],
+      buffaloImages: json['BuffaloImages'] as List<dynamic>? ?? [],
       buffaloBreedingImages:
-          json['BuffaloBreedingImages'] as List<dynamic>? ?? const [],
-      histories: json['Histories'] as List<dynamic>? ?? const [],
+          json['BuffaloBreedingImages'] as List<dynamic>? ?? [],
+      histories: json['Histories'] as List<dynamic>? ?? [],
     );
 
 Map<String, dynamic> _$BuffaloModelToJson(BuffaloModel instance) =>
     <String, dynamic>{
       'buffaloId': instance.id,
       'name': instance.name,
-      'birthDate': instance.birthDate.toIso8601String(),
+      'birthDate': instance.birthDate?.toIso8601String(),
       'birthMethod': instance.birthMethod,
       'fatherId': instance.fatherId,
       'motherId': instance.motherId,
