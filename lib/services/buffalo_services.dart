@@ -26,7 +26,6 @@ Future<List<BuffaloModel>> fetchBuffaloesByFarmId(String id) async {
 
   if (response.statusCode == 200) {
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-    print(response.body);
     if (jsonResponse['response_status'] == 'SUCCESS') {
       List<dynamic> farmsList = jsonResponse['data'];
       return farmsList.map((json) => BuffaloModel.fromJson(json)).toList();

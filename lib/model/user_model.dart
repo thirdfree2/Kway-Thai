@@ -1,3 +1,4 @@
+import 'package:buffalo_thai/model/user_image_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_model.g.dart';
@@ -35,7 +36,7 @@ class UserModel {
   final int farmId;
 
   @JsonKey(name: 'UserImages', defaultValue: [])
-  final List<dynamic> userImages;
+  final List<UserImageModel> userImages;  // Updated type
 
   UserModel({
     required this.userId,

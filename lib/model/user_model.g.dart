@@ -17,7 +17,10 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       farmId: (json['farmId'] as num).toInt(),
-      userImages: json['UserImages'] as List<dynamic>? ?? [],
+      userImages: (json['UserImages'] as List<dynamic>?)
+              ?.map((e) => UserImageModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{

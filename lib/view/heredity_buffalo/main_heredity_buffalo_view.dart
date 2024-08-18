@@ -88,6 +88,7 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                 ),
               ),
             ),
+            const SizedBox(height: 20,),
             Expanded(
               flex: 3,
               child: Padding(
@@ -99,12 +100,10 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                     mainAxisSpacing: 10,
                     childAspectRatio: 0.75,
                   ),
-                  itemCount: buffaloNames.length,
+                  itemCount: 6,
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
-                        // Provider.of<SelectedBuffalo>(context, listen: false)
-                        //     .setSelectedBuffalo(buffaloNames[index]);
                         Navigator.push(
                           context,
                           MaterialPageRoute(

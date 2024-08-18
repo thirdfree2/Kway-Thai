@@ -1,3 +1,4 @@
+import 'package:buffalo_thai/model/buffalo_image_model.dart';
 import 'package:buffalo_thai/model/farm_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,7 +11,7 @@ class BuffaloModel {
   @JsonKey(name: 'name', defaultValue: '')
   final String name;
   @JsonKey(name: 'birthDate')
-  final DateTime? birthDate; // Make nullable if it can be null
+  final DateTime? birthDate;
   @JsonKey(name: 'birthMethod', defaultValue: '')
   final String birthMethod;
   @JsonKey(name: 'fatherId')
@@ -44,17 +45,17 @@ class BuffaloModel {
   final BuffaloModel? greatGrandmother;
 
   @JsonKey(name: 'BuffaloImages', defaultValue: [])
-  final List<dynamic> buffaloImages;
+  final List<BuffaloImageModel> buffaloImages;
   @JsonKey(name: 'BuffaloBreedingImages', defaultValue: [])
-  final List<dynamic> buffaloBreedingImages;
+  final List<dynamic> buffaloBreedingImages; // Modify this if a specific model is needed
   @JsonKey(name: 'Histories', defaultValue: [])
-  final List<dynamic> histories;
+  final List<dynamic> histories; // Modify this if a specific model is needed
 
   BuffaloModel({
     required this.id,
     required this.name,
     required this.birthMethod,
-    this.birthDate, // Allow birthDate to be nullable
+    this.birthDate,
     this.fatherId,
     this.motherId,
     this.grandfatherId,

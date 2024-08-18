@@ -1,6 +1,7 @@
 import 'package:buffalo_thai/model/user_model.dart';
 import 'package:buffalo_thai/providers/selected_farm_owner.dart';
 import 'package:buffalo_thai/services/user_services.dart';
+import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:buffalo_thai/view/buffalo/main_buffalo_wrapper.dart';
 import 'package:buffalo_thai/view/farm_owner/main_farm_owner.dart';
 import 'package:flutter/material.dart';
@@ -59,20 +60,20 @@ class _DetailFarmViewState extends State<DetailFarmView> {
         child: Column(
           children: [
             const SizedBox(height: 10),
-              Row(
-                children: [
-                  const SizedBox(width: 20),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      Icons.arrow_back,
-                      size: 35,
-                    ),
+            Row(
+              children: [
+                const SizedBox(width: 20),
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.arrow_back,
+                    size: 35,
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
             StrokeText(
               text: farmNames,
               textStyle: TextStyle(
@@ -156,6 +157,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                       itemCount: users.length,
                       itemBuilder: (context, index) {
                         final user = users[index];
+                        final imageUrl = user.userImages.isNotEmpty
+                            ? user.userImages[0].imageUrl
+                            : 'https://placeholder.com/150';
                         return InkWell(
                           onTap: () {
                             Provider.of<SelectedFarmOwner>(context,
@@ -182,8 +186,8 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
                                   ),
-                                  child: Image.asset(
-                                    'assets/images/banner-1.jpg',
+                                  child: Image.network(
+                                    imageUrl,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -267,7 +271,6 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                     }
 
                     final buffaloes = snapshot.data!;
-
                     return GridView.builder(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(

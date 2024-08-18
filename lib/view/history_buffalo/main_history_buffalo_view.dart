@@ -81,6 +81,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                 ),
               ),
             ),
+            const SizedBox(height: 20,),
             Expanded(
               flex: 3,
               child: Padding(
@@ -105,7 +106,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                         mainAxisSpacing: 10,
                         childAspectRatio: 0.75,
                       ),
-                      itemCount: buffaloes.length,
+                      itemCount: 6,
                       itemBuilder: (context, index) {
                         final buffalo = buffaloes[index];
                         return InkWell(

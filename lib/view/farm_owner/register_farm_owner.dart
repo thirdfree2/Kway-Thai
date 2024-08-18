@@ -130,31 +130,6 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                 ],
                               ),
                               const SizedBox(height: 10),
-                              // Row(
-                              //   children: [
-                              //     const Text('จังหวัดฟาร์ม', style: TextStyle(color: Colors.red)),
-                              //     const SizedBox(width: 10),
-                              //     SizedBox(
-                              //       width: 80,
-                              //       child: TextFormField(
-                              //         controller: _farmIdController,
-                              //         decoration: InputDecoration(
-                              //           filled: true,
-                              //           fillColor: Colors.yellow,
-                              //           border: OutlineInputBorder(
-                              //             borderRadius: BorderRadius.circular(10.0),
-                              //           ),
-                              //         ),
-                              //         validator: (value) {
-                              //           if (value == null || value.isEmpty) {
-                              //             return 'กรุณากรอกข้อมูล';
-                              //           }
-                              //           return null;
-                              //         },
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
                             ],
                           ),
                         ),
@@ -408,10 +383,10 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                     print(
                                         'User created successfully with ID: $userId');
                                     Navigator.pop(
-                                        context); // Navigate back to the previous screen
+                                        context);
                                   } catch (e) {
                                     print('Error: $e');
-                                    // You can show a dialog or a snackbar to inform the user about the error
+                    
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
