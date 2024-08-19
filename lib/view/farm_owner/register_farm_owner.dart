@@ -60,390 +60,357 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Form(
-          key: _formKey,
+        child: SingleChildScrollView(
           child: Container(
             height: screenHeight,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 30),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(Icons.arrow_back),
-                        ),
-                      ),
-                      SizedBox(width: 45),
-                      Text(
-                        'ลงทะเบียนสมาชิก',
-                        style: TextStyle(
-                            fontSize:
-                                ScreenUtils.calculateFontSize(context, 24),
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: screenWidth / 2,
-                          height: 150,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                children: [
-                                  const Text('คอก/ฟาร์ม',
-                                      style: TextStyle(color: Colors.red)),
-                                  const SizedBox(width: 10),
-                                  SizedBox(
-                                    width: 100,
-                                    child: TextFormField(
-                                      controller: _farmNameController,
-                                      decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: Colors.yellow,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                      ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
-                                        }
-                                        return null;
-                                      },
-                                    ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Card(
+                    color: Colors.white.withOpacity(0.8),
+                    margin: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    elevation: 8,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 30),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Icon(Icons.arrow_back),
                                   ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: 150,
-                          height: 150,
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Center(
-                              child: GestureDetector(
-                                onTap: _pickImage,
-                                child: Container(
-                                  height: 130,
-                                  width: 130,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(color: Colors.black),
-                                      color: Colors.white),
-                                  child: _selectedImage == null
-                                      ? const Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.add, size: 30),
-                                            Text('เพิ่มรูปภาพ')
-                                          ],
-                                        )
-                                      : Image.file(_selectedImage!,
-                                          fit: BoxFit.cover),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'ลงทะเบียนสมาชิก',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: ScreenUtils.calculateFontSize(
+                                            context, 24),
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: CustomTextFormField(
+                                    controller: _farmNameController,
+                                    labelText: 'คอก/ฟาร์ม',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกข้อมูล';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  flex: 1,
+                                  child: ImagePickerWidget(
+                                    selectedImage: _selectedImage,
+                                    onPickImage: _pickImage,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    controller: _firstNameController,
+                                    labelText: 'ชื่อ',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกข้อมูล';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    controller: _lastNameController,
+                                    labelText: 'นามสกุล',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกข้อมูล';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    controller: _nicknameController,
+                                    labelText: 'ชื่อเล่น',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกข้อมูล';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: StatusDropdown(
+                                    selectedStatus: _selectedStatus,
+                                    statusOptions: _statusOptions,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        _selectedStatus = newValue;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    controller: _phoneNumberController,
+                                    labelText: 'เบอร์โทร',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกข้อมูล';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    controller: _lineIdController,
+                                    labelText: 'Line ID',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกข้อมูล';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 80),
+                            Container(
+                              height: 50,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Center(
+                                child: TextButton(
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      final imageFile = _selectedImage;
+                                      if (imageFile != null) {
+                                        try {
+                                          final userId =
+                                              await registerFarmOwner(
+                                            firstName:
+                                                _firstNameController.text,
+                                            lastName: _lastNameController.text,
+                                            nickname: _nicknameController.text,
+                                            position: _selectedStatus ?? '',
+                                            phoneNumber:
+                                                _phoneNumberController.text,
+                                            farmId: _farmIdController.text,
+                                            lineId: _lineIdController.text,
+                                            imageFile: imageFile,
+                                          );
+                                          print(
+                                              'User created successfully with ID: $userId');
+                                          Navigator.pop(context);
+                                        } catch (e) {
+                                          print('Error: $e');
+
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text('Error'),
+                                                content: Text(
+                                                    'Failed to register. Please try again.'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    child: Text('OK'),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        }
+                                      } else {
+                                        print('Please select an image');
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('Image Required'),
+                                              content: Text(
+                                                  'Please select an image.'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  child: Text('OK'),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
+                                    }
+                                  },
+                                  child: const Text(
+                                    'ลงทะเบียน',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        const Text('ชื่อ', style: TextStyle(color: Colors.red)),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 200,
-                          child: TextFormField(
-                            controller: _firstNameController,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.yellow,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกข้อมูล';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        const Text('นามสกุล',
-                            style: TextStyle(color: Colors.red)),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 200,
-                          child: TextFormField(
-                            controller: _lastNameController,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.yellow,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกข้อมูล';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        const Text('ชื่อเล่น',
-                            style: TextStyle(color: Colors.red)),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 200,
-                          child: TextFormField(
-                            controller: _nicknameController,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.yellow,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกข้อมูล';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        const Text('สถานะ',
-                            style: TextStyle(color: Colors.red)),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 200,
-                          child: DropdownButtonFormField<String>(
-                            value: _selectedStatus,
-                            items: _statusOptions.map((String status) {
-                              return DropdownMenuItem<String>(
-                                value: status,
-                                child: Text(status),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _selectedStatus = newValue;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.yellow,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                            validator: (value) =>
-                                value == null ? 'กรุณาเลือกสถานะ' : null,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        const Text('เบอร์โทร',
-                            style: TextStyle(color: Colors.red)),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 200,
-                          child: TextFormField(
-                            controller: _phoneNumberController,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.yellow,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกข้อมูล';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        const Text('Line ID',
-                            style: TextStyle(color: Colors.red)),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 200,
-                          child: TextFormField(
-                            controller: _lineIdController,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.yellow,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกข้อมูล';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        height: 50,
-                        width: screenWidth / 2,
-                        decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Center(
-                          child: TextButton(
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                final imageFile = _selectedImage;
-                                if (imageFile != null) {
-                                  try {
-                                    final userId = await registerFarmOwner(
-                                      firstName: _firstNameController.text,
-                                      lastName: _lastNameController.text,
-                                      nickname: _nicknameController.text,
-                                      position: _selectedStatus ?? '',
-                                      phoneNumber: _phoneNumberController.text,
-                                      farmId: _farmIdController.text,
-                                      lineId: _lineIdController.text,
-                                      imageFile: imageFile,
-                                    );
-                                    print(
-                                        'User created successfully with ID: $userId');
-                                    Navigator.pop(
-                                        context);
-                                  } catch (e) {
-                                    print('Error: $e');
-                    
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text('Error'),
-                                          content: Text(
-                                              'Failed to register. Please try again.'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              child: Text('OK'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  }
-                                } else {
-                                  print('Please select an image');
-                                  // Show a dialog or a snackbar to inform the user to select an image
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text('Image Required'),
-                                        content:
-                                            Text('Please select an image.'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            child: Text('OK'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
-                              }
-                            },
-                            child: const Text(
-                              'ลงทะเบียน',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
+                            const SizedBox(height: 20),
+                          ],
                         ),
                       ),
-                    ],
-                  )
-                ],
-              ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+// ฟิลด์ป้อนข้อมูลทั่วไป
+class CustomTextFormField extends StatelessWidget {
+  final TextEditingController controller;
+  final String labelText;
+  final FormFieldValidator<String>? validator;
+
+  const CustomTextFormField({
+    Key? key,
+    required this.controller,
+    required this.labelText,
+    this.validator,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: labelText,
+      ),
+    );
+  }
+}
+
+// ส่วนของ Dropdown
+class StatusDropdown extends StatelessWidget {
+  final String? selectedStatus;
+  final List<String> statusOptions;
+  final ValueChanged<String?> onChanged;
+
+  const StatusDropdown({
+    Key? key,
+    required this.selectedStatus,
+    required this.statusOptions,
+    required this.onChanged,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      value: selectedStatus,
+      items: statusOptions.map((String status) {
+        return DropdownMenuItem<String>(
+          value: status,
+          child: Text(status),
+        );
+      }).toList(),
+      onChanged: onChanged,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'สถานะ',
+      ),
+      validator: (value) => value == null ? 'กรุณาเลือกสถานะ' : null,
+    );
+  }
+}
+
+// ส่วนของการเลือกภาพ
+class ImagePickerWidget extends StatelessWidget {
+  final File? selectedImage;
+  final VoidCallback onPickImage;
+
+  const ImagePickerWidget({
+    Key? key,
+    this.selectedImage,
+    required this.onPickImage,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPickImage,
+      child: Container(
+        height: 150,
+        width: 150,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.black),
+          color: Colors.white.withOpacity(0.8),
+        ),
+        child: selectedImage == null
+            ? const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Icon(Icons.add, size: 30), Text('เพิ่มรูปภาพ')],
+              )
+            : Image.file(selectedImage!, fit: BoxFit.cover),
       ),
     );
   }

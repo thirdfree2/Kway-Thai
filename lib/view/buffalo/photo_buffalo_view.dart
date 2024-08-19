@@ -24,7 +24,7 @@ class _PhotoBuffaloViewState extends State<PhotoBuffaloView> {
       body: DecoratedBox(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/background-1.jpg"),
+            image: AssetImage("assets/images/background-2.jpg"),
             fit: BoxFit.cover,
           ),
         ),

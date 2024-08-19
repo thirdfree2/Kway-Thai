@@ -18,7 +18,7 @@ class MainBuffaloView extends StatefulWidget {
 class _MainBuffaloViewState extends State<MainBuffaloView> {
   @override
   Widget build(BuildContext context) {
-final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
+    final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -28,7 +28,7 @@ final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
           DecoratedBox(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/background-1.jpg"),
+                image: AssetImage("assets/images/background-2.jpg"),
                 fit: BoxFit.cover,
               ),
             ),
@@ -45,18 +45,11 @@ final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
                     height: screenHeight * 0.8, // Adjusted to accommodate image
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withOpacity(0.5),
                       borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        bottomLeft: Radius.circular(20),
+                        topLeft: Radius.circular(65),
+                        bottomLeft: Radius.circular(65),
                       ),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 10.0,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
                     ),
                     child: SingleChildScrollView(
                       child: Column(
@@ -94,12 +87,12 @@ final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
                           _buildInfoRow('เกิด ', 'ปี 2560', Colors.amber[800]),
                           _buildInfoRow('เกิดที่ ลอก/ฟาร์ม ', 'บ้านคึกควายไทย',
                               Colors.green[800]),
-                          _buildInfoRow(
-                              'โดยวิธีการ ',  buffalo?.birthMethod ?? '', Colors.red[800]),
-                          _buildInfoRow('พ่อพันธุ์ ', buffalo?.father?.name ?? '',
-                              Colors.red[800]),
-                          _buildInfoRow(
-                              'กับ แม่พันธุ์ ', buffalo?.mother?.name ?? '', Colors.red[800]),
+                          _buildInfoRow('โดยวิธีการ ',
+                              buffalo?.birthMethod ?? '', Colors.red[800]),
+                          _buildInfoRow('พ่อพันธุ์ ',
+                              buffalo?.father?.name ?? '', Colors.red[800]),
+                          _buildInfoRow('กับ แม่พันธุ์ ',
+                              buffalo?.mother?.name ?? '', Colors.red[800]),
                           _buildInfoRow('สายเลือดทางปู่คือ ',
                               'ทองสุข(เปี่ยวใหญ่)', Colors.pink[800]),
                           _buildInfoRow('สายเลือดทางย่าคือ ', 'ควายสายอุทัย',
@@ -108,7 +101,6 @@ final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
                               'เจ้าแอ(กำนัดโป๊ด)', Colors.pink[800]),
                           _buildInfoRow('สายเลือดทางยายคือ ', 'แม่บุญลู่',
                               Colors.pink[800]),
-                          const SizedBox(height: 15),
                           const Text(
                             'สืบสายเลือดจากทางทวด',
                             style: TextStyle(fontSize: 14),
@@ -116,33 +108,6 @@ final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
                           _buildInfoRow('คือ ', 'เจ้าหมื่นยักษ์ (ทำแทนปิด)',
                               Colors.pink[800]),
                           const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Column(
-                                children: [
-                                  const Text(
-                                    'สังกัดปัจจุบัน',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.green,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  Card(
-                                    color: Colors.green[500],
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        buffalo?.currentFarm?.farmName ?? '',
-                                        style: const TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
                         ],
                       ),
                     ),
@@ -155,11 +120,42 @@ final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
             ),
           ),
           Positioned(
-            bottom: screenHeight * 0.08,
-            right: 20,
+            right: screenWidth * 0.05,
+            bottom: screenHeight * 0.075,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Column(
+                  children: [
+                    const Text(
+                      'สังกัดปัจจุบัน',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.green,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Card(
+                      color: Colors.green[500],
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          buffalo?.currentFarm?.farmName ?? 'Not Found 404',
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: screenHeight * 0.025,
+            left: 20,
             child: Container(
-              width: screenWidth * 0.9,
-              height: screenHeight * 0.25,
+              width: screenWidth * 0.5,
+              height: screenHeight * 0.4,
               clipBehavior: Clip.antiAlias,
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(15)),
