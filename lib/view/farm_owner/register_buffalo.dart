@@ -1,12 +1,10 @@
-import 'package:buffalo_thai/model/buffalo_model.dart';
-import 'package:buffalo_thai/model/user_model.dart';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/services/register_farm_ower_services.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/file.dart';
-import 'package:provider/provider.dart';
 
 class RegisterBuffalo extends StatefulWidget {
   const RegisterBuffalo({super.key});
@@ -19,12 +17,7 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _farmNameController = TextEditingController();
   final TextEditingController _farmIdController = TextEditingController();
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _nicknameController = TextEditingController();
-  final TextEditingController _statusController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _lineIdController = TextEditingController();
   final TextEditingController _birthDateController = TextEditingController();
   final TextEditingController _birthPlaceController = TextEditingController();
   final TextEditingController _birthMethodController = TextEditingController();
@@ -53,6 +46,16 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
     }
   }
 
+  Future<void> _pickImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _selectedImage = File(pickedImage.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -69,575 +72,343 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
               ),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(height: 30),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DetailFarmView(),
-                              ),
-                            );
-                          },
-                          child: Icon(Icons.arrow_back)),
-                    ),
-                    const SizedBox(width: 45),
-                    Text(
-                      'ลงทะเบียนควาย',
-                      style: TextStyle(
-                          fontSize: ScreenUtils.calculateFontSize(context, 24),
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(children: [
-                    Container(
-                      width: screenWidth / 2,
-                      height: 150,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              const Text(
-                                'คอก/ฟาร์ม',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                width: 110,
-                                height: 30,
-                                child: TextFormField(
-                                  controller: _farmNameController,
-                                  style: TextStyle(
-                                      fontSize: ScreenUtils.calculateFontSize(
-                                          context, 8)),
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.yellow,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: [
-                              const Text(
-                                'จังหวัดฟาร์ม',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                width: 80,
-                                height: 30,
-                                child: TextFormField(
-                                  style: TextStyle(
-                                      fontSize: ScreenUtils.calculateFontSize(
-                                          context, 8)),
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.yellow,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: [
-                              const Text(
-                                'จังหวัดฟาร์ม',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                width: 80,
-                                height: 30,
-                                child: TextFormField(
-                                  style: TextStyle(
-                                      fontSize: ScreenUtils.calculateFontSize(
-                                          context, 8)),
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.yellow,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Card(
+                      color: Colors.white.withOpacity(0.8),
+                      margin:
+                          const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
                       ),
-                    ),
-                    SizedBox(
-                      width: 150,
-                      height: 150,
+                      elevation: 8,
                       child: Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Center(
-                          child: Container(
-                            height: 130,
-                            width: 130,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: const Border(
-                                  top: BorderSide(color: Colors.black),
-                                  left: BorderSide(color: Colors.black),
-                                  right: BorderSide(color: Colors.black),
-                                  bottom: BorderSide(color: Colors.black),
-                                ),
-                                color: Colors.white),
-                            child: const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.add,
-                                  size: 30,
-                                ),
-                                Text('เพิ่มรูปภาพ')
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ]),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'วันเกิด',
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    const SizedBox(width: 10),
-                    SizedBox(
-                      width: 80,
-                      height: 30,
-                      child: TextFormField(
-                        controller: _birthDateController,
-                        style: TextStyle(
-                            fontSize:
-                                ScreenUtils.calculateFontSize(context, 8)),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.yellow,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    const Text(
-                      'เกิดที่ (คอกฟาร์ม)',
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    const SizedBox(width: 10),
-                    SizedBox(
-                      width: 80,
-                      height: 30,
-                      child: TextFormField(
-                        controller: _birthPlaceController,
-                        style: TextStyle(
-                            fontSize:
-                                ScreenUtils.calculateFontSize(context, 8)),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.yellow,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'วิธีการผสมพันธุ์',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 230,
-                          height: 30,
-                          child: TextFormField(
-                            controller: _birthMethodController,
-                            style: TextStyle(
-                                fontSize:
-                                    ScreenUtils.calculateFontSize(context, 8)),
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.yellow,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                        padding: const EdgeInsets.all(8.0),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 30),
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Icon(Icons.arrow_back),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      'ลงทะเบียนควาย',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: ScreenUtils.calculateFontSize(
+                                              context, 24),
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                ],
                               ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'รูปถ่ายการผสมพันธุ์',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 200,
-                          height: 30,
-                          child: TextFormField(
-                            controller: _breedingImageController,
-                            style: TextStyle(
-                                fontSize:
-                                    ScreenUtils.calculateFontSize(context, 8)),
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.yellow,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                              const SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: CustomTextFormField(
+                                      controller: _farmNameController,
+                                      labelText: 'คอก/ฟาร์ม',
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    flex: 1,
+                                    child: ImagePickerWidget(
+                                      selectedImage: _selectedImage,
+                                      onPickImage: _pickImage,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'พ่อพันธุ์ชื่อ',
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            width: 80,
-                            height: 30,
-                            child: TextFormField(
-                              controller: _fatherNameController,
-                              style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                      context, 8)),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.yellow,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      controller: _nicknameController,
+                                      labelText: 'ชื่อเล่น',
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      controller: _birthDateController,
+                                      labelText: 'วันเกิด',
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              CustomTextFormField(
+                                controller: _birthPlaceController,
+                                labelText: 'เกิดที่ (คอกฟาร์ม)',
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'กรุณากรอกข้อมูล';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 10),
+                              CustomTextFormField(
+                                controller: _birthMethodController,
+                                labelText: 'วิธีการผสมพันธุ์',
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'กรุณากรอกข้อมูล';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 10),
+                              CustomTextFormField(
+                                controller: _breedingImageController,
+                                labelText: 'รูปถ่ายการผสมพันธุ์',
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'กรุณากรอกข้อมูล';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      controller: _fatherNameController,
+                                      labelText: 'พ่อพันธุ์ชื่อ',
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      controller: _motherNameController,
+                                      labelText: 'แม่พันธุ์ชื่อ',
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      controller: _grandfatherNameController,
+                                      labelText: 'ปู่ชื่อ',
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      controller: _grandmotherNameController,
+                                      labelText: 'ย่าชื่อ',
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      controller: _greatGrandfatherNameController,
+                                      labelText: 'ปู่ทวดชื่อ',
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      controller: _greatGrandmotherNameController,
+                                      labelText: 'ตาทวดชื่อ',
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              CustomTextFormField(
+                                controller: _currentFarmController,
+                                labelText: 'สังกัดปัจจุบัน',
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'กรุณากรอกข้อมูล';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 30),
+                              Container(
+                                height: 50,
+                                width: screenWidth / 2,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Center(
+                                  child: TextButton(
+                                    onPressed: () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        await registerBuffaloOwner(
+                                          farmId: _farmIdController.text,
+                                          name: _nicknameController.text,
+                                          birthMethod:
+                                              _birthMethodController.text,
+                                          birthDate: _birthDateController.text,
+                                        );
+                                      }
+                                    },
+                                    child: const Text(
+                                      'ลงทะเบียน',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                              const SizedBox(height: 20),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'แม่พันธุ์ชื่อ',
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            width: 80,
-                            height: 30,
-                            child: TextFormField(
-                              controller: _motherNameController,
-                              style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                      context, 8)),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.yellow,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'ปู่ชื่อ',
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            width: 100,
-                            height: 30,
-                            child: TextFormField(
-                              controller: _grandfatherNameController,
-                              style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                      context, 8)),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.yellow,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'ย่าเชื่อ',
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            width: 100,
-                            height: 30,
-                            child: TextFormField(
-                              controller: _grandmotherNameController,
-                              style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                      context, 8)),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.yellow,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'ปู่ทวดชื่อ',
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            width: 80,
-                            height: 30,
-                            child: TextFormField(
-                              controller: _greatGrandfatherNameController,
-                              style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                      context, 8)),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.yellow,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'ตาทวดชื่อ',
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            width: 80,
-                            height: 30,
-                            child: TextFormField(
-                              controller: _greatGrandmotherNameController,
-                              style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                      context, 8)),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.yellow,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'สังกัดปัจจุบัน',
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    const SizedBox(width: 10),
-                    SizedBox(
-                      width: 250,
-                      height: 30,
-                      child: TextFormField(
-                        controller: _currentFarmController,
-                        style: TextStyle(
-                            fontSize:
-                                ScreenUtils.calculateFontSize(context, 8)),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.yellow,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 60,
-                      width: 130,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: const Border(
-                            top: BorderSide(color: Colors.black),
-                            left: BorderSide(color: Colors.black),
-                            right: BorderSide(color: Colors.black),
-                            bottom: BorderSide(color: Colors.black),
-                          ),
-                          color: Colors.white),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.add,
-                            size: 30,
-                          ),
-                          Text('เพิ่มรูปภาพ')
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 30),
-                    Container(
-                      height: 60,
-                      width: 130,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: const Border(
-                            top: BorderSide(color: Colors.black),
-                            left: BorderSide(color: Colors.black),
-                            right: BorderSide(color: Colors.black),
-                            bottom: BorderSide(color: Colors.black),
-                          ),
-                          color: Colors.white),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.add,
-                            size: 30,
-                          ),
-                          Text('เพิ่มรูปภาพ')
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      height: 50,
-                      width: screenWidth / 2,
-                      decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(
-                        child: TextButton(
-                          onPressed: () async {
-
-                              await registerBuffaloOwner(
-                                  farmId: _farmIdController.text,
-                                  name: _nicknameController.text,
-                                  birthMethod: _birthMethodController.text,
-                                  birthDate: _birthDateController.text,
-                                );
-                              
-                          },
-                          child: const Text(
-                            'ลงทะเบียน',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+// ฟิลด์ป้อนข้อมูลทั่วไป
+class CustomTextFormField extends StatelessWidget {
+  final TextEditingController controller;
+  final String labelText;
+  final FormFieldValidator<String>? validator;
+
+  const CustomTextFormField({
+    Key? key,
+    required this.controller,
+    required this.labelText,
+    this.validator,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: labelText,
+      ),
+    );
+  }
+}
+
+// ส่วนของการเลือกภาพ
+class ImagePickerWidget extends StatelessWidget {
+  final File? selectedImage;
+  final VoidCallback onPickImage;
+
+  const ImagePickerWidget({
+    Key? key,
+    this.selectedImage,
+    required this.onPickImage,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPickImage,
+      child: Container(
+        height: 150,
+        width: 150,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.black),
+          color: Colors.white.withOpacity(0.8),
+        ),
+        child: selectedImage == null
+            ? const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Icon(Icons.add, size: 30), Text('เพิ่มรูปภาพ')],
+              )
+            : Image.file(selectedImage!, fit: BoxFit.cover),
       ),
     );
   }
