@@ -323,7 +323,7 @@ class _HomeViewState extends State<HomeView> {
                   padding: const EdgeInsets.all(12.0),
                   child: Container(
                     width: screenWidth,
-                    height: screenHeight * 0.22,
+                    height: screenHeight * 0.18,
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(

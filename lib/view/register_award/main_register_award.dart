@@ -1,9 +1,8 @@
 import 'dart:io';
-
-import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:stroke_text/stroke_text.dart';
+import 'package:buffalo_thai/utils/screen_utils.dart';
+import 'package:buffalo_thai/view/farm_owner/register_buffalo.dart';
+import 'package:flutter/material.dart';
 
 class MainRegisterAward extends StatefulWidget {
   const MainRegisterAward({super.key});
@@ -13,6 +12,24 @@ class MainRegisterAward extends StatefulWidget {
 }
 
 class _MainRegisterAwardState extends State<MainRegisterAward> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _awardController = TextEditingController();
+  final TextEditingController _rankController = TextEditingController();
+  final TextEditingController _generationController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
+  final TextEditingController _awardNameController = TextEditingController();
+  File? _selectedImage;
+
+  Future<void> _pickImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _selectedImage = File(pickedImage.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -28,43 +45,170 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
         child: SingleChildScrollView(
           child: SizedBox(
             height: screenHeight,
-            child: const Column(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(height: 30),
-                BackButtonRow(),
-                TitleText(),
-                SizedBox(height: 20),
-                AwardTextFieldRow(
-                  label1: 'รางวัล',
-                  label2: 'อันดับ',
-                  width1: 80,
-                  width2: 80,
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Card(
+                    color: Colors.white.withOpacity(0.8),
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    elevation: 8,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 30),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Icon(Icons.arrow_back),
+                                  ),
+                                ),
+                                const Expanded(
+                                  child: Text(
+                                    'ลงทะเบียนประกวด',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: CustomTextFormField(
+                                    controller: _awardController,
+                                    labelText: 'รางวัล',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกข้อมูล';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    controller: _rankController,
+                                    labelText: 'อันดับ',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกข้อมูล';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    controller: _generationController,
+                                    labelText: 'ประเภท/รุ่น',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกข้อมูล';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: CustomTextFormField(
+                                    controller: _genderController,
+                                    labelText: 'เพศ',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกข้อมูล';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    controller: _awardNameController,
+                                    labelText: 'งานประกวด',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกข้อมูล';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: ImagePickerWidget(
+                                    selectedImage: _selectedImage,
+                                    onPickImage: _pickImage,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Container(
+                              height: 50,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Center(
+                                child: TextButton(
+                                  onPressed: () {},
+                                  child: const Text(
+                                    'ถัดไป',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-                SizedBox(height: 40),
-                AwardTextFieldRow(
-                  label1: 'ประเภท/รุ่น',
-                  label2: 'เพศ',
-                  width1: 80,
-                  width2: 80,
-                ),
-                SizedBox(height: 40),
-                AwardTextFieldRow(
-                  label1: 'ความสูง',
-                  label2: '',
-                  width1: 80,
-                  width2: 0,
-                ),
-                SizedBox(height: 40),
-                AwardTextFieldRow(
-                  label1: 'งานประกวด',
-                  label2: '',
-                  width1: 180,
-                  width2: 0,
-                ),
-                SizedBox(height: 20),
-                ImageUploader(),
-                SizedBox(height: 20),
-                SubmitButton(),
               ],
             ),
           ),
@@ -74,171 +218,6 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
   }
 }
 
-class BackButtonRow extends StatelessWidget {
-  const BackButtonRow({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const SizedBox(width: 20),
-        InkWell(
-          onTap: () => Navigator.pop(context),
-          child: const Icon(Icons.arrow_back, size: 30),
-        ),
-      ],
-    );
-  }
-}
-
-class TitleText extends StatelessWidget {
-  const TitleText({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: StrokeText(
-        text: "ลงทะเบียนรางวัลประกวด",
-        textStyle: TextStyle(
-          fontSize: ScreenUtils.calculateFontSize(context, 24),
-          color: Colors.red,
-        ),
-        strokeColor: Colors.white,
-        strokeWidth: 2,
-      ),
-    );
-  }
-}
-
-class AwardTextFieldRow extends StatelessWidget {
-  final String label1;
-  final String label2;
-  final double width1;
-  final double width2;
-
-  const AwardTextFieldRow({
-    super.key,
-    required this.label1,
-    required this.label2,
-    required this.width1,
-    required this.width2,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          label1,
-          style: TextStyle(
-            color: Colors.red,
-            fontSize: ScreenUtils.calculateFontSize(context, 16),
-          ),
-        ),
-        const SizedBox(width: 10),
-        SizedBox(
-          width: width1,
-          height: 30,
-          child: TextFormField(
-            style: TextStyle(
-              fontSize: ScreenUtils.calculateFontSize(context, 10),
-            ),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.yellow,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-          ),
-        ),
-        if (label2.isNotEmpty) ...[
-          const SizedBox(width: 20),
-          Text(
-            label2,
-            style: TextStyle(
-              color: Colors.red,
-              fontSize: ScreenUtils.calculateFontSize(context, 16),
-            ),
-          ),
-          const SizedBox(width: 10),
-          SizedBox(
-            width: width2,
-            height: 30,
-            child: TextFormField(
-              style: TextStyle(
-                fontSize: ScreenUtils.calculateFontSize(context, 10),
-              ),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.yellow,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-}
-
-class ImageUploader extends StatefulWidget {
-  const ImageUploader({super.key});
-
-  @override
-  State<ImageUploader> createState() => _ImageUploaderState();
-}
-
-class _ImageUploaderState extends State<ImageUploader> {
-  File? _selectedImage;
-
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _selectedImage = File(pickedFile.path);
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 150,
-      height: 150,
-      child: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Center(
-          child: GestureDetector(
-            onTap: _pickImage,
-            child: Container(
-              height: 130,
-              width: 130,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.black),
-                  color: Colors.white),
-              child: _selectedImage == null
-                  ? const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add, size: 30),
-                        Text('เพิ่มรูปภาพ')
-                      ],
-                    )
-                  : Image.file(_selectedImage!, fit: BoxFit.cover),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class SubmitButton extends StatelessWidget {
   const SubmitButton({super.key});
@@ -253,6 +232,39 @@ class SubmitButton extends StatelessWidget {
       child: const Text(
         'ตกลง >>>',
         style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+}
+
+class ImagePickerWidget extends StatelessWidget {
+  final File? selectedImage;
+  final VoidCallback onPickImage;
+
+  const ImagePickerWidget({
+    super.key,
+    this.selectedImage,
+    required this.onPickImage,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPickImage,
+      child: Container(
+        height: 150,
+        width: 150,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.black),
+          color: Colors.white.withOpacity(0.8),
+        ),
+        child: selectedImage == null
+            ? const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Icon(Icons.add, size: 30), Text('เพิ่มรูปภาพ')],
+              )
+            : Image.file(selectedImage!, fit: BoxFit.cover),
       ),
     );
   }

@@ -13,6 +13,7 @@ class Buffalo extends StatefulWidget {
 
 class _BuffaloState extends State<Buffalo> {
   int _selectedIndex = 0;
+  
 
   static const List<Widget> _widgetOptions = <Widget>[
     MainBuffaloView(),

@@ -1,3 +1,4 @@
+import 'package:buffalo_thai/model/buffalo_image_model.dart';
 import 'package:buffalo_thai/model/user_model.dart';
 import 'package:buffalo_thai/providers/selected_farm_owner.dart';
 import 'package:buffalo_thai/services/user_services.dart';
@@ -83,51 +84,6 @@ class _DetailFarmViewState extends State<DetailFarmView> {
               strokeColor: Colors.white,
               strokeWidth: 6,
             ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  StrokeText(
-                    text: 'สมาชิก (${farmerNames.length})',
-                    textStyle: TextStyle(
-                      fontSize: ScreenUtils.calculateFontSize(context, 14),
-                      color: Colors.white,
-                    ),
-                    strokeColor: Colors.black,
-                    strokeWidth: 3,
-                  ),
-                  const Spacer(),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RegisterFarmOwner(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      height: 50,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'เพิ่มโปรไฟล์',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
             const SizedBox(height: 10),
             Expanded(
               flex: 2,
@@ -146,115 +102,129 @@ class _DetailFarmViewState extends State<DetailFarmView> {
 
                     final users = snapshot.data!;
 
-                    return GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 0.75,
-                      ),
-                      itemCount: users.length,
-                      itemBuilder: (context, index) {
-                        final user = users[index];
-                        final imageUrl = user.userImages.isNotEmpty
-                            ? user.userImages[0].imageUrl
-                            : 'https://placeholder.com/150';
-                        return InkWell(
-                          onTap: () {
-                            Provider.of<SelectedFarmOwner>(context,
-                                    listen: false)
-                                .setSelectedFarmOwner(
-                                    user.firstName,
-                                    user.lastName,
-                                    user.position,
-                                    user.phoneNumber ?? '',
-                                    user.lineId ?? '');
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MainFarmOwner(),
-                              ),
-                            );
-                          },
-                          child: Column(
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              AspectRatio(
-                                aspectRatio: 1,
-                                child: Container(
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Image.network(
-                                    imageUrl,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 5),
                               StrokeText(
-                                text: user.firstName,
+                                text: 'สมาชิก (${users.length})',
                                 textStyle: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
-                                      context, 12),
+                                      context, 14),
                                   color: Colors.white,
                                 ),
                                 strokeColor: Colors.black,
                                 strokeWidth: 3,
                               ),
+                              const Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => RegisterFarmOwner(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'เพิ่มโปรไฟล์',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
-                        );
-                      },
+                        ),
+                        Expanded(
+                          child: GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: 0.75,
+                            ),
+                            itemCount: users.length,
+                            itemBuilder: (context, index) {
+                              final user = users[index];
+                              final imageUrl = user.userImages.isNotEmpty
+                                  ? user.userImages[0].imageUrl
+                                  : 'https://placeholder.com/150';
+                              return InkWell(
+                                onTap: () {
+                                  Provider.of<SelectedFarmOwner>(context,
+                                          listen: false)
+                                      .setSelectedFarmOwner(
+                                    user.userImages[0].imageUrl,
+                                    user.firstName,
+                                    user.lastName,
+                                    user.position,
+                                    user.phoneNumber ?? '',
+                                    user.lineId ?? '',
+                                  );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MainFarmOwner(),
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        clipBehavior: Clip.antiAlias,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: Image.network(
+                                          imageUrl,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    StrokeText(
+                                      text: user.firstName,
+                                      textStyle: TextStyle(
+                                        fontSize: ScreenUtils.calculateFontSize(
+                                            context, 12),
+                                        color: Colors.white,
+                                      ),
+                                      strokeColor: Colors.black,
+                                      strokeWidth: 3,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     );
                   },
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  StrokeText(
-                    text: 'ควาย',
-                    textStyle: TextStyle(
-                      fontSize: ScreenUtils.calculateFontSize(context, 14),
-                      color: Colors.white,
-                    ),
-                    strokeColor: Colors.black,
-                    strokeWidth: 3,
-                  ),
-                  const Spacer(),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RegisterBuffalo(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      height: 50,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'เพิ่มควาย',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            SizedBox(
+              height: 10,
             ),
-            const SizedBox(height: 10),
             Expanded(
               flex: 3,
               child: Padding(
@@ -271,58 +241,128 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                     }
 
                     final buffaloes = snapshot.data!;
-                    return GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 0.75,
-                      ),
-                      itemCount: buffaloes.length,
-                      itemBuilder: (context, index) {
-                        final buffalo = buffaloes[index];
-                        return InkWell(
-                          onTap: () {
-                            Provider.of<SelectedBuffalo>(context, listen: false)
-                                .setSelectedBuffalo(buffalo);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Buffalo(),
-                              ),
-                            );
-                          },
-                          child: Column(
+
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              AspectRatio(
-                                aspectRatio: 1,
-                                child: Container(
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Image.asset(
-                                    'assets/images/banner-1.jpg',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 5),
                               StrokeText(
-                                text: buffalo.name,
+                                text: 'ควาย (${buffaloes.length})',
                                 textStyle: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
-                                      context, 12),
+                                      context, 14),
                                   color: Colors.white,
                                 ),
                                 strokeColor: Colors.black,
                                 strokeWidth: 3,
                               ),
+                              const Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => RegisterBuffalo(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'เพิ่มควาย',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
-                        );
-                      },
+                        ),
+                        const SizedBox(height: 10),
+                        Expanded(
+                          child: GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: 0.75,
+                            ),
+                            itemCount: buffaloes.length,
+                            itemBuilder: (context, index) {
+                              final buffalo = buffaloes[index];
+                              final profileImage =
+                                  buffalo.buffaloImages.firstWhere(
+                                (image) => image.isProfileImage,
+                                orElse: () => BuffaloImageModel(
+                                  imageId: 0,
+                                  imagePath: 'https://placeholder.com/150',
+                                  isProfileImage: false,
+                                  createdAt: DateTime.now(),
+                                  updatedAt: DateTime.now(),
+                                  buffaloId: buffalo.id,
+                                ),
+                              );
+
+                              final imageUrl = profileImage != null
+                                  ? profileImage.imagePath
+                                  : 'https://placeholder.com/150';
+
+                              return InkWell(
+                                onTap: () {
+                                  Provider.of<SelectedBuffalo>(context,
+                                          listen: false)
+                                      .setSelectedBuffalo(buffalo);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Buffalo(),
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        clipBehavior: Clip.antiAlias,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: Image.network(
+                                          imageUrl,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    StrokeText(
+                                      text: buffalo.name,
+                                      textStyle: TextStyle(
+                                        fontSize: ScreenUtils.calculateFontSize(
+                                            context, 12),
+                                        color: Colors.white,
+                                      ),
+                                      strokeColor: Colors.black,
+                                      strokeWidth: 3,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     );
                   },
                 ),

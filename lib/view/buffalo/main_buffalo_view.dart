@@ -1,9 +1,5 @@
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/awards_announcement/main_awards_view.dart';
-import 'package:buffalo_thai/view/buffalo/photo_buffalo_view.dart';
-import 'package:buffalo_thai/view/buffalo/video_buffalo_view.dart';
-import 'package:buffalo_thai/view/home/main_home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stroke_text/stroke_text.dart';
@@ -155,7 +151,7 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
             left: 20,
             child: Container(
               width: screenWidth * 0.5,
-              height: screenHeight * 0.4,
+              height: screenHeight * 0.29,
               clipBehavior: Clip.antiAlias,
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(15)),

@@ -4,9 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/services/register_farm_ower_services.dart';
-import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
 
 class RegisterFarmOwner extends StatefulWidget {
   const RegisterFarmOwner({super.key});
@@ -61,7 +59,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
           ),
         ),
         child: SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             height: screenHeight,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,7 +68,8 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                   padding: const EdgeInsets.all(16.0),
                   child: Card(
                     color: Colors.white.withOpacity(0.8),
-                    margin: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 20),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
@@ -93,7 +92,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                     onTap: () {
                                       Navigator.pop(context);
                                     },
-                                    child: Icon(Icons.arrow_back),
+                                    child: const Icon(Icons.arrow_back),
                                   ),
                                 ),
                                 Expanded(
@@ -169,7 +168,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                             const SizedBox(height: 10),
                             Row(
                               children: [
-                                Expanded(
+                                Flexible(
                                   child: CustomTextFormField(
                                     controller: _nicknameController,
                                     labelText: 'ชื่อเล่น',
@@ -181,8 +180,12 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                     },
                                   ),
                                 ),
-                                const SizedBox(width: 10),
-                                Expanded(
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Flexible(
                                   child: StatusDropdown(
                                     selectedStatus: _selectedStatus,
                                     statusOptions: _statusOptions,
@@ -263,7 +266,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                             builder: (BuildContext context) {
                                               return AlertDialog(
                                                 title: Text('Error'),
-                                                content: Text(
+                                                content: const Text(
                                                     'Failed to register. Please try again.'),
                                                 actions: <Widget>[
                                                   TextButton(
@@ -284,12 +287,13 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
-                                              title: Text('Image Required'),
-                                              content: Text(
+                                              title:
+                                                  const Text('Image Required'),
+                                              content: const Text(
                                                   'Please select an image.'),
                                               actions: <Widget>[
                                                 TextButton(
-                                                  child: Text('OK'),
+                                                  child: const Text('OK'),
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },

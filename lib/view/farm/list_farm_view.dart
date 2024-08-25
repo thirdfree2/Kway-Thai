@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/model/buffalo_model.dart';
 import 'package:buffalo_thai/model/farm_model.dart';
 import 'package:buffalo_thai/services/buffalo_services.dart';
@@ -162,39 +163,54 @@ class _ListFarmViewState extends State<ListFarmView> {
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            SizedBox(height: 30),
+            Column(
               children: [
-                CustomButton(
-                    label: 'ภาคเหนือ',
-                    onPressed: () {
-                      loadRegionData(context, fetchFarmsNorth);
-                    }),
-                CustomButton(
-                    label: 'ภาคอีสาน',
-                    onPressed: () {
-                      loadRegionData(context, fetchFarmsNortheast);
-                    }),
-                CustomButton(
-                    label: 'ภาคตะวันออก',
-                    onPressed: () {
-                      loadRegionData(context, fetchFarmsEast);
-                    }),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: CustomButton(
+                          label: 'ภาคเหนือ',
+                          onPressed: () {
+                            loadRegionData(context, fetchFarmsNorth);
+                          }),
+                    ),
+                    Flexible(
+                      child: CustomButton(
+                          label: 'ภาคอีสาน',
+                          onPressed: () {
+                            loadRegionData(context, fetchFarmsNortheast);
+                          }),
+                    ),
+                    Flexible(
+                      child: CustomButton(
+                          label: 'ภาคตะวันออก',
+                          onPressed: () {
+                            loadRegionData(context, fetchFarmsEast);
+                          }),
+                    ),
+                  ],
+                ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomButton(
-                    label: 'ภาคตะวันตก',
-                    onPressed: () {
-                      loadRegionData(context, fetchFarmsWest);
-                    }),
-                CustomButton(
-                    label: 'ภาคใต้',
-                    onPressed: () {
-                      loadRegionData(context, fetchFarmsSouth);
-                    }),
+                Flexible(
+                  child: CustomButton(
+                      label: 'ภาคตะวันตก',
+                      onPressed: () {
+                        loadRegionData(context, fetchFarmsWest);
+                      }),
+                ),
+                Flexible(
+                  child: CustomButton(
+                      label: 'ภาคใต้',
+                      onPressed: () {
+                        loadRegionData(context, fetchFarmsSouth);
+                      }),
+                ),
               ],
             ),
           ],
@@ -234,9 +250,14 @@ class CustomButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         ),
         onPressed: onPressed,
-        child: Text(
-          label,
-          style: const TextStyle(color: Colors.white),
+        child: Center(
+          child: AutoSizeText(
+            label,
+            maxLines: 1,
+            minFontSize: 10,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(color: Colors.white),
+          ),
         ),
       ),
     );
