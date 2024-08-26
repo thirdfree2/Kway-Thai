@@ -48,8 +48,8 @@ class _HomeViewState extends State<HomeView> {
                               Text(
                                 'สวัสดี',
                                 style: TextStyle(
-                                  fontSize:
-                                      ScreenUtils.calculateFontSize(context, 19),
+                                  fontSize: ScreenUtils.calculateFontSize(
+                                      context, 19),
                                 ),
                               ),
                               StrokeText(
@@ -81,7 +81,7 @@ class _HomeViewState extends State<HomeView> {
                             child: TextFormField(
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: Colors.grey,
+                                fillColor: Colors.white.withOpacity(0.8),
                                 prefixIcon: const Icon(Icons.search),
                                 hintText: 'ค้นหา',
                                 border: OutlineInputBorder(
@@ -106,24 +106,30 @@ class _HomeViewState extends State<HomeView> {
                                     ),
                                   ],
                                 ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    QrImageView(
-                                      data:
-                                          'https://line.me/r/@kwaythai', // Replace with your Line ID URL
-                                      version: QrVersions.auto,
-                                      size: screenWidth * 0.2,
+                                child: Card(
+                                  color: Colors.white.withOpacity(0.5),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        QrImageView(
+                                          data:
+                                              'https://line.me/r/@kwaythai', // Replace with your Line ID URL
+                                          version: QrVersions.auto,
+                                          size: screenWidth * 0.2,
+                                        ),
+                                        const SizedBox(height: 2.0),
+                                        Text(
+                                          '@kwaythai',
+                                          style: TextStyle(
+                                            fontSize: ScreenUtils.calculateFontSize(
+                                                context, 10),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(height: 2.0),
-                                    Text(
-                                      '@kwaythai',
-                                      style: TextStyle(
-                                        fontSize: ScreenUtils.calculateFontSize(
-                                            context, 10),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -133,208 +139,265 @@ class _HomeViewState extends State<HomeView> {
                     ],
                   ),
                 ),
-                SizedBox(height: 50,),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Container(
-                    width: screenWidth,
-                    height: 150,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            15) // Adjust the radius as needed
-                        ),
-                    child: Image.asset(
-                      'assets/images/banner-5.jpg',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                const SizedBox(
+                  height: 30,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: InkWell(
-                        onTap: () => Navigator.push(context, MaterialPageRoute( builder: (context) => FarmView())),
-                        child: Column(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 243, 243, 243),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              height: 80,
-                              width: 80,
-                              child: const Center(
-                                child: Icon(
-                                  Icons.pets_outlined,
-                                  size: 40,
-                                  color: Colors.grey,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Card(
+                    color: Colors.white.withOpacity(0.8),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Container(
+                            width: screenWidth,
+                            height: 150,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    15) // Adjust the radius as needed
                                 ),
-                              ),
+                            child: Image.asset(
+                              'assets/images/banner-5.jpg',
+                              fit: BoxFit.cover,
                             ),
-                            StrokeText(
-                              text: "คอก/ฟาร์ม",
-                              textStyle: TextStyle(
-                                  fontSize:
-                                      ScreenUtils.calculateFontSize(context, 13),
-                                  color: Colors.white),
-                              strokeColor: Colors.black,
-                              strokeWidth: 3,
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: InkWell(
-                        onTap: () => Navigator.push(context, MaterialPageRoute( builder: (context) => MainHistoryBuffaloView())),
-                        child: Column(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 243, 243, 243),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              
-                              height: 80,
-                              width: 80,
-                              child: const Center(
-                                child: Icon(
-                                  Icons.menu_book_sharp,
-                                  size: 40,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                            
-                            StrokeText(
-                              text: "ประวัติ",
-                              textStyle: TextStyle(
-                                  fontSize:
-                                      ScreenUtils.calculateFontSize(context, 13),
-                                  color: Colors.white),
-                              strokeColor: Colors.black,
-                              strokeWidth: 3,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: InkWell(
-                        onTap: () => Navigator.push(context, MaterialPageRoute( builder: (context) => MainHeredityBuffaloView())),
-                        child: Column(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 243, 243, 243),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              height: 80,
-                              width: 80,
-                              child: const Center(
-                                child: Icon(
-                                  Icons.share,
-                                  size: 40,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                            StrokeText(
-                              text: "พันธุกรรม",
-                              textStyle: TextStyle(
-                                  fontSize:
-                                      ScreenUtils.calculateFontSize(context, 13),
-                                  color: Colors.white),
-                              strokeColor: Colors.black,
-                              strokeWidth: 3,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Column(
-                        children: [
-                          InkWell(
-                            onTap: () => Navigator.push(context, MaterialPageRoute( builder: (context) => MainRegisterAward())),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Color.fromARGB(255, 255, 227, 225),
-                                    Color.fromARGB(255, 255, 98, 86),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: InkWell(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => FarmView())),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromARGB(
+                                            255, 243, 243, 243),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      height: 80,
+                                      width: 80,
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.pets_outlined,
+                                          size: 40,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5,),
+                                    StrokeText(
+                                      text: "คอก/ฟาร์ม",
+                                      textStyle: TextStyle(
+                                          fontSize:
+                                              ScreenUtils.calculateFontSize(
+                                                  context, 14),
+                                          color: Colors.black),
+                                      strokeColor: Colors.white,
+                                      strokeWidth: 3,
+                                    ),
                                   ],
                                 ),
-                                borderRadius: BorderRadius.circular(20),
                               ),
-                              height: 80,
-                              width: 80,
-                              child: const Center(
-                                child: Icon(
-                                  Icons.person_outlined,
-                                  size: 50,
-                                  color: Colors.red,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: InkWell(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MainHistoryBuffaloView())),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromARGB(
+                                            255, 243, 243, 243),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      height: 80,
+                                      width: 80,
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.menu_book_sharp,
+                                          size: 40,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5,),
+                                    StrokeText(
+                                      text: "ประวัติ",
+                                      textStyle: TextStyle(
+                                          fontSize:
+                                              ScreenUtils.calculateFontSize(
+                                                  context, 14),
+                                          color: Colors.black),
+                                      strokeColor: Colors.white,
+                                      strokeWidth: 3,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          ),
-                          StrokeText(
-                            text: "ลงทะเบียน",
-                            textStyle: TextStyle(
-                                fontSize:
-                                    ScreenUtils.calculateFontSize(context, 13),
-                                color: Colors.white),
-                            strokeColor: Colors.black,
-                            strokeWidth: 3,
-                          ),
-                        ],
-                      ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: InkWell(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MainHeredityBuffaloView())),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromARGB(
+                                            255, 243, 243, 243),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      height: 80,
+                                      width: 80,
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.share,
+                                          size: 40,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    StrokeText(
+                                      text: "พันธุกรรม",
+                                      textStyle: TextStyle(
+                                          fontSize:
+                                              ScreenUtils.calculateFontSize(
+                                                  context, 14),
+                                          color: Colors.black),
+                                      strokeColor: Colors.white,
+                                      strokeWidth: 3,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                MainRegisterAward())),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        gradient: const LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: [
+                                            Color.fromARGB(255, 255, 227, 225),
+                                            Color.fromARGB(255, 255, 98, 86),
+                                          ],
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      height: 80,
+                                      width: 80,
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.person_outlined,
+                                          size: 50,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                      height: 5,
+                                    ),
+                                  StrokeText(
+                                    text: "ลงทะเบียน",
+                                    textStyle: TextStyle(
+                                        fontSize: ScreenUtils.calculateFontSize(
+                                            context, 14),
+                                        color: Colors.black),
+                                    strokeColor: Colors.white,
+                                    strokeWidth: 3,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    StrokeText(
-                      text: "ข่าวประชาสัมพันธ์",
-                      textStyle: TextStyle(
-                          fontSize: ScreenUtils.calculateFontSize(context, 20),
-                          color: Colors.red),
-                      strokeColor: Colors.white,
-                      strokeWidth: 3,
-                    ),
-                  ],
-                ),
                 Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Container(
-                    width: screenWidth,
-                    height: screenHeight * 0.18,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            15) // Adjust the radius as needed
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Card(
+                    color: Colors.white.withOpacity(0.8),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            StrokeText(
+                              text: "ข่าวประชาสัมพันธ์",
+                              textStyle: TextStyle(
+                                  fontSize: ScreenUtils.calculateFontSize(
+                                      context, 20),
+                                  color: Colors.red),
+                              strokeColor: Colors.white,
+                              strokeWidth: 3,
+                            ),
+                          ],
                         ),
-                    child: Image.asset(
-                      'assets/images/banner-4.jpg',
-                      fit: BoxFit.cover,
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Container(
+                            width: screenWidth,
+                            height: screenHeight * 0.18,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    15) // Adjust the radius as needed
+                                ),
+                            child: Image.asset(
+                              'assets/images/banner-4.jpg',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
+                )
               ],
             ),
           ),

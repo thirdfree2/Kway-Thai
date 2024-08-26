@@ -33,12 +33,26 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(
-                  height: 30,
+                  height: 25,
+                ),
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: const Icon(
+                        Icons.arrow_back,
+                        size: 30,
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: screenWidth / 5),
                   child: Container(
-                    height: screenHeight * 0.8, // Adjusted to accommodate image
+                    height: screenHeight * 0.75, // Adjusted to accommodate image
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.5),

@@ -41,7 +41,7 @@ class _ListFarmViewState extends State<ListFarmView> {
         ),
         child: Column(
           children: [
-            const SizedBox(height: 10),
+            const SizedBox(height: 25),
             Row(
               children: [
                 const SizedBox(width: 20),
@@ -79,7 +79,7 @@ class _ListFarmViewState extends State<ListFarmView> {
                       child: TextFormField(
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: Colors.grey,
+                          fillColor: Colors.white.withOpacity(0.8),
                           prefixIcon: const Icon(Icons.search),
                           hintText: 'ค้นหา',
                           border: OutlineInputBorder(

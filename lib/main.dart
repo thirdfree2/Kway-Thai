@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: true,

@@ -45,12 +45,11 @@ class _BuffaloState extends State<Buffalo> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.amber,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: _customIcon(Icons.home, 'หน้าแรก'),
               label: '',
-              backgroundColor: Colors.green[900]?.withOpacity(0.7)),
+              backgroundColor: Colors.green[900]),
           BottomNavigationBarItem(
               icon: _customIcon(Icons.share, 'พันธุกรรม'),
               label: '',
@@ -94,9 +93,10 @@ class _BuffaloState extends State<Buffalo> {
             color: Colors.black,
           ),
         ),
+        SizedBox(height: 5,),
         Text(
           label,
-          style: TextStyle(fontSize: 10),
+          style: TextStyle(fontSize: 10, color: Colors.white),
         ),
       ],
     );

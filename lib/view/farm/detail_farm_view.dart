@@ -60,7 +60,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
         ),
         child: Column(
           children: [
-            const SizedBox(height: 10),
+            const SizedBox(height: 30),
             Row(
               children: [
                 const SizedBox(width: 20),
@@ -222,7 +222,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Expanded(

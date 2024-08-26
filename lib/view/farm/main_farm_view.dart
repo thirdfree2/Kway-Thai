@@ -88,7 +88,7 @@ class _FarmViewState extends State<FarmView> {
                         child: TextFormField(
                           decoration: InputDecoration(
                             filled: true,
-                            fillColor: Colors.grey,
+                            fillColor: Colors.white.withOpacity(0.8),
                             prefixIcon: const Icon(Icons.search),
                             hintText: 'ค้นหา',
                             border: OutlineInputBorder(
