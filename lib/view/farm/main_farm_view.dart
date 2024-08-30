@@ -133,7 +133,7 @@ class _FarmViewState extends State<FarmView> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 FarmCard(
-                                  region: 'ภาคเหนือ',
+                                  region: 'ภาคเหนือ (${farmsNorth.length})',
                                   farms: farmsNorth.map((farm) => '${farm.farmName}').toList(),
                                   screenWidth: screenWidth,
                                   screenHeight: screenHeight,
@@ -149,7 +149,7 @@ class _FarmViewState extends State<FarmView> {
                                   },
                                 ),
                                 FarmCard(
-                                  region: 'ภาคอีสาน',
+                                  region: 'ภาคอีสาน (${farmsNortheast.length})',
                                   farms: farmsNortheast.map((farm) => '${farm.farmName}').toList(),
                                   screenWidth: screenWidth,
                                   screenHeight: screenHeight,
@@ -170,7 +170,7 @@ class _FarmViewState extends State<FarmView> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 FarmCard(
-                                  region: 'ภาคกลาง',
+                                  region: 'ภาคกลาง (${farmsCentral.length})',
                                   farms: farmsCentral.map((farm) => '${farm.farmName}').toList(),
                                   screenWidth: screenWidth,
                                   screenHeight: screenHeight,
@@ -186,7 +186,7 @@ class _FarmViewState extends State<FarmView> {
                                   },
                                 ),
                                 FarmCard(
-                                  region: 'ภาคใต้',
+                                  region: 'ภาคใต้ (${farmsSouth.length})',
                                   farms: farmsSouth.map((farm) => '${farm.farmName}').toList(),
                                   screenWidth: screenWidth,
                                   screenHeight: screenHeight,
@@ -207,7 +207,7 @@ class _FarmViewState extends State<FarmView> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 FarmCard(
-                                  region: 'ภาคตะวันตก',
+                                  region: 'ภาคตะวันตก (${farmsWest.length})',
                                   farms: farmsWest.map((farm) => '${farm.farmName}').toList(),
                                   screenWidth: screenWidth,
                                   screenHeight: screenHeight,
@@ -223,7 +223,7 @@ class _FarmViewState extends State<FarmView> {
                                   },
                                 ),
                                 FarmCard(
-                                  region: 'ภาคตะวันออก',
+                                  region: 'ภาคตะวันออก (${farmsEast.length})',
                                   farms: farmsEast.map((farm) => '${farm.farmName}').toList(),
                                   screenWidth: screenWidth,
                                   screenHeight: screenHeight,

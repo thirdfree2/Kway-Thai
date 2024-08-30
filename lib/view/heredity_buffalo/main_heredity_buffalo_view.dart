@@ -60,7 +60,7 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
               height: 40,
             ),
             StrokeText(
-              text: "พันธุกรรมควาย",
+              text: "พันธุกรรมเหล่ากอ",
               textStyle: TextStyle(
                   fontSize: ScreenUtils.calculateFontSize(context, 30),
                   color: Colors.red),

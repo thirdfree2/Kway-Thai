@@ -100,7 +100,7 @@ class _ListFarmViewState extends State<ListFarmView> {
                     color: Colors.red, borderRadius: BorderRadius.circular(20)),
                 child: Center(
                   child: Text(
-                    region,
+                    'ภาค$region (${farms.length})',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: ScreenUtils.calculateFontSize(context, 18),
@@ -142,8 +142,11 @@ class _ListFarmViewState extends State<ListFarmView> {
                                     );
                                   },
                                   child: Card(
-                                      child: Center(
-                                          child: Text(farms[index].farmName))),
+                                    child: Center(
+                                      child: Text(
+                                          '00${index + 1} ${farms[index].farmName}'),
+                                    ),
+                                  ),
                                 ),
                               ),
                             );

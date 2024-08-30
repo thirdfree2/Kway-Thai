@@ -19,6 +19,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
   late TextEditingController _positionController;
   late TextEditingController _phoneController;
   late TextEditingController _lineIdController;
+  late TextEditingController _nickNameController;
   late TextEditingController _urlImgController;
 
   @override
@@ -31,6 +32,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
     _phoneController = TextEditingController(text: farmOwner.phone);
     _lineIdController = TextEditingController(text: farmOwner.lineId);
     _urlImgController = TextEditingController(text: farmOwner.urlImg);
+    _nickNameController = TextEditingController(text: 'Test');
   }
 
   File? _selectedImage;
@@ -92,7 +94,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                       children: [
                         CustomTextFormField(
                           controller: _nameController,
-                          labelText: 'Name',
+                          labelText: 'ชื่อ',
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'กรุณากรอกข้อมูล';
@@ -103,7 +105,18 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                         const SizedBox(height: 10),
                         CustomTextFormField(
                           controller: _lastNameController,
-                          labelText: 'Last Name',
+                          labelText: 'นามสกุล',
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'กรุณากรอกข้อมูล';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        CustomTextFormField(
+                          controller: _nickNameController,
+                          labelText: 'ชื่อเล่น',
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'กรุณากรอกข้อมูล';
@@ -114,7 +127,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                         const SizedBox(height: 10),
                         CustomTextFormField(
                           controller: _positionController,
-                          labelText: 'Position',
+                          labelText: 'ตำแหน่ง',
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'กรุณากรอกข้อมูล';
@@ -125,7 +138,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                         const SizedBox(height: 10),
                         CustomTextFormField(
                           controller: _phoneController,
-                          labelText: 'Phone',
+                          labelText: 'เบอร์โทร',
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'กรุณากรอกข้อมูล';

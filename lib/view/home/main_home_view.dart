@@ -26,7 +26,7 @@ class _HomeViewState extends State<HomeView> {
         child: DecoratedBox(
           decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/images/background-5.jpg"),
+                image: AssetImage("assets/images/background-2.jpg"),
                 fit: BoxFit.cover),
           ),
           child: Container(
@@ -140,7 +140,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),

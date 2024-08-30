@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/model/buffalo_image_model.dart';
 import 'package:buffalo_thai/model/user_model.dart';
 import 'package:buffalo_thai/providers/selected_farm_owner.dart';
@@ -131,14 +132,14 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                 },
                                 child: Container(
                                   height: 50,
-                                  width: 100,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                     color: Colors.red,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: const Center(
                                     child: Text(
-                                      'เพิ่มโปรไฟล์',
+                                      'ลงทะเบียนสมาชิก',
                                       style: TextStyle(
                                         color: Colors.white,
                                       ),
@@ -271,14 +272,15 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                 },
                                 child: Container(
                                   height: 50,
-                                  width: 100,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                     color: Colors.red,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: const Center(
-                                    child: Text(
-                                      'เพิ่มควาย',
+                                    child: AutoSizeText(
+                                      'ลงทะเบียนควาย',
+                                      maxLines: 1,
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),

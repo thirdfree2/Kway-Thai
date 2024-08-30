@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/utils/cache_manager.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
+import 'package:buffalo_thai/view/buffalo/upload_image_buffalo_view.dart';
 import 'package:buffalo_thai/view/home/main_home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -59,38 +61,73 @@ class _PhotoBuffaloViewState extends State<PhotoBuffaloView> {
                         Icons.arrow_back,
                         size: 30,
                       ),
-                    )
+                    ),
                   ],
                 ),
-                const SizedBox(height: 10,),
-                Card(
-                  color: Colors.white.withOpacity(0.8),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Center(
-                        child: StrokeText(
-                          text: buffalo.name, // แสดงชื่อของ buffalo
-                          textStyle: TextStyle(
-                            fontSize:
-                                ScreenUtils.calculateFontSize(context, 24),
-                            color: Colors.black,
-                          ),
-                          strokeColor: Colors.white,
-                          strokeWidth: 2,
+                const SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(
+                      child: StrokeText(
+                        text: buffalo.name, // แสดงชื่อของ buffalo
+                        textStyle: TextStyle(
+                          fontSize: ScreenUtils.calculateFontSize(context, 24),
+                          color: Colors.black,
                         ),
+                        strokeColor: Colors.white,
+                        strokeWidth: 2,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: GalleryImage(
-                          numOfShowImages: numOfShowImages,
-                          imageUrls:
-                              imageUrls, // ใช้ list ของ URLs ที่ได้จาก buffaloImages
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: GalleryImage(
+                        numOfShowImages: numOfShowImages,
+                        imageUrls:
+                            imageUrls, // ใช้ list ของ URLs ที่ได้จาก buffaloImages
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UploadImageBuffaloView(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'เพิ่มรูปภาพ',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
+                )
               ],
             ),
           ),

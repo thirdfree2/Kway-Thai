@@ -108,7 +108,20 @@ class _MainFarmOwnerState extends State<MainFarmOwner> {
                                   height: 10,
                                 ),
                                 StrokeText(
-                                  text: farmerName,
+                                  text: 'ชื่อเล่น : $farmerName',
+                                  textStyle: TextStyle(
+                                    fontSize: ScreenUtils.calculateFontSize(
+                                        context, 34),
+                                    color: Colors.black,
+                                  ),
+                                  strokeColor: Colors.white,
+                                  strokeWidth: 3,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                 StrokeText(
+                                  text: 'นามสกุล : $lastName',
                                   textStyle: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                         context, 22),

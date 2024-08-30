@@ -15,6 +15,7 @@ class RegisterBuffalo extends StatefulWidget {
 
 class _RegisterBuffaloState extends State<RegisterBuffalo> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _controller = TextEditingController();
   final TextEditingController _farmNameController = TextEditingController();
   final TextEditingController _farmIdController = TextEditingController();
   final TextEditingController _nicknameController = TextEditingController();
@@ -147,7 +148,7 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                           Expanded(
                             child: CustomTextFormField(
                               controller: _nicknameController,
-                              labelText: 'ชื่อเล่น',
+                              labelText: 'ชื่อควาย',
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'กรุณากรอกข้อมูล';
@@ -295,6 +296,36 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                         ],
                       ),
                       const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CustomTextFormField(
+                              controller: _greatGrandmotherNameController,
+                              labelText: 'ย่าทวด',
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณากรอกข้อมูล';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: CustomTextFormField(
+                              controller: _greatGrandmotherNameController,
+                              labelText: 'ยายทวด',
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณากรอกข้อมูล';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
                       CustomTextFormField(
                         controller: _currentFarmController,
                         labelText: 'สังกัดปัจจุบัน',
@@ -316,14 +347,61 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                         child: Center(
                           child: TextButton(
                             onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                await registerBuffaloOwner(
-                                  farmId: _farmIdController.text,
-                                  name: _nicknameController.text,
-                                  birthMethod: _birthMethodController.text,
-                                  birthDate: _birthDateController.text,
-                                );
-                              }
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('ลงทะเบียนสำเร็จ'),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        const Text('โปรดกรอกรหัสของฟาร์ม'),
+                                        TextField(
+                                          controller: _controller,
+                                          keyboardType: TextInputType.number,
+                                          decoration: const InputDecoration(
+                                            hintText: 'กรอกรหัส 6 หลัก',
+                                          ),
+                                          maxLength: 6, // จำกัดให้กรอกได้ 6 ตัว
+                                        ),
+                                      ],
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('ตกลง'),
+                                        onPressed: () {
+                                          String farmCode = _controller.text;
+                                          if (farmCode.length == 6) {
+                                            Navigator.of(context)
+                                                .pop(); // ปิด dialog
+                                            // คุณสามารถใช้ farmCode ทำงานเพิ่มเติมที่นี่
+                                            print('รหัสฟาร์มคือ: $farmCode');
+                                          } else {
+                                            // แจ้งเตือนหากกรอกไม่ครบ 6 หลัก
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    'กรุณากรอกรหัสฟาร์มให้ครบ 6 หลัก'),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+
+                              // Uncomment the registration code and replace the userId above with the actual one
+                              // if (_formKey.currentState!.validate()) {
+                              //   await registerBuffaloOwner(
+                              //     farmId: _farmIdController.text,
+                              //     name: _nicknameController.text,
+                              //     birthMethod: _birthMethodController.text,
+                              //     birthDate: _birthDateController.text,
+                              //   );
+                              // }
                             },
                             child: const Text(
                               'ลงทะเบียน',
@@ -400,7 +478,7 @@ class ImagePickerWidget extends StatelessWidget {
         child: selectedImage == null
             ? const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Icon(Icons.add, size: 30), Text('เพิ่มรูปภาพ')],
+                children: [Icon(Icons.add, size: 30), Text('รูปโปรไฟล์')],
               )
             : Image.file(selectedImage!, fit: BoxFit.cover),
       ),

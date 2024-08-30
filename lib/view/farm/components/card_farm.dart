@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class FarmCard extends StatelessWidget {
@@ -37,8 +38,10 @@ class FarmCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Center(
-                    child: Text(
+                    child: AutoSizeText(
                       region,
+                      maxLines: 1,
+                      minFontSize: 10,
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),

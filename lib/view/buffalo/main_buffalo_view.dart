@@ -1,3 +1,4 @@
+import 'package:buffalo_thai/model/buffalo_image_model.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,22 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
     final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+
+    final profileImage = buffalo?.buffaloImages.firstWhere(
+      (image) => image.isProfileImage,
+      orElse: () => BuffaloImageModel(
+        imageId: 0,
+        imagePath: 'https://placeholder.com/150',
+        isProfileImage: false,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        buffaloId: buffalo.id,
+      ),
+    );
+
+    final imageUrl = profileImage != null
+        ? profileImage.imagePath
+        : 'https://placeholder.com/150';
 
     return Scaffold(
       body: Stack(
@@ -52,7 +69,8 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                 Padding(
                   padding: EdgeInsets.only(left: screenWidth / 5),
                   child: Container(
-                    height: screenHeight * 0.75, // Adjusted to accommodate image
+                    height:
+                        screenHeight * 0.75, // Adjusted to accommodate image
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.5),
@@ -99,9 +117,9 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                               Colors.green[800]),
                           _buildInfoRow('โดยวิธีการ ',
                               buffalo?.birthMethod ?? '', Colors.red[800]),
-                          _buildInfoRow('พ่อพันธุ์ ',
+                          _buildInfoRow('พ่อพันธุ์ คือ',
                               buffalo?.father?.name ?? '', Colors.red[800]),
-                          _buildInfoRow('กับ แม่พันธุ์ ',
+                          _buildInfoRow('แม่พันธุ์ คือ ',
                               buffalo?.mother?.name ?? '', Colors.red[800]),
                           _buildInfoRow('สายเลือดทางปู่คือ ',
                               'ทองสุข(เปี่ยวใหญ่)', Colors.pink[800]),
@@ -112,7 +130,13 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                           _buildInfoRow('สายเลือดทางยายคือ ', 'แม่บุญลู่',
                               Colors.pink[800]),
                           const Text(
-                            'สืบสายเลือดจากทางทวด',
+                            'สืบสายเลือดปู่ทวดคือ',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          _buildInfoRow('คือ ', 'เจ้าหมื่นยักษ์ (ทำแทนปิด)',
+                              Colors.pink[800]),
+                          const Text(
+                            'สืบสายเลือดตาทวดคือ',
                             style: TextStyle(fontSize: 14),
                           ),
                           _buildInfoRow('คือ ', 'เจ้าหมื่นยักษ์ (ทำแทนปิด)',
@@ -169,8 +193,8 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
               clipBehavior: Clip.antiAlias,
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(15)),
-              child: Image.asset(
-                'assets/images/banner-5.jpg',
+              child: Image.network(
+                imageUrl,
                 fit: BoxFit.cover,
               ),
             ),

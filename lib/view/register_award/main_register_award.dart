@@ -80,7 +80,7 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                 ),
                                 const Expanded(
                                   child: Text(
-                                    'ลงทะเบียนประกวด',
+                                    'รางวัลงานประกวด',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 24,
@@ -98,7 +98,25 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                   flex: 2,
                                   child: CustomTextFormField(
                                     controller: _awardController,
-                                    labelText: 'รางวัล',
+                                    labelText: 'อันดับ',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกข้อมูล';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: CustomTextFormField(
+                                    controller: _awardController,
+                                    labelText: 'รายการประกวด',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'กรุณากรอกข้อมูล';
@@ -115,7 +133,7 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                 Expanded(
                                   child: CustomTextFormField(
                                     controller: _rankController,
-                                    labelText: 'อันดับ',
+                                    labelText: 'เพศ',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'กรุณากรอกข้อมูล';
@@ -142,10 +160,10 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                             const SizedBox(height: 10),
                             Row(
                               children: [
-                                Flexible(
+                                Expanded(
                                   child: CustomTextFormField(
-                                    controller: _genderController,
-                                    labelText: 'เพศ',
+                                    controller: _awardNameController,
+                                    labelText: 'งานประกวด/จังหวัด',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'กรุณากรอกข้อมูล';
@@ -162,7 +180,7 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                 Expanded(
                                   child: CustomTextFormField(
                                     controller: _awardNameController,
-                                    labelText: 'งานประกวด',
+                                    labelText: 'ปี พ.ศ.',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'กรุณากรอกข้อมูล';

@@ -53,7 +53,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                     StrokeText(
                       text: "รางวัลงานประกวด",
                       textStyle: TextStyle(
-                          fontSize: ScreenUtils.calculateFontSize(context, 34),
+                          fontSize: ScreenUtils.calculateFontSize(context, 26),
                           color: Colors.yellow),
                       strokeColor: Colors.black,
                       strokeWidth: 3,
@@ -120,7 +120,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                         children: [
                           Center(
                             child: Text(
-                              "แกรนด์แชมป์งานเทศกาลควายไทย อุทัยธานี 2558",
+                              "(1.) แกรนด์แชมป์งานเทศกาลควายไทย อุทัยธานี 2558",
                               style: TextStyle(
                                 fontSize:
                                     ScreenUtils.calculateFontSize(context, 16),
@@ -131,7 +131,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                           ),
                           Center(
                             child: Text(
-                              "แชมป์รุ่นเล็กงานกระบือแห่งชาติ ขอนแก่น 2558",
+                              "(2.) แชมป์รุ่นเล็กงานกระบือแห่งชาติ ขอนแก่น 2558",
                               style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
                                       context, 13),
