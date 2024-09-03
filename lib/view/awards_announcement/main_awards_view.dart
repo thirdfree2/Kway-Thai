@@ -1,7 +1,9 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/buffalo/photo_buffalo_view.dart';
 import 'package:buffalo_thai/view/buffalo/video_buffalo_view.dart';
 import 'package:buffalo_thai/view/home/main_home_view.dart';
+import 'package:buffalo_thai/view/register_award/main_register_award.dart';
 import 'package:flutter/material.dart';
 import 'package:stroke_text/stroke_text.dart';
 
@@ -71,9 +73,6 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                           strokeColor: Colors.white,
                           strokeWidth: 3,
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
                         Column(
                           children: [
                             StrokeText(
@@ -98,47 +97,99 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                         )
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        width: screenWidth,
-                        height: screenHeight * 0.5,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                15) // Adjust the radius as needed
-                            ),
-                        child: Image.asset(
-                          'assets/images/banner-5.jpg',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                    SizedBox(
+                      height: 20,
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Column(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
                         children: [
-                          Center(
-                            child: Text(
+                          Expanded(
+                            child: AutoSizeText(
                               "(1.) แกรนด์แชมป์งานเทศกาลควายไทย อุทัยธานี 2558",
+                              maxLines: 3,
                               style: TextStyle(
                                 fontSize:
-                                    ScreenUtils.calculateFontSize(context, 16),
-                                color: Colors.red,
+                                    ScreenUtils.calculateFontSize(context, 18),
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ),
-                          Center(
-                            child: Text(
-                              "(2.) แชมป์รุ่นเล็กงานกระบือแห่งชาติ ขอนแก่น 2558",
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.red[600],
+                                borderRadius: BorderRadius.circular(20)),
+                            width: 50,
+                            height: 50,
+                            child: Icon(Icons.camera_alt),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: AutoSizeText(
+                              "(2.) แกรนด์แชมป์งานเทศกาลควายไทย อุทัยธานี 2558",
+                              maxLines: 3,
                               style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                      context, 13),
-                                  color: Colors.black),
-                              textAlign: TextAlign.center,
+                                fontSize:
+                                    ScreenUtils.calculateFontSize(context, 18),
+                              ),
                             ),
                           ),
+                          InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        Container(
+                                          width: screenWidth,
+                                          height: screenHeight * 0.5,
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(
+                                                  15) // Adjust the radius as needed
+                                              ),
+                                          child: Image.asset(
+                                            'assets/images/banner-5.jpg',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("ปิด"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.red[600],
+                                  borderRadius: BorderRadius.circular(20)),
+                              width: 50,
+                              height: 50,
+                              child: Icon(Icons.camera_alt),
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -148,6 +199,40 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                   ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                         Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MainRegisterAward(),
+                        ),
+                      );
+                      },
+                      child: Container(
+                        height: 50,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'เพิ่มรางวัลการแข่งขัน',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),

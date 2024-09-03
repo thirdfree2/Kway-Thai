@@ -56,118 +56,33 @@ class _VideoBuffaloViewState extends State<VideoBuffaloView> {
             const SizedBox(
               height: 30,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Container(
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3, // แสดง 3 รายการต่อแถว
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio:
+                      1.4, // ปรับตามต้องการเพื่อให้ได้ขนาดที่เหมาะสม
+                ),
+                itemCount: 60, // จำนวนไอเท็มในลิสต์
+                itemBuilder: (context, index) {
+                  return Container(
                     width: 120,
                     height: 85,
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            15) // Adjust the radius as needed
-                        ),
-                    child: Image.asset(
-                      'assets/images/banner-5.jpg',
-                      fit: BoxFit.cover,
+                      borderRadius:
+                          BorderRadius.circular(15), // ปรับ radius ตามต้องการ
                     ),
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [Text('วิดีโอ 1'), Text('วันที่ 19/03/2556')],
-                )
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Container(
-                    width: 120,
-                    height: 85,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            15) // Adjust the radius as needed
-                        ),
                     child: Image.asset(
-                      'assets/images/banner-5.jpg',
-                      fit: BoxFit.cover,
+                      'assets/images/banner-5.jpg', // เปลี่ยนเป็น items[index] ถ้ามีหลายภาพ
+                      fit: BoxFit.cover,  
                     ),
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [Text('วิดีโอ 1'), Text('วันที่ 19/03/2556')],
-                )
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Container(
-                    width: 120,
-                    height: 85,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            15) // Adjust the radius as needed
-                        ),
-                    child: Image.asset(
-                      'assets/images/banner-5.jpg',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [Text('วิดีโอ 1'), Text('วันที่ 19/03/2556')],
-                )
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Container(
-                    width: 120,
-                    height: 85,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            15) // Adjust the radius as needed
-                        ),
-                    child: Image.asset(
-                      'assets/images/banner-5.jpg',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [Text('วิดีโอ 1'), Text('วันที่ 19/03/2556')],
-                )
-              ],
+                  );
+                },
+              ),
             ),
             const SizedBox(
               height: 20,

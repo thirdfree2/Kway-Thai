@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Kway Thai',
       theme: ThemeData(
         useMaterial3: true,
         textTheme: GoogleFonts.chonburiTextTheme(textTheme)

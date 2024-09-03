@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/model/buffalo_image_model.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
+import 'package:buffalo_thai/view/home/main_home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stroke_text/stroke_text.dart';
@@ -46,22 +48,36 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
               ),
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(
                   height: 25,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const SizedBox(
-                      width: 20,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: const Icon(
+                          Icons.arrow_back,
+                          size: 30,
+                        ),
+                      ),
                     ),
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        size: 30,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: InkWell(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeView()),
+                        ),
+                        child: const Icon(
+                          Icons.home,
+                          size: 30,
+                        ),
                       ),
                     ),
                   ],
@@ -111,24 +127,35 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                           const SizedBox(height: 10),
                           _buildInfoRow(
                               'ควายไทย เพศ ', 'ผู้', Colors.blue[800]),
+                          const SizedBox(height: 5),
                           _buildInfoRow('สี ', 'ดำ', Colors.black),
+                          const SizedBox(height: 5),
                           _buildInfoRow('เกิด ', 'ปี 2560', Colors.amber[800]),
+                          const SizedBox(height: 5),
                           _buildInfoRow('เกิดที่ ลอก/ฟาร์ม ', 'บ้านคึกควายไทย',
                               Colors.green[800]),
+                          const SizedBox(height: 5),
                           _buildInfoRow('โดยวิธีการ ',
                               buffalo?.birthMethod ?? '', Colors.red[800]),
+                          const SizedBox(height: 5),
                           _buildInfoRow('พ่อพันธุ์ คือ',
                               buffalo?.father?.name ?? '', Colors.red[800]),
+                          const SizedBox(height: 5),
                           _buildInfoRow('แม่พันธุ์ คือ ',
                               buffalo?.mother?.name ?? '', Colors.red[800]),
+                          const SizedBox(height: 5),
                           _buildInfoRow('สายเลือดทางปู่คือ ',
                               'ทองสุข(เปี่ยวใหญ่)', Colors.pink[800]),
+                          const SizedBox(height: 5),
                           _buildInfoRow('สายเลือดทางย่าคือ ', 'ควายสายอุทัย',
                               Colors.pink[800]),
+                          const SizedBox(height: 5),
                           _buildInfoRow('สายเลือดทางตาคือ ',
                               'เจ้าแอ(กำนัดโป๊ด)', Colors.pink[800]),
+                          const SizedBox(height: 5),
                           _buildInfoRow('สายเลือดทางยายคือ ', 'แม่บุญลู่',
                               Colors.pink[800]),
+                          const SizedBox(height: 5),
                           const Text(
                             'สืบสายเลือดปู่ทวดคือ',
                             style: TextStyle(fontSize: 14),
@@ -207,15 +234,20 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
   Widget _buildInfoRow(String label, String value, Color? color) {
     return Row(
       children: [
-        Text(
+        AutoSizeText(
           label,
-          style: const TextStyle(fontSize: 14),
+          maxFontSize: 13,
+          maxLines: 2,
+          style:
+              TextStyle(fontSize: ScreenUtils.calculateFontSize(context, 13)),
         ),
-        Text(
+        AutoSizeText(
           value,
+          maxFontSize: 13,
+          maxLines: 2,
           style: TextStyle(
             color: color,
-            fontSize: 14,
+            fontSize: ScreenUtils.calculateFontSize(context, 13),
             decoration: TextDecoration.underline,
             decorationColor: color,
             decorationThickness: 2,

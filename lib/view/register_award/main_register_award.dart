@@ -52,7 +52,8 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                   padding: const EdgeInsets.all(16.0),
                   child: Card(
                     color: Colors.white.withOpacity(0.8),
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 20),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
@@ -98,7 +99,7 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                   flex: 2,
                                   child: CustomTextFormField(
                                     controller: _awardController,
-                                    labelText: 'อันดับ',
+                                    labelText: 'รายการประกวด',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'กรุณากรอกข้อมูล';
@@ -116,7 +117,7 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                   flex: 2,
                                   child: CustomTextFormField(
                                     controller: _awardController,
-                                    labelText: 'รายการประกวด',
+                                    labelText: 'อันดับ',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'กรุณากรอกข้อมูล';
@@ -235,7 +236,6 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
     );
   }
 }
-
 
 class SubmitButton extends StatelessWidget {
   const SubmitButton({super.key});

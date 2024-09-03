@@ -172,27 +172,33 @@ class _ListFarmViewState extends State<ListFarmView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Flexible(
-                      child: CustomButton(
+                    if (region != 'เหนือ')
+                      Flexible(
+                        child: CustomButton(
                           label: 'ภาคเหนือ',
                           onPressed: () {
                             loadRegionData(context, fetchFarmsNorth);
-                          }),
-                    ),
-                    Flexible(
-                      child: CustomButton(
+                          },
+                        ),
+                      ),
+                    if (region != 'อีสาน')
+                      Flexible(
+                        child: CustomButton(
                           label: 'ภาคอีสาน',
                           onPressed: () {
                             loadRegionData(context, fetchFarmsNortheast);
-                          }),
-                    ),
-                    Flexible(
-                      child: CustomButton(
+                          },
+                        ),
+                      ),
+                    if (region != 'ตะวันออก')
+                      Flexible(
+                        child: CustomButton(
                           label: 'ภาคตะวันออก',
                           onPressed: () {
                             loadRegionData(context, fetchFarmsEast);
-                          }),
-                    ),
+                          },
+                        ),
+                      ),
                   ],
                 ),
               ],
@@ -200,20 +206,24 @@ class _ListFarmViewState extends State<ListFarmView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Flexible(
-                  child: CustomButton(
+                if (region != 'ตะวันตก')
+                  Flexible(
+                    child: CustomButton(
                       label: 'ภาคตะวันตก',
                       onPressed: () {
                         loadRegionData(context, fetchFarmsWest);
-                      }),
-                ),
-                Flexible(
-                  child: CustomButton(
+                      },
+                    ),
+                  ),
+                if (region != 'ใต้')
+                  Flexible(
+                    child: CustomButton(
                       label: 'ภาคใต้',
                       onPressed: () {
                         loadRegionData(context, fetchFarmsSouth);
-                      }),
-                ),
+                      },
+                    ),
+                  ),
               ],
             ),
           ],
