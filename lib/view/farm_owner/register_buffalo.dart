@@ -374,7 +374,6 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                           if (farmCode.length == 6) {
                                             Navigator.of(context)
                                                 .pop(); // ปิด dialog
-                                            // คุณสามารถใช้ farmCode ทำงานเพิ่มเติมที่นี่
                                             print('รหัสฟาร์มคือ: $farmCode');
                                           } else {
                                             // แจ้งเตือนหากกรอกไม่ครบ 6 หลัก
