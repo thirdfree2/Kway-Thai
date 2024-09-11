@@ -1,11 +1,8 @@
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/buffalo/photo_buffalo_view.dart';
-import 'package:buffalo_thai/view/buffalo/video_buffalo_view.dart';
-import 'package:buffalo_thai/view/home/main_home_view.dart';
-import 'package:buffalo_thai/view/register_award/main_register_award.dart';
 import 'package:flutter/material.dart';
 import 'package:stroke_text/stroke_text.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:buffalo_thai/utils/screen_utils.dart';
+import 'package:buffalo_thai/view/register_award/main_register_award.dart';
 
 class MainAwardsView extends StatefulWidget {
   const MainAwardsView({super.key});
@@ -27,7 +24,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Container(
+        child: SizedBox(
           height: screenHeight,
           child: Column(
             children: [
@@ -97,7 +94,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                         )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Padding(
@@ -120,7 +117,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                                 borderRadius: BorderRadius.circular(20)),
                             width: 50,
                             height: 50,
-                            child: Icon(Icons.camera_alt),
+                            child: const Icon(Icons.camera_alt),
                           )
                         ],
                       ),
@@ -174,7 +171,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: Text("ปิด"),
+                                        child: const Text("ปิด"),
                                       ),
                                     ],
                                   );
@@ -187,7 +184,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                                   borderRadius: BorderRadius.circular(20)),
                               width: 50,
                               height: 50,
-                              child: Icon(Icons.camera_alt),
+                              child: const Icon(Icons.camera_alt),
                             ),
                           )
                         ],
@@ -209,7 +206,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                          Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MainRegisterAward(),
+                          builder: (context) => const MainRegisterAward(),
                         ),
                       );
                       },

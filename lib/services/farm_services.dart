@@ -1,10 +1,49 @@
 import 'dart:convert';
-import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:http/http.dart' as http;
+import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:buffalo_thai/model/farm_model.dart';
 
+Future<String> registerFarm({
+  required String farmName,
+  required String region,
+  required String lineId,
+  required String phoneNumber,
+  required String password,
+}) async {
+  const String url = '${ApiUtils.baseUrl}/api/farm/';
+  final Map<String, dynamic> requestData = {
+    'farmName': farmName,
+    'region': region,
+    'lineId': lineId,
+    'phoneNumber': phoneNumber,
+    'password': password,
+  };
+
+  final response = await http.post(
+    Uri.parse(url),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(requestData),
+  );
+  if (response.statusCode == 200) {
+    final responseData = jsonDecode(response.body);
+    print(responseData);
+    if (responseData['data'] != null &&
+        responseData['data']['farmId'] != null) {
+      return responseData['data']['farmId'].toString(); // ส่งคืนค่า farmId
+    } else {
+      throw Exception('เบอร์โทรศัพท์ถูกใช้แล้ว');
+    }
+  } else {
+    throw Exception(
+        'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}');
+  }
+}
+
 Future<List<FarmModel>> fetchFarmsByRegion(String region) async {
-  final response = await http.get(Uri.parse('${ApiUtils.baseUrl}/api/farm/byregionandname?region=$region'));
+  final response = await http.get(
+      Uri.parse('${ApiUtils.baseUrl}/api/farm/byregionandname?region=$region'));
 
   if (response.statusCode == 200) {
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);

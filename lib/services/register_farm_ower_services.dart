@@ -1,9 +1,11 @@
-import 'dart:convert';
 import 'dart:io';
-import 'package:buffalo_thai/utils/api_utils.dart';
+import 'dart:convert';
+import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
-import 'package:path/path.dart';
+import 'package:buffalo_thai/utils/api_utils.dart';
+import 'package:buffalo_thai/model/user_model.dart';
+
 
 Future<String> registerFarmOwner({
   required String firstName,
@@ -13,7 +15,7 @@ Future<String> registerFarmOwner({
   required String phoneNumber,
   required String farmId,
   required String lineId,
-  required File imageFile,
+  required File? imageFile,
 }) async {
   const String url = '${ApiUtils.baseUrl}/api/user/';
 
@@ -27,8 +29,8 @@ Future<String> registerFarmOwner({
     ..fields['lineId'] = lineId
     ..files.add(await http.MultipartFile.fromPath(
       'image',
-      imageFile.path,
-      contentType: MediaType('image', basename(imageFile.path).split('.').last),
+      imageFile?.path ?? '',
+      contentType: MediaType('image', basename(imageFile?.path ?? '').split('.').last),
     ));
 
   final response = await request.send();
@@ -39,11 +41,10 @@ Future<String> registerFarmOwner({
     return responseData;
   } else {
     final responseData = await response.stream.bytesToString();
-    throw Exception('Failed to register farm owner. Status code: ${response.statusCode}. Response body: $responseData');
+    throw Exception(
+        'Failed to register farm owner. Status code: ${response.statusCode}. Response body: $responseData');
   }
 }
-
-
 
 Future<String> registerBuffaloOwner({
   required String farmId,
@@ -51,7 +52,6 @@ Future<String> registerBuffaloOwner({
   required String birthMethod,
   required String birthDate,
 }) async {
-  
   const String url = '${ApiUtils.baseUrl}/api/buffalo/';
 
   final response = await http.post(
@@ -67,11 +67,11 @@ Future<String> registerBuffaloOwner({
     },
   );
 
-
   if (response.statusCode == 200) {
     final Map<String, dynamic> responseData = json.decode(response.body);
     return responseData['userId'];
   } else {
-    throw Exception('Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}');
+    throw Exception(
+        'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}');
   }
 }

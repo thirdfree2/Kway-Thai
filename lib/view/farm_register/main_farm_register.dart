@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
-import 'package:buffalo_thai/providers/selected_farm.dart';
-import 'package:buffalo_thai/services/register_farm_ower_services.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
+import 'package:buffalo_thai/services/farm_services.dart';
+import 'package:buffalo_thai/services/register_farm_ower_services.dart';
 
 class MainFarmRegister extends StatefulWidget {
   const MainFarmRegister({super.key});
@@ -16,7 +15,6 @@ class MainFarmRegister extends StatefulWidget {
 class _MainFarmRegisterState extends State<MainFarmRegister> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _farmNameController = TextEditingController();
-  final TextEditingController _farmIdController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _nicknameController = TextEditingController();
@@ -37,13 +35,6 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
     'ภาคอีสาน'
   ];
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final selectedFarm = Provider.of<SelectedFarm>(context);
-    _farmIdController.text = selectedFarm.farmId;
-  }
-
   Future<void> _pickImage() async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -54,21 +45,94 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
     }
   }
 
+// ฟังก์ชัน validate ข้อมูลก่อน submit
+  void _validateAndSubmit() async {
+    if (_formKey.currentState!.validate()) {
+      final imageFile = _selectedImage;
+      if (imageFile == null) {
+        _showSnackBar(context, 'กรุณาเลือกภาพ');
+        return;
+      }
+
+      if (_selectedRegion == null) {
+        _showSnackBar(context, 'กรุณาเลือกภาค');
+        return;
+      }
+
+      if (_selectedStatus == null) {
+        _showSnackBar(context, 'กรุณาเลือกสถานะ');
+        return;
+      }
+
+      try {
+        final region = _selectedRegion ?? '';
+        final farmId = await registerFarm(
+          farmName: _farmNameController.text,
+          lineId: _lineIdController.text,
+          region: region,
+          phoneNumber: _phoneNumberController.text,
+          password: _digitController.text,
+        );
+
+        await registerFarmOwner(
+          firstName: _firstNameController.text,
+          lastName: _lastNameController.text,
+          nickname: _nicknameController.text,
+          position: _selectedStatus ?? '',
+          phoneNumber: _phoneNumberController.text,
+          farmId: farmId.toString(),
+          lineId: _lineIdController.text,
+          imageFile: _selectedImage,
+        );
+
+        _showDialog(context, 'ลงทะเบียนสำเร็จ',
+            'ข้อมูลฟาร์มและเจ้าของถูกลงทะเบียนเรียบร้อยแล้ว');
+      } catch (e) {
+        _showSnackBar(context, 'เกิดข้อผิดพลาด: $e');
+      }
+    }
+  }
+
+  void _showDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('ตกลง'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: DecoratedBox(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/background-1.jpg"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: SingleChildScrollView(
-          child: SizedBox(
-            height: screenHeight,
+      body: SingleChildScrollView(
+        child: Container(
+          height: screenHeight,
+          child: DecoratedBox(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/background-1.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -136,9 +200,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                           return null;
                                         },
                                       ),
-                                      const SizedBox(
-                                          height:
-                                              8), // เพิ่มระยะห่างระหว่าง TextField กับ Dropdown
+                                      const SizedBox(height: 8),
                                       StatusDropdown(
                                         labelName: 'ภาค',
                                         selectedStatus: _selectedRegion,
@@ -259,6 +321,26 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                 ),
                               ],
                             ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    controller: _digitController,
+                                    keyboardType: TextInputType
+                                        .number, // ยังคงเป็นประเภทตัวเลข
+                                    obscureText: true, // ซ่อนข้อความที่พิมพ์
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText: 'กรอกรหัส 6 หลัก',
+                                    ),
+                                    maxLength: 6, // จำกัดความยาวที่ 6 หลัก
+                                  ),
+                                ),
+                              ],
+                            ),
                             const SizedBox(height: 80),
                             Container(
                               height: 50,
@@ -268,145 +350,8 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                   borderRadius: BorderRadius.circular(10)),
                               child: Center(
                                 child: TextButton(
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      final imageFile = _selectedImage;
-                                      if (imageFile != null) {
-                                        try {
-                                          final userId =
-                                              await registerFarmOwner(
-                                            firstName:
-                                                _firstNameController.text,
-                                            lastName: _lastNameController.text,
-                                            nickname: _nicknameController.text,
-                                            position: _selectedStatus ?? '',
-                                            phoneNumber:
-                                                _phoneNumberController.text,
-                                            farmId: _farmIdController.text,
-                                            lineId: _lineIdController.text,
-                                            imageFile: imageFile,
-                                          );
-                                          print(
-                                              'User created successfully with ID: $userId');
-
-                                          AlertDialog(
-                                            title:
-                                                const Text('ลงทะเบียนสำเร็จ'),
-                                            content: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: <Widget>[
-                                                const Text(
-                                                    'โปรดกรอกรหัสของฟาร์ม'),
-                                                TextField(
-                                                  controller: _digitController,
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    hintText: 'กรอกรหัส 6 หลัก',
-                                                  ),
-                                                  maxLength:
-                                                      6, // จำกัดให้กรอกได้ 6 ตัว
-                                                ),
-                                              ],
-                                            ),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: const Text('ตกลง'),
-                                                onPressed: () {
-                                                  String farmCode =
-                                                      _digitController.text;
-                                                  if (farmCode.length == 6) {
-                                                    Navigator.of(context)
-                                                        .pop(); // ปิด dialog แรก
-
-                                                    // แสดง dialog อันใหม่
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return AlertDialog(
-                                                          title: const Text(
-                                                              'ยินดีต้อนรับสู่ ควายไทย'),
-                                                          content: Text(
-                                                            'รหัสยืนยันสำหรับ คอก/ฟาร์ม ของท่านคือ $farmCode\n\nขอบคุณครับ/ค่ะ',
-                                                          ),
-                                                          actions: <Widget>[
-                                                            TextButton(
-                                                              child: const Text(
-                                                                  'ตกลง'),
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop(); // ปิด dialog อันที่สอง
-                                                              },
-                                                            ),
-                                                          ],
-                                                        );
-                                                      },
-                                                    );
-                                                  } else {
-                                                    // แจ้งเตือนหากกรอกไม่ครบ 6 หลัก
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                      const SnackBar(
-                                                        content: Text(
-                                                            'กรุณากรอกรหัสฟาร์มให้ครบ 6 หลัก'),
-                                                      ),
-                                                    );
-                                                  }
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        } catch (e) {
-                                          print('Error: $e');
-
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: Text('Error'),
-                                                content: const Text(
-                                                    'Failed to register. Please try again.'),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    child: Text('OK'),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        }
-                                      } else {
-                                        print('Please select an image');
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title:
-                                                  const Text('Image Required'),
-                                              content: const Text(
-                                                  'Please select an image.'),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  child: const Text('OK'),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      }
-                                    }
-                                  },
+                                  onPressed:
+                                      _validateAndSubmit, // เรียกใช้ validateAndSubmit
                                   child: const Text(
                                     'ลงทะเบียน',
                                     style: TextStyle(color: Colors.white),
@@ -430,7 +375,6 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
   }
 }
 
-// ฟิลด์ป้อนข้อมูลทั่วไป
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
