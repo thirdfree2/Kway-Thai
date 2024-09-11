@@ -1,20 +1,20 @@
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:buffalo_thai/model/buffalo_image_model.dart';
-import 'package:buffalo_thai/model/user_model.dart';
-import 'package:buffalo_thai/providers/selected_farm_owner.dart';
-import 'package:buffalo_thai/services/user_services.dart';
-import 'package:buffalo_thai/utils/api_utils.dart';
-import 'package:buffalo_thai/view/buffalo/main_buffalo_wrapper.dart';
-import 'package:buffalo_thai/view/farm_owner/main_farm_owner.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stroke_text/stroke_text.dart';
-import 'package:buffalo_thai/model/buffalo_model.dart';
-import 'package:buffalo_thai/providers/selected_buffalo.dart';
-import 'package:buffalo_thai/providers/selected_farm.dart';
-import 'package:buffalo_thai/services/buffalo_services.dart';
+import 'package:buffalo_thai/utils/api_utils.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:buffalo_thai/model/user_model.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
+import 'package:buffalo_thai/model/buffalo_model.dart';
+import 'package:buffalo_thai/services/user_services.dart';
+import 'package:buffalo_thai/providers/selected_farm.dart';
+import 'package:buffalo_thai/model/buffalo_image_model.dart';
+import 'package:buffalo_thai/services/buffalo_services.dart';
+import 'package:buffalo_thai/providers/selected_buffalo.dart';
+import 'package:buffalo_thai/providers/selected_farm_owner.dart';
+import 'package:buffalo_thai/view/farm_owner/main_farm_owner.dart';
 import 'package:buffalo_thai/view/farm_owner/register_buffalo.dart';
+import 'package:buffalo_thai/view/buffalo/main_buffalo_wrapper.dart';
 import 'package:buffalo_thai/view/farm_owner/register_farm_owner.dart';
 
 class DetailFarmView extends StatefulWidget {
@@ -98,7 +98,37 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(child: Text('No buffaloes found.'));
+                      return Center(
+                        child: Column(
+                          children: [
+                            const Text('ไม่พบสมาชิกในฟาร์มนี้'),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            RegisterFarmOwner()));
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Center(
+                                  child: AutoSizeText(
+                                    'ลงสมาชิก',
+                                    maxLines: 1,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
                     }
 
                     final users = snapshot.data!;
@@ -238,7 +268,37 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(child: Text('No buffaloes found.'));
+                      return Center(
+                        child: Column(
+                          children: [
+                            const Text('ไม่พบควายในฟาร์มนี้'),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            RegisterBuffalo()));
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Center(
+                                  child: AutoSizeText(
+                                    'ลงทะเบียนควาย',
+                                    maxLines: 1,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
                     }
 
                     final buffaloes = snapshot.data!;

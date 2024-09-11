@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:buffalo_thai/providers/selected_farm.dart';
-import 'package:buffalo_thai/services/register_farm_ower_services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
+import 'package:buffalo_thai/providers/selected_farm.dart';
+import 'package:buffalo_thai/view/farm/list_farm_view.dart';
+import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
+import 'package:buffalo_thai/services/register_farm_ower_services.dart';
 
 class RegisterFarmOwner extends StatefulWidget {
   const RegisterFarmOwner({super.key});
@@ -255,9 +257,27 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                             lineId: _lineIdController.text,
                                             imageFile: imageFile,
                                           );
+                                          Navigator.of(context).pop();
                                           print(
                                               'User created successfully with ID: $userId');
                                           Navigator.pop(context);
+                                          AlertDialog(
+                                            title: Text('ลงทะเบียนสำเร็จ'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: Text('OK'),
+                                                onPressed: () => {
+                                                  Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DetailFarmView(), // หน้าที่ต้องการนำทางไป
+                                                    )// เงื่อนไขที่ทำให้ลบ stack ทั้งหมด
+                                                  )
+                                                },
+                                              ),
+                                            ],
+                                          );
                                         } catch (e) {
                                           print('Error: $e');
 

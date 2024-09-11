@@ -1,14 +1,14 @@
-import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/farm/main_farm_view.dart';
-import 'package:buffalo_thai/view/farm_owner/register_farm_owner.dart';
-import 'package:buffalo_thai/view/farm_register/main_farm_register.dart';
-import 'package:buffalo_thai/view/heredity_buffalo/main_heredity_buffalo_view.dart';
-import 'package:buffalo_thai/view/history_buffalo/main_history_buffalo_view.dart';
-import 'package:buffalo_thai/view/register_award/main_register_award.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:stroke_text/stroke_text.dart';
+import 'package:buffalo_thai/utils/screen_utils.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:buffalo_thai/view/farm/main_farm_view.dart';
+import 'package:buffalo_thai/view/farm_owner/register_farm_owner.dart';
+import 'package:buffalo_thai/view/farm_register/main_farm_register.dart';
+import 'package:buffalo_thai/view/register_award/main_register_award.dart';
+import 'package:buffalo_thai/view/history_buffalo/main_history_buffalo_view.dart';
+import 'package:buffalo_thai/view/heredity_buffalo/main_heredity_buffalo_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -118,22 +118,41 @@ class _HomeViewState extends State<HomeView> {
                                 strokeColor: Colors.black,
                                 strokeWidth: 4,
                               ),
-                              SizedBox(height: 10,),
+                              const SizedBox(
+                                height: 10,
+                              ),
                               InkWell(
-                                child: Container(
-                                  width: screenHeight *
-                                      0.2, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                                  height: screenHeight *
-                                      0.2, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                        15), // ปรับแต่งความโค้งของมุมตามต้องการ
-                                  ),
-                                  child: Image.asset(
-                                    'assets/images/banner-5.jpg',
-                                    fit: BoxFit.cover,
-                                  ),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: screenHeight *
+                                          0.15, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
+                                      height: screenHeight *
+                                          0.15, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            15), // ปรับแต่งความโค้งของมุมตามต้องการ
+                                      ),
+                                      child: Image.asset(
+                                        'assets/images/banner-5.jpg',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    StrokeText(
+                                      text: "kway 1",
+                                      textStyle: TextStyle(
+                                          fontSize:
+                                              ScreenUtils.calculateFontSize(
+                                                  context, 10),
+                                          color: Colors.red),
+                                      strokeColor: Colors.white,
+                                      strokeWidth: 3,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -182,7 +201,7 @@ class _HomeViewState extends State<HomeView> {
                                       children: [
                                         QrImageView(
                                           data:
-                                              'https://line.me/r/@kwaythai', // Replace with your Line ID URL
+                                              'https://lin.ee/Uu7X7Vsa', // Replace with your Line ID URL
                                           version: QrVersions.auto,
                                           size: screenWidth * 0.2,
                                         ),
@@ -213,70 +232,175 @@ class _HomeViewState extends State<HomeView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      width: screenHeight *
-                          0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                      height: screenHeight *
-                          0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            15), // ปรับแต่งความโค้งของมุมตามต้องการ
-                      ),
-                      child: Image.asset(
-                        'assets/images/banner-1.jpg',
-                        fit: BoxFit.cover,
-                      ),
+                    Column(
+                      children: [
+                        Container(
+                          width: screenHeight *
+                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
+                          height: screenHeight *
+                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                15), // ปรับแต่งความโค้งของมุมตามต้องการ
+                          ),
+                          child: Image.asset(
+                            'assets/images/banner-1.jpg',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        StrokeText(
+                          text: "kway 1",
+                          textStyle: TextStyle(
+                              fontSize:
+                                  ScreenUtils.calculateFontSize(context, 10),
+                              color: Colors.red),
+                          strokeColor: Colors.white,
+                          strokeWidth: 3,
+                        ),
+                      ],
                     ),
                     SizedBox(width: 10),
-                    Container(
-                      width: screenHeight *
-                          0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                      height: screenHeight *
-                          0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            15), // ปรับแต่งความโค้งของมุมตามต้องการ
-                      ),
-                      child: Image.asset(
-                        'assets/images/banner-2.jpg',
-                        fit: BoxFit.cover,
-                      ),
+                    Column(
+                      children: [
+                        Container(
+                          width: screenHeight *
+                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
+                          height: screenHeight *
+                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                15), // ปรับแต่งความโค้งของมุมตามต้องการ
+                          ),
+                          child: Image.asset(
+                            'assets/images/banner-2.jpg',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        StrokeText(
+                          text: "kway 1",
+                          textStyle: TextStyle(
+                              fontSize:
+                                  ScreenUtils.calculateFontSize(context, 10),
+                              color: Colors.red),
+                          strokeColor: Colors.white,
+                          strokeWidth: 3,
+                        ),
+                      ],
                     ),
                     SizedBox(width: 10),
-                    Container(
-                      width: screenHeight *
-                          0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                      height: screenHeight *
-                          0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            15), // ปรับแต่งความโค้งของมุมตามต้องการ
-                      ),
-                      child: Image.asset(
-                        'assets/images/banner-3.jpg',
-                        fit: BoxFit.cover,
-                      ),
+                    Column(
+                      children: [
+                        Container(
+                          width: screenHeight *
+                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
+                          height: screenHeight *
+                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                15), // ปรับแต่งความโค้งของมุมตามต้องการ
+                          ),
+                          child: Image.asset(
+                            'assets/images/banner-3.jpg',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        StrokeText(
+                          text: "kway 1",
+                          textStyle: TextStyle(
+                              fontSize:
+                                  ScreenUtils.calculateFontSize(context, 10),
+                              color: Colors.red),
+                          strokeColor: Colors.white,
+                          strokeWidth: 3,
+                        ),
+                      ],
                     ),
                     SizedBox(width: 10),
-                    Container(
-                      width: screenHeight *
-                          0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                      height: screenHeight *
-                          0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            15), // ปรับแต่งความโค้งของมุมตามต้องการ
-                      ),
-                      child: Image.asset(
-                        'assets/images/banner-4.jpg',
-                        fit: BoxFit.cover,
-                      ),
+                    Column(
+                      children: [
+                        Container(
+                          width: screenHeight *
+                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
+                          height: screenHeight *
+                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                15), // ปรับแต่งความโค้งของมุมตามต้องการ
+                          ),
+                          child: Image.asset(
+                            'assets/images/banner-4.jpg',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        StrokeText(
+                          text: "kway 1",
+                          textStyle: TextStyle(
+                              fontSize:
+                                  ScreenUtils.calculateFontSize(context, 10),
+                              color: Colors.red),
+                          strokeColor: Colors.white,
+                          strokeWidth: 3,
+                        ),
+                      ],
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          StrokeText(
+                            text: "ข่าวประชาสัมพันธ์",
+                            textStyle: TextStyle(
+                                fontSize:
+                                    ScreenUtils.calculateFontSize(context, 20),
+                                color: Colors.red),
+                            strokeColor: Colors.white,
+                            strokeWidth: 3,
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: CarouselSlider(
+                          items: child,
+                          carouselController: buttonCarouselController,
+                          options: CarouselOptions(
+                            autoPlay: true,
+                            enlargeCenterPage: true,
+                            viewportFraction: 0.9,
+                            aspectRatio: 2.0,
+                            initialPage: 2,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
@@ -469,47 +593,6 @@ class _HomeViewState extends State<HomeView> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          StrokeText(
-                            text: "ข่าวประชาสัมพันธ์",
-                            textStyle: TextStyle(
-                                fontSize:
-                                    ScreenUtils.calculateFontSize(context, 20),
-                                color: Colors.red),
-                            strokeColor: Colors.white,
-                            strokeWidth: 3,
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: CarouselSlider(
-                          items: child,
-                          carouselController: buttonCarouselController,
-                          options: CarouselOptions(
-                            autoPlay: true,
-                            enlargeCenterPage: true,
-                            viewportFraction: 0.9,
-                            aspectRatio: 2.0,
-                            initialPage: 2,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
               ],
             ),
           ),

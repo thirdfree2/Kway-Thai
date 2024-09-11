@@ -1,11 +1,11 @@
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:buffalo_thai/model/buffalo_image_model.dart';
-import 'package:buffalo_thai/providers/selected_buffalo.dart';
-import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/home/main_home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stroke_text/stroke_text.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:buffalo_thai/utils/screen_utils.dart';
+import 'package:buffalo_thai/view/home/main_home_view.dart';
+import 'package:buffalo_thai/model/buffalo_image_model.dart';
+import 'package:buffalo_thai/providers/selected_buffalo.dart';
 
 class MainBuffaloView extends StatefulWidget {
   const MainBuffaloView({super.key});
@@ -124,51 +124,83 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                               strokeWidth: 2,
                             ),
                           ),
-                          const SizedBox(height: 10),
-                          _buildInfoRow(
-                              'ควายไทย เพศ ', 'ผู้', Colors.blue[800]),
-                          const SizedBox(height: 5),
-                          _buildInfoRow('สี ', 'ดำ', Colors.black),
-                          const SizedBox(height: 5),
-                          _buildInfoRow('เกิด ', 'ปี 2560', Colors.amber[800]),
-                          const SizedBox(height: 5),
-                          _buildInfoRow('เกิดที่ ลอก/ฟาร์ม ', 'บ้านคึกควายไทย',
-                              Colors.green[800]),
-                          const SizedBox(height: 5),
-                          _buildInfoRow('โดยวิธีการ ',
-                              buffalo?.birthMethod ?? '', Colors.red[800]),
-                          const SizedBox(height: 5),
-                          _buildInfoRow('พ่อพันธุ์ คือ',
-                              buffalo?.father?.name ?? '', Colors.red[800]),
-                          const SizedBox(height: 5),
-                          _buildInfoRow('แม่พันธุ์ คือ ',
-                              buffalo?.mother?.name ?? '', Colors.red[800]),
-                          const SizedBox(height: 5),
-                          _buildInfoRow('สายเลือดทางปู่คือ ',
-                              'ทองสุข(เปี่ยวใหญ่)', Colors.pink[800]),
-                          const SizedBox(height: 5),
-                          _buildInfoRow('สายเลือดทางย่าคือ ', 'ควายสายอุทัย',
-                              Colors.pink[800]),
-                          const SizedBox(height: 5),
-                          _buildInfoRow('สายเลือดทางตาคือ ',
-                              'เจ้าแอ(กำนัดโป๊ด)', Colors.pink[800]),
-                          const SizedBox(height: 5),
-                          _buildInfoRow('สายเลือดทางยายคือ ', 'แม่บุญลู่',
-                              Colors.pink[800]),
-                          const SizedBox(height: 5),
-                          const Text(
-                            'สืบสายเลือดปู่ทวดคือ',
-                            style: TextStyle(fontSize: 14),
+                          Container(
+                            height: screenHeight * 0.35,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 10),
+                                  _buildInfoRow(
+                                      'ควายไทย เพศ ', 'ผู้', Colors.blue[800]),
+                                  const SizedBox(height: 5),
+                                  _buildInfoRow('สี ', 'ดำ', Colors.black),
+                                  const SizedBox(height: 5),
+                                  _buildInfoRow(
+                                      'เกิด ',
+                                      buffalo?.birthDate?.toString() ?? '',
+                                      Colors.amber[800]),
+                                  const SizedBox(height: 5),
+                                  _buildInfoRow('เกิดที่ ลอก/ฟาร์ม ',
+                                      'บ้านคึกควายไทย', Colors.green[800]),
+                                  const SizedBox(height: 5),
+                                  _buildInfoRow(
+                                      'โดยวิธีการ ',
+                                      buffalo?.birthMethod ?? '',
+                                      Colors.red[800]),
+                                  const SizedBox(height: 5),
+                                  _buildInfoRow(
+                                      'พ่อพันธุ์ คือ',
+                                      buffalo?.father?.name ?? '',
+                                      Colors.red[800]),
+                                  const SizedBox(height: 5),
+                                  _buildInfoRow(
+                                      'แม่พันธุ์ คือ ',
+                                      buffalo?.mother?.name ?? '',
+                                      Colors.red[800]),
+                                  const SizedBox(height: 5),
+                                  _buildInfoRow(
+                                      'สายเลือดทางปู่คือ ',
+                                      buffalo?.fatherGrandfatherName ?? '',
+                                      Colors.pink[800]),
+                                  const SizedBox(height: 5),
+                                  _buildInfoRow(
+                                      'สายเลือดทางย่าคือ ',
+                                      buffalo?.fatherGrandmotherName ?? '',
+                                      Colors.pink[800]),
+                                  const SizedBox(height: 5),
+                                  _buildInfoRow(
+                                      'สายเลือดทางตาคือ ',
+                                      buffalo?.motherGrandfatherName ?? '',
+                                      Colors.pink[800]),
+                                  const SizedBox(height: 5),
+                                  _buildInfoRow(
+                                      'สายเลือดทางยายคือ ',
+                                      buffalo?.motherGrandmotherName ?? '',
+                                      Colors.pink[800]),
+                                  const SizedBox(height: 5),
+                                  const Text(
+                                    'สืบสายเลือดปู่ทวดคือ',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  _buildInfoRow(
+                                      'คือ ',
+                                      buffalo?.fatherGreatGrandfatherName ?? '',
+                                      Colors.pink[800]),
+                                  const Text(
+                                    'สืบสายเลือดตาทวดคือ',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  _buildInfoRow(
+                                      'คือ ',
+                                      buffalo?.motherGreatGrandfatherName ?? '',
+                                      Colors.pink[800]),
+                                  const SizedBox(height: 10),
+                                ],
+                              ),
+                            ),
                           ),
-                          _buildInfoRow('คือ ', 'เจ้าหมื่นยักษ์ (ทำแทนปิด)',
-                              Colors.pink[800]),
-                          const Text(
-                            'สืบสายเลือดตาทวดคือ',
-                            style: TextStyle(fontSize: 14),
-                          ),
-                          _buildInfoRow('คือ ', 'เจ้าหมื่นยักษ์ (ทำแทนปิด)',
-                              Colors.pink[800]),
-                          const SizedBox(height: 10),
                         ],
                       ),
                     ),
