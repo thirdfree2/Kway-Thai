@@ -48,6 +48,48 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
     }
   }
 
+  Future<void> _showCodeDialog() async {
+    TextEditingController _codeController = TextEditingController();
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // Prevent dismissing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('กรุณากรอกรหัส 6 หลัก'),
+          content: TextFormField(
+            controller: _codeController,
+            decoration: const InputDecoration(
+              hintText: 'รหัส 6 หลัก',
+            ),
+            keyboardType: TextInputType.number,
+            maxLength: 6,
+            validator: (value) {
+              if (value == null || value.length != 6) {
+                return 'กรุณากรอกรหัสให้ครบ 6 หลัก';
+              }
+              return null;
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('ยืนยัน'),
+              onPressed: () {
+                if (_codeController.text.length == 6) {
+                  Navigator.of(context).pop(_codeController.text);
+                } else {
+                  // แจ้งเตือนหากรหัสไม่ครบ 6 หลัก
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('กรุณากรอกรหัสให้ครบ 6 หลัก')),
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -244,55 +286,74 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                       final imageFile = _selectedImage;
                                       if (imageFile != null) {
                                         try {
-                                          final userId =
-                                              await registerFarmOwner(
-                                            firstName:
-                                                _firstNameController.text,
-                                            lastName: _lastNameController.text,
-                                            nickname: _nicknameController.text,
-                                            position: _selectedStatus ?? '',
-                                            phoneNumber:
-                                                _phoneNumberController.text,
-                                            farmId: _farmIdController.text,
-                                            lineId: _lineIdController.text,
-                                            imageFile: imageFile,
-                                          );
-                                          Navigator.of(context).pop();
-                                          print(
-                                              'User created successfully with ID: $userId');
+                                          // แสดง dialog เพื่อกรอกรหัส 6 หลัก
+                                          final code = await _showCodeDialog();
+                                         {
                                           Navigator.pop(context);
-                                          AlertDialog(
-                                            title: Text('ลงทะเบียนสำเร็จ'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: Text('OK'),
-                                                onPressed: () => {
-                                                  Navigator.pushReplacement(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DetailFarmView(), // หน้าที่ต้องการนำทางไป
-                                                    )// เงื่อนไขที่ทำให้ลบ stack ทั้งหมด
-                                                  )
-                                                },
-                                              ),
-                                            ],
-                                          );
+                                          Navigator.pop(context);
+                                            // ส่งข้อมูลไปยัง API หลังจากกรอกรหัสถูกต้องแล้ว
+                                            final userId =
+                                                await registerFarmOwner(
+                                              firstName:
+                                                  _firstNameController.text,
+                                              lastName:
+                                                  _lastNameController.text,
+                                              nickname:
+                                                  _nicknameController.text,
+                                              position:
+                                                  _selectedStatus ?? '',
+                                              phoneNumber:
+                                                  _phoneNumberController.text,
+                                              farmId: _farmIdController.text,
+                                              lineId: _lineIdController.text,
+                                              imageFile: imageFile,
+                                            );
+                                            print(
+                                                'User created successfully with ID: $userId');
+                                            
+                                            showDialog(
+                                              context: context,
+                                              builder:
+                                                  (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: const Text(
+                                                      'ลงทะเบียนสำเร็จ'),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      child: const Text('OK'),
+                                                      onPressed: () {
+                                                        Navigator
+                                                            .pushReplacement(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                DetailFarmView(),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          }
                                         } catch (e) {
                                           print('Error: $e');
-
+                                          // แสดง dialog แจ้งข้อผิดพลาด
                                           showDialog(
                                             context: context,
-                                            builder: (BuildContext context) {
+                                            builder:
+                                                (BuildContext context) {
                                               return AlertDialog(
-                                                title: Text('Error'),
+                                                title: const Text('Error'),
                                                 content: const Text(
                                                     'Failed to register. Please try again.'),
                                                 actions: <Widget>[
                                                   TextButton(
-                                                    child: Text('OK'),
+                                                    child: const Text('OK'),
                                                     onPressed: () {
-                                                      Navigator.of(context)
+                                                      Navigator.of(
+                                                              context)
                                                           .pop();
                                                     },
                                                   ),

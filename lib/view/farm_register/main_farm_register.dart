@@ -104,6 +104,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                 Navigator.of(context).pop();
               },
               child: const Text('ตกลง'),
             ),
