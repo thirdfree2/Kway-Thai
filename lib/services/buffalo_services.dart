@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:buffalo_thai/model/buffalo_model.dart';
@@ -37,11 +39,17 @@ Future<List<BuffaloModel>> fetchBuffaloesByFarmId(String id) async {
   }
 }
 
+String formatDateForBackend(DateTime dateTime) {
+  // MySQL format: YYYY-MM-DD HH:MM:SS
+  return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
+}
+
 Future<String> registerBuffalo({
   required String name,
   required String birthDate,
   required String farmId,
   required String birthMethod,
+  required String gender,
   required String fatherName,
   required String motherName,
   required String fatherGrandfatherName,
@@ -52,46 +60,53 @@ Future<String> registerBuffalo({
   required String fatherGreatGrandmotherName,
   required String motherGreatGrandfatherName,
   required String motherGreatGrandmotherName,
+  required String color,
+  required File? imageFile,
 }) async {
   const String url = '${ApiUtils.baseUrl}/api/buffalo/';
-  final Map<String, dynamic> requestData = {
-    'name': name,
-    'birthDate': birthDate,
-    'farmId': Uri.encodeComponent(farmId),
-    'birthMethod': birthMethod,
-    'fatherName': fatherName,
-    'motherName': motherName,
-    'fatherGrandfatherName': fatherGrandfatherName,
-    'fatherGrandmotherName': fatherGrandmotherName,
-    'motherGrandfatherName': motherGrandfatherName,
-    'motherGrandmotherName': motherGrandmotherName,
-    'fatherGreatGrandfatherName': fatherGreatGrandfatherName,
-    'fatherGreatGrandmotherName': fatherGreatGrandmotherName,
-    'motherGreatGrandfatherName': motherGreatGrandfatherName,
-    'motherGreatGrandmotherName': motherGreatGrandmotherName,
-  };
+  final uri = Uri.parse(url);
+  final request = http.MultipartRequest('POST', uri);
 
-  final response = await http.post(
-    Uri.parse(url),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: jsonEncode(requestData),
-  );
+
+DateTime? selectedDate = DateFormat('dd/MM/yyyy').parse(birthDate);
+String formattedDate = formatDateForBackend(selectedDate);
+  // Add text fields
+  request.fields['name'] = name;
+  request.fields['birthDate'] = formattedDate;
+  request.fields['farmId'] = Uri.encodeComponent(farmId);
+  request.fields['gender'] = gender;
+  request.fields['birthMethod'] = birthMethod;
+  request.fields['color'] = color;
+  request.fields['fatherName'] = fatherName;
+  request.fields['motherName'] = motherName;
+  request.fields['fatherGrandfatherName'] = fatherGrandfatherName;
+  request.fields['fatherGrandmotherName'] = fatherGrandmotherName;
+  request.fields['motherGrandfatherName'] = motherGrandfatherName;
+  request.fields['motherGrandmotherName'] = motherGrandmotherName;
+  request.fields['fatherGreatGrandfatherName'] = fatherGreatGrandfatherName;
+  request.fields['fatherGreatGrandmotherName'] = fatherGreatGrandmotherName;
+  request.fields['motherGreatGrandfatherName'] = motherGreatGrandfatherName;
+  request.fields['motherGreatGrandmotherName'] = motherGreatGrandmotherName;
+
+  // Add the file
+  if (imageFile != null) {
+    request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+  }
+
+  // Send the request
+  final streamedResponse = await request.send();
+  final response = await http.Response.fromStream(streamedResponse);
 
   if (response.statusCode == 201) {
-  final responseData = jsonDecode(response.body);
-  print(responseData);
-  if (responseData['buffalo'] != null && responseData['buffalo']['farmId'] != null) {
-    print(responseData);
-    return responseData['buffalo']['farmId'].toString(); // ส่งคืนค่า farmId
+    final responseData = jsonDecode(response.body);
+    if (responseData['buffalo'] != null && responseData['buffalo']['farmId'] != null) {
+      return responseData['buffalo']['farmId'].toString(); // Return the farmId
+    } else {
+      throw Exception('Farm data not found.');
+    }
   } else {
-    throw Exception('ไม่พบข้อมูลฟาร์ม');
+    throw Exception(
+      'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}',
+    );
   }
-} else {
-  throw Exception(
-    'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}',
-  );
-}
-
 }

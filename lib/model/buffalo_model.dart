@@ -15,6 +15,12 @@ class BuffaloModel {
   @JsonKey(name: 'birthMethod', defaultValue: '')
   final String birthMethod;
 
+  @JsonKey(name: 'gender', defaultValue: '')
+  final String gender;
+
+  @JsonKey(name: 'color', defaultValue: '')
+  final String color;
+
   @JsonKey(name: 'fatherId', defaultValue: null)
   final int? fatherId;
   @JsonKey(name: 'fatherName', defaultValue: '')
@@ -99,7 +105,9 @@ class BuffaloModel {
     this.motherGreatGrandfatherName,
     this.motherGreatGrandmotherId,
     this.motherGreatGrandmotherName,
-    this.motherName, {
+    this.motherName,
+    this.gender,
+    this.color, {
     required this.id,
     required this.name,
     required this.birthMethod,

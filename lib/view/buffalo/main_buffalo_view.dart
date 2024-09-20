@@ -132,18 +132,21 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const SizedBox(height: 10),
-                                  _buildInfoRow(
-                                      'ควายไทย เพศ ', 'ผู้', Colors.blue[800]),
+                                  _buildInfoRow('ควายไทย เพศ ', buffalo?.gender ?? '',
+                                      Colors.blue[800]),
                                   const SizedBox(height: 5),
-                                  _buildInfoRow('สี ', 'ดำ', Colors.black),
+                                  _buildInfoRow(
+                                      'สี ', buffalo?.color ?? '', Colors.black),
                                   const SizedBox(height: 5),
                                   _buildInfoRow(
                                       'เกิด ',
                                       buffalo?.birthDate?.toString() ?? '',
                                       Colors.amber[800]),
                                   const SizedBox(height: 5),
-                                  _buildInfoRow('เกิดที่ ลอก/ฟาร์ม ',
-                                      'บ้านคึกควายไทย', Colors.green[800]),
+                                  _buildInfoRow(
+                                      'เกิดที่ ลอก/ฟาร์ม ',
+                                      buffalo?.farm?.farmName ?? '',
+                                      Colors.green[800]),
                                   const SizedBox(height: 5),
                                   _buildInfoRow(
                                       'โดยวิธีการ ',
@@ -152,12 +155,12 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                                   const SizedBox(height: 5),
                                   _buildInfoRow(
                                       'พ่อพันธุ์ คือ',
-                                      buffalo?.father?.name ?? '',
+                                      buffalo?.fatherName ?? '',
                                       Colors.red[800]),
                                   const SizedBox(height: 5),
                                   _buildInfoRow(
                                       'แม่พันธุ์ คือ ',
-                                      buffalo?.mother?.name ?? '',
+                                      buffalo?.motherName ?? '',
                                       Colors.red[800]),
                                   const SizedBox(height: 5),
                                   _buildInfoRow(
@@ -233,7 +236,7 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          buffalo?.currentFarm?.farmName ?? 'Not Found 404',
+                          buffalo?.farm?.farmName ?? 'Not Found 404',
                           style: const TextStyle(color: Colors.white),
                         ),
                       ),
