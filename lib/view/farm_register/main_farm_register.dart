@@ -27,12 +27,12 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
 
   final List<String> _statusOptions = ['เจ้าของฟาร์ม', 'ผู้จัดการ', 'สมาชิก'];
   final List<String> _regionOptions = [
-    'ภาคเหนือ',
-    'ภาคกลาง',
-    'ภาคใต้',
-    'ภาคตะวันตก',
-    'ภาคตะวันออก',
-    'ภาคอีสาน'
+    'เหนือ',
+    'กลาง',
+    'ใต้',
+    'ตะวันตก',
+    'ตะวันออก',
+    'อีสาน'
   ];
 
   Future<void> _pickImage() async {
@@ -64,6 +64,11 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
         return;
       }
 
+      if (_digitController.text.length != 6) {
+        _showSnackBar(context, 'กรุณากรอกรหัส 6 หลัก');
+        return;
+      }
+
       try {
         final region = _selectedRegion ?? '';
         final farmId = await registerFarm(
@@ -83,6 +88,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
           farmId: farmId.toString(),
           lineId: _lineIdController.text,
           imageFile: _selectedImage,
+          password: _digitController.text,
         );
 
         _showDialog(context, 'ลงทะเบียนสำเร็จ',
@@ -104,7 +110,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                 Navigator.of(context).pop();
+                Navigator.of(context).pop();
               },
               child: const Text('ตกลง'),
             ),

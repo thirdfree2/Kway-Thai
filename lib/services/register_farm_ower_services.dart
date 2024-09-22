@@ -15,6 +15,7 @@ Future<String> registerFarmOwner({
   required String phoneNumber,
   required String farmId,
   required String lineId,
+  required String password,
   required File? imageFile,
 }) async {
   const String url = '${ApiUtils.baseUrl}/api/user/';
@@ -27,6 +28,7 @@ Future<String> registerFarmOwner({
     ..fields['phoneNumber'] = phoneNumber
     ..fields['farmId'] = farmId
     ..fields['lineId'] = lineId
+     ..fields['password'] = password
     ..files.add(await http.MultipartFile.fromPath(
       'image',
       imageFile?.path ?? '',

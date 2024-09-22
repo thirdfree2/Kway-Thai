@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,6 +25,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _lineIdController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   File? _selectedImage;
   String? _selectedStatus;
 
@@ -49,35 +51,29 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
   }
 
   Future<void> _showCodeDialog() async {
-    TextEditingController _codeController = TextEditingController();
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // Prevent dismissing the dialog by tapping outside
+      barrierDismissible:
+          false, // Prevent dismissing the dialog by tapping outside
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('กรุณากรอกรหัส 6 หลัก'),
           content: TextFormField(
-            controller: _codeController,
+            controller: _passwordController,
             decoration: const InputDecoration(
               hintText: 'รหัส 6 หลัก',
             ),
             keyboardType: TextInputType.number,
             maxLength: 6,
-            validator: (value) {
-              if (value == null || value.length != 6) {
-                return 'กรุณากรอกรหัสให้ครบ 6 หลัก';
-              }
-              return null;
-            },
           ),
           actions: <Widget>[
             TextButton(
               child: const Text('ยืนยัน'),
               onPressed: () {
-                if (_codeController.text.length == 6) {
-                  Navigator.of(context).pop(_codeController.text);
+                if (_passwordController.text.length == 6) {
+                  Navigator.of(context).pop(_passwordController
+                      .text); // ส่งรหัส 6 หลักกลับเป็น string
                 } else {
-                  // แจ้งเตือนหากรหัสไม่ครบ 6 หลัก
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('กรุณากรอกรหัสให้ครบ 6 หลัก')),
                   );
@@ -157,18 +153,27 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                             Row(
                               children: [
                                 Expanded(
-                                  flex: 2,
-                                  child: CustomTextFormField(
-                                    controller: _farmNameController,
-                                    labelText: 'คอก/ฟาร์ม',
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'กรุณากรอกข้อมูล';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
+                                    flex: 1,
+                                    child: Column(
+                                      children: [
+                                        AutoSizeText(
+                                          maxLines: 1,
+                                          'ลงทะเบียนสมาชิกสำหรับฟาร์ม',
+                                          style: TextStyle(
+                                              fontSize:
+                                                  ScreenUtils.calculateFontSize(
+                                                      context, 8)),
+                                        ),
+                                        AutoSizeText(
+                                          maxLines: 1,
+                                          _farmNameController.text,
+                                          style: TextStyle(
+                                              fontSize:
+                                                  ScreenUtils.calculateFontSize(
+                                                      context, 24)),
+                                        ),
+                                      ],
+                                    )),
                                 const SizedBox(width: 10),
                                 Expanded(
                                   flex: 1,
@@ -246,9 +251,13 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                             Row(
                               children: [
                                 Expanded(
-                                  child: CustomTextFormField(
+                                  child: TextFormField(
+                                    keyboardType: TextInputType.number,
                                     controller: _phoneNumberController,
-                                    labelText: 'เบอร์โทร',
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: 'เบอร์โทร',
+                                    ),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'กรุณากรอกข้อมูล';
@@ -256,6 +265,16 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                       return null;
                                     },
                                   ),
+                                  // child: CustomTextFormField(
+                                  //   controller: _phoneNumberController,
+                                  //   labelText: 'เบอร์โทร',
+                                  //   validator: (value) {
+                                  //     if (value == null || value.isEmpty) {
+                                  //       return 'กรุณากรอกข้อมูล';
+                                  //     }
+                                  //     return null;
+                                  //   },
+                                  // ),
                                 ),
                                 const SizedBox(width: 10),
                                 Expanded(
@@ -287,10 +306,10 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                       if (imageFile != null) {
                                         try {
                                           // แสดง dialog เพื่อกรอกรหัส 6 หลัก
-                                          final code = await _showCodeDialog();
-                                         {
-                                          Navigator.pop(context);
-                                          Navigator.pop(context);
+                                          await _showCodeDialog();
+
+                                          if (_passwordController.text !=
+                                              null) {
                                             // ส่งข้อมูลไปยัง API หลังจากกรอกรหัสถูกต้องแล้ว
                                             final userId =
                                                 await registerFarmOwner(
@@ -300,21 +319,29 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                                   _lastNameController.text,
                                               nickname:
                                                   _nicknameController.text,
-                                              position:
-                                                  _selectedStatus ?? '',
+                                              position: _selectedStatus ?? '',
                                               phoneNumber:
                                                   _phoneNumberController.text,
                                               farmId: _farmIdController.text,
                                               lineId: _lineIdController.text,
                                               imageFile: imageFile,
+                                              password:
+                                                  _passwordController.text,
                                             );
-                                            print(
-                                                'User created successfully with ID: $userId');
-                                            
+
+                                            // ทำการ pop หน้าหลังจากเสร็จสิ้นการทำงาน
+                                            Navigator.pop(context);
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailFarmView(),
+                                              ),
+                                            );
+
                                             showDialog(
                                               context: context,
-                                              builder:
-                                                  (BuildContext context) {
+                                              builder: (BuildContext context) {
                                                 return AlertDialog(
                                                   title: const Text(
                                                       'ลงทะเบียนสำเร็จ'),
@@ -322,14 +349,8 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                                     TextButton(
                                                       child: const Text('OK'),
                                                       onPressed: () {
-                                                        Navigator
-                                                            .pushReplacement(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                DetailFarmView(),
-                                                          ),
-                                                        );
+                                                        Navigator.of(context)
+                                                            .pop();
                                                       },
                                                     ),
                                                   ],
@@ -342,18 +363,16 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                           // แสดง dialog แจ้งข้อผิดพลาด
                                           showDialog(
                                             context: context,
-                                            builder:
-                                                (BuildContext context) {
+                                            builder: (BuildContext context) {
                                               return AlertDialog(
                                                 title: const Text('Error'),
                                                 content: const Text(
-                                                    'Failed to register. Please try again.'),
+                                                    'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.'),
                                                 actions: <Widget>[
                                                   TextButton(
                                                     child: const Text('OK'),
                                                     onPressed: () {
-                                                      Navigator.of(
-                                                              context)
+                                                      Navigator.of(context)
                                                           .pop();
                                                     },
                                                   ),
@@ -363,6 +382,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                           );
                                         }
                                       } else {
+                                        // ถ้าไม่ได้เลือกภาพให้แสดงข้อความแจ้งเตือน
                                         print('Please select an image');
                                         showDialog(
                                           context: context,
