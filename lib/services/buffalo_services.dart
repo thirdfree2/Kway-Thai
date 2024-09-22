@@ -61,16 +61,15 @@ Future<String> registerBuffalo({
   required String motherGreatGrandfatherName,
   required String motherGreatGrandmotherName,
   required String color,
+  required String password,
   required File? imageFile,
 }) async {
   const String url = '${ApiUtils.baseUrl}/api/buffalo/';
   final uri = Uri.parse(url);
   final request = http.MultipartRequest('POST', uri);
 
-
-DateTime? selectedDate = DateFormat('dd/MM/yyyy').parse(birthDate);
-String formattedDate = formatDateForBackend(selectedDate);
-  // Add text fields
+  DateTime? selectedDate = DateFormat('dd/MM/yyyy').parse(birthDate);
+  String formattedDate = formatDateForBackend(selectedDate);
   request.fields['name'] = name;
   request.fields['birthDate'] = formattedDate;
   request.fields['farmId'] = Uri.encodeComponent(farmId);
@@ -87,10 +86,11 @@ String formattedDate = formatDateForBackend(selectedDate);
   request.fields['fatherGreatGrandmotherName'] = fatherGreatGrandmotherName;
   request.fields['motherGreatGrandfatherName'] = motherGreatGrandfatherName;
   request.fields['motherGreatGrandmotherName'] = motherGreatGrandmotherName;
+  request.fields['password'] = password;
 
-  // Add the file
   if (imageFile != null) {
-    request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+    request.files
+        .add(await http.MultipartFile.fromPath('image', imageFile.path));
   }
 
   // Send the request
@@ -99,9 +99,87 @@ String formattedDate = formatDateForBackend(selectedDate);
 
   if (response.statusCode == 201) {
     final responseData = jsonDecode(response.body);
-    if (responseData['buffalo'] != null && responseData['buffalo']['farmId'] != null) {
+    if (responseData['buffalo'] != null &&
+        responseData['buffalo']['farmId'] != null) {
       return responseData['buffalo']['farmId'].toString(); // Return the farmId
     } else {
+      throw Exception('Farm data not found.');
+    }
+  } else {
+    throw Exception(
+      'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}',
+    );
+  }
+}
+
+Future<String> uploadImageBuffalo({
+  required int buffaloId,
+  required File? imageFile,
+  required String password,
+  required String farmId,
+}) async {
+  const String url = '${ApiUtils.baseUrl}/api/buffalo/insertImage';
+  final uri = Uri.parse(url);
+  final request = http.MultipartRequest('POST', uri);
+
+  request.fields['buffaloId'] = buffaloId.toString();
+  request.fields['password'] = password;
+  request.fields['farmId'] = farmId.toString();
+  if (imageFile != null) {
+    request.files
+        .add(await http.MultipartFile.fromPath('image', imageFile.path));
+  }
+
+  final streamedResponse = await request.send();
+  final response = await http.Response.fromStream(streamedResponse);
+
+  if (response.statusCode == 201) {
+    final responseData = jsonDecode(response.body);
+    if (responseData['message'] != null) {
+      return responseData['message'].toString();
+    }
+    else {
+      throw Exception('Farm data not found.');
+    }
+  } else {
+    throw Exception(
+      'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}',
+    );
+  }
+}
+
+
+Future<String> uploadVideoBuffalo({
+  required int buffaloId,
+  required File? imageFile,
+  required String password,
+  required String farmId,
+  required String url,
+  required String title,
+}) async {
+  const String url = '${ApiUtils.baseUrl}/api/buffalo/buffaloClips/';
+  final uri = Uri.parse(url);
+  final request = http.MultipartRequest('POST', uri);
+
+  request.fields['buffaloId'] = buffaloId.toString();
+  request.fields['url'] = url;
+  request.fields['title'] = title;
+  request.fields['password'] = password;
+  request.fields['farmId'] = farmId.toString();
+  if (imageFile != null) {
+    request.files
+        .add(await http.MultipartFile.fromPath('image', imageFile.path));
+  }
+
+  final streamedResponse = await request.send();
+  final response = await http.Response.fromStream(streamedResponse);
+
+  if (response.statusCode == 201) {
+    final responseData = jsonDecode(response.body);
+    if (responseData['message'] != null) {
+      return responseData['message'].toString();
+    }
+    else {
       throw Exception('Farm data not found.');
     }
   } else {

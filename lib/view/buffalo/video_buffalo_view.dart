@@ -59,14 +59,14 @@ class _VideoBuffaloViewState extends State<VideoBuffaloView> {
             Expanded(
               child: GridView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, // แสดง 3 รายการต่อแถว
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                   childAspectRatio:
                       1.4, // ปรับตามต้องการเพื่อให้ได้ขนาดที่เหมาะสม
                 ),
-                itemCount: 60, // จำนวนไอเท็มในลิสต์
+                itemCount: buffalo?.buffaloClips.length ?? 0, // จำนวนไอเท็มในลิสต์
                 itemBuilder: (context, index) {
                   return Container(
                     width: 120,
@@ -76,8 +76,8 @@ class _VideoBuffaloViewState extends State<VideoBuffaloView> {
                       borderRadius:
                           BorderRadius.circular(15), // ปรับ radius ตามต้องการ
                     ),
-                    child: Image.asset(
-                      'assets/images/banner-5.jpg', // เปลี่ยนเป็น items[index] ถ้ามีหลายภาพ
+                    child: Image.network(
+                       buffalo?.buffaloClips[index].imageUrl ?? '', // เปลี่ยนเป็น items[index] ถ้ามีหลายภาพ
                       fit: BoxFit.cover,  
                     ),
                   );

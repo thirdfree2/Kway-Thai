@@ -512,7 +512,7 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                   gender: _selectedGender ??
                                                       'ไม่ได้ระบุ',
                                                   color: _colorController.text,
-                                                  imageFile: _selectedImage,
+                                                  imageFile: _selectedImage, password: farmCode,
                                                 );
 
                                                 print(
@@ -552,9 +552,9 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                 print(e);
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
-                                                  SnackBar(
+                                                  const SnackBar(
                                                     content: Text(
-                                                        'เกิดข้อผิดพลาด: $e'),
+                                                        'เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง'),
                                                   ),
                                                 );
                                               }

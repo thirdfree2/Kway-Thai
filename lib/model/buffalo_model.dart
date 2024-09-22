@@ -1,3 +1,4 @@
+import 'package:buffalo_thai/model/buffalo_clip_model.dart';
 import 'package:buffalo_thai/model/farm_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:buffalo_thai/model/buffalo_image_model.dart';
@@ -84,10 +85,11 @@ class BuffaloModel {
   @JsonKey(name: 'BuffaloImages', defaultValue: [])
   final List<BuffaloImageModel> buffaloImages;
   @JsonKey(name: 'BuffaloBreedingImages', defaultValue: [])
-  final List<dynamic>
-      buffaloBreedingImages; // Modify this if a specific model is needed
+  final List<dynamic> buffaloBreedingImages;
+  @JsonKey(name: 'BuffaloClips', defaultValue: [])
+  final List<BuffaloClipModel> buffaloClips;
   @JsonKey(name: 'Histories', defaultValue: [])
-  final List<dynamic> histories; // Modify this if a specific model is needed
+  final List<dynamic> histories;
 
   BuffaloModel(
     this.fatherName,
@@ -107,7 +109,7 @@ class BuffaloModel {
     this.motherGreatGrandmotherName,
     this.motherName,
     this.gender,
-    this.color, {
+    this.color, this.buffaloClips, {
     required this.id,
     required this.name,
     required this.birthMethod,

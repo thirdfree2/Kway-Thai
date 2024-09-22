@@ -1,10 +1,14 @@
 import 'dart:io';
-
-import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/farm_owner/register_buffalo.dart';
+import 'package:buffalo_thai/providers/selected_buffalo.dart';
+import 'package:buffalo_thai/providers/selected_farm.dart';
+import 'package:buffalo_thai/services/buffalo_services.dart';
+import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:stroke_text/stroke_text.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 class UploadVideoBuffalo extends StatefulWidget {
   const UploadVideoBuffalo({super.key});
@@ -15,11 +19,11 @@ class UploadVideoBuffalo extends StatefulWidget {
 
 class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
   File? _selectedImage;
-  String? _selectedStatus;
+  String _inputCode = ""; // ตัวแปรสำหรับเก็บรหัส 6 หลัก
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _videoUrlController = TextEditingController();
-  final TextEditingController _videoNameControler = TextEditingController();
+  final TextEditingController _videoNameController = TextEditingController();
 
   Future<void> _pickImage() async {
     final pickedImage =
@@ -28,6 +32,110 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
       setState(() {
         _selectedImage = File(pickedImage.path);
       });
+    }
+  }
+
+  Future<void> _showCodeDialog() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('กรุณาใส่รหัสผ่าน 6 หลัก'),
+          content: TextField(
+            maxLength: 6,
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              setState(() {
+                _inputCode = value;
+              });
+            },
+            decoration: const InputDecoration(
+              hintText: 'ใส่รหัสผ่าน',
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('ยกเลิก'),
+              onPressed: () {
+                Navigator.of(context).pop(); // ปิด Dialog
+              },
+            ),
+            TextButton(
+              child: const Text('ยืนยัน'),
+              onPressed: () {
+                if (_inputCode.length == 6) {
+                  Navigator.of(context).pop(); // ปิด Dialog
+                  _uploadVideo(); // เรียกฟังก์ชันอัปโหลดเมื่อใส่รหัสผ่านถูกต้อง
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('กรุณากรอกรหัสผ่านให้ครบ 6 หลัก'),
+                      backgroundColor: Colors.red,
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _uploadVideo() async {
+    final selectedBuffalo =
+        Provider.of<SelectedBuffalo>(context, listen: false);
+    final buffalo = selectedBuffalo.buffalo;
+    final selectedFarm = Provider.of<SelectedFarm>(context, listen: false);
+    if (_formKey.currentState!.validate()) {
+      String videoUrl = _videoUrlController.text;
+      String videoName = _videoNameController.text;
+
+      try {
+        String msg = await uploadVideoBuffalo(
+          buffaloId: selectedBuffalo.buffalo?.id ?? 0,
+          imageFile: _selectedImage,
+          password: _inputCode,
+          farmId: selectedFarm.farmId,
+          url: videoUrl,
+          title: videoName,
+        );
+        if (msg == 'Buffalo clip created successfully') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('อัปโหลดรูปภาพสำเร็จ'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2),
+            ),
+          );
+
+          // Navigate to the farm detail view after success
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => DetailFarmView(),
+            ),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('การอัปโหลดล้มเหลว: รหัสผ่านไม่ถูกต้อง'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('กรุณากรอกข้อมูลให้ครบถ้วน'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 
@@ -49,158 +157,107 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                 color: Colors.white.withOpacity(0.8),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          InkWell(
-                            onTap: () => Navigator.pop(context),
-                            child: const Icon(
-                              Icons.arrow_back,
-                              size: 30,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      StrokeText(
-                        text: 'เพิ่มคลิปวิดีโอ',
-                        textStyle: TextStyle(
-                          fontSize: ScreenUtils.calculateFontSize(context, 24),
-                          color: Colors.white,
-                        ),
-                        strokeColor: Colors.black,
-                        strokeWidth: 3,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          ImagePickerWidget(
-                            selectedImage: _selectedImage,
-                            onPickImage: _pickImage,
-                            width: 200,
-                            height: 200, name: 'เพิ่มปกคลิป',
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: _videoUrlController,
-                              labelText: 'แนบลิ้งค์',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20,),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: _videoNameControler,
-                              labelText: 'ชื่อคลิปวิดีโอ',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Row(
                           children: [
+                            const SizedBox(width: 20),
                             InkWell(
-                              onTap: () {},
+                              onTap: () => Navigator.pop(context),
+                              child: const Icon(Icons.arrow_back, size: 30),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'เพิ่มคลิปวิดีโอ',
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: _pickImage,
                               child: Container(
-                                height: 50,
-                                width: 150,
+                                height: 200,
+                                width: 200,
                                 decoration: BoxDecoration(
-                                  color: Colors.red,
                                   borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: Colors.black),
+                                  color: Colors.white.withOpacity(0.8),
                                 ),
-                                child: const Center(
-                                  child: Text(
-                                    'เพิ่มคลิปวิดีโอ',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
+                                child: _selectedImage == null
+                                    ? const Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.add, size: 30),
+                                          Text('เพิ่มปกคลิป')
+                                        ],
+                                      )
+                                    : Image.file(_selectedImage!,
+                                        fit: BoxFit.cover),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: _videoUrlController,
+                          decoration:
+                              const InputDecoration(labelText: 'แนบลิ้งค์'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'กรุณากรอกลิ้งค์วิดีโอ';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          controller: _videoNameController,
+                          decoration: const InputDecoration(
+                              labelText: 'ชื่อคลิปวิดีโอ'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'กรุณากรอกชื่อคลิปวิดีโอ';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        InkWell(
+                          onTap:
+                              _showCodeDialog, // เรียกฟังก์ชันเพื่อเปิด dialog
+                          child: Container(
+                            height: 50,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'เพิ่มคลิปวิดีโอ',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
-  
-}
-
-class ImagePickerWidget extends StatelessWidget {
-  final File? selectedImage;
-  final VoidCallback onPickImage;
-  final double width;
-  final double height;
-  final String name;
-
-  const ImagePickerWidget({
-    Key? key,
-    this.selectedImage,
-    required this.onPickImage,
-    required this.width,
-    required this.height,
-    required this.name,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPickImage,
-      child: Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.black),
-          color: Colors.white.withOpacity(0.8),
-        ),
-        child: selectedImage == null
-            ?  Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [const Icon(Icons.add, size: 30), Text(name)],
-              )
-            : Image.file(selectedImage!, fit: BoxFit.cover),
       ),
     );
   }
