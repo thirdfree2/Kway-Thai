@@ -1,4 +1,11 @@
+import 'package:buffalo_thai/model/buffalo_image_model.dart';
+import 'package:buffalo_thai/model/buffalo_model.dart';
+import 'package:buffalo_thai/providers/selected_buffalo.dart';
+import 'package:buffalo_thai/services/buffalo_services.dart';
+import 'package:buffalo_thai/view/buffalo/main_buffalo_wrapper.dart';
+import 'package:buffalo_thai/view/promote_buffalo/main_promote_buffalo_wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:stroke_text/stroke_text.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
@@ -18,6 +25,14 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  late Future<List<BuffaloModel>> futureBuffaloes;
+
+  @override
+  void initState() {
+    super.initState();
+    futureBuffaloes = fetchBuffaloesPromoteBuff();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -121,39 +136,87 @@ class _HomeViewState extends State<HomeView> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              InkWell(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: screenHeight *
-                                          0.15, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                                      height: screenHeight *
-                                          0.15, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            15), // ปรับแต่งความโค้งของมุมตามต้องการ
+                              FutureBuilder<List<BuffaloModel>>(
+                                future: futureBuffaloes,
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator(); // แสดงโหลดเดอร์ขณะรอ
+                                  } else if (snapshot.hasError) {
+                                    return Text(
+                                        'Error: ${snapshot.error}'); // แสดงข้อความเมื่อเกิดข้อผิดพลาด
+                                  } else if (snapshot.hasData &&
+                                      snapshot.data!.isNotEmpty) {
+                                    BuffaloModel firstBuffalo = snapshot
+                                        .data![0]; // เข้าถึงข้อมูลตัวแรก
+
+                                    final profileImage =
+                                        firstBuffalo.buffaloImages.firstWhere(
+                                      (image) => image.isProfileImage,
+                                      orElse: () => BuffaloImageModel(
+                                        imageId: 0,
+                                        imagePath:
+                                            'https://placeholder.com/150',
+                                        isProfileImage: false,
+                                        createdAt: DateTime.now(),
+                                        updatedAt: DateTime.now(),
+                                        buffaloId: firstBuffalo.id,
                                       ),
-                                      child: Image.asset(
-                                        'assets/images/banner-5.jpg',
-                                        fit: BoxFit.cover,
+                                    );
+
+                                    final imageUrl = profileImage != null
+                                        ? profileImage.imagePath
+                                        : 'https://placeholder.com/150';
+                                    return InkWell(
+                                      onTap: () {
+                                        Provider.of<SelectedBuffalo>(context,
+                                                  listen: false)
+                                              .setSelectedBuffalo(firstBuffalo);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => PromoteBuffalo(),
+                                            ),
+                                          );
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            width: screenHeight *
+                                                0.15, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
+                                            height: screenHeight *
+                                                0.15, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(
+                                                  15), // ปรับแต่งความโค้งของมุมตามต้องการ
+                                            ),
+                                            child: Image.network(
+                                              imageUrl,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          StrokeText(
+                                            text: firstBuffalo.name,
+                                            textStyle: TextStyle(
+                                                fontSize: ScreenUtils
+                                                    .calculateFontSize(
+                                                        context, 10),
+                                                color: Colors.red),
+                                            strokeColor: Colors.white,
+                                            strokeWidth: 3,
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    StrokeText(
-                                      text: "kway 1",
-                                      textStyle: TextStyle(
-                                          fontSize:
-                                              ScreenUtils.calculateFontSize(
-                                                  context, 10),
-                                          color: Colors.red),
-                                      strokeColor: Colors.white,
-                                      strokeWidth: 3,
-                                    ),
-                                  ],
-                                ),
+                                    );
+                                  } else {
+                                    return Text(
+                                        'No Buffaloes found'); // เมื่อไม่มีข้อมูล
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -232,133 +295,100 @@ class _HomeViewState extends State<HomeView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        Container(
-                          width: screenHeight *
-                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                          height: screenHeight *
-                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                15), // ปรับแต่งความโค้งของมุมตามต้องการ
-                          ),
-                          child: Image.asset(
-                            'assets/images/banner-1.jpg',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        StrokeText(
-                          text: "kway 1",
-                          textStyle: TextStyle(
-                              fontSize:
-                                  ScreenUtils.calculateFontSize(context, 10),
-                              color: Colors.red),
-                          strokeColor: Colors.white,
-                          strokeWidth: 3,
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      children: [
-                        Container(
-                          width: screenHeight *
-                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                          height: screenHeight *
-                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                15), // ปรับแต่งความโค้งของมุมตามต้องการ
-                          ),
-                          child: Image.asset(
-                            'assets/images/banner-2.jpg',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        StrokeText(
-                          text: "kway 1",
-                          textStyle: TextStyle(
-                              fontSize:
-                                  ScreenUtils.calculateFontSize(context, 10),
-                              color: Colors.red),
-                          strokeColor: Colors.white,
-                          strokeWidth: 3,
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      children: [
-                        Container(
-                          width: screenHeight *
-                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                          height: screenHeight *
-                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                15), // ปรับแต่งความโค้งของมุมตามต้องการ
-                          ),
-                          child: Image.asset(
-                            'assets/images/banner-3.jpg',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        StrokeText(
-                          text: "kway 1",
-                          textStyle: TextStyle(
-                              fontSize:
-                                  ScreenUtils.calculateFontSize(context, 10),
-                              color: Colors.red),
-                          strokeColor: Colors.white,
-                          strokeWidth: 3,
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      children: [
-                        Container(
-                          width: screenHeight *
-                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                          height: screenHeight *
-                              0.10, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                15), // ปรับแต่งความโค้งของมุมตามต้องการ
-                          ),
-                          child: Image.asset(
-                            'assets/images/banner-4.jpg',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        StrokeText(
-                          text: "kway 1",
-                          textStyle: TextStyle(
-                              fontSize:
-                                  ScreenUtils.calculateFontSize(context, 10),
-                              color: Colors.red),
-                          strokeColor: Colors.white,
-                          strokeWidth: 3,
-                        ),
-                      ],
-                    ),
+                    FutureBuilder<List<BuffaloModel>>(
+                      future: futureBuffaloes,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator(); // แสดงโหลดเดอร์ขณะรอ
+                        } else if (snapshot.hasError) {
+                          return Text(
+                              'Error: ${snapshot.error}'); // แสดงข้อความเมื่อเกิดข้อผิดพลาด
+                        } else if (snapshot.hasData &&
+                            snapshot.data!.isNotEmpty) {
+                          // ถ้ามีข้อมูลและไม่ว่าง
+                          List<BuffaloModel> buffaloList = snapshot.data!;
+
+                          // ถ้าข้อมูลมีมากกว่า 1 buffalo ให้ข้ามรายการแรก
+                          if (buffaloList.length > 1) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(buffaloList.length - 1,
+                                  (index) {
+                                // เริ่มที่ index 1
+                                BuffaloModel buffalo = buffaloList[index + 1];
+
+                                final profileImage =
+                                    buffalo.buffaloImages.firstWhere(
+                                  (image) => image.isProfileImage,
+                                  orElse: () => BuffaloImageModel(
+                                    imageId: 0,
+                                    imagePath: 'https://placeholder.com/150',
+                                    isProfileImage: false,
+                                    createdAt: DateTime.now(),
+                                    updatedAt: DateTime.now(),
+                                    buffaloId: buffalo.id,
+                                  ),
+                                );
+
+                                final imageUrl = profileImage.imagePath;
+
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          Provider.of<SelectedBuffalo>(context,
+                                                  listen: false)
+                                              .setSelectedBuffalo(buffalo);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => PromoteBuffalo(),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: screenHeight * 0.09,
+                                          height: screenHeight * 0.09,
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          child: Image.network(
+                                            imageUrl,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      StrokeText(
+                                        text: buffalo.name,
+                                        textStyle: TextStyle(
+                                          fontSize:
+                                              ScreenUtils.calculateFontSize(
+                                                  context, 10),
+                                          color: Colors.red,
+                                        ),
+                                        strokeColor: Colors.white,
+                                        strokeWidth: 3,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                            );
+                          } else {
+                            return Text('No additional buffaloes found');
+                          }
+                        } else {
+                          return Text('No Buffaloes found'); // เมื่อไม่มีข้อมูล
+                        }
+                      },
+                    )
                   ],
                 ),
                 SizedBox(

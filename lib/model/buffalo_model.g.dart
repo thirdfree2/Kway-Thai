@@ -29,6 +29,11 @@ BuffaloModel _$BuffaloModelFromJson(Map<String, dynamic> json) => BuffaloModel(
               ?.map((e) => BuffaloClipModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
+      (json['Competitions'] as List<dynamic>?)
+              ?.map(
+                  (e) => CompetitionsModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
       id: (json['buffaloId'] as num).toInt(),
       name: json['name'] as String? ?? '',
       birthMethod: json['birthMethod'] as String? ?? '',
@@ -119,4 +124,5 @@ Map<String, dynamic> _$BuffaloModelToJson(BuffaloModel instance) =>
       'BuffaloBreedingImages': instance.buffaloBreedingImages,
       'BuffaloClips': instance.buffaloClips.map((e) => e.toJson()).toList(),
       'Histories': instance.histories,
+      'Competitions': instance.competitions.map((e) => e.toJson()).toList(),
     };
