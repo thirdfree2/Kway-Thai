@@ -42,43 +42,115 @@ class _HomeViewState extends State<HomeView> {
         CarouselSliderController();
 
     final List<Widget> child = [
-      Container(
-        width: screenWidth,
-        height: screenHeight * 0.18,
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-            borderRadius:
-                BorderRadius.circular(15) // Adjust the radius as needed
-            ),
-        child: Image.asset(
-          'assets/images/banner-4.jpg',
-          fit: BoxFit.cover,
+      GestureDetector(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+               title: Text("ประชาสัมพันธ์"),
+                content: Image.asset(
+                  'assets/images/banner-4.jpg',
+                  fit: BoxFit.cover,
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the popup
+                    },
+                    child: Text("ปิด"),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: Container(
+          width: screenWidth,
+          height: screenHeight * 0.18,
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+              borderRadius:
+                  BorderRadius.circular(15) // Adjust the radius as needed
+              ),
+          child: Image.asset(
+            'assets/images/banner-4.jpg',
+            fit: BoxFit.cover,
+          ),
         ),
       ),
-      Container(
-        width: screenWidth,
-        height: screenHeight * 0.18,
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-            borderRadius:
-                BorderRadius.circular(15) // Adjust the radius as needed
-            ),
-        child: Image.asset(
-          'assets/images/banner-4.jpg',
-          fit: BoxFit.cover,
+      GestureDetector(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("ประชาสัมพันธ์"),
+                content: Image.asset(
+                  'assets/images/banner-4.jpg',
+                  fit: BoxFit.cover,
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the popup
+                    },
+                    child: Text("ปิด"),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: Container(
+          width: screenWidth,
+          height: screenHeight * 0.18,
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+              borderRadius:
+                  BorderRadius.circular(15) // Adjust the radius as needed
+              ),
+          child: Image.asset(
+            'assets/images/banner-4.jpg',
+            fit: BoxFit.cover,
+          ),
         ),
       ),
-      Container(
-        width: screenWidth,
-        height: screenHeight * 0.18,
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-            borderRadius:
-                BorderRadius.circular(15) // Adjust the radius as needed
-            ),
-        child: Image.asset(
-          'assets/images/banner-4.jpg',
-          fit: BoxFit.cover,
+      GestureDetector(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("ประชาสัมพันธ์"),
+                content: Image.asset(
+                  'assets/images/banner-4.jpg',
+                  fit: BoxFit.cover,
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the popup
+                    },
+                    child: Text("ปิด"),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: Container(
+          width: screenWidth,
+          height: screenHeight * 0.18,
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+              borderRadius:
+                  BorderRadius.circular(15) // Adjust the radius as needed
+              ),
+          child: Image.asset(
+            'assets/images/banner-4.jpg',
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     ];
@@ -170,14 +242,15 @@ class _HomeViewState extends State<HomeView> {
                                     return InkWell(
                                       onTap: () {
                                         Provider.of<SelectedBuffalo>(context,
-                                                  listen: false)
-                                              .setSelectedBuffalo(firstBuffalo);
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => PromoteBuffalo(),
-                                            ),
-                                          );
+                                                listen: false)
+                                            .setSelectedBuffalo(firstBuffalo);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                PromoteBuffalo(),
+                                          ),
+                                        );
                                       },
                                       child: Column(
                                         children: [
@@ -346,7 +419,8 @@ class _HomeViewState extends State<HomeView> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => PromoteBuffalo(),
+                                              builder: (context) =>
+                                                  PromoteBuffalo(),
                                             ),
                                           );
                                         },
