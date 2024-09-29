@@ -10,14 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:buffalo_thai/providers/selected_farm_owner.dart';
 
-class EditFarmOwnerScreen extends StatefulWidget {
-  const EditFarmOwnerScreen({super.key});
+class EditFarm extends StatefulWidget {
+  const EditFarm({super.key});
 
   @override
-  _EditFarmOwnerScreenState createState() => _EditFarmOwnerScreenState();
+  _EditFarmState createState() => _EditFarmState();
 }
 
-class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
+class _EditFarmState extends State<EditFarm> {
   late TextEditingController _nameController = TextEditingController();
   late TextEditingController _lastNameController = TextEditingController();
   late TextEditingController _positionController = TextEditingController();

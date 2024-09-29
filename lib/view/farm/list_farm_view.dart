@@ -143,8 +143,11 @@ class _ListFarmViewState extends State<ListFarmView> {
                                   },
                                   child: Card(
                                     child: Center(
-                                      child: Text(
-                                          '00${index + 1} ${farms[index].farmName}'),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                                        child: Text(
+                                            '00${index + 1} ${farms[index].farmName}'),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -221,6 +224,15 @@ class _ListFarmViewState extends State<ListFarmView> {
                       label: 'ภาคใต้',
                       onPressed: () {
                         loadRegionData(context, fetchFarmsSouth);
+                      },
+                    ),
+                  ),
+                if (region != 'กลาง')
+                  Flexible(
+                    child: CustomButton(
+                      label: 'ภาคกลาง',
+                      onPressed: () {
+                        loadRegionData(context, fetchFarmsCentral);
                       },
                     ),
                   ),

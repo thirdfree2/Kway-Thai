@@ -7,7 +7,7 @@ import 'package:buffalo_thai/model/buffalo_model.dart';
 
 Future<List<BuffaloModel>> fetchBuffaloes() async {
   final response =
-      await http.get(Uri.parse('${ApiUtils.baseUrl}/api/buffalo/'));
+      await http.get(Uri.parse('${ApiUtils.baseUrl}/api/buffalo/?buffaloStatus=อนุมัติ'));
 
   if (response.statusCode == 200) {
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
@@ -23,8 +23,8 @@ Future<List<BuffaloModel>> fetchBuffaloes() async {
 }
 
 Future<List<BuffaloModel>> fetchBuffaloesPromoteBuff() async {
-  final response =
-      await http.get(Uri.parse('${ApiUtils.baseUrl}/api/buffalo/getPromoteBuff'));
+  final response = await http
+      .get(Uri.parse('${ApiUtils.baseUrl}/api/buffalo/getPromoteBuff'));
 
   if (response.statusCode == 200) {
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
@@ -41,7 +41,7 @@ Future<List<BuffaloModel>> fetchBuffaloesPromoteBuff() async {
 
 Future<List<BuffaloModel>> fetchBuffaloesByFarmId(String id) async {
   final response =
-      await http.get(Uri.parse('${ApiUtils.baseUrl}/api/buffalo/?farmId=$id'));
+      await http.get(Uri.parse('${ApiUtils.baseUrl}/api/buffalo/?farmId=$id&buffaloStatus=อนุมัติ'));
 
   if (response.statusCode == 200) {
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
@@ -67,16 +67,26 @@ Future<String> registerBuffalo({
   required String farmId,
   required String birthMethod,
   required String gender,
-  required String fatherName,
-  required String motherName,
-  required String fatherGrandfatherName,
-  required String fatherGrandmotherName,
-  required String motherGrandfatherName,
-  required String motherGrandmotherName,
-  required String fatherGreatGrandfatherName,
-  required String fatherGreatGrandmotherName,
-  required String motherGreatGrandfatherName,
-  required String motherGreatGrandmotherName,
+  required String? fatherName,
+  required String? fatherFarmName,
+  required String? motherName,
+  required String? motherFarmName,
+  required String? fatherGrandfatherName,
+  required String? fatherGrandfatherFarmName,
+  required String? fatherGrandmotherName,
+  required String? fatherGrandmotherFarmName,
+  required String? motherGrandfatherName,
+  required String? motherGrandfatherFarmName,
+  required String? motherGrandmotherName,
+  required String? motherGrandmotherFarmName,
+  required String? fatherGreatGrandfatherName,
+  required String? fatherGreatGrandfatherFarmName,
+  required String? fatherGreatGrandmotherName,
+  required String? fatherGreatGrandmotherFarmName,
+  required String? motherGreatGrandfatherName,
+  required String? motherGreatGrandfatherFarmName,
+  required String? motherGreatGrandmotherName,
+  required String? motherGreatGrandmotherFarmName,
   required String color,
   required String password,
   required File? imageFile,
@@ -93,16 +103,37 @@ Future<String> registerBuffalo({
   request.fields['gender'] = gender;
   request.fields['birthMethod'] = birthMethod;
   request.fields['color'] = color;
-  request.fields['fatherName'] = fatherName;
-  request.fields['motherName'] = motherName;
-  request.fields['fatherGrandfatherName'] = fatherGrandfatherName;
-  request.fields['fatherGrandmotherName'] = fatherGrandmotherName;
-  request.fields['motherGrandfatherName'] = motherGrandfatherName;
-  request.fields['motherGrandmotherName'] = motherGrandmotherName;
-  request.fields['fatherGreatGrandfatherName'] = fatherGreatGrandfatherName;
-  request.fields['fatherGreatGrandmotherName'] = fatherGreatGrandmotherName;
-  request.fields['motherGreatGrandfatherName'] = motherGreatGrandfatherName;
-  request.fields['motherGreatGrandmotherName'] = motherGreatGrandmotherName;
+
+  request.fields['fatherName'] = fatherName ?? '';
+  request.fields['fatherFarmName'] = fatherFarmName ?? '';
+
+  request.fields['motherName'] = motherName ?? '';
+  request.fields['motherFarmName'] = motherFarmName ?? '';
+
+  request.fields['fatherGrandfatherName'] = fatherGrandfatherName ?? '';
+  request.fields['fatherGrandfatherFarmName'] = fatherGrandfatherFarmName ?? '';
+
+  request.fields['fatherGrandmotherName'] = fatherGrandmotherName ?? '';
+  request.fields['fatherGrandmotherFarmName'] = fatherGrandmotherFarmName ?? '';
+
+  request.fields['motherGrandfatherName'] = motherGrandfatherName ?? '';
+  request.fields['motherGrandfatherFarmName'] = motherGrandfatherFarmName ?? '';
+
+  request.fields['motherGrandmotherName'] = motherGrandmotherName ?? '';
+  request.fields['motherGrandmotherFarmName'] = motherGrandmotherFarmName ?? '';
+
+  request.fields['fatherGreatGrandfatherName'] = fatherGreatGrandfatherName ?? '';
+  request.fields['fatherGreatGrandfatherFarmName'] = fatherGreatGrandfatherFarmName ?? '';
+
+  request.fields['fatherGreatGrandmotherName'] = fatherGreatGrandmotherName ?? '';
+  request.fields['fatherGreatGrandmotherFarmName'] = fatherGreatGrandmotherFarmName ?? '';
+
+  request.fields['motherGreatGrandfatherName'] = motherGreatGrandfatherName ?? '';
+  request.fields['motherGreatGrandfatherFarmName'] = motherGreatGrandfatherFarmName ?? '';
+
+  request.fields['fatherGreatGrandfatherName'] = fatherGreatGrandfatherName ?? '';
+  request.fields['motherGreatGrandmotherFarmName'] = motherGreatGrandmotherFarmName ?? '';
+
   request.fields['password'] = password;
 
   if (imageFile != null) {
@@ -154,8 +185,7 @@ Future<String> uploadImageBuffalo({
     final responseData = jsonDecode(response.body);
     if (responseData['message'] != null) {
       return responseData['message'].toString();
-    }
-    else {
+    } else {
       throw Exception('Farm data not found.');
     }
   } else {
@@ -164,7 +194,6 @@ Future<String> uploadImageBuffalo({
     );
   }
 }
-
 
 Future<String> uploadVideoBuffalo({
   required int buffaloId,
@@ -195,8 +224,7 @@ Future<String> uploadVideoBuffalo({
     final responseData = jsonDecode(response.body);
     if (responseData['message'] != null) {
       return responseData['message'].toString();
-    }
-    else {
+    } else {
       throw Exception('Farm data not found.');
     }
   } else {

@@ -200,6 +200,8 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                   Provider.of<SelectedFarmOwner>(context,
                                           listen: false)
                                       .setSelectedFarmOwner(
+                                    user.userId.toString() ?? '',
+                                    user.nickname ?? '',
                                     user.userImages[0].imageUrl,
                                     user.firstName,
                                     user.lastName,

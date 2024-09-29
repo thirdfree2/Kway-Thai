@@ -23,6 +23,7 @@ class _MainFarmOwnerState extends State<MainFarmOwner> {
     final selectFarmOwener = Provider.of<SelectedFarmOwner>(context);
     final farmerName = selectFarmOwener.farmOwner;
 
+    final nickname = selectFarmOwener.nickname;
     final imgUrl = selectFarmOwener.urlImg;
     final lastName = selectFarmOwener.lastName;
     final position = selectFarmOwener.position;
@@ -108,7 +109,7 @@ class _MainFarmOwnerState extends State<MainFarmOwner> {
                                   height: 10,
                                 ),
                                 StrokeText(
-                                  text: 'ชื่อเล่น : $farmerName',
+                                  text: 'ชื่อเล่น : $nickname',
                                   textStyle: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                         context, 34),
@@ -120,7 +121,7 @@ class _MainFarmOwnerState extends State<MainFarmOwner> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                 StrokeText(
+                                StrokeText(
                                   text: 'นามสกุล : $lastName',
                                   textStyle: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(

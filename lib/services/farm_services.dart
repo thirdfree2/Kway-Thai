@@ -43,7 +43,7 @@ Future<String> registerFarm({
 
 Future<List<FarmModel>> fetchFarmsByRegion(String region) async {
   final response = await http.get(
-      Uri.parse('${ApiUtils.baseUrl}/api/farm/byregionandname?region=$region'));
+      Uri.parse('${ApiUtils.baseUrl}/api/farm/byregionandname?farmStatus=อนุมัติ&region=$region'));
 
   if (response.statusCode == 200) {
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);

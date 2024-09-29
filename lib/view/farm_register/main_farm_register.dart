@@ -94,7 +94,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
         _showDialog(context, 'ลงทะเบียนสำเร็จ',
             'ข้อมูลฟาร์มและเจ้าของถูกลงทะเบียนเรียบร้อยแล้ว');
       } catch (e) {
-        _showSnackBar(context, 'เกิดข้อผิดพลาด: $e');
+        _showSnackBar(context, 'เกิดข้อผิดพลาด: พบชื่อฟาร์มนี้แล้ว');
       }
     }
   }
@@ -328,7 +328,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Row(

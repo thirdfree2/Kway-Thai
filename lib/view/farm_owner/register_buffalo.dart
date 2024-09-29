@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -48,6 +49,28 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
       TextEditingController();
   final TextEditingController _motherGreatGrandmotherNameController =
       TextEditingController();
+
+  final TextEditingController _fatherFarmNameController =
+      TextEditingController();
+  final TextEditingController _motherFarmNameController =
+      TextEditingController();
+  final TextEditingController _fatherGrandfatherFarmNameController =
+      TextEditingController();
+  final TextEditingController _fatherGrandmotherFarmNameController =
+      TextEditingController();
+  final TextEditingController _motherGrandfatherFarmNameController =
+      TextEditingController();
+  final TextEditingController _motherGrandmotherFarmNameController =
+      TextEditingController();
+  final TextEditingController _fatherGreatGrandfatherFarmNameController =
+      TextEditingController();
+  final TextEditingController _fatherGreatGrandmotherFarmNameController =
+      TextEditingController();
+  final TextEditingController _motherGreatGrandfatherFarmNameController =
+      TextEditingController();
+  final TextEditingController _motherGreatGrandmotherFarmNameController =
+      TextEditingController();
+
   final TextEditingController _currentFarmController = TextEditingController();
   File? _selectedImage;
 
@@ -55,7 +78,7 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
   String? _selectedBirthMethod;
 
   final List<String> _genderOptions = ['ผู้', 'เมีย'];
-  final List<String> _birthMethodOptions = ['ผสมเทียม', 'ธรรมชาติ'];
+  final List<String> _birthMethodOptions = ['ผสมเทียม', 'ผสมจริง'];
 
   @override
   void didChangeDependencies() {
@@ -138,15 +161,19 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                               flex: 1,
                               child: Column(
                                 children: [
-                                   AutoSizeText(
+                                  AutoSizeText(
                                     maxLines: 1,
                                     'ลงทะเบียนควายสำหรับฟาร์ม',
-                                    style: TextStyle(fontSize:  ScreenUtils.calculateFontSize(context, 8)),
+                                    style: TextStyle(
+                                        fontSize: ScreenUtils.calculateFontSize(
+                                            context, 8)),
                                   ),
                                   AutoSizeText(
                                     maxLines: 1,
                                     _farmNameController.text,
-                                    style:  TextStyle(fontSize:  ScreenUtils.calculateFontSize(context, 24)),
+                                    style: TextStyle(
+                                        fontSize: ScreenUtils.calculateFontSize(
+                                            context, 24)),
                                   ),
                                 ],
                               )),
@@ -215,17 +242,6 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                         },
                       ),
                       const SizedBox(height: 10),
-                      CustomTextFormField(
-                        controller: _breedingImageController,
-                        labelText: 'รูปถ่ายการผสมพันธุ์',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'กรุณากรอกข้อมูล';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 10),
                       Row(
                         children: [
                           Expanded(
@@ -267,157 +283,9 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: _fatherNameController,
-                              labelText: 'พ่อพันธุ์ชื่อ',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: _motherNameController,
-                              labelText: 'แม่พันธุ์ชื่อ',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
+                      const SizedBox(
+                        height: 15,
                       ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: _fatherGrandfatherNameController,
-                              labelText: 'ปู่ชื่อ',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: _fatherGrandmotherNameController,
-                              labelText: 'ย่าชื่อ',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: _fatherGreatGrandfatherNameController,
-                              labelText: 'ปู่ทวดชื่อ',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: _fatherGreatGrandmotherNameController,
-                              labelText: 'ย่าทวดชื่อ',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: _motherGrandfatherNameController,
-                              labelText: 'ตาชื่อ',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: _motherGrandmotherNameController,
-                              labelText: 'ยายชื่อ',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: _motherGreatGrandfatherNameController,
-                              labelText: 'ตาทวดชื่อ',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: _motherGreatGrandmotherNameController,
-                              labelText: 'ยายทวดชื่อ',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
                       CustomTextFormField(
                         controller: _currentFarmController,
                         labelText: 'สังกัดปัจจุบัน',
@@ -427,6 +295,76 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                           }
                           return null;
                         },
+                      ),
+                      const SizedBox(height: 15),
+                      FamilyForm(
+                        nameController: _fatherNameController,
+                        buffaloNameText: 'พ่อชื่อ',
+                        farmController: _fatherFarmNameController,
+                        buffaloHeadText: 'ข้อมูลพ่อ',
+                      ),
+                      const SizedBox(height: 15),
+                      FamilyForm(
+                        nameController: _motherNameController,
+                        buffaloNameText: 'แม่ชื่อ',
+                        farmController: _motherFarmNameController,
+                        buffaloHeadText: 'ข้อมูลแม่',
+                      ),
+                      const SizedBox(height: 15),
+                      FamilyForm(
+                        nameController: _fatherGrandfatherNameController,
+                        buffaloNameText: 'ปู่ชื่อ',
+                        farmController: _fatherGrandfatherFarmNameController,
+                        buffaloHeadText: 'ข้อมูลปู่',
+                      ),
+                      const SizedBox(height: 15),
+                      FamilyForm(
+                        nameController: _fatherGrandmotherNameController,
+                        buffaloNameText: 'ปู่ทวดชื่อ',
+                        farmController: _fatherGrandmotherFarmNameController,
+                        buffaloHeadText: 'ข้อมูลปู่ทวด',
+                      ),
+                      const SizedBox(height: 15),
+                      FamilyForm(
+                        nameController: _motherGrandfatherNameController,
+                        buffaloNameText: 'ย่าชื่อ',
+                        farmController: _motherGrandfatherFarmNameController,
+                        buffaloHeadText: 'ข้อมูลย่า',
+                      ),
+                      const SizedBox(height: 15),
+                      FamilyForm(
+                        nameController: _motherGrandmotherNameController,
+                        buffaloNameText: 'ย่าทวดชื่อ',
+                        farmController: _motherGrandmotherFarmNameController,
+                        buffaloHeadText: 'ข้อมูลย่าทวด',
+                      ),
+                      const SizedBox(height: 15),
+                      FamilyForm(
+                        nameController: _fatherGreatGrandfatherNameController,
+                        buffaloNameText: 'ตาชื่อ',
+                        farmController: _fatherGreatGrandfatherFarmNameController,
+                        buffaloHeadText: 'ข้อมูลตา',
+                      ),
+                      const SizedBox(height: 15),
+                      FamilyForm(
+                        nameController: _fatherGreatGrandmotherNameController,
+                        buffaloNameText: 'ยายชื่อ',
+                        farmController: _fatherGreatGrandmotherFarmNameController,
+                        buffaloHeadText: 'ข้อมูลยาย',
+                      ),
+                      const SizedBox(height: 15),
+                      FamilyForm(
+                        nameController: _motherGreatGrandfatherNameController,
+                        buffaloNameText: 'ตาทวดชื่อ',
+                        farmController: _motherGreatGrandfatherFarmNameController,
+                        buffaloHeadText: 'ข้อมูลตาทวด',
+                      ),
+                      const SizedBox(height: 15),
+                      FamilyForm(
+                        nameController: _motherGreatGrandmotherNameController,
+                        buffaloNameText: 'ยายทวดชื่อ',
+                        farmController: _motherGreatGrandmotherFarmNameController,
+                        buffaloHeadText: 'ข้อมูลยายทวด',
                       ),
                       const SizedBox(height: 30),
                       Container(
@@ -512,7 +450,22 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                   gender: _selectedGender ??
                                                       'ไม่ได้ระบุ',
                                                   color: _colorController.text,
-                                                  imageFile: _selectedImage, password: farmCode,
+                                                  imageFile: _selectedImage,
+                                                  password: farmCode,
+                                                  fatherFarmName: _fatherFarmNameController.text,
+                                                  motherFarmName: _motherFarmNameController.text,
+                                                  fatherGrandfatherFarmName: _fatherGrandfatherFarmNameController.text,
+                                                  fatherGrandmotherFarmName: _fatherGrandmotherFarmNameController.text,
+                                                  motherGrandfatherFarmName: _motherGrandfatherFarmNameController.text,
+                                                  motherGrandmotherFarmName: _motherGrandmotherFarmNameController.text,
+                                                  fatherGreatGrandfatherFarmName:
+                                                      _fatherGreatGrandfatherFarmNameController.text,
+                                                  fatherGreatGrandmotherFarmName:
+                                                      _fatherGreatGrandmotherFarmNameController.text,
+                                                  motherGreatGrandfatherFarmName:
+                                                      _motherGreatGrandfatherFarmNameController.text,
+                                                  motherGreatGrandmotherFarmName:
+                                                      _motherGreatGrandmotherFarmNameController.text,
                                                 );
 
                                                 print(
@@ -633,16 +586,20 @@ class CustomDatePickerTextFormField extends StatelessWidget {
   }) : super(key: key);
 
   Future<void> _selectDate(BuildContext context) async {
-    DateTime? pickedDate = await showDatePicker(
+    DateTime? pickedDate = await showRoundedDatePicker(
+      locale: const Locale("th", "TH"),
       context: context,
+      era: EraMode.BUDDHIST_YEAR,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1900), // Start year
-      lastDate: DateTime(2100), // End year
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
     );
 
     if (pickedDate != null) {
-      controller.text =
-          DateFormat('dd/MM/yyyy').format(pickedDate); // Format date as needed
+      final buddhistYear = pickedDate.year + 543;
+      controller.text = DateFormat('dd/MM/yyyy').format(
+        DateTime(buddhistYear, pickedDate.month, pickedDate.day),
+      );
     }
   }
 
@@ -654,9 +611,9 @@ class CustomDatePickerTextFormField extends StatelessWidget {
         border: const OutlineInputBorder(),
         labelText: labelText,
       ),
-      readOnly: true, // Make sure user cannot type manually
+      readOnly: true, // ป้องกันไม่ให้ผู้ใช้พิมพ์เอง
       onTap: () {
-        _selectDate(context); // Trigger the date picker on tap
+        _selectDate(context); // เรียก date picker เมื่อคลิกที่ TextFormField
       },
       validator: validator,
     );
@@ -730,6 +687,44 @@ class DropdownBuffalo extends StatelessWidget {
         labelText: name,
       ),
       validator: (value) => value == null ? 'กรุณาเลือกสถานะ' : null,
+    );
+  }
+}
+
+class FamilyForm extends StatelessWidget {
+  final TextEditingController nameController;
+  final TextEditingController farmController;
+  final String buffaloHeadText;
+  final String buffaloNameText;
+  const FamilyForm({
+    Key? key,
+    required this.nameController,
+    required this.farmController,
+    required this.buffaloHeadText,
+    required this.buffaloNameText,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(buffaloHeadText),
+          ],
+        ),
+        const SizedBox(height: 8),
+        CustomTextFormField(
+          controller: nameController,
+          labelText: buffaloNameText,
+        ),
+        const SizedBox(height: 8),
+        CustomTextFormField(
+          controller: farmController,
+          labelText: 'สังกัด',
+        ),
+      ],
     );
   }
 }
