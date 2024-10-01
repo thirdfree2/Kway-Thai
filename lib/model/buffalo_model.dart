@@ -66,6 +66,10 @@ class BuffaloModel {
   final int? motherId;
   @JsonKey(name: 'motherName', defaultValue: '')
   final String? motherName;
+
+  @JsonKey(name: 'bornAt', defaultValue: '')
+  final String? bornAt;
+  
   final int? currentFarmId;
   @JsonKey(name: 'farmId')
   final int farmId;
@@ -113,7 +117,7 @@ class BuffaloModel {
     this.motherName,
     this.gender,
     this.color,
-    this.buffaloClips, this.competitions, {
+    this.buffaloClips, this.competitions, this.bornAt, {
     required this.id,
     required this.name,
     required this.birthMethod,

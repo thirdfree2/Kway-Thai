@@ -384,76 +384,79 @@ class _HomeViewState extends State<HomeView> {
 
                           // ถ้าข้อมูลมีมากกว่า 1 buffalo ให้ข้ามรายการแรก
                           if (buffaloList.length > 1) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: List.generate(buffaloList.length - 1,
-                                  (index) {
-                                // เริ่มที่ index 1
-                                BuffaloModel buffalo = buffaloList[index + 1];
-
-                                final profileImage =
-                                    buffalo.buffaloImages.firstWhere(
-                                  (image) => image.isProfileImage,
-                                  orElse: () => BuffaloImageModel(
-                                    imageId: 0,
-                                    imagePath: 'https://placeholder.com/150',
-                                    isProfileImage: false,
-                                    createdAt: DateTime.now(),
-                                    updatedAt: DateTime.now(),
-                                    buffaloId: buffalo.id,
-                                  ),
-                                );
-
-                                final imageUrl = profileImage.imagePath;
-
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  child: Column(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          Provider.of<SelectedBuffalo>(context,
-                                                  listen: false)
-                                              .setSelectedBuffalo(buffalo);
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PromoteBuffalo(),
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List.generate(buffaloList.length - 1,
+                                    (index) {
+                                  // เริ่มที่ index 1
+                                  BuffaloModel buffalo = buffaloList[index + 1];
+                              
+                                  final profileImage =
+                                      buffalo.buffaloImages.firstWhere(
+                                    (image) => image.isProfileImage,
+                                    orElse: () => BuffaloImageModel(
+                                      imageId: 0,
+                                      imagePath: 'https://placeholder.com/150',
+                                      isProfileImage: false,
+                                      createdAt: DateTime.now(),
+                                      updatedAt: DateTime.now(),
+                                      buffaloId: buffalo.id,
+                                    ),
+                                  );
+                              
+                                  final imageUrl = profileImage.imagePath;
+                              
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5),
+                                    child: Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            Provider.of<SelectedBuffalo>(context,
+                                                    listen: false)
+                                                .setSelectedBuffalo(buffalo);
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PromoteBuffalo(),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: screenHeight * 0.09,
+                                            height: screenHeight * 0.09,
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
                                             ),
-                                          );
-                                        },
-                                        child: Container(
-                                          width: screenHeight * 0.09,
-                                          height: screenHeight * 0.09,
-                                          clipBehavior: Clip.antiAlias,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                          ),
-                                          child: Image.network(
-                                            imageUrl,
-                                            fit: BoxFit.cover,
+                                            child: Image.network(
+                                              imageUrl,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(height: 10),
-                                      StrokeText(
-                                        text: buffalo.name,
-                                        textStyle: TextStyle(
-                                          fontSize:
-                                              ScreenUtils.calculateFontSize(
-                                                  context, 10),
-                                          color: Colors.red,
+                                        SizedBox(height: 10),
+                                        StrokeText(
+                                          text: buffalo.name,
+                                          textStyle: TextStyle(
+                                            fontSize:
+                                                ScreenUtils.calculateFontSize(
+                                                    context, 10),
+                                            color: Colors.red,
+                                          ),
+                                          strokeColor: Colors.white,
+                                          strokeWidth: 3,
                                         ),
-                                        strokeColor: Colors.white,
-                                        strokeWidth: 3,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }),
+                                      ],
+                                    ),
+                                  );
+                                }),
+                              ),
                             );
                           } else {
                             return Text('No additional buffaloes found');

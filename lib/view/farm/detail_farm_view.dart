@@ -28,12 +28,15 @@ class _DetailFarmViewState extends State<DetailFarmView> {
   late Future<List<BuffaloModel>> futureBuffaloes;
   late Future<List<UserModel>> futureUser;
 
+  bool isEditMode = false;
+  final TextEditingController _farmNameController = TextEditingController();
   @override
   void initState() {
     super.initState();
     final selectedFarm = Provider.of<SelectedFarm>(context, listen: false);
     futureBuffaloes = fetchBuffaloesByFarmId(selectedFarm.farmId);
     futureUser = fetchUserByFarmId(selectedFarm.farmId);
+    _farmNameController.text = selectedFarm.farmNames ?? '';
   }
 
   @override
@@ -76,14 +79,51 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                 ),
               ],
             ),
-            StrokeText(
-              text: farmNames,
-              textStyle: TextStyle(
-                fontSize: ScreenUtils.calculateFontSize(context, 20),
-                color: Colors.red,
-              ),
-              strokeColor: Colors.white,
-              strokeWidth: 6,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: isEditMode
+                      ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: TextFormField(
+                            controller: _farmNameController,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'ชื่อฟาร์ม',
+                            ),
+                            onFieldSubmitted: (newValue) {
+                              setState(() {
+                                isEditMode = false;
+                              });
+                            },
+                          ),
+                      )
+                      : Center(
+                        child: StrokeText(
+                            text: farmNames,
+                            textStyle: TextStyle(
+                              fontSize:
+                                  ScreenUtils.calculateFontSize(context, 20),
+                              color: Colors.red,
+                            ),
+                            strokeColor: Colors.white,
+                            strokeWidth: 6,
+                          ),
+                      ),
+                ),
+                IconButton(
+                  icon: Icon(isEditMode
+                      ? Icons.check
+                      : Icons.edit), // แสดงไอคอนตามสถานะ
+                  onPressed: () {
+                    setState(() {
+                      isEditMode = !isEditMode;
+                    });
+                  },
+                ),
+              ],
             ),
             const SizedBox(height: 10),
             Expanded(
@@ -180,6 +220,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                             ],
                           ),
                         ),
+                        SizedBox(height: 10,),
                         Expanded(
                           child: GridView.builder(
                             gridDelegate:
@@ -234,7 +275,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                     ),
                                     const SizedBox(height: 5),
                                     StrokeText(
-                                      text: user.firstName,
+                                      text: user?.nickname ?? '',
                                       textStyle: TextStyle(
                                         fontSize: ScreenUtils.calculateFontSize(
                                             context, 12),

@@ -80,6 +80,26 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
   final List<String> _genderOptions = ['ผู้', 'เมีย'];
   final List<String> _birthMethodOptions = ['ผสมเทียม', 'ผสมจริง'];
 
+  Future<void> showLoadingDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // ป้องกันไม่ให้ปิด Dialog จากการคลิกนอกกรอบ
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Row(
+            children: [
+              const CircularProgressIndicator(),
+              const SizedBox(width: 20),
+              Text('กำลังโหลด...',
+                  style: TextStyle(
+                      fontSize: ScreenUtils.calculateFontSize(context, 16))),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -342,28 +362,32 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                       FamilyForm(
                         nameController: _fatherGreatGrandfatherNameController,
                         buffaloNameText: 'ตาชื่อ',
-                        farmController: _fatherGreatGrandfatherFarmNameController,
+                        farmController:
+                            _fatherGreatGrandfatherFarmNameController,
                         buffaloHeadText: 'ข้อมูลตา',
                       ),
                       const SizedBox(height: 15),
                       FamilyForm(
                         nameController: _fatherGreatGrandmotherNameController,
                         buffaloNameText: 'ยายชื่อ',
-                        farmController: _fatherGreatGrandmotherFarmNameController,
+                        farmController:
+                            _fatherGreatGrandmotherFarmNameController,
                         buffaloHeadText: 'ข้อมูลยาย',
                       ),
                       const SizedBox(height: 15),
                       FamilyForm(
                         nameController: _motherGreatGrandfatherNameController,
                         buffaloNameText: 'ตาทวดชื่อ',
-                        farmController: _motherGreatGrandfatherFarmNameController,
+                        farmController:
+                            _motherGreatGrandfatherFarmNameController,
                         buffaloHeadText: 'ข้อมูลตาทวด',
                       ),
                       const SizedBox(height: 15),
                       FamilyForm(
                         nameController: _motherGreatGrandmotherNameController,
                         buffaloNameText: 'ยายทวดชื่อ',
-                        farmController: _motherGreatGrandmotherFarmNameController,
+                        farmController:
+                            _motherGreatGrandmotherFarmNameController,
                         buffaloHeadText: 'ข้อมูลยายทวด',
                       ),
                       const SizedBox(height: 30),
@@ -404,7 +428,7 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                             String farmCode = _controller.text;
                                             if (farmCode.length == 6) {
                                               try {
-                                                Navigator.of(context).pop();
+                                                showLoadingDialog(context);
 
                                                 String result =
                                                     await registerBuffalo(
@@ -452,24 +476,43 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                   color: _colorController.text,
                                                   imageFile: _selectedImage,
                                                   password: farmCode,
-                                                  fatherFarmName: _fatherFarmNameController.text,
-                                                  motherFarmName: _motherFarmNameController.text,
-                                                  fatherGrandfatherFarmName: _fatherGrandfatherFarmNameController.text,
-                                                  fatherGrandmotherFarmName: _fatherGrandmotherFarmNameController.text,
-                                                  motherGrandfatherFarmName: _motherGrandfatherFarmNameController.text,
-                                                  motherGrandmotherFarmName: _motherGrandmotherFarmNameController.text,
+                                                  fatherFarmName:
+                                                      _fatherFarmNameController
+                                                          .text,
+                                                  motherFarmName:
+                                                      _motherFarmNameController
+                                                          .text,
+                                                  fatherGrandfatherFarmName:
+                                                      _fatherGrandfatherFarmNameController
+                                                          .text,
+                                                  fatherGrandmotherFarmName:
+                                                      _fatherGrandmotherFarmNameController
+                                                          .text,
+                                                  motherGrandfatherFarmName:
+                                                      _motherGrandfatherFarmNameController
+                                                          .text,
+                                                  motherGrandmotherFarmName:
+                                                      _motherGrandmotherFarmNameController
+                                                          .text,
                                                   fatherGreatGrandfatherFarmName:
-                                                      _fatherGreatGrandfatherFarmNameController.text,
+                                                      _fatherGreatGrandfatherFarmNameController
+                                                          .text,
                                                   fatherGreatGrandmotherFarmName:
-                                                      _fatherGreatGrandmotherFarmNameController.text,
+                                                      _fatherGreatGrandmotherFarmNameController
+                                                          .text,
                                                   motherGreatGrandfatherFarmName:
-                                                      _motherGreatGrandfatherFarmNameController.text,
+                                                      _motherGreatGrandfatherFarmNameController
+                                                          .text,
                                                   motherGreatGrandmotherFarmName:
-                                                      _motherGreatGrandmotherFarmNameController.text,
+                                                      _motherGreatGrandmotherFarmNameController
+                                                          .text,
+                                                  bornAt: _birthPlaceController
+                                                      .text,
                                                 );
-
+                                                Navigator.of(context).pop();
                                                 print(
                                                     'ลงทะเบียนฟาร์มสำเร็จ: $result');
+                                                Navigator.pop(context);
                                                 Navigator.pop(context);
                                                 Navigator.pop(context);
                                                 showDialog(

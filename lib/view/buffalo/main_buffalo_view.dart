@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stroke_text/stroke_text.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -15,6 +16,13 @@ class MainBuffaloView extends StatefulWidget {
 }
 
 class _MainBuffaloViewState extends State<MainBuffaloView> {
+  String _formatDateToBuddhist(DateTime date) {
+    // แปลงปี ค.ศ. เป็น พ.ศ. โดยบวกเพิ่ม 543
+    final thaiDate = DateTime(date.year + 543, date.month, date.day);
+    return DateFormat('dd MMMM yyyy', 'th_TH')
+        .format(thaiDate); // กำหนดฟอร์แมตวันที่
+  }
+
   @override
   Widget build(BuildContext context) {
     final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
@@ -85,8 +93,7 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                 Padding(
                   padding: EdgeInsets.only(left: screenWidth / 5),
                   child: Container(
-                    height:
-                        screenHeight * 0.75, // Adjusted to accommodate image
+                    height: screenHeight * 0.75,
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.5),
@@ -124,84 +131,89 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                               strokeWidth: 2,
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             height: screenHeight * 0.35,
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 10),
-                                  _buildInfoRow('ควายไทย เพศ ', buffalo?.gender ?? '',
-                                      Colors.blue[800]),
-                                  const SizedBox(height: 5),
+                            child: ListView(
+                              // เปลี่ยนจาก SingleChildScrollView เป็น ListView
+                              children: [
+                                const SizedBox(height: 10),
+                                if (buffalo?.gender != '')
+                                  _buildInfoRow('ควายไทย เพศ ',
+                                      buffalo?.gender ?? '', Colors.blue[800]),
+                                const SizedBox(height: 5),
+                                if (buffalo?.color != '')
+                                  _buildInfoRow('สี ', buffalo?.color ?? '',
+                                      Colors.black),
+                                const SizedBox(height: 5),
+                                if (buffalo?.birthDate != '')
                                   _buildInfoRow(
-                                      'สี ', buffalo?.color ?? '', Colors.black),
-                                  const SizedBox(height: 5),
-                                  _buildInfoRow(
-                                      'เกิด ',
-                                      buffalo?.birthDate?.toString() ?? '',
-                                      Colors.amber[800]),
-                                  const SizedBox(height: 5),
-                                  _buildInfoRow(
-                                      'เกิดที่ ลอก/ฟาร์ม ',
-                                      buffalo?.farm?.farmName ?? '',
-                                      Colors.green[800]),
-                                  const SizedBox(height: 5),
+                                    'เกิด ',
+                                    buffalo?.birthDate != ''
+                                        ? _formatDateToBuddhist(buffalo!
+                                            .birthDate!) // เรียกฟังก์ชันสำหรับแปลงวันที่
+                                        : '',
+                                    Colors.amber[800],
+                                  ),
+                                const SizedBox(height: 5),
+                                if (buffalo?.bornAt != '')
+                                  _buildInfoRow('เกิดที่ ลอก/ฟาร์ม ',
+                                      buffalo?.bornAt ?? '', Colors.green[800]),
+                                const SizedBox(height: 5),
+                                if (buffalo?.birthMethod != null)
                                   _buildInfoRow(
                                       'โดยวิธีการ ',
                                       buffalo?.birthMethod ?? '',
                                       Colors.red[800]),
-                                  const SizedBox(height: 5),
+                                const SizedBox(height: 5),
+                                if (buffalo?.fatherName != '')
                                   _buildInfoRow(
                                       'พ่อพันธุ์ คือ',
                                       buffalo?.fatherName ?? '',
                                       Colors.red[800]),
-                                  const SizedBox(height: 5),
+                                const SizedBox(height: 5),
+                                if (buffalo?.motherName != '')
                                   _buildInfoRow(
                                       'แม่พันธุ์ คือ ',
                                       buffalo?.motherName ?? '',
                                       Colors.red[800]),
-                                  const SizedBox(height: 5),
+                                const SizedBox(height: 5),
+                                if (buffalo?.fatherGrandfatherName != '')
                                   _buildInfoRow(
-                                      'สายเลือดทางปู่คือ ',
+                                      'สายเลือดทางปู่',
                                       buffalo?.fatherGrandfatherName ?? '',
                                       Colors.pink[800]),
-                                  const SizedBox(height: 5),
+                                const SizedBox(height: 5),
+                                if (buffalo?.fatherGrandmotherName != '')
                                   _buildInfoRow(
-                                      'สายเลือดทางย่าคือ ',
+                                      'สายเลือดทางย่า',
                                       buffalo?.fatherGrandmotherName ?? '',
                                       Colors.pink[800]),
-                                  const SizedBox(height: 5),
+                                const SizedBox(height: 5),
+                                if (buffalo?.motherGrandfatherName != '')
                                   _buildInfoRow(
-                                      'สายเลือดทางตาคือ ',
+                                      'สายเลือดทางตา',
                                       buffalo?.motherGrandfatherName ?? '',
                                       Colors.pink[800]),
-                                  const SizedBox(height: 5),
+                                const SizedBox(height: 5),
+                                if (buffalo?.motherGrandmotherName != '')
                                   _buildInfoRow(
-                                      'สายเลือดทางยายคือ ',
+                                      'สายเลือดทางยาย',
                                       buffalo?.motherGrandmotherName ?? '',
                                       Colors.pink[800]),
-                                  const SizedBox(height: 5),
-                                  const Text(
-                                    'สืบสายเลือดปู่ทวดคือ',
-                                    style: TextStyle(fontSize: 14),
-                                  ),
+                                const SizedBox(height: 5),
+                                if (buffalo?.fatherGreatGrandfatherName != '')
                                   _buildInfoRow(
-                                      'คือ ',
+                                      'สืบสายเลือดปู่ทวด',
                                       buffalo?.fatherGreatGrandfatherName ?? '',
                                       Colors.pink[800]),
-                                  const Text(
-                                    'สืบสายเลือดตาทวดคือ',
-                                    style: TextStyle(fontSize: 14),
-                                  ),
+                                const SizedBox(height: 5),
+                                if (buffalo?.motherGreatGrandfatherName != '')
                                   _buildInfoRow(
-                                      'คือ ',
+                                      'สืบสายเลือดตาทวด',
                                       buffalo?.motherGreatGrandfatherName ?? '',
                                       Colors.pink[800]),
-                                  const SizedBox(height: 10),
-                                ],
-                              ),
+                                const SizedBox(height: 10),
+                              ],
                             ),
                           ),
                         ],
@@ -231,13 +243,20 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    Card(
-                      color: Colors.green[500],
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          buffalo?.farm?.farmName ?? 'Not Found 404',
-                          style: const TextStyle(color: Colors.white),
+                    Container(
+                      width: 150,
+                      child: Card(
+                        color: Colors.green[500],
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            buffalo?.farm?.farmName ?? 'Not Found 404',
+                            style: const TextStyle(color: Colors.white),
+                            maxLines: 2, // กำหนดจำนวนบรรทัดสูงสุดของข้อความ
+                            overflow: TextOverflow
+                                .ellipsis, // ทำให้ข้อความที่ยาวเกินไปแสดง ... (ellipsis)
+                          ),
                         ),
                       ),
                     ),
@@ -267,28 +286,34 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
   }
 
   Widget _buildInfoRow(String label, String value, Color? color) {
-    return Row(
-      children: [
-        AutoSizeText(
-          label,
-          maxFontSize: 13,
-          maxLines: 2,
-          style:
-              TextStyle(fontSize: ScreenUtils.calculateFontSize(context, 13)),
-        ),
-        AutoSizeText(
-          value,
-          maxFontSize: 13,
-          maxLines: 2,
-          style: TextStyle(
-            color: color,
-            fontSize: ScreenUtils.calculateFontSize(context, 13),
-            decoration: TextDecoration.underline,
-            decorationColor: color,
-            decorationThickness: 2,
+    return Expanded(
+      child: Row(
+        children: [
+          Expanded(
+            child: AutoSizeText(
+              label,
+              maxFontSize: 13,
+              maxLines: 2,
+              style: TextStyle(
+                  fontSize: ScreenUtils.calculateFontSize(context, 13)),
+            ),
           ),
-        ),
-      ],
+          Expanded(
+            child: AutoSizeText(
+              value,
+              maxFontSize: 13,
+              maxLines: 2,
+              style: TextStyle(
+                color: color,
+                fontSize: ScreenUtils.calculateFontSize(context, 13),
+                decoration: TextDecoration.underline,
+                decorationColor: color,
+                decorationThickness: 2,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

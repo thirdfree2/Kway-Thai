@@ -59,6 +59,43 @@ Future<List<FarmModel>> fetchFarmsByRegion(String region) async {
   }
 }
 
+Future<String> updateFarm({
+  required String farmName,
+  // required String region,
+  // required String lineId,
+  // required String phoneNumber,
+  // required String password,
+  required String farmId,
+}) async {
+  String url = '${ApiUtils.baseUrl}/api/farm/$farmId';
+
+  final Map<String, dynamic> requestData = {
+    'farmName': farmName,
+    // 'password': password,
+  };
+
+  final response = await http.post(
+    Uri.parse(url),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(requestData),
+  );
+  if (response.statusCode == 201) {
+    final responseData = jsonDecode(response.body);
+    print(responseData);
+    if (responseData['message'] != null &&
+        responseData['message'] != null) {
+      return responseData['message'].toString(); // ส่งคืนค่า farmId
+    } else {
+      throw Exception('เบอร์โทรศัพท์ถูกใช้แล้ว');
+    }
+  } else {
+    throw Exception(
+        'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}');
+  }
+}
+
 Future<List<FarmModel>> fetchFarmsNorth() => fetchFarmsByRegion('เหนือ');
 Future<List<FarmModel>> fetchFarmsNortheast() => fetchFarmsByRegion('อีสาน');
 Future<List<FarmModel>> fetchFarmsCentral() => fetchFarmsByRegion('กลาง');

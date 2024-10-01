@@ -86,6 +86,26 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
     );
   }
 
+  Future<void> showLoadingDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // ป้องกันไม่ให้ปิด Dialog จากการคลิกนอกกรอบ
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Row(
+            children: [
+              const CircularProgressIndicator(),
+              const SizedBox(width: 20),
+              Text('กำลังโหลด...',
+                  style: TextStyle(
+                      fontSize: ScreenUtils.calculateFontSize(context, 16))),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -305,6 +325,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                       final imageFile = _selectedImage;
                                       if (imageFile != null) {
                                         try {
+                                          showLoadingDialog(context);
                                           // แสดง dialog เพื่อกรอกรหัส 6 หลัก
                                           await _showCodeDialog();
 
@@ -328,7 +349,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                               password:
                                                   _passwordController.text,
                                             );
-
+                                             Navigator.pop(context);
                                             // ทำการ pop หน้าหลังจากเสร็จสิ้นการทำงาน
                                             Navigator.pop(context);
                                             Navigator.pushReplacement(

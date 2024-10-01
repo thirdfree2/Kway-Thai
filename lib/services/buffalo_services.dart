@@ -87,6 +87,7 @@ Future<String> registerBuffalo({
   required String? motherGreatGrandfatherFarmName,
   required String? motherGreatGrandmotherName,
   required String? motherGreatGrandmotherFarmName,
+  required String bornAt,
   required String color,
   required String password,
   required File? imageFile,
@@ -103,6 +104,7 @@ Future<String> registerBuffalo({
   request.fields['gender'] = gender;
   request.fields['birthMethod'] = birthMethod;
   request.fields['color'] = color;
+  request.fields['bornAt'] = bornAt;
 
   request.fields['fatherName'] = fatherName ?? '';
   request.fields['fatherFarmName'] = fatherFarmName ?? '';
@@ -131,7 +133,7 @@ Future<String> registerBuffalo({
   request.fields['motherGreatGrandfatherName'] = motherGreatGrandfatherName ?? '';
   request.fields['motherGreatGrandfatherFarmName'] = motherGreatGrandfatherFarmName ?? '';
 
-  request.fields['fatherGreatGrandfatherName'] = fatherGreatGrandfatherName ?? '';
+  request.fields['motherGreatGrandmotherName'] = motherGreatGrandmotherName ?? '';
   request.fields['motherGreatGrandmotherFarmName'] = motherGreatGrandmotherFarmName ?? '';
 
   request.fields['password'] = password;
