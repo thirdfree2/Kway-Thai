@@ -53,6 +53,7 @@ dependencies:
   http_parser: ^4.0.0
   auto_size_text: ^3.0.0
   intl: ^0.19.0
+  url_launcher: ^6.3.0
   
 
 dev_dependencies:
@@ -96,6 +97,7 @@ flutter:
     - assets/images/banner-3.jpg
     - assets/images/banner-4.jpg
     - assets/images/banner-5.jpg
+    - assets/images/buffalo.png
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

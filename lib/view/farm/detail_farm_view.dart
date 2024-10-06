@@ -1,3 +1,4 @@
+import 'package:buffalo_thai/services/farm_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stroke_text/stroke_text.dart';
@@ -27,9 +28,11 @@ class DetailFarmView extends StatefulWidget {
 class _DetailFarmViewState extends State<DetailFarmView> {
   late Future<List<BuffaloModel>> futureBuffaloes;
   late Future<List<UserModel>> futureUser;
+   bool isLoading = false;
 
   bool isEditMode = false;
   final TextEditingController _farmNameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -37,6 +40,123 @@ class _DetailFarmViewState extends State<DetailFarmView> {
     futureBuffaloes = fetchBuffaloesByFarmId(selectedFarm.farmId);
     futureUser = fetchUserByFarmId(selectedFarm.farmId);
     _farmNameController.text = selectedFarm.farmNames ?? '';
+  }
+
+  Future<void> _showPasswordDialog(BuildContext context) async {
+    final selectedFarm = Provider.of<SelectedFarm>(context, listen: false);
+    String _passwordController = ''; // ตัวแปรสำหรับเก็บรหัสผ่าน
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('ใส่รหัสผ่าน 6 หลัก'),
+              content: isLoading // ตรวจสอบสถานะ isLoading
+                  ? const Center(
+                      child:
+                          CircularProgressIndicator(), // แสดง Loading ขณะกำลังอัปเดตข้อมูล
+                    )
+                  : TextField(
+                      maxLength: 6,
+                      keyboardType: TextInputType.number,
+                      onChanged: (value) {
+                        _passwordController = value;
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'กรุณาใส่รหัสผ่าน 6 หลัก',
+                      ),
+                    ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('ยกเลิก'),
+                  onPressed: () {
+                    if (!isLoading) {
+                      Navigator.of(context)
+                          .pop(); // ปิด Dialog หากไม่อยู่ในสถานะการโหลด
+                    }
+                  },
+                ),
+                TextButton(
+                  child: const Text('ยืนยัน'),
+                  onPressed: () async {
+                    if (_passwordController.length == 6) {
+                      setState(() {
+                        isLoading = true; // เปิดการโหลด
+                      });
+
+                      try {
+                        final response = await updateFarm(
+                          farmName: _farmNameController.text,
+                          farmId: selectedFarm.farmId.toString(),
+                          password: _passwordController,
+                        );
+
+                        if (response == "Farm updated successfully") {
+                          Navigator.of(context).pop(); // ปิด Dialog
+                          setState(() {
+                            isLoading = false; // ปิดการโหลด
+                          });
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                  'อัปเดตข้อมูลฟาร์มสำเร็จ ชื่อคอก/ฟาร์มจะเปลี่ยนภายหลัง'),
+                              backgroundColor: Colors.green,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => DetailFarmView(),
+                            ),
+                          );
+                        } else {
+                          setState(() {
+                            isLoading = false; // ปิดการโหลด
+                          });
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content:
+                                  Text('เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง'),
+                              backgroundColor: Colors.red,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      } catch (e) {
+                        setState(() {
+                          isLoading = false; // ปิดการโหลดในกรณีเกิดข้อผิดพลาด
+                        });
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง'),
+                            backgroundColor: Colors.red,
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('กรุณาใส่รหัสให้ครบ 6 หลัก'),
+                          backgroundColor: Colors.red,
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -86,8 +206,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                 Expanded(
                   child: isEditMode
                       ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        child: TextFormField(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: TextFormField(
                             controller: _farmNameController,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
@@ -99,17 +220,20 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                               });
                             },
                           ),
-                      )
-                      : Center(
-                        child: StrokeText(
-                            text: farmNames,
-                            textStyle: TextStyle(
-                              fontSize:
-                                  ScreenUtils.calculateFontSize(context, 20),
-                              color: Colors.red,
+                        )
+                      : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 22),
+                        child: Center(
+                            child: StrokeText(
+                              text: farmNames,
+                              textStyle: TextStyle(
+                                fontSize:
+                                    ScreenUtils.calculateFontSize(context, 20),
+                                color: Colors.red,
+                              ),
+                              strokeColor: Colors.white,
+                              strokeWidth: 6,
                             ),
-                            strokeColor: Colors.white,
-                            strokeWidth: 6,
                           ),
                       ),
                 ),
@@ -118,11 +242,24 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                       ? Icons.check
                       : Icons.edit), // แสดงไอคอนตามสถานะ
                   onPressed: () {
-                    setState(() {
-                      isEditMode = !isEditMode;
-                    });
+                    if (isEditMode) {
+                      // เมื่อเป็นสถานะ check (isEditMode = true) ให้แสดง dialog
+                      setState(() {
+                        isEditMode = false;
+                      });
+
+                      // เรียก dialog หลังจาก setState เสร็จสมบูรณ์
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        _showPasswordDialog(context);
+                      });
+                    } else {
+                      // เมื่อเป็นสถานะ edit (isEditMode = false) ให้เปลี่ยนเป็น edit mode
+                      setState(() {
+                        isEditMode = true;
+                      });
+                    }
                   },
-                ),
+                )
               ],
             ),
             const SizedBox(height: 10),
@@ -220,7 +357,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Expanded(
                           child: GridView.builder(
                             gridDelegate:

@@ -8,6 +8,8 @@ class BuffaloClipModel {
   final int id;
   @JsonKey(name: 'imageUrl', defaultValue: '')
   final String imageUrl;
+    @JsonKey(name: 'url', defaultValue: '')
+  final String url;
   @JsonKey(name: 'title' ,  defaultValue: '')
   final String title;
   @JsonKey(name: 'createdAt')
@@ -17,7 +19,7 @@ class BuffaloClipModel {
   @JsonKey(name: 'buffaloId',  defaultValue: 0)
   final int buffaloId;
 
-  BuffaloClipModel({
+  BuffaloClipModel(this.url, {
     required this.id,
     required this.imageUrl,
     required this.title,

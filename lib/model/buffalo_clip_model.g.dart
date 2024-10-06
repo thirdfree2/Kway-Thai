@@ -8,6 +8,7 @@ part of 'buffalo_clip_model.dart';
 
 BuffaloClipModel _$BuffaloClipModelFromJson(Map<String, dynamic> json) =>
     BuffaloClipModel(
+      json['url'] as String? ?? '',
       id: (json['id'] as num).toInt(),
       imageUrl: json['imageUrl'] as String? ?? '',
       title: json['title'] as String? ?? '',
@@ -20,6 +21,7 @@ Map<String, dynamic> _$BuffaloClipModelToJson(BuffaloClipModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'imageUrl': instance.imageUrl,
+      'url': instance.url,
       'title': instance.title,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),

@@ -6,21 +6,78 @@ import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:buffalo_thai/model/buffalo_model.dart';
 
 Future<List<BuffaloModel>> fetchBuffaloes() async {
-  final response =
-      await http.get(Uri.parse('${ApiUtils.baseUrl}/api/buffalo/?buffaloStatus=อนุมัติ'));
+  try {
+    final response = await http.get(
+      Uri.parse('${ApiUtils.baseUrl}/api/buffalo/?buffaloStatus=อนุมัติ'),
+    );
 
-  if (response.statusCode == 200) {
-    Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-    if (jsonResponse['response_status'] == 'SUCCESS') {
-      List<dynamic> farmsList = jsonResponse['data'];
-      return farmsList.map((json) => BuffaloModel.fromJson(json)).toList();
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['response_status'] == 'SUCCESS') {
+        List<dynamic> farmsList = jsonResponse['data'];
+        print(farmsList);
+        return farmsList.map((json) => BuffaloModel.fromJson(json)).toList();
+      } else {
+        throw Exception('API response status is not SUCCESS');
+      }
     } else {
-      throw Exception('API response status is not SUCCESS');
+      throw Exception('Failed to load buffaloes: ${response.statusCode}');
     }
-  } else {
-    throw Exception('Failed to load buffaloes');
+  } catch (e) {
+    // ใช้ catch เพื่อจัดการข้อผิดพลาดและแสดงข้อความข้อผิดพลาด
+    throw Exception('Failed to load buffaloes: $e');
   }
 }
+
+
+Future<List<BuffaloModel>> fetchHistoryBuffaloes() async {
+  try {
+    final response = await http.get(
+      Uri.parse('${ApiUtils.baseUrl}/api/buffalo/history/?buffaloStatus=อนุมัติ&farmId=-1'),
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['response_status'] == 'SUCCESS') {
+        List<dynamic> farmsList = jsonResponse['data'];
+        print(farmsList);
+        return farmsList.map((json) => BuffaloModel.fromJson(json)).toList();
+      } else {
+        throw Exception('API response status is not SUCCESS');
+      }
+    } else {
+      throw Exception('Failed to load buffaloes: ${response.statusCode}');
+    }
+  } catch (e) {
+    // ใช้ catch เพื่อจัดการข้อผิดพลาดและแสดงข้อความข้อผิดพลาด
+    throw Exception('Failed to load buffaloes: $e');
+  }
+}
+
+Future<List<BuffaloModel>> fetchAllBuffaloes() async {
+  try {
+    final response = await http.get(
+      Uri.parse('${ApiUtils.baseUrl}/api/buffalo/?buffaloStatus=อนุมัติ&farmId=-1'),
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['response_status'] == 'SUCCESS') {
+        List<dynamic> farmsList = jsonResponse['data'];
+        print(farmsList);
+        return farmsList.map((json) => BuffaloModel.fromJson(json)).toList();
+      } else {
+        throw Exception('API response status is not SUCCESS');
+      }
+    } else {
+      throw Exception('Failed to load buffaloes: ${response.statusCode}');
+    }
+  } catch (e) {
+    // ใช้ catch เพื่อจัดการข้อผิดพลาดและแสดงข้อความข้อผิดพลาด
+    throw Exception('Failed to load buffaloes: $e');
+  }
+}
+
 
 Future<List<BuffaloModel>> fetchBuffaloesPromoteBuff() async {
   final response = await http
@@ -202,7 +259,7 @@ Future<String> uploadVideoBuffalo({
   required File? imageFile,
   required String password,
   required String farmId,
-  required String url,
+  required String videoUrl,
   required String title,
 }) async {
   const String url = '${ApiUtils.baseUrl}/api/buffalo/buffaloClips/';
@@ -210,7 +267,7 @@ Future<String> uploadVideoBuffalo({
   final request = http.MultipartRequest('POST', uri);
 
   request.fields['buffaloId'] = buffaloId.toString();
-  request.fields['url'] = url;
+  request.fields['url'] = videoUrl;
   request.fields['title'] = title;
   request.fields['password'] = password;
   request.fields['farmId'] = farmId.toString();
@@ -226,6 +283,104 @@ Future<String> uploadVideoBuffalo({
     final responseData = jsonDecode(response.body);
     if (responseData['message'] != null) {
       return responseData['message'].toString();
+    } else {
+      throw Exception('Farm data not found.');
+    }
+  } else {
+    throw Exception(
+      'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}',
+    );
+  }
+}
+
+
+Future<String> updateBuffalo({
+  required String name,
+   required String buffaloId,
+  required String birthDate,
+  required String farmId,
+  required String birthMethod,
+  required String gender,
+  required String? fatherName,
+  required String? fatherFarmName,
+  required String? motherName,
+  required String? motherFarmName,
+  required String? fatherGrandfatherName,
+  required String? fatherGrandfatherFarmName,
+  required String? fatherGrandmotherName,
+  required String? fatherGrandmotherFarmName,
+  required String? motherGrandfatherName,
+  required String? motherGrandfatherFarmName,
+  required String? motherGrandmotherName,
+  required String? motherGrandmotherFarmName,
+  required String? fatherGreatGrandfatherName,
+  required String? fatherGreatGrandfatherFarmName,
+  required String? fatherGreatGrandmotherName,
+  required String? fatherGreatGrandmotherFarmName,
+  required String? motherGreatGrandfatherName,
+  required String? motherGreatGrandfatherFarmName,
+  required String? motherGreatGrandmotherName,
+  required String? motherGreatGrandmotherFarmName,
+  required String bornAt,
+  required String color,
+  required String password,
+}) async {
+  String url = '${ApiUtils.baseUrl}/api/buffalo/update/$buffaloId';
+  final uri = Uri.parse(url);
+  final request = http.MultipartRequest('PUT', uri);
+
+  DateTime? selectedDate = DateFormat('dd/MM/yyyy').parse(birthDate);
+  String formattedDate = formatDateForBackend(selectedDate);
+  request.fields['name'] = name;
+  request.fields['birthDate'] = formattedDate;
+  request.fields['farmId'] = Uri.encodeComponent(farmId);
+  request.fields['gender'] = gender;
+  request.fields['birthMethod'] = birthMethod;
+  request.fields['color'] = color;
+  request.fields['bornAt'] = bornAt;
+
+  request.fields['fatherName'] = fatherName ?? '';
+  request.fields['fatherFarmName'] = fatherFarmName ?? '';
+
+  request.fields['motherName'] = motherName ?? '';
+  request.fields['motherFarmName'] = motherFarmName ?? '';
+
+  request.fields['fatherGrandfatherName'] = fatherGrandfatherName ?? '';
+  request.fields['fatherGrandfatherFarmName'] = fatherGrandfatherFarmName ?? '';
+
+  request.fields['fatherGrandmotherName'] = fatherGrandmotherName ?? '';
+  request.fields['fatherGrandmotherFarmName'] = fatherGrandmotherFarmName ?? '';
+
+  request.fields['motherGrandfatherName'] = motherGrandfatherName ?? '';
+  request.fields['motherGrandfatherFarmName'] = motherGrandfatherFarmName ?? '';
+
+  request.fields['motherGrandmotherName'] = motherGrandmotherName ?? '';
+  request.fields['motherGrandmotherFarmName'] = motherGrandmotherFarmName ?? '';
+
+  request.fields['fatherGreatGrandfatherName'] = fatherGreatGrandfatherName ?? '';
+  request.fields['fatherGreatGrandfatherFarmName'] = fatherGreatGrandfatherFarmName ?? '';
+
+  request.fields['fatherGreatGrandmotherName'] = fatherGreatGrandmotherName ?? '';
+  request.fields['fatherGreatGrandmotherFarmName'] = fatherGreatGrandmotherFarmName ?? '';
+
+  request.fields['motherGreatGrandfatherName'] = motherGreatGrandfatherName ?? '';
+  request.fields['motherGreatGrandfatherFarmName'] = motherGreatGrandfatherFarmName ?? '';
+
+  request.fields['motherGreatGrandmotherName'] = motherGreatGrandmotherName ?? '';
+  request.fields['motherGreatGrandmotherFarmName'] = motherGreatGrandmotherFarmName ?? '';
+
+  request.fields['password'] = password;
+
+  // Send the request
+  final streamedResponse = await request.send();
+  final response = await http.Response.fromStream(streamedResponse);
+
+  if (response.statusCode == 200) {
+    final responseData = jsonDecode(response.body);
+    if (responseData['message'] != null &&
+        responseData['message'] != null) {
+          print(responseData);
+      return responseData['message'].toString(); // Return the farmId
     } else {
       throw Exception('Farm data not found.');
     }

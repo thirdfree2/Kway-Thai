@@ -16,60 +16,87 @@ class BuffaloModel {
   final DateTime? birthDate;
   @JsonKey(name: 'birthMethod', defaultValue: '')
   final String birthMethod;
-
   @JsonKey(name: 'gender', defaultValue: '')
   final String gender;
-
   @JsonKey(name: 'color', defaultValue: '')
   final String color;
 
   @JsonKey(name: 'fatherId', defaultValue: null)
   final int? fatherId;
   @JsonKey(name: 'fatherName', defaultValue: '')
-  final String? fatherName;
+  final String fatherName;
+  @JsonKey(name: 'fatherFarmName', defaultValue: '')
+  final String fatherFarmName;
 
   @JsonKey(name: 'fatherGrandfatherId', defaultValue: null)
   final int? fatherGrandfatherId;
   @JsonKey(name: 'fatherGrandfatherName', defaultValue: '')
-  final String? fatherGrandfatherName;
+  final String fatherGrandfatherName;
+  @JsonKey(name: 'fatherGrandfatherFarmName', defaultValue: '')
+  final String fatherGrandfatherFarmName;
 
   @JsonKey(name: 'fatherGrandmotherId', defaultValue: null)
   final int? fatherGrandmotherId;
   @JsonKey(name: 'fatherGrandmotherName', defaultValue: '')
-  final String? fatherGrandmotherName;
+  final String fatherGrandmotherName;
+  @JsonKey(name: 'fatherGrandmotherFarmName', defaultValue: '')
+  final String fatherGrandmotherFarmName;
+
+  @JsonKey(name: 'motherId', defaultValue: null)
+  final int? motherId;
+  @JsonKey(name: 'motherName', defaultValue: '')
+  final String motherName;
+  @JsonKey(name: 'motherFarmName', defaultValue: '')
+  final String motherFarmName;
 
   @JsonKey(name: 'motherGrandfatherId', defaultValue: null)
   final int? motherGrandfatherId;
   @JsonKey(name: 'motherGrandfatherName', defaultValue: '')
-  final String? motherGrandfatherName;
+  final String motherGrandfatherName;
+  @JsonKey(name: 'motherGrandfatherFarmName', defaultValue: '')
+  final String motherGrandfatherFarmName;
 
   @JsonKey(name: 'motherGrandmotherId', defaultValue: null)
   final int? motherGrandmotherId;
   @JsonKey(name: 'motherGrandmotherName', defaultValue: '')
-  final String? motherGrandmotherName;
+  final String motherGrandmotherName;
+  @JsonKey(name: 'motherGrandmotherFarmName', defaultValue: '')
+  final String motherGrandmotherFarmName;
 
   @JsonKey(name: 'fatherGreatGrandfatherId', defaultValue: null)
   final int? fatherGreatGrandfatherId;
   @JsonKey(name: 'fatherGreatGrandfatherName', defaultValue: '')
-  final String? fatherGreatGrandfatherName;
+  final String fatherGreatGrandfatherName;
+  @JsonKey(name: 'fatherGreatGrandfatherFarmName', defaultValue: '')
+  final String fatherGreatGrandfatherFarmName;
 
   @JsonKey(name: 'fatherGreatGrandmotherId', defaultValue: null)
   final int? fatherGreatGrandmotherId;
+  @JsonKey(name: 'fatherGreatGrandmotherName', defaultValue: '')
+  final String fatherGreatGrandmotherName;
+  @JsonKey(name: 'fatherGreatGrandmotherFarmName', defaultValue: '')
+  final String fatherGreatGrandmotherFarmName;
+
+  @JsonKey(name: 'motherGreatGrandfatherId', defaultValue: null)
+  final int? motherGreatGrandfatherId;
   @JsonKey(name: 'motherGreatGrandfatherName', defaultValue: '')
-  final String? motherGreatGrandfatherName;
+  final String motherGreatGrandfatherName;
+  @JsonKey(name: 'motherGreatGrandfatherFarmName', defaultValue: '')
+  final String motherGreatGrandfatherFarmName;
 
   @JsonKey(name: 'motherGreatGrandmotherId', defaultValue: null)
   final int? motherGreatGrandmotherId;
   @JsonKey(name: 'motherGreatGrandmotherName', defaultValue: '')
-  final String? motherGreatGrandmotherName;
-  @JsonKey(name: 'motherId', defaultValue: null)
-  final int? motherId;
-  @JsonKey(name: 'motherName', defaultValue: '')
-  final String? motherName;
+  final String motherGreatGrandmotherName;
+  @JsonKey(name: 'motherGreatGrandmotherFarmName', defaultValue: '')
+  final String motherGreatGrandmotherFarmName;
 
+  @JsonKey(name: 'buffaloStatus', defaultValue: '')
+  final String buffaloStatus;
   @JsonKey(name: 'bornAt', defaultValue: '')
   final String? bornAt;
-  
+
+  @JsonKey(name: 'currentFarmId', defaultValue: null)
   final int? currentFarmId;
   @JsonKey(name: 'farmId')
   final int farmId;
@@ -78,7 +105,9 @@ class BuffaloModel {
   @JsonKey(name: 'updatedAt')
   final DateTime updatedAt;
 
+  @JsonKey(name: 'farm')
   final FarmModel? farm;
+  @JsonKey(name: 'currentFarm')
   final FarmModel? currentFarm;
   final BuffaloModel? father;
   final BuffaloModel? mother;
@@ -99,31 +128,44 @@ class BuffaloModel {
   final List<CompetitionsModel> competitions;
 
   BuffaloModel(
-    this.fatherName,
-    this.fatherGrandfatherId,
-    this.fatherGrandfatherName,
-    this.fatherGrandmotherId,
-    this.fatherGrandmotherName,
-    this.motherGrandfatherId,
-    this.motherGrandfatherName,
-    this.motherGrandmotherId,
-    this.motherGrandmotherName,
-    this.fatherGreatGrandfatherId,
-    this.fatherGreatGrandfatherName,
-    this.fatherGreatGrandmotherId,
-    this.motherGreatGrandfatherName,
-    this.motherGreatGrandmotherId,
-    this.motherGreatGrandmotherName,
-    this.motherName,
-    this.gender,
-    this.color,
-    this.buffaloClips, this.competitions, this.bornAt, {
+    this.fatherFarmName,
+    this.fatherGrandfatherFarmName,
+    this.fatherGrandmotherFarmName,
+    this.motherFarmName,
+    this.motherGrandfatherFarmName,
+    this.motherGrandmotherFarmName,
+    this.fatherGreatGrandfatherFarmName,
+    this.fatherGreatGrandmotherFarmName,
+    this.motherGreatGrandfatherFarmName,
+    this.motherGreatGrandmotherFarmName, {
     required this.id,
     required this.name,
     required this.birthMethod,
     this.birthDate,
     this.fatherId,
+    required this.fatherName,
+    this.fatherGrandfatherId,
+    required this.fatherGrandfatherName,
+    this.fatherGrandmotherId,
+    required this.fatherGrandmotherName,
     this.motherId,
+    required this.motherName,
+    this.motherGrandfatherId,
+    required this.motherGrandfatherName,
+    this.motherGrandmotherId,
+    required this.motherGrandmotherName,
+    this.fatherGreatGrandfatherId,
+    required this.fatherGreatGrandfatherName,
+    this.fatherGreatGrandmotherId,
+    required this.fatherGreatGrandmotherName,
+    this.motherGreatGrandfatherId,
+    required this.motherGreatGrandfatherName,
+    this.motherGreatGrandmotherId,
+    required this.motherGreatGrandmotherName,
+    required this.gender,
+    required this.color,
+    required this.buffaloStatus,
+    this.bornAt,
     this.currentFarmId,
     required this.farmId,
     required this.createdAt,
@@ -138,7 +180,9 @@ class BuffaloModel {
     this.greatGrandmother,
     this.buffaloImages = const [],
     this.buffaloBreedingImages = const [],
+    this.buffaloClips = const [],
     this.histories = const [],
+    this.competitions = const [],
   });
 
   factory BuffaloModel.fromJson(Map<String, dynamic> json) =>

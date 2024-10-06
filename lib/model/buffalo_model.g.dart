@@ -7,34 +7,16 @@ part of 'buffalo_model.dart';
 // **************************************************************************
 
 BuffaloModel _$BuffaloModelFromJson(Map<String, dynamic> json) => BuffaloModel(
-      json['fatherName'] as String? ?? '',
-      (json['fatherGrandfatherId'] as num?)?.toInt(),
-      json['fatherGrandfatherName'] as String? ?? '',
-      (json['fatherGrandmotherId'] as num?)?.toInt(),
-      json['fatherGrandmotherName'] as String? ?? '',
-      (json['motherGrandfatherId'] as num?)?.toInt(),
-      json['motherGrandfatherName'] as String? ?? '',
-      (json['motherGrandmotherId'] as num?)?.toInt(),
-      json['motherGrandmotherName'] as String? ?? '',
-      (json['fatherGreatGrandfatherId'] as num?)?.toInt(),
-      json['fatherGreatGrandfatherName'] as String? ?? '',
-      (json['fatherGreatGrandmotherId'] as num?)?.toInt(),
-      json['motherGreatGrandfatherName'] as String? ?? '',
-      (json['motherGreatGrandmotherId'] as num?)?.toInt(),
-      json['motherGreatGrandmotherName'] as String? ?? '',
-      json['motherName'] as String? ?? '',
-      json['gender'] as String? ?? '',
-      json['color'] as String? ?? '',
-      (json['BuffaloClips'] as List<dynamic>?)
-              ?.map((e) => BuffaloClipModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      (json['Competitions'] as List<dynamic>?)
-              ?.map(
-                  (e) => CompetitionsModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      json['bornAt'] as String? ?? '',
+      json['fatherFarmName'] as String? ?? '',
+      json['fatherGrandfatherFarmName'] as String? ?? '',
+      json['fatherGrandmotherFarmName'] as String? ?? '',
+      json['motherFarmName'] as String? ?? '',
+      json['motherGrandfatherFarmName'] as String? ?? '',
+      json['motherGrandmotherFarmName'] as String? ?? '',
+      json['fatherGreatGrandfatherFarmName'] as String? ?? '',
+      json['fatherGreatGrandmotherFarmName'] as String? ?? '',
+      json['motherGreatGrandfatherFarmName'] as String? ?? '',
+      json['motherGreatGrandmotherFarmName'] as String? ?? '',
       id: (json['buffaloId'] as num).toInt(),
       name: json['name'] as String? ?? '',
       birthMethod: json['birthMethod'] as String? ?? '',
@@ -42,7 +24,37 @@ BuffaloModel _$BuffaloModelFromJson(Map<String, dynamic> json) => BuffaloModel(
           ? null
           : DateTime.parse(json['birthDate'] as String),
       fatherId: (json['fatherId'] as num?)?.toInt(),
+      fatherName: json['fatherName'] as String? ?? '',
+      fatherGrandfatherId: (json['fatherGrandfatherId'] as num?)?.toInt(),
+      fatherGrandfatherName: json['fatherGrandfatherName'] as String? ?? '',
+      fatherGrandmotherId: (json['fatherGrandmotherId'] as num?)?.toInt(),
+      fatherGrandmotherName: json['fatherGrandmotherName'] as String? ?? '',
       motherId: (json['motherId'] as num?)?.toInt(),
+      motherName: json['motherName'] as String? ?? '',
+      motherGrandfatherId: (json['motherGrandfatherId'] as num?)?.toInt(),
+      motherGrandfatherName: json['motherGrandfatherName'] as String? ?? '',
+      motherGrandmotherId: (json['motherGrandmotherId'] as num?)?.toInt(),
+      motherGrandmotherName: json['motherGrandmotherName'] as String? ?? '',
+      fatherGreatGrandfatherId:
+          (json['fatherGreatGrandfatherId'] as num?)?.toInt(),
+      fatherGreatGrandfatherName:
+          json['fatherGreatGrandfatherName'] as String? ?? '',
+      fatherGreatGrandmotherId:
+          (json['fatherGreatGrandmotherId'] as num?)?.toInt(),
+      fatherGreatGrandmotherName:
+          json['fatherGreatGrandmotherName'] as String? ?? '',
+      motherGreatGrandfatherId:
+          (json['motherGreatGrandfatherId'] as num?)?.toInt(),
+      motherGreatGrandfatherName:
+          json['motherGreatGrandfatherName'] as String? ?? '',
+      motherGreatGrandmotherId:
+          (json['motherGreatGrandmotherId'] as num?)?.toInt(),
+      motherGreatGrandmotherName:
+          json['motherGreatGrandmotherName'] as String? ?? '',
+      gender: json['gender'] as String? ?? '',
+      color: json['color'] as String? ?? '',
+      buffaloStatus: json['buffaloStatus'] as String? ?? '',
+      bornAt: json['bornAt'] as String? ?? '',
       currentFarmId: (json['currentFarmId'] as num?)?.toInt(),
       farmId: (json['farmId'] as num).toInt(),
       createdAt: DateTime.parse(json['createdAt'] as String),
@@ -80,7 +92,16 @@ BuffaloModel _$BuffaloModelFromJson(Map<String, dynamic> json) => BuffaloModel(
           [],
       buffaloBreedingImages:
           json['BuffaloBreedingImages'] as List<dynamic>? ?? [],
+      buffaloClips: (json['BuffaloClips'] as List<dynamic>?)
+              ?.map((e) => BuffaloClipModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
       histories: json['Histories'] as List<dynamic>? ?? [],
+      competitions: (json['Competitions'] as List<dynamic>?)
+              ?.map(
+                  (e) => CompetitionsModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
 
 Map<String, dynamic> _$BuffaloModelToJson(BuffaloModel instance) =>
@@ -93,22 +114,35 @@ Map<String, dynamic> _$BuffaloModelToJson(BuffaloModel instance) =>
       'color': instance.color,
       'fatherId': instance.fatherId,
       'fatherName': instance.fatherName,
+      'fatherFarmName': instance.fatherFarmName,
       'fatherGrandfatherId': instance.fatherGrandfatherId,
       'fatherGrandfatherName': instance.fatherGrandfatherName,
+      'fatherGrandfatherFarmName': instance.fatherGrandfatherFarmName,
       'fatherGrandmotherId': instance.fatherGrandmotherId,
       'fatherGrandmotherName': instance.fatherGrandmotherName,
-      'motherGrandfatherId': instance.motherGrandfatherId,
-      'motherGrandfatherName': instance.motherGrandfatherName,
-      'motherGrandmotherId': instance.motherGrandmotherId,
-      'motherGrandmotherName': instance.motherGrandmotherName,
-      'fatherGreatGrandfatherId': instance.fatherGreatGrandfatherId,
-      'fatherGreatGrandfatherName': instance.fatherGreatGrandfatherName,
-      'fatherGreatGrandmotherId': instance.fatherGreatGrandmotherId,
-      'motherGreatGrandfatherName': instance.motherGreatGrandfatherName,
-      'motherGreatGrandmotherId': instance.motherGreatGrandmotherId,
-      'motherGreatGrandmotherName': instance.motherGreatGrandmotherName,
+      'fatherGrandmotherFarmName': instance.fatherGrandmotherFarmName,
       'motherId': instance.motherId,
       'motherName': instance.motherName,
+      'motherFarmName': instance.motherFarmName,
+      'motherGrandfatherId': instance.motherGrandfatherId,
+      'motherGrandfatherName': instance.motherGrandfatherName,
+      'motherGrandfatherFarmName': instance.motherGrandfatherFarmName,
+      'motherGrandmotherId': instance.motherGrandmotherId,
+      'motherGrandmotherName': instance.motherGrandmotherName,
+      'motherGrandmotherFarmName': instance.motherGrandmotherFarmName,
+      'fatherGreatGrandfatherId': instance.fatherGreatGrandfatherId,
+      'fatherGreatGrandfatherName': instance.fatherGreatGrandfatherName,
+      'fatherGreatGrandfatherFarmName': instance.fatherGreatGrandfatherFarmName,
+      'fatherGreatGrandmotherId': instance.fatherGreatGrandmotherId,
+      'fatherGreatGrandmotherName': instance.fatherGreatGrandmotherName,
+      'fatherGreatGrandmotherFarmName': instance.fatherGreatGrandmotherFarmName,
+      'motherGreatGrandfatherId': instance.motherGreatGrandfatherId,
+      'motherGreatGrandfatherName': instance.motherGreatGrandfatherName,
+      'motherGreatGrandfatherFarmName': instance.motherGreatGrandfatherFarmName,
+      'motherGreatGrandmotherId': instance.motherGreatGrandmotherId,
+      'motherGreatGrandmotherName': instance.motherGreatGrandmotherName,
+      'motherGreatGrandmotherFarmName': instance.motherGreatGrandmotherFarmName,
+      'buffaloStatus': instance.buffaloStatus,
       'bornAt': instance.bornAt,
       'currentFarmId': instance.currentFarmId,
       'farmId': instance.farmId,

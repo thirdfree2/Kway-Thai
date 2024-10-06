@@ -67,30 +67,44 @@ class _PhotoBuffaloViewState extends State<PhotoBuffaloView> {
                 const SizedBox(
                   height: 10,
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Center(
-                      child: StrokeText(
-                        text: buffalo.name, // แสดงชื่อของ buffalo
-                        textStyle: TextStyle(
-                          fontSize: ScreenUtils.calculateFontSize(context, 24),
-                          color: Colors.black,
+                if (imageUrls.isEmpty ?? true)
+                  const Expanded(
+                    child: Center(
+                      child: Text(
+                        'ไม่พบรูปภาพของควายตัวนี้',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
                         ),
-                        strokeColor: Colors.white,
-                        strokeWidth: 2,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: GalleryImage(
-                        numOfShowImages: numOfShowImages,
-                        imageUrls:
-                            imageUrls, // ใช้ list ของ URLs ที่ได้จาก buffaloImages
+                  )
+                else
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Center(
+                        child: StrokeText(
+                          text: buffalo.name, // แสดงชื่อของ buffalo
+                          textStyle: TextStyle(
+                            fontSize:
+                                ScreenUtils.calculateFontSize(context, 24),
+                            color: Colors.black,
+                          ),
+                          strokeColor: Colors.white,
+                          strokeWidth: 2,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: GalleryImage(
+                          numOfShowImages: numOfShowImages,
+                          imageUrls:
+                              imageUrls, // ใช้ list ของ URLs ที่ได้จาก buffaloImages
+                        ),
+                      ),
+                    ],
+                  ),
                 const SizedBox(
                   height: 20,
                 ),

@@ -1,3 +1,4 @@
+import 'package:buffalo_thai/view/buffalo/update_buffalo_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -75,18 +76,37 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: InkWell(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeView()),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: InkWell(
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UpdateBuffaloView()),
+                            ),
+                            child: const Icon(
+                              Icons.edit,
+                              size: 30,
+                            ),
+                          ),
                         ),
-                        child: const Icon(
-                          Icons.home,
-                          size: 30,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: InkWell(
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeView()),
+                            ),
+                            child: const Icon(
+                              Icons.home,
+                              size: 30,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
@@ -212,7 +232,20 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                                       'สืบสายเลือดตาทวด',
                                       buffalo?.motherGreatGrandfatherName ?? '',
                                       Colors.pink[800]),
+                                const SizedBox(height: 5),
+                                if (buffalo?.fatherGreatGrandmotherName != '')
+                                  _buildInfoRow(
+                                      'สืบสายเลือดย่าทวด',
+                                      buffalo?.fatherGreatGrandmotherName ?? '',
+                                      Colors.pink[800]),
+                                 const SizedBox(height: 5),
+                                if (buffalo?.motherGreatGrandmotherName != '')
+                                  _buildInfoRow(
+                                      'สืบสายเลือดยายทวด',
+                                      buffalo?.motherGreatGrandmotherName ?? '',
+                                      Colors.pink[800]),
                                 const SizedBox(height: 10),
+                                
                               ],
                             ),
                           ),

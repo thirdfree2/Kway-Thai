@@ -18,17 +18,16 @@ class UploadImageBuffaloView extends StatefulWidget {
 }
 
 class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
-  File? _selectedImage;
-  String? _selectedStatus;
-
+  List<File> _selectedImages = []; // ลิสต์สำหรับเก็บไฟล์รูปภาพที่เลือก
   String _inputCode = "";
+  bool isLoading = false; // สถานะการโหลด
 
-  Future<void> _pickImage() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
+  Future<void> _pickMultipleImages() async {
+    final pickedImages = await ImagePicker().pickMultiImage();
+    if (pickedImages != null) {
       setState(() {
-        _selectedImage = File(pickedImage.path);
+        _selectedImages =
+            pickedImages.map((pickedFile) => File(pickedFile.path)).toList();
       });
     }
   }
@@ -61,15 +60,9 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
             TextButton(
               child: const Text('ยืนยัน'),
               onPressed: () async {
-                // เช็ครหัส 6 หลัก
                 if (_inputCode.length == 6) {
-                  Navigator.of(context).pop(); // ปิด Dialog
-                  await _uploadImage(context);
-                  try {
-                    print('hello');
-                  } catch (e) {
-                    print(e);
-                  }
+                  Navigator.of(context).pop();
+                  await _uploadImages(context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
@@ -87,53 +80,68 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
     );
   }
 
-  Future<void> _uploadImage(BuildContext context) async {
+  Future<void> _uploadImages(BuildContext context) async {
     final selectedBuffalo =
         Provider.of<SelectedBuffalo>(context, listen: false);
     final buffalo = selectedBuffalo.buffalo;
     final selectedFarm = Provider.of<SelectedFarm>(context, listen: false);
 
+    setState(() {
+      isLoading = true; // เริ่มการโหลด
+    });
+
     try {
-      var msg = await uploadImageBuffalo(
-        imageFile: _selectedImage,
-        buffaloId: buffalo?.id ?? 0,
-        password: _inputCode,
-        farmId: selectedFarm.farmId,
-      );
-
-      if (msg == "Buffalo image inserted successfully") {
-        // แสดง SnackBar ที่สำเร็จ
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('อัปโหลดรูปภาพสำเร็จ'),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
-          ),
+      for (var image in _selectedImages) {
+        var msg = await uploadImageBuffalo(
+          imageFile: image,
+          buffaloId: buffalo?.id ?? 0,
+          password: _inputCode,
+          farmId: selectedFarm.farmId,
         );
 
-        // Navigate to the farm detail view after success
-        Navigator.pop(context);
-        Navigator.pop(context);
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => DetailFarmView(),
-          ),
-        );
-      } else if (msg == "รหัสผ่านไม่ถูกต้อง") {
-        // แสดง SnackBar สำหรับรหัสผิด
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('รหัสผ่านไม่ถูกต้อง'),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 2),
-          ),
-        );
+        if (msg == "Buffalo image inserted successfully") {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('อัปโหลดรูปภาพสำเร็จ'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2),
+            ),
+          );
+        } else if (msg == "รหัสผ่านไม่ถูกต้อง") {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('รหัสผ่านไม่ถูกต้อง'),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 2),
+            ),
+          );
+          setState(() {
+            isLoading = false; // หยุดการโหลดหากรหัสผิด
+          });
+          return;
+        }
       }
-    } catch (e) {
-      // แสดง SnackBar สำหรับการอัปโหลดล้มเหลว
+
+      setState(() {
+        _selectedImages = []; // รีเซ็ตลิสต์รูปภาพ
+        _inputCode = ""; // ล้างรหัสผ่าน
+        isLoading = false; // สิ้นสุดการโหลด
+      });
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('การอัปโหลดล้มเหลว: รหัสผ่านไม่ถูกต้อง'),
+          content: Text('อัปโหลดรูปภาพทั้งหมดเสร็จสิ้นแล้ว'),
+          backgroundColor: Colors.blue,
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      setState(() {
+        isLoading = false; // หยุดการโหลดในกรณีเกิดข้อผิดพลาด
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('การอัปโหลดล้มเหลว'),
           backgroundColor: Colors.red,
           duration: Duration(seconds: 2),
         ),
@@ -143,7 +151,6 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedFarm = Provider.of<SelectedFarm>(context);
     return Scaffold(
       body: DecoratedBox(
         decoration: const BoxDecoration(
@@ -158,9 +165,7 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
               children: [
                 Row(
                   children: [
-                    const SizedBox(
-                      width: 20,
-                    ),
+                    const SizedBox(width: 20),
                     InkWell(
                       onTap: () => Navigator.pop(context),
                       child: const Icon(
@@ -170,9 +175,7 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 StrokeText(
                   text: 'เพิ่มรูปภาพ',
                   textStyle: TextStyle(
@@ -182,55 +185,76 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
                   strokeColor: Colors.black,
                   strokeWidth: 3,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: _pickImage,
-                      child: Container(
-                        height: 400,
-                        width: 300,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.black),
-                          color: Colors.white.withOpacity(0.8),
+                const SizedBox(height: 10),
+                isLoading // แสดง Loading เมื่อกำลังอัปโหลด
+                    ? const CircularProgressIndicator()
+                    : GestureDetector(
+                        onTap:
+                            _pickMultipleImages, // เปลี่ยนเป็นการเลือกรูปหลายรูป
+                        child: Container(
+                          height: 400,
+                          width: 300,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.black),
+                            color: Colors.white.withOpacity(0.8),
+                          ),
+                          child: _selectedImages.isEmpty
+                              ? const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.add, size: 30),
+                                    Text('รูปโปรไฟล์')
+                                  ],
+                                )
+                              : GridView.builder(
+                                  padding: const EdgeInsets.all(8.0),
+                                  itemCount: _selectedImages.length,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount:
+                                        2, // จำนวนคอลัมน์ที่ต้องการแสดงในกริด
+                                    crossAxisSpacing:
+                                        10.0, // ระยะห่างแนวนอนระหว่างรูป
+                                    mainAxisSpacing:
+                                        10.0, // ระยะห่างแนวตั้งระหว่างรูป
+                                    childAspectRatio:
+                                        1, // อัตราส่วนความสูงและความกว้างของแต่ละรูป
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.file(
+                                        _selectedImages[index],
+                                        fit: BoxFit.cover,
+                                        height: 150,
+                                        width: 150,
+                                      ),
+                                    );
+                                  },
+                                ),
                         ),
-                        child: _selectedImage == null
-                            ? const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.add, size: 30),
-                                  Text('รูปโปรไฟล์')
-                                ],
-                              )
-                            : Image.file(_selectedImage!, fit: BoxFit.cover),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
-                        onTap: () {
-                          _showCodeDialog(context);
-
-                          // แสดง SnackBar เพื่อทดสอบว่าทำงานหรือไม่
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Test SnackBar'),
-                              backgroundColor: Colors.blue,
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
+                        onTap: () async {
+                          try {
+                            await _showCodeDialog(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => DetailFarmView(),
+                              ),
+                            );
+                          } catch (e) {
+                            print(e);
+                          }
                         },
                         child: Container(
                           height: 50,

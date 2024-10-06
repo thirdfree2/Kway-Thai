@@ -6,6 +6,7 @@ import 'package:buffalo_thai/view/home/main_home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stroke_text/stroke_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class VideoBuffaloView extends StatefulWidget {
   const VideoBuffaloView({super.key});
@@ -56,34 +57,67 @@ class _VideoBuffaloViewState extends State<VideoBuffaloView> {
             const SizedBox(
               height: 30,
             ),
-            Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, // แสดง 3 รายการต่อแถว
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio:
-                      1.4, // ปรับตามต้องการเพื่อให้ได้ขนาดที่เหมาะสม
+            if (buffalo?.buffaloClips.isEmpty ?? true)
+              const Expanded(
+                child: Center(
+                  child: Text(
+                    'ไม่พบคลิปวิดีโอของควายตัวนี้',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
-                itemCount: buffalo?.buffaloClips.length ?? 0, // จำนวนไอเท็มในลิสต์
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: 120,
-                    height: 85,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(15), // ปรับ radius ตามต้องการ
-                    ),
-                    child: Image.network(
-                       buffalo?.buffaloClips[index].imageUrl ?? '', // เปลี่ยนเป็น items[index] ถ้ามีหลายภาพ
-                      fit: BoxFit.cover,  
-                    ),
-                  );
-                },
+              )
+            else
+              Expanded(
+                child: GridView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3, // แสดง 3 รายการต่อแถว
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio:
+                        1.4, // ปรับตามต้องการเพื่อให้ได้ขนาดที่เหมาะสม
+                  ),
+                  itemCount:
+                      buffalo?.buffaloClips.length ?? 0, // จำนวนไอเท็มในลิสต์
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () async {
+                        final url = buffalo?.buffaloClips[index].url;
+                        print(url);
+                        if (url != null && await canLaunchUrl(Uri.parse(url))) {
+                          await launchUrl(
+                            Uri.parse(url),
+                            mode: LaunchMode.externalApplication,
+                          );
+                        } else {
+                          // แสดงข้อความแจ้งเตือนเมื่อไม่สามารถเปิด URL ได้
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('ไม่สามารถเปิดลิงก์ได้')),
+                          );
+                        }
+                      },
+                      child: Container(
+                        width: 120,
+                        height: 85,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                              15), // ปรับ radius ตามต้องการ
+                        ),
+                        child: Image.network(
+                          buffalo?.buffaloClips[index].imageUrl ??
+                              '', // เปลี่ยนเป็น items[index] ถ้ามีหลายภาพ
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
             const SizedBox(
               height: 20,
             ),

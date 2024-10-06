@@ -20,7 +20,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => SelectedFarmOwner()),
         ChangeNotifierProvider(create: (_) => FarmDataProvider()),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }

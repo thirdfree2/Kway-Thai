@@ -61,29 +61,25 @@ Future<List<FarmModel>> fetchFarmsByRegion(String region) async {
 
 Future<String> updateFarm({
   required String farmName,
-  // required String region,
-  // required String lineId,
-  // required String phoneNumber,
-  // required String password,
+  required String password,
   required String farmId,
 }) async {
   String url = '${ApiUtils.baseUrl}/api/farm/$farmId';
 
   final Map<String, dynamic> requestData = {
     'farmName': farmName,
-    // 'password': password,
+    'password': password,
   };
 
-  final response = await http.post(
+  final response = await http.put(
     Uri.parse(url),
     headers: {
       'Content-Type': 'application/json',
     },
     body: jsonEncode(requestData),
   );
-  if (response.statusCode == 201) {
+  if (response.statusCode == 200) {
     final responseData = jsonDecode(response.body);
-    print(responseData);
     if (responseData['message'] != null &&
         responseData['message'] != null) {
       return responseData['message'].toString(); // ส่งคืนค่า farmId

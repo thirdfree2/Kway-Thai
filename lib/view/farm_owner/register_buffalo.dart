@@ -9,7 +9,6 @@ import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/services/buffalo_services.dart';
 import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
-import 'package:buffalo_thai/view/farm_owner/register_farm_owner.dart';
 
 class RegisterBuffalo extends StatefulWidget {
   const RegisterBuffalo({super.key});
@@ -26,12 +25,8 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _birthDateController = TextEditingController();
   final TextEditingController _birthPlaceController = TextEditingController();
-  final TextEditingController _birthMethodController = TextEditingController();
-  final TextEditingController _breedingImageController =
-      TextEditingController();
   final TextEditingController _fatherNameController = TextEditingController();
   final TextEditingController _motherNameController = TextEditingController();
-  final TextEditingController _genderController = TextEditingController();
   final TextEditingController _colorController = TextEditingController();
   final TextEditingController _fatherGrandfatherNameController =
       TextEditingController();
@@ -340,38 +335,22 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                       const SizedBox(height: 15),
                       FamilyForm(
                         nameController: _fatherGrandmotherNameController,
-                        buffaloNameText: 'ปู่ทวดชื่อ',
-                        farmController: _fatherGrandmotherFarmNameController,
-                        buffaloHeadText: 'ข้อมูลปู่ทวด',
-                      ),
-                      const SizedBox(height: 15),
-                      FamilyForm(
-                        nameController: _motherGrandfatherNameController,
                         buffaloNameText: 'ย่าชื่อ',
-                        farmController: _motherGrandfatherFarmNameController,
+                        farmController: _fatherGrandmotherFarmNameController,
                         buffaloHeadText: 'ข้อมูลย่า',
                       ),
                       const SizedBox(height: 15),
                       FamilyForm(
-                        nameController: _motherGrandmotherNameController,
-                        buffaloNameText: 'ย่าทวดชื่อ',
-                        farmController: _motherGrandmotherFarmNameController,
-                        buffaloHeadText: 'ข้อมูลย่าทวด',
-                      ),
-                      const SizedBox(height: 15),
-                      FamilyForm(
-                        nameController: _fatherGreatGrandfatherNameController,
+                        nameController: _motherGrandfatherNameController,
                         buffaloNameText: 'ตาชื่อ',
-                        farmController:
-                            _fatherGreatGrandfatherFarmNameController,
+                        farmController: _motherGrandfatherFarmNameController,
                         buffaloHeadText: 'ข้อมูลตา',
                       ),
                       const SizedBox(height: 15),
                       FamilyForm(
-                        nameController: _fatherGreatGrandmotherNameController,
+                        nameController: _motherGrandmotherNameController,
                         buffaloNameText: 'ยายชื่อ',
-                        farmController:
-                            _fatherGreatGrandmotherFarmNameController,
+                        farmController: _motherGrandmotherFarmNameController,
                         buffaloHeadText: 'ข้อมูลยาย',
                       ),
                       const SizedBox(height: 15),
@@ -390,6 +369,22 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                             _motherGreatGrandmotherFarmNameController,
                         buffaloHeadText: 'ข้อมูลยายทวด',
                       ),
+                      const SizedBox(height: 15),
+                      FamilyForm(
+                        nameController: _fatherGreatGrandfatherNameController,
+                        buffaloNameText: 'ปู่ทวดชื่อ',
+                        farmController:
+                            _fatherGreatGrandfatherFarmNameController,
+                        buffaloHeadText: 'ข้อมูลปู่ทวด',
+                      ),
+                      const SizedBox(height: 15),
+                      FamilyForm(
+                        nameController: _fatherGreatGrandmotherNameController,
+                        buffaloNameText: 'ย่าทวดชื่อ',
+                        farmController:
+                            _fatherGreatGrandmotherFarmNameController,
+                        buffaloHeadText: 'ข้อมูลย่าทวด',
+                      ),
                       const SizedBox(height: 30),
                       Container(
                         height: 50,
@@ -401,6 +396,14 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                         child: Center(
                           child: TextButton(
                             onPressed: () async {
+                              if (_selectedImage == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('กรุณาเลือกรูปโปรไฟล์'),
+                                  ),
+                                );
+                                return;
+                              }
                               if (_formKey.currentState!.validate()) {
                                 showDialog(
                                   context: context,

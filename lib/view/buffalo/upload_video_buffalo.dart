@@ -93,13 +93,14 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
       String videoName = _videoNameController.text;
 
       try {
+        print(videoUrl);
         String msg = await uploadVideoBuffalo(
           buffaloId: selectedBuffalo.buffalo?.id ?? 0,
           imageFile: _selectedImage,
           password: _inputCode,
           farmId: selectedFarm.farmId,
-          url: videoUrl,
           title: videoName,
+          videoUrl: _videoUrlController.text,
         );
         if (msg == 'Buffalo clip created successfully') {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -122,7 +123,7 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('การอัปโหลดล้มเหลว: รหัสผ่านไม่ถูกต้อง'),
+            content: Text('การอัปโหลดล้มเหลว: รหัสผ่านไม่ถูกต้อง $e'),
             backgroundColor: Colors.red,
             duration: Duration(seconds: 2),
           ),
