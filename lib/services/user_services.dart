@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 Future<List<UserModel>> fetchUserByFarmId(String id) async {
   final response =
-      await http.get(Uri.parse('${ApiUtils.baseUrl}/api/user/?farmId=$id'));
+      await http.get(Uri.parse('${ApiUtils.baseUrl}/api/user/?farmId=$id&status=อนุมัติ'));
 
   if (response.statusCode == 200) {
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);

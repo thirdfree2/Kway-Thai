@@ -80,6 +80,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
         );
 
         await registerFarmOwner(
+          status: 'รอนุมัติ',
           firstName: _firstNameController.text,
           lastName: _lastNameController.text,
           nickname: _nicknameController.text,

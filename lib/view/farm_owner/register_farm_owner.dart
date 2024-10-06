@@ -347,7 +347,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                               lineId: _lineIdController.text,
                                               imageFile: imageFile,
                                               password:
-                                                  _passwordController.text,
+                                                  _passwordController.text, status: 'รอนุมัติ',
                                             );
                                              Navigator.pop(context);
                                             // ทำการ pop หน้าหลังจากเสร็จสิ้นการทำงาน

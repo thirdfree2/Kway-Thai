@@ -17,12 +17,14 @@ Future<String> registerFarmOwner({
   required String lineId,
   required String password,
   required File? imageFile,
+  required String status
 }) async {
   const String url = '${ApiUtils.baseUrl}/api/user/';
 
   final request = http.MultipartRequest('POST', Uri.parse(url))
     ..fields['firstName'] = firstName
     ..fields['lastName'] = lastName
+    ..fields['status'] = status
     ..fields['nickname'] = nickname
     ..fields['position'] = position
     ..fields['phoneNumber'] = phoneNumber
