@@ -1,6 +1,8 @@
+import 'package:buffalo_thai/model/annouce_model.dart';
 import 'package:buffalo_thai/model/buffalo_image_model.dart';
 import 'package:buffalo_thai/model/buffalo_model.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
+import 'package:buffalo_thai/services/anounce_services.dart';
 import 'package:buffalo_thai/services/buffalo_services.dart';
 import 'package:buffalo_thai/view/buffalo/main_buffalo_wrapper.dart';
 import 'package:buffalo_thai/view/promote_buffalo/main_promote_buffalo_wrapper.dart';
@@ -27,7 +29,9 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   late Future<List<BuffaloModel>> futureBuffaloes;
   late Future<List<BuffaloModel>> allBuffalo;
-    List<BuffaloModel> filteredBuffaloes = []; // รายการที่กรองแล้ว
+  late Future<List<AnnouceModel>> annoucement;
+
+  List<BuffaloModel> filteredBuffaloes = []; // รายการที่กรองแล้ว
   TextEditingController searchController = TextEditingController();
 
   @override
@@ -35,8 +39,8 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     futureBuffaloes = fetchBuffaloesPromoteBuff(); // ข้อมูลการโปรโมท
     allBuffalo = fetchAllBuffaloes(); // ข้อมูลควายทั้งหมด
+    annoucement = fetchAnnouce();
 
-    // เมื่อโหลดข้อมูลเสร็จสิ้น ให้นำข้อมูลทั้งหมดมาเก็บใน filteredBuffaloes เพื่อใช้ในการกรองและแสดงผล
     allBuffalo.then((buffaloes) {
       setState(() {
         filteredBuffaloes = buffaloes; // ตั้งค่าเริ่มต้นเป็น allBuffalo
@@ -51,8 +55,10 @@ class _HomeViewState extends State<HomeView> {
 
   // ฟังก์ชันสำหรับกรอง buffalo.name ตามค่าที่พิมพ์ใน TextFormField
   void filterBuffaloes() async {
-    String query = searchController.text.toLowerCase(); // เปลี่ยนเป็นตัวพิมพ์เล็กเพื่อง่ายต่อการค้นหา
-    List<BuffaloModel> buffaloList = await allBuffalo; // โหลดข้อมูลทั้งหมดจาก Future
+    String query = searchController.text
+        .toLowerCase(); // เปลี่ยนเป็นตัวพิมพ์เล็กเพื่อง่ายต่อการค้นหา
+    List<BuffaloModel> buffaloList =
+        await allBuffalo; // โหลดข้อมูลทั้งหมดจาก Future
 
     setState(() {
       if (query.isNotEmpty) {
@@ -206,65 +212,241 @@ class _HomeViewState extends State<HomeView> {
           ),
           child: Container(
             height: screenHeight,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 80),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: screenWidth / 1.8,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'สวัสดี',
-                                style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                      context, 19),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 80),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: screenWidth / 1.8,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'สวัสดี',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtils.calculateFontSize(
+                                        context, 12),
+                                  ),
+                                ),
+                                StrokeText(
+                                  text: "ควายไทย",
+                                  textStyle: TextStyle(
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                          context, 21),
+                                      color: Colors.red),
+                                  strokeColor: Colors.white,
+                                  strokeWidth: 6,
+                                ),
+                                StrokeText(
+                                  text: "KWAY THAI",
+                                  textStyle: TextStyle(
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                          context, 15),
+                                      color: Colors.white),
+                                  strokeColor: Colors.black,
+                                  strokeWidth: 4,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                if (!searchController.text.isNotEmpty)
+                                  FutureBuilder<List<BuffaloModel>>(
+                                    future: futureBuffaloes,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator(); // แสดงโหลดเดอร์ขณะรอ
+                                      } else if (snapshot.hasError) {
+                                        return Text(
+                                            'Error: ${snapshot.error}'); // แสดงข้อความเมื่อเกิดข้อผิดพลาด
+                                      } else if (snapshot.hasData &&
+                                          snapshot.data!.isNotEmpty) {
+                                        BuffaloModel firstBuffalo = snapshot
+                                            .data![0]; // เข้าถึงข้อมูลตัวแรก
+                        
+                                        final profileImage =
+                                            firstBuffalo.buffaloImages.firstWhere(
+                                          (image) => image.isProfileImage,
+                                          orElse: () => BuffaloImageModel(
+                                            imageId: 0,
+                                            imagePath:
+                                                'https://placeholder.com/150',
+                                            isProfileImage: false,
+                                            createdAt: DateTime.now(),
+                                            updatedAt: DateTime.now(),
+                                            buffaloId: firstBuffalo.id,
+                                          ),
+                                        );
+                        
+                                        final imageUrl = profileImage != null
+                                            ? profileImage.imagePath
+                                            : 'https://placeholder.com/150';
+                                        return InkWell(
+                                          onTap: () {
+                                            Provider.of<SelectedBuffalo>(context,
+                                                    listen: false)
+                                                .setSelectedBuffalo(firstBuffalo);
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PromoteBuffalo(),
+                                              ),
+                                            );
+                                          },
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                width: screenHeight *
+                                                    0.12, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
+                                                height: screenHeight *
+                                                    0.12, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
+                                                clipBehavior: Clip.antiAlias,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(
+                                                      15), // ปรับแต่งความโค้งของมุมตามต้องการ
+                                                ),
+                                                child: Image.network(
+                                                  imageUrl,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              StrokeText(
+                                                text: firstBuffalo.name,
+                                                textStyle: TextStyle(
+                                                    fontSize: ScreenUtils
+                                                        .calculateFontSize(
+                                                            context, 10),
+                                                    color: Colors.red),
+                                                strokeColor: Colors.white,
+                                                strokeWidth: 3,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      } else {
+                                        return Text(
+                                            'No Buffaloes found'); // เมื่อไม่มีข้อมูล
+                                      }
+                                    },
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            SizedBox(
+                              width: screenWidth * 0.4,
+                              child: TextFormField(
+                                controller: searchController,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white.withOpacity(0.8),
+                                  prefixIcon: const Icon(Icons.search),
+                                  hintText: 'ค้นหา',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
                                 ),
                               ),
-                              StrokeText(
-                                text: "ควายไทย",
-                                textStyle: TextStyle(
-                                    fontSize: ScreenUtils.calculateFontSize(
-                                        context, 26),
-                                    color: Colors.red),
-                                strokeColor: Colors.white,
-                                strokeWidth: 6,
-                              ),
-                              StrokeText(
-                                text: "KWAY THAI",
-                                textStyle: TextStyle(
-                                    fontSize: ScreenUtils.calculateFontSize(
-                                        context, 19),
-                                    color: Colors.white),
-                                strokeColor: Colors.black,
-                                strokeWidth: 4,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              if (!searchController.text.isNotEmpty)
-                                FutureBuilder<List<BuffaloModel>>(
-                                  future: futureBuffaloes,
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return CircularProgressIndicator(); // แสดงโหลดเดอร์ขณะรอ
-                                    } else if (snapshot.hasError) {
-                                      return Text(
-                                          'Error: ${snapshot.error}'); // แสดงข้อความเมื่อเกิดข้อผิดพลาด
-                                    } else if (snapshot.hasData &&
-                                        snapshot.data!.isNotEmpty) {
-                                      BuffaloModel firstBuffalo = snapshot
-                                          .data![0]; // เข้าถึงข้อมูลตัวแรก
-
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.2),
+                                        offset: const Offset(2.0, 4.0),
+                                        blurRadius: 4.0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Card(
+                                    color: Colors.white.withOpacity(0.5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          QrImageView(
+                                            data:
+                                                'https://lin.ee/Uu7X7Vsa', // Replace with your Line ID URL
+                                            version: QrVersions.auto,
+                                            size: screenWidth * 0.2,
+                                          ),
+                                          const SizedBox(height: 2.0),
+                                          Text(
+                                            '@kwaythai',
+                                            style: TextStyle(
+                                              fontSize:
+                                                  ScreenUtils.calculateFontSize(
+                                                      context, 10),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  if (!searchController.text.isNotEmpty)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FutureBuilder<List<BuffaloModel>>(
+                          future: futureBuffaloes,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator(); // แสดงโหลดเดอร์ขณะรอ
+                            } else if (snapshot.hasError) {
+                              return Text(
+                                  'Error: ${snapshot.error}'); // แสดงข้อความเมื่อเกิดข้อผิดพลาด
+                            } else if (snapshot.hasData &&
+                                snapshot.data!.isNotEmpty) {
+                              // ถ้ามีข้อมูลและไม่ว่าง
+                              List<BuffaloModel> buffaloList = snapshot.data!;
+                        
+                              // ถ้าข้อมูลมีมากกว่า 1 buffalo ให้ข้ามรายการแรก
+                              if (buffaloList.length > 1) {
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: List.generate(
+                                        buffaloList.length - 1, (index) {
+                                      // เริ่มที่ index 1
+                                      BuffaloModel buffalo =
+                                          buffaloList[index + 1];
+                        
                                       final profileImage =
-                                          firstBuffalo.buffaloImages.firstWhere(
+                                          buffalo.buffaloImages.firstWhere(
                                         (image) => image.isProfileImage,
                                         orElse: () => BuffaloImageModel(
                                           imageId: 0,
@@ -273,209 +455,510 @@ class _HomeViewState extends State<HomeView> {
                                           isProfileImage: false,
                                           createdAt: DateTime.now(),
                                           updatedAt: DateTime.now(),
-                                          buffaloId: firstBuffalo.id,
+                                          buffaloId: buffalo.id,
                                         ),
                                       );
-
-                                      final imageUrl = profileImage != null
-                                          ? profileImage.imagePath
-                                          : 'https://placeholder.com/150';
-                                      return InkWell(
-                                        onTap: () {
-                                          Provider.of<SelectedBuffalo>(context,
-                                                  listen: false)
-                                              .setSelectedBuffalo(firstBuffalo);
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PromoteBuffalo(),
-                                            ),
-                                          );
-                                        },
+                        
+                                      final imageUrl = profileImage.imagePath;
+                        
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 5),
                                         child: Column(
                                           children: [
-                                            Container(
-                                              width: screenHeight *
-                                                  0.15, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                                              height: screenHeight *
-                                                  0.15, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
-                                              clipBehavior: Clip.antiAlias,
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(
-                                                    15), // ปรับแต่งความโค้งของมุมตามต้องการ
-                                              ),
-                                              child: Image.network(
-                                                imageUrl,
-                                                fit: BoxFit.cover,
+                                            InkWell(
+                                              onTap: () {
+                                                Provider.of<SelectedBuffalo>(
+                                                        context,
+                                                        listen: false)
+                                                    .setSelectedBuffalo(buffalo);
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PromoteBuffalo(),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                width: screenHeight * 0.09,
+                                                height: screenHeight * 0.09,
+                                                clipBehavior: Clip.antiAlias,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                ),
+                                                child: Image.network(
+                                                  imageUrl,
+                                                  fit: BoxFit.cover,
+                                                ),
                                               ),
                                             ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
+                                            SizedBox(height: 10),
                                             StrokeText(
-                                              text: firstBuffalo.name,
+                                              text: buffalo.name,
                                               textStyle: TextStyle(
-                                                  fontSize: ScreenUtils
-                                                      .calculateFontSize(
-                                                          context, 10),
-                                                  color: Colors.red),
+                                                fontSize:
+                                                    ScreenUtils.calculateFontSize(
+                                                        context, 10),
+                                                color: Colors.red,
+                                              ),
                                               strokeColor: Colors.white,
                                               strokeWidth: 3,
                                             ),
                                           ],
                                         ),
                                       );
-                                    } else {
-                                      return Text(
-                                          'No Buffaloes found'); // เมื่อไม่มีข้อมูล
-                                    }
-                                  },
-                                ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          SizedBox(
-                            width: screenWidth * 0.4,
-                            child: TextFormField(
-                              controller: searchController,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white.withOpacity(0.8),
-                                prefixIcon: const Icon(Icons.search),
-                                hintText: 'ค้นหา',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.2),
-                                      offset: const Offset(2.0, 4.0),
-                                      blurRadius: 4.0,
-                                    ),
-                                  ],
-                                ),
-                                child: Card(
-                                  color: Colors.white.withOpacity(0.5),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        QrImageView(
-                                          data:
-                                              'https://lin.ee/Uu7X7Vsa', // Replace with your Line ID URL
-                                          version: QrVersions.auto,
-                                          size: screenWidth * 0.2,
-                                        ),
-                                        const SizedBox(height: 2.0),
-                                        Text(
-                                          '@kwaythai',
-                                          style: TextStyle(
-                                            fontSize:
-                                                ScreenUtils.calculateFontSize(
-                                                    context, 10),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                    }),
                                   ),
+                                );
+                              } else {
+                                return Text('No additional buffaloes found');
+                              }
+                            } else {
+                              return Text(
+                                  'No Buffaloes found'); // เมื่อไม่มีข้อมูล
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  if (!searchController.text.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(width: 20),
+                              StrokeText(
+                                text: "ข่าวประชาสัมพันธ์",
+                                textStyle: TextStyle(
+                                  fontSize:
+                                      ScreenUtils.calculateFontSize(context, 20),
+                                  color: Colors.red,
                                 ),
+                                strokeColor: Colors.white,
+                                strokeWidth: 3,
                               ),
                             ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: FutureBuilder<List<AnnouceModel>>(
+                              future: annoucement, // Future ที่จะดึงข้อมูลประกาศ
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  // กรณีที่กำลังโหลดข้อมูล
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                } else if (snapshot.hasError) {
+                                  // กรณีที่เกิดข้อผิดพลาดในการดึงข้อมูล
+                                  return Center(
+                                      child: Text(
+                                          'เกิดข้อผิดพลาด: ${snapshot.error}'));
+                                } else if (!snapshot.hasData ||
+                                    snapshot.data!.isEmpty) {
+                                  // กรณีไม่มีข้อมูลที่จะแสดง
+                                  return const Center(
+                                      child: Text('ไม่พบประกาศใดๆ'));
+                                } else {
+                                  // กรณีดึงข้อมูลได้สำเร็จ
+                                  final annoucements = snapshot.data!;
+                        
+                                  // สร้าง List<Widget> สำหรับ CarouselSlider
+                                  final List<Widget> child =
+                                      annoucements.map((annouce) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text("ประชาสัมพันธ์"),
+                                              content: Image.network(
+                                                annouce
+                                                    .filepath, // ใช้ URL ของรูปภาพจาก AnnouceModel
+                                                fit: BoxFit.cover,
+                                                errorBuilder:
+                                                    (context, error, stackTrace) {
+                                                  return const Text(
+                                                      'ไม่สามารถโหลดรูปภาพได้');
+                                                },
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(); // ปิด Popup
+                                                  },
+                                                  child: const Text("ปิด"),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Container(
+                                        width: screenWidth,
+                                        height: screenHeight * 0.18,
+                                        clipBehavior: Clip.antiAlias,
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 5),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              15), // ปรับ radius ตามต้องการ
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(0.5),
+                                              spreadRadius: 2,
+                                              blurRadius: 5,
+                                              offset: const Offset(0, 3),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Image.network(
+                                          annouce
+                                              .filepath, // ใช้ URL ของรูปภาพจาก AnnouceModel
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return const Center(
+                                              child: Text(
+                                                'ไม่สามารถโหลดรูปภาพได้',
+                                                textAlign: TextAlign.center,
+                                                style:
+                                                    TextStyle(color: Colors.red),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  }).toList();
+                        
+                                  // แสดง CarouselSlider ด้วย child ที่สร้างจาก annoucements
+                                  return CarouselSlider(
+                                    items: child,
+                                    carouselController: buttonCarouselController,
+                                    options: CarouselOptions(
+                                      autoPlay: true,
+                                      enlargeCenterPage: true,
+                                      viewportFraction: 0.9,
+                                      aspectRatio: 2.0,
+                                      initialPage: 0,
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
                           ),
                         ],
                       ),
-                    ],
+                    ),
+                  const SizedBox(
+                    height: 20,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                if (!searchController.text.isNotEmpty)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FutureBuilder<List<BuffaloModel>>(
-                        future: futureBuffaloes,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return CircularProgressIndicator(); // แสดงโหลดเดอร์ขณะรอ
-                          } else if (snapshot.hasError) {
-                            return Text(
-                                'Error: ${snapshot.error}'); // แสดงข้อความเมื่อเกิดข้อผิดพลาด
-                          } else if (snapshot.hasData &&
-                              snapshot.data!.isNotEmpty) {
-                            // ถ้ามีข้อมูลและไม่ว่าง
-                            List<BuffaloModel> buffaloList = snapshot.data!;
-
-                            // ถ้าข้อมูลมีมากกว่า 1 buffalo ให้ข้ามรายการแรก
-                            if (buffaloList.length > 1) {
-                              return Padding(
+                  if (!searchController.text.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: InkWell(
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => FarmView())),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 243, 243, 243),
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                        height: screenHeight * 0.09,
+                                        width: screenHeight * 0.09,
+                                        child: Center(
+                                          child: Image.asset(
+                                            'assets/images/buffalo.png',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      StrokeText(
+                                        text: "คอก/ฟาร์ม",
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                ScreenUtils.calculateFontSize(
+                                                    context, 10),
+                                            color: Colors.black),
+                                        strokeColor: Colors.white,
+                                        strokeWidth: 3,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: InkWell(
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              MainHistoryBuffaloView())),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 243, 243, 243),
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                        height: screenHeight * 0.09,
+                                        width: screenHeight * 0.09,
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.menu_book_sharp,
+                                            size: 40,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      StrokeText(
+                                        text: "ประวัติ",
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                ScreenUtils.calculateFontSize(
+                                                    context, 10),
+                                            color: Colors.black),
+                                        strokeColor: Colors.white,
+                                        strokeWidth: 3,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: InkWell(
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              MainHeredityBuffaloView())),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 243, 243, 243),
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                        height: screenHeight * 0.09,
+                                        width: screenHeight * 0.09,
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.share,
+                                            size: 40,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      StrokeText(
+                                        text: "พันธุกรรม",
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                ScreenUtils.calculateFontSize(
+                                                    context, 10),
+                                            color: Colors.black),
+                                        strokeColor: Colors.white,
+                                        strokeWidth: 3,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: Column(
+                                  children: [
+                                    InkWell(
+                                      onTap: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MainFarmRegister())),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          gradient: const LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              Color.fromARGB(255, 255, 227, 225),
+                                              Color.fromARGB(255, 255, 98, 86),
+                                            ],
+                                          ),
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                        height: screenHeight * 0.09,
+                                        width: screenHeight * 0.09,
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.person_outlined,
+                                            size: 50,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    StrokeText(
+                                      text: "ลงทะเบียน",
+                                      textStyle: TextStyle(
+                                          fontSize: ScreenUtils.calculateFontSize(
+                                              context, 10),
+                                          color: Colors.black),
+                                      strokeColor: Colors.white,
+                                      strokeWidth: 3,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (searchController.text.isNotEmpty)
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          height: screenHeight * 0.5,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(
-                                      buffaloList.length - 1, (index) {
-                                    // เริ่มที่ index 1
-                                    BuffaloModel buffalo =
-                                        buffaloList[index + 1];
-
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    StrokeText(
+                                      text:
+                                          'พบควายที่ค้นหา (${filteredBuffaloes.length})',
+                                      textStyle: TextStyle(
+                                        fontSize: ScreenUtils.calculateFontSize(
+                                            context, 14),
+                                        color: Colors.white,
+                                      ),
+                                      strokeColor: Colors.black,
+                                      strokeWidth: 3,
+                                    ),
+                                    const Spacer(),
+                                    InkWell(
+                                      onTap: () {
+                                        searchController.text = '';
+                                      },
+                                      child: Container(
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Center(
+                                            child: Text(
+                                              'ล้างการค้นหา',
+                                              style:
+                                                  TextStyle(color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Expanded(
+                                child: GridView.builder(
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
+                                    childAspectRatio: 0.75,
+                                  ),
+                                  itemCount: filteredBuffaloes.length,
+                                  itemBuilder: (context, index) {
+                                    final buffalo = filteredBuffaloes[index];
                                     final profileImage =
                                         buffalo.buffaloImages.firstWhere(
                                       (image) => image.isProfileImage,
                                       orElse: () => BuffaloImageModel(
                                         imageId: 0,
-                                        imagePath:
-                                            'https://placeholder.com/150',
+                                        imagePath: 'https://placeholder.com/150',
                                         isProfileImage: false,
                                         createdAt: DateTime.now(),
                                         updatedAt: DateTime.now(),
                                         buffaloId: buffalo.id,
                                       ),
                                     );
-
-                                    final imageUrl = profileImage.imagePath;
-
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 5),
+                        
+                                    final imageUrl = profileImage != null
+                                        ? profileImage.imagePath
+                                        : 'https://placeholder.com/150';
+                        
+                                    return InkWell(
+                                      onTap: () {
+                                        Provider.of<SelectedBuffalo>(context,
+                                                listen: false)
+                                            .setSelectedBuffalo(buffalo);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                PromoteBuffalo(),
+                                          ),
+                                        );
+                                      },
                                       child: Column(
                                         children: [
-                                          InkWell(
-                                            onTap: () {
-                                              Provider.of<SelectedBuffalo>(
-                                                      context,
-                                                      listen: false)
-                                                  .setSelectedBuffalo(buffalo);
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PromoteBuffalo(),
-                                                ),
-                                              );
-                                            },
+                                          AspectRatio(
+                                            aspectRatio: 1,
                                             child: Container(
-                                              width: screenHeight * 0.09,
-                                              height: screenHeight * 0.09,
                                               clipBehavior: Clip.antiAlias,
                                               decoration: BoxDecoration(
                                                 borderRadius:
@@ -487,403 +970,31 @@ class _HomeViewState extends State<HomeView> {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(height: 10),
+                                          const SizedBox(height: 5),
                                           StrokeText(
                                             text: buffalo.name,
                                             textStyle: TextStyle(
                                               fontSize:
                                                   ScreenUtils.calculateFontSize(
-                                                      context, 10),
-                                              color: Colors.red,
+                                                      context, 12),
+                                              color: Colors.white,
                                             ),
-                                            strokeColor: Colors.white,
+                                            strokeColor: Colors.black,
                                             strokeWidth: 3,
                                           ),
                                         ],
                                       ),
                                     );
-                                  }),
+                                  },
                                 ),
-                              );
-                            } else {
-                              return Text('No additional buffaloes found');
-                            }
-                          } else {
-                            return Text(
-                                'No Buffaloes found'); // เมื่อไม่มีข้อมูล
-                          }
-                        },
-                      )
-                    ],
-                  ),
-                SizedBox(
-                  height: 10,
-                ),
-                if (!searchController.text.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            StrokeText(
-                              text: "ข่าวประชาสัมพันธ์",
-                              textStyle: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                      context, 20),
-                                  color: Colors.red),
-                              strokeColor: Colors.white,
-                              strokeWidth: 3,
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: CarouselSlider(
-                            items: child,
-                            carouselController: buttonCarouselController,
-                            options: CarouselOptions(
-                              autoPlay: true,
-                              enlargeCenterPage: true,
-                              viewportFraction: 0.9,
-                              aspectRatio: 2.0,
-                              initialPage: 2,
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                const SizedBox(
-                  height: 20,
-                ),
-                if (!searchController.text.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: InkWell(
-                                onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => FarmView())),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 243, 243, 243),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      height: screenHeight * 0.09,
-                                      width: screenHeight * 0.09,
-                                      child: Center(
-                                        child: Image.asset(
-                                          'assets/images/buffalo.png',
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    StrokeText(
-                                      text: "คอก/ฟาร์ม",
-                                      textStyle: TextStyle(
-                                          fontSize:
-                                              ScreenUtils.calculateFontSize(
-                                                  context, 14),
-                                          color: Colors.black),
-                                      strokeColor: Colors.white,
-                                      strokeWidth: 3,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: InkWell(
-                                onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            MainHistoryBuffaloView())),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 243, 243, 243),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      height: screenHeight * 0.09,
-                                      width: screenHeight * 0.09,
-                                      child: const Center(
-                                        child: Icon(
-                                          Icons.menu_book_sharp,
-                                          size: 40,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    StrokeText(
-                                      text: "ประวัติ",
-                                      textStyle: TextStyle(
-                                          fontSize:
-                                              ScreenUtils.calculateFontSize(
-                                                  context, 14),
-                                          color: Colors.black),
-                                      strokeColor: Colors.white,
-                                      strokeWidth: 3,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: InkWell(
-                                onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            MainHeredityBuffaloView())),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 243, 243, 243),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      height: screenHeight * 0.09,
-                                      width: screenHeight * 0.09,
-                                      child: const Center(
-                                        child: Icon(
-                                          Icons.share,
-                                          size: 40,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    StrokeText(
-                                      text: "พันธุกรรม",
-                                      textStyle: TextStyle(
-                                          fontSize:
-                                              ScreenUtils.calculateFontSize(
-                                                  context, 14),
-                                          color: Colors.black),
-                                      strokeColor: Colors.white,
-                                      strokeWidth: 3,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                MainFarmRegister())),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        gradient: const LinearGradient(
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                          colors: [
-                                            Color.fromARGB(255, 255, 227, 225),
-                                            Color.fromARGB(255, 255, 98, 86),
-                                          ],
-                                        ),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      height: screenHeight * 0.09,
-                                      width: screenHeight * 0.09,
-                                      child: const Center(
-                                        child: Icon(
-                                          Icons.person_outlined,
-                                          size: 50,
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  StrokeText(
-                                    text: "ลงทะเบียน",
-                                    textStyle: TextStyle(
-                                        fontSize: ScreenUtils.calculateFontSize(
-                                            context, 14),
-                                        color: Colors.black),
-                                    strokeColor: Colors.white,
-                                    strokeWidth: 3,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                      ],
-                    ),
-                  ),
-                if (searchController.text.isNotEmpty)
-                  SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        height: screenHeight * 0.5,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  StrokeText(
-                                    text: 'พบควายที่ค้นหา (${filteredBuffaloes.length})',
-                                    textStyle: TextStyle(
-                                      fontSize: ScreenUtils.calculateFontSize(
-                                          context, 14),
-                                      color: Colors.white,
-                                    ),
-                                    strokeColor: Colors.black,
-                                    strokeWidth: 3,
-                                  ),
-                                  const Spacer(),
-                                  InkWell(
-                                    onTap: () {
-                                      searchController.text = '';
-                                    },
-                                    child: Container(
-                                      width: 150,
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(8)
-                                      ),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Center(
-                                          child: Text('ล้างการค้นหา', style: TextStyle(
-                                            color: Colors.white
-                                          ),),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Expanded(
-                              child: GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10,
-                                  childAspectRatio: 0.75,
-                                ),
-                                itemCount: filteredBuffaloes.length,
-                                itemBuilder: (context, index) {
-                                  final buffalo = filteredBuffaloes[index];
-                                  final profileImage =
-                                      buffalo.buffaloImages.firstWhere(
-                                    (image) => image.isProfileImage,
-                                    orElse: () => BuffaloImageModel(
-                                      imageId: 0,
-                                      imagePath: 'https://placeholder.com/150',
-                                      isProfileImage: false,
-                                      createdAt: DateTime.now(),
-                                      updatedAt: DateTime.now(),
-                                      buffaloId: buffalo.id,
-                                    ),
-                                  );
-                        
-                                  final imageUrl = profileImage != null
-                                      ? profileImage.imagePath
-                                      : 'https://placeholder.com/150';
-                        
-                                  return InkWell(
-                                    onTap: () {
-                                      Provider.of<SelectedBuffalo>(context,
-                                              listen: false)
-                                          .setSelectedBuffalo(buffalo);
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => PromoteBuffalo(),
-                                        ),
-                                      );
-                                    },
-                                    child: Column(
-                                      children: [
-                                        AspectRatio(
-                                          aspectRatio: 1,
-                                          child: Container(
-                                            clipBehavior: Clip.antiAlias,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                            ),
-                                            child: Image.network(
-                                              imageUrl,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        StrokeText(
-                                          text: buffalo.name,
-                                          textStyle: TextStyle(
-                                            fontSize: ScreenUtils.calculateFontSize(
-                                                context, 12),
-                                            color: Colors.white,
-                                          ),
-                                          strokeColor: Colors.black,
-                                          strokeWidth: 3,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
-                    ),
-                  )
-              ],
+                    )
+                ],
+              ),
             ),
           ),
         ),

@@ -100,7 +100,7 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
           password: _inputCode,
           farmId: selectedFarm.farmId,
           title: videoName,
-          videoUrl: _videoUrlController.text,
+          url: videoUrl,
         );
         if (msg == 'Buffalo clip created successfully') {
           ScaffoldMessenger.of(context).showSnackBar(

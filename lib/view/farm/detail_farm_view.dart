@@ -348,6 +348,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                     child: Text(
                                       'ลงทะเบียนสมาชิก',
                                       style: TextStyle(
+                                        fontSize: 10,
                                         color: Colors.white,
                                       ),
                                     ),
@@ -469,11 +470,14 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                   color: Colors.red,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Center(
-                                  child: AutoSizeText(
-                                    'ลงทะเบียนควาย',
-                                    maxLines: 1,
-                                    style: TextStyle(color: Colors.white),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Center(
+                                    child: AutoSizeText(
+                                      'ลงทะเบียนควาย',
+                                      maxLines: 1,
+                                      style: TextStyle(color: Colors.white, fontSize: 8),
+                                    ),
                                   ),
                                 ),
                               ),

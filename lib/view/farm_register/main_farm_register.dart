@@ -468,7 +468,7 @@ class ImagePickerWidget extends StatelessWidget {
         child: selectedImage == null
             ? const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Icon(Icons.add, size: 30), Text('เพิ่มรูปภาพ')],
+                children: [Icon(Icons.add, size: 30), Text('เพิ่มรูปภาพ', style: TextStyle(fontSize: 10),)],
               )
             : Image.file(selectedImage!, fit: BoxFit.cover),
       ),

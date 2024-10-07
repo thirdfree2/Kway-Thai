@@ -193,7 +193,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                       },
                       child: Container(
                         height: 50,
-                        width: 200,
+                        width: 250,
                         decoration: BoxDecoration(
                           color: Colors.red,
                           borderRadius: BorderRadius.circular(10),

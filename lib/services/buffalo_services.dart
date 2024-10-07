@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:buffalo_thai/utils/api_utils.dart';
@@ -29,11 +30,11 @@ Future<List<BuffaloModel>> fetchBuffaloes() async {
   }
 }
 
-
 Future<List<BuffaloModel>> fetchHistoryBuffaloes() async {
   try {
     final response = await http.get(
-      Uri.parse('${ApiUtils.baseUrl}/api/buffalo/history/?buffaloStatus=อนุมัติ&farmId=-1'),
+      Uri.parse(
+          '${ApiUtils.baseUrl}/api/buffalo/history/?buffaloStatus=อนุมัติ&farmId=-1'),
     );
 
     if (response.statusCode == 200) {
@@ -57,7 +58,8 @@ Future<List<BuffaloModel>> fetchHistoryBuffaloes() async {
 Future<List<BuffaloModel>> fetchAllBuffaloes() async {
   try {
     final response = await http.get(
-      Uri.parse('${ApiUtils.baseUrl}/api/buffalo/?buffaloStatus=อนุมัติ&farmId=-1'),
+      Uri.parse(
+          '${ApiUtils.baseUrl}/api/buffalo/?buffaloStatus=อนุมัติ&farmId=-1'),
     );
 
     if (response.statusCode == 200) {
@@ -78,7 +80,6 @@ Future<List<BuffaloModel>> fetchAllBuffaloes() async {
   }
 }
 
-
 Future<List<BuffaloModel>> fetchBuffaloesPromoteBuff() async {
   final response = await http
       .get(Uri.parse('${ApiUtils.baseUrl}/api/buffalo/getPromoteBuff'));
@@ -97,8 +98,8 @@ Future<List<BuffaloModel>> fetchBuffaloesPromoteBuff() async {
 }
 
 Future<List<BuffaloModel>> fetchBuffaloesByFarmId(String id) async {
-  final response =
-      await http.get(Uri.parse('${ApiUtils.baseUrl}/api/buffalo/?farmId=$id&buffaloStatus=อนุมัติ'));
+  final response = await http.get(Uri.parse(
+      '${ApiUtils.baseUrl}/api/buffalo/?farmId=$id&buffaloStatus=อนุมัติ'));
 
   if (response.statusCode == 200) {
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
@@ -181,17 +182,25 @@ Future<String> registerBuffalo({
   request.fields['motherGrandmotherName'] = motherGrandmotherName ?? '';
   request.fields['motherGrandmotherFarmName'] = motherGrandmotherFarmName ?? '';
 
-  request.fields['fatherGreatGrandfatherName'] = fatherGreatGrandfatherName ?? '';
-  request.fields['fatherGreatGrandfatherFarmName'] = fatherGreatGrandfatherFarmName ?? '';
+  request.fields['fatherGreatGrandfatherName'] =
+      fatherGreatGrandfatherName ?? '';
+  request.fields['fatherGreatGrandfatherFarmName'] =
+      fatherGreatGrandfatherFarmName ?? '';
 
-  request.fields['fatherGreatGrandmotherName'] = fatherGreatGrandmotherName ?? '';
-  request.fields['fatherGreatGrandmotherFarmName'] = fatherGreatGrandmotherFarmName ?? '';
+  request.fields['fatherGreatGrandmotherName'] =
+      fatherGreatGrandmotherName ?? '';
+  request.fields['fatherGreatGrandmotherFarmName'] =
+      fatherGreatGrandmotherFarmName ?? '';
 
-  request.fields['motherGreatGrandfatherName'] = motherGreatGrandfatherName ?? '';
-  request.fields['motherGreatGrandfatherFarmName'] = motherGreatGrandfatherFarmName ?? '';
+  request.fields['motherGreatGrandfatherName'] =
+      motherGreatGrandfatherName ?? '';
+  request.fields['motherGreatGrandfatherFarmName'] =
+      motherGreatGrandfatherFarmName ?? '';
 
-  request.fields['motherGreatGrandmotherName'] = motherGreatGrandmotherName ?? '';
-  request.fields['motherGreatGrandmotherFarmName'] = motherGreatGrandmotherFarmName ?? '';
+  request.fields['motherGreatGrandmotherName'] =
+      motherGreatGrandmotherName ?? '';
+  request.fields['motherGreatGrandmotherFarmName'] =
+      motherGreatGrandmotherFarmName ?? '';
 
   request.fields['password'] = password;
 
@@ -259,44 +268,54 @@ Future<String> uploadVideoBuffalo({
   required File? imageFile,
   required String password,
   required String farmId,
-  required String videoUrl,
+  required String url,
+  // required String videoUrl,
   required String title,
 }) async {
   const String url = '${ApiUtils.baseUrl}/api/buffalo/buffaloClips/';
   final uri = Uri.parse(url);
   final request = http.MultipartRequest('POST', uri);
 
+
+
+  // เพิ่มข้อมูลฟิลด์ต่าง ๆ ที่จะส่งไปพร้อมกัน
   request.fields['buffaloId'] = buffaloId.toString();
-  request.fields['url'] = videoUrl;
-  request.fields['title'] = title;
   request.fields['password'] = password;
   request.fields['farmId'] = farmId.toString();
+  request.fields['url'] = url;
+  // request.fields['videoUrl'] = videoUrl;  // ส่ง URL ของวิดีโอ
+  request.fields['title'] = title;        // ส่งชื่อของวิดีโอ
+
+  // เช็คว่า imageFile ไม่ใช่ null และเพิ่มไฟล์วิดีโอใน request
   if (imageFile != null) {
     request.files
-        .add(await http.MultipartFile.fromPath('image', imageFile.path));
+        .add(await http.MultipartFile.fromPath('image', imageFile.path,));
   }
 
-  final streamedResponse = await request.send();
-  final response = await http.Response.fromStream(streamedResponse);
+  try {
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
 
-  if (response.statusCode == 201) {
-    final responseData = jsonDecode(response.body);
-    if (responseData['message'] != null) {
-      return responseData['message'].toString();
+    if (response.statusCode == 201) {
+      final responseData = jsonDecode(response.body);
+      if (responseData['message'] != null) {
+        return responseData['message'].toString();
+      } else {
+        throw Exception('Farm data not found.');
+      }
     } else {
-      throw Exception('Farm data not found.');
+      throw Exception(
+        'Failed to upload video. Status code: ${response.statusCode}. Response body: ${response.body}',
+      );
     }
-  } else {
-    throw Exception(
-      'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}',
-    );
+  } catch (e) {
+    throw Exception('Failed to upload video: $e');
   }
 }
 
-
 Future<String> updateBuffalo({
   required String name,
-   required String buffaloId,
+  required String buffaloId,
   required String birthDate,
   required String farmId,
   required String birthMethod,
@@ -357,17 +376,25 @@ Future<String> updateBuffalo({
   request.fields['motherGrandmotherName'] = motherGrandmotherName ?? '';
   request.fields['motherGrandmotherFarmName'] = motherGrandmotherFarmName ?? '';
 
-  request.fields['fatherGreatGrandfatherName'] = fatherGreatGrandfatherName ?? '';
-  request.fields['fatherGreatGrandfatherFarmName'] = fatherGreatGrandfatherFarmName ?? '';
+  request.fields['fatherGreatGrandfatherName'] =
+      fatherGreatGrandfatherName ?? '';
+  request.fields['fatherGreatGrandfatherFarmName'] =
+      fatherGreatGrandfatherFarmName ?? '';
 
-  request.fields['fatherGreatGrandmotherName'] = fatherGreatGrandmotherName ?? '';
-  request.fields['fatherGreatGrandmotherFarmName'] = fatherGreatGrandmotherFarmName ?? '';
+  request.fields['fatherGreatGrandmotherName'] =
+      fatherGreatGrandmotherName ?? '';
+  request.fields['fatherGreatGrandmotherFarmName'] =
+      fatherGreatGrandmotherFarmName ?? '';
 
-  request.fields['motherGreatGrandfatherName'] = motherGreatGrandfatherName ?? '';
-  request.fields['motherGreatGrandfatherFarmName'] = motherGreatGrandfatherFarmName ?? '';
+  request.fields['motherGreatGrandfatherName'] =
+      motherGreatGrandfatherName ?? '';
+  request.fields['motherGreatGrandfatherFarmName'] =
+      motherGreatGrandfatherFarmName ?? '';
 
-  request.fields['motherGreatGrandmotherName'] = motherGreatGrandmotherName ?? '';
-  request.fields['motherGreatGrandmotherFarmName'] = motherGreatGrandmotherFarmName ?? '';
+  request.fields['motherGreatGrandmotherName'] =
+      motherGreatGrandmotherName ?? '';
+  request.fields['motherGreatGrandmotherFarmName'] =
+      motherGreatGrandmotherFarmName ?? '';
 
   request.fields['password'] = password;
 
@@ -377,9 +404,8 @@ Future<String> updateBuffalo({
 
   if (response.statusCode == 200) {
     final responseData = jsonDecode(response.body);
-    if (responseData['message'] != null &&
-        responseData['message'] != null) {
-          print(responseData);
+    if (responseData['message'] != null && responseData['message'] != null) {
+      print(responseData);
       return responseData['message'].toString(); // Return the farmId
     } else {
       throw Exception('Farm data not found.');

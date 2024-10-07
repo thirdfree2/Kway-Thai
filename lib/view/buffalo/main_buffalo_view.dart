@@ -238,14 +238,13 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                                       'สืบสายเลือดย่าทวด',
                                       buffalo?.fatherGreatGrandmotherName ?? '',
                                       Colors.pink[800]),
-                                 const SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 if (buffalo?.motherGreatGrandmotherName != '')
                                   _buildInfoRow(
                                       'สืบสายเลือดยายทวด',
                                       buffalo?.motherGreatGrandmotherName ?? '',
                                       Colors.pink[800]),
                                 const SizedBox(height: 10),
-                                
                               ],
                             ),
                           ),
@@ -268,11 +267,11 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
               children: [
                 Column(
                   children: [
-                    const Text(
+                    Text(
                       'สังกัดปัจจุบัน',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.green,
+                        color: Colors.green[900],
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -301,15 +300,38 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
           Positioned(
             bottom: screenHeight * 0.025,
             left: 20,
-            child: Container(
-              width: screenWidth * 0.5,
-              height: screenHeight * 0.29,
-              clipBehavior: Clip.antiAlias,
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(15)),
-              child: Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
+            child: InkWell(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: Image.network(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Close the popup
+                          },
+                          child: Text("ปิด"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Container(
+                width: screenWidth * 0.5,
+                height: screenHeight * 0.29,
+                clipBehavior: Clip.antiAlias,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -319,34 +341,34 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
   }
 
   Widget _buildInfoRow(String label, String value, Color? color) {
-    return Expanded(
-      child: Row(
-        children: [
-          Expanded(
-            child: AutoSizeText(
-              label,
-              maxFontSize: 13,
-              maxLines: 2,
-              style: TextStyle(
-                  fontSize: ScreenUtils.calculateFontSize(context, 13)),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+          child: AutoSizeText(
+            '$label ',
+            maxFontSize: 13,
+            maxLines: 2,
+            style:
+                TextStyle(fontSize: ScreenUtils.calculateFontSize(context, 13)),
+          ),
+        ),
+        Flexible(
+          child: AutoSizeText(
+            value,
+            maxFontSize: 13,
+            maxLines: 2,
+            style: TextStyle(
+              color: color,
+              fontSize: ScreenUtils.calculateFontSize(context, 13),
+              decoration: TextDecoration.underline,
+              decorationColor: color,
+              decorationThickness: 2,
             ),
           ),
-          Expanded(
-            child: AutoSizeText(
-              value,
-              maxFontSize: 13,
-              maxLines: 2,
-              style: TextStyle(
-                color: color,
-                fontSize: ScreenUtils.calculateFontSize(context, 13),
-                decoration: TextDecoration.underline,
-                decorationColor: color,
-                decorationThickness: 2,
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
