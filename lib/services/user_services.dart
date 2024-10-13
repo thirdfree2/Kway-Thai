@@ -1,12 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:buffalo_thai/model/user_model.dart';
 import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart';
 
 Future<List<UserModel>> fetchUserByFarmId(String id) async {
-  final response =
-      await http.get(Uri.parse('${ApiUtils.baseUrl}/api/user/?farmId=$id&status=อนุมัติ'));
+  final response = await http.get(
+      Uri.parse('${ApiUtils.baseUrl}/api/user/?farmId=$id&status=อนุมัติ'));
 
   if (response.statusCode == 200) {
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
@@ -32,6 +35,7 @@ Future<String> updateUser({
   required String farmId,
   required String lineId,
   required String password,
+  required File? imageFile,
 }) async {
   String url = '${ApiUtils.baseUrl}/api/user/$userId';
 
@@ -42,10 +46,15 @@ Future<String> updateUser({
     ..fields['position'] = position
     ..fields['phoneNumber'] = phoneNumber
     ..fields['lineId'] = lineId
-
     ..fields['farmId'] = farmId
     ..fields['password'] = password;
-
+  if (imageFile != null && imageFile.path.isNotEmpty) {
+    request.files.add(await http.MultipartFile.fromPath(
+      'image',
+      imageFile.path,
+      contentType: MediaType('image', basename(imageFile.path).split('.').last),
+    ));
+  }
   final response = await request.send();
 
   if (response.statusCode == 200) {

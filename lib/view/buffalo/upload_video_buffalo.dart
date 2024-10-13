@@ -1,13 +1,12 @@
 import 'dart:io';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/services/buffalo_services.dart';
+import 'package:buffalo_thai/view/buffalo/update_buffalo_view.dart';
 import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import 'package:provider/provider.dart';
 
 class UploadVideoBuffalo extends StatefulWidget {
@@ -19,11 +18,24 @@ class UploadVideoBuffalo extends StatefulWidget {
 
 class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
   File? _selectedImage;
-  String _inputCode = ""; // ตัวแปรสำหรับเก็บรหัส 6 หลัก
+  File? _selectedVideo;
+  File? _selectedImagelink;
+  String _inputCode = "";
+  final TextEditingController _linkController = TextEditingController();
+
+  bool linkVideoStage = false;
 
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _videoUrlController = TextEditingController();
-  final TextEditingController _videoNameController = TextEditingController();
+
+  Future<void> _pickImageLink() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _selectedImagelink = File(pickedImage.path);
+      });
+    }
+  }
 
   Future<void> _pickImage() async {
     final pickedImage =
@@ -31,6 +43,16 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
     if (pickedImage != null) {
       setState(() {
         _selectedImage = File(pickedImage.path);
+      });
+    }
+  }
+
+  Future<void> _pickVideo() async {
+    final pickedVideo =
+        await ImagePicker().pickVideo(source: ImageSource.gallery);
+    if (pickedVideo != null) {
+      setState(() {
+        _selectedVideo = File(pickedVideo.path);
       });
     }
   }
@@ -65,7 +87,7 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
               onPressed: () {
                 if (_inputCode.length == 6) {
                   Navigator.of(context).pop(); // ปิด Dialog
-                  _uploadVideo(); // เรียกฟังก์ชันอัปโหลดเมื่อใส่รหัสผ่านถูกต้อง
+                  _uploadVideoAndImage(); // เรียกฟังก์ชันอัปโหลดเมื่อใส่รหัสผ่านถูกต้อง
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
@@ -83,60 +105,109 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
     );
   }
 
-  Future<void> _uploadVideo() async {
+  Future<void> _uploadVideoAndImage() async {
     final selectedBuffalo =
         Provider.of<SelectedBuffalo>(context, listen: false);
-    final buffalo = selectedBuffalo.buffalo;
     final selectedFarm = Provider.of<SelectedFarm>(context, listen: false);
-    if (_formKey.currentState!.validate()) {
-      String videoUrl = _videoUrlController.text;
-      String videoName = _videoNameController.text;
 
-      try {
-        print(videoUrl);
-        String msg = await uploadVideoBuffalo(
-          buffaloId: selectedBuffalo.buffalo?.id ?? 0,
-          imageFile: _selectedImage,
-          password: _inputCode,
-          farmId: selectedFarm.farmId,
-          title: videoName,
-          url: videoUrl,
-        );
-        if (msg == 'Buffalo clip created successfully') {
+    if (!linkVideoStage) {
+      if (_formKey.currentState!.validate() &&
+          _selectedImage != null &&
+          _selectedVideo != null) {
+        try {
+          // เรียกฟังก์ชันอัปโหลดด้วยพารามิเตอร์รูปภาพและวิดีโอ
+          String msg = await uploadVideoBuffalo(
+            buffaloId: selectedBuffalo.buffalo?.id ?? 0,
+            imageFile: _selectedImage,
+            videoFile: _selectedVideo,
+            password: _inputCode,
+            farmId: selectedFarm.farmId,
+          );
+
+          if (msg == 'อัพโหลดคลิปวิดีโอและรูปภาพสำเร็จ') {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('อัปโหลดสำเร็จ'),
+                backgroundColor: Colors.green,
+                duration: Duration(seconds: 2),
+              ),
+            );
+
+            // Navigate to the farm detail view after success
+            Navigator.pop(context);
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => DetailFarmView(),
+              ),
+            );
+          }
+        } catch (e) {
+          print(e);
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('อัปโหลดรูปภาพสำเร็จ'),
-              backgroundColor: Colors.green,
+            SnackBar(
+              content: Text('การอัปโหลดล้มเหลว: $e'),
+              backgroundColor: Colors.red,
               duration: Duration(seconds: 2),
             ),
           );
-
-          // Navigate to the farm detail view after success
-          Navigator.pop(context);
-          Navigator.pop(context);
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => DetailFarmView(),
-            ),
-          );
         }
-      } catch (e) {
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('การอัปโหลดล้มเหลว: รหัสผ่านไม่ถูกต้อง $e'),
+          const SnackBar(
+            content: Text('กรุณาเลือกรูปภาพและวิดีโอให้ครบถ้วน'),
             backgroundColor: Colors.red,
             duration: Duration(seconds: 2),
           ),
         );
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('กรุณากรอกข้อมูลให้ครบถ้วน'),
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 2),
-        ),
-      );
+      if (_selectedImagelink != null) {
+        try {
+          String msg = await uploadVideoBuffaloWithLink(
+            buffaloId: selectedBuffalo.buffalo?.id ?? 0,
+            imageFile: _selectedImagelink,
+            password: _inputCode,
+            farmId: selectedFarm.farmId,
+            videoUrl: _linkController.text,
+            title: '',
+          );
+
+          if (msg == 'Buffalo clip created successfully') {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('อัปโหลดสำเร็จ'),
+                backgroundColor: Colors.green,
+                duration: Duration(seconds: 2),
+              ),
+            );
+
+            Navigator.pop(context);
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => DetailFarmView(),
+              ),
+            );
+          }
+        } catch (e) {
+          print(e);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('การอัปโหลดล้มเหลว: $e'),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      } else {
+        print('error');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('กรุณาเลือกรูปภาพและวิดีโอให้ครบถ้วน'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
     }
   }
 
@@ -172,67 +243,193 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        Text(
-                          'เพิ่มคลิปวิดีโอ',
+                        const Text(
+                          'เพิ่มคลิปวิดีโอและรูปภาพ',
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 14,
                             color: Colors.black,
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Column(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: _pickImage,
-                              child: Container(
-                                height: 200,
-                                width: 200,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: Colors.black),
-                                  color: Colors.white.withOpacity(0.8),
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  linkVideoStage = false;
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: linkVideoStage
+                                    ? Colors.red
+                                    : Colors.red[300],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                                child: _selectedImage == null
-                                    ? const Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.add, size: 30),
-                                          Text('เพิ่มปกคลิป')
-                                        ],
-                                      )
-                                    : Image.file(_selectedImage!,
-                                        fit: BoxFit.cover),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                              ),
+                              child: const Center(
+                                child: AutoSizeText(
+                                  'อัปโหลดคลิป',
+                                  maxLines: 1,
+                                  minFontSize: 10,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  linkVideoStage = true;
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: !linkVideoStage
+                                    ? Colors.red
+                                    : Colors.red[300],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                              ),
+                              child: const Center(
+                                child: AutoSizeText(
+                                  'แนบลิงค์วิดีโอ',
+                                  maxLines: 1,
+                                  minFontSize: 10,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 10),
-                        TextFormField(
-                          controller: _videoUrlController,
-                          decoration:
-                              const InputDecoration(labelText: 'แนบลิ้งค์'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'กรุณากรอกลิ้งค์วิดีโอ';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: _videoNameController,
-                          decoration: const InputDecoration(
-                              labelText: 'ชื่อคลิปวิดีโอ'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'กรุณากรอกชื่อคลิปวิดีโอ';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20),
+                        !linkVideoStage
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: _pickImage,
+                                    child: Container(
+                                      height: 200,
+                                      width: 200,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(color: Colors.black),
+                                        color: Colors.white.withOpacity(0.8),
+                                      ),
+                                      child: _selectedImage == null
+                                          ? const Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(Icons.add, size: 30),
+                                                Text('เพิ่มปกคลิป'),
+                                              ],
+                                            )
+                                          : Image.file(_selectedImage!,
+                                              fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  GestureDetector(
+                                    onTap: _pickVideo,
+                                    child: Container(
+                                      height: 200,
+                                      width: 200,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(color: Colors.black),
+                                        color: Colors.white.withOpacity(0.8),
+                                      ),
+                                      child: _selectedVideo == null
+                                          ? const Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(Icons.add, size: 30),
+                                                Text('เพิ่มคลิปวิดีโอ'),
+                                              ],
+                                            )
+                                          : const Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(Icons.video_camera_back,
+                                                    color: Colors.green,
+                                                    size: 30),
+                                                Text('อัพโหลดสำเร็จ'),
+                                              ],
+                                            ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: _pickImageLink,
+                                    child: Container(
+                                      height: 200,
+                                      width: 200,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(color: Colors.black),
+                                        color: Colors.white.withOpacity(0.8),
+                                      ),
+                                      child: _selectedImagelink == null
+                                          ? const Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(Icons.add, size: 30),
+                                                Text('เพิ่มปกคลิป'),
+                                              ],
+                                            )
+                                          : ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: Container(
+                                                height: 150,
+                                                width: 150,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  color: Colors.grey
+                                                      .shade300, // สีพื้นหลัง
+                                                ),
+                                                child: Image.file(
+                                                  _selectedImagelink!,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  CustomTextFormField(
+                                    controller: _linkController,
+                                    labelText: 'แนบลิ้งค์วิดีโอ',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'กรุณากรอกข้อมูล';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ],
+                              ),
+                        const SizedBox(height: 10),
                         InkWell(
                           onTap:
                               _showCodeDialog, // เรียกฟังก์ชันเพื่อเปิด dialog
@@ -245,7 +442,7 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                             ),
                             child: const Center(
                               child: Text(
-                                'เพิ่มคลิปวิดีโอ',
+                                'อัปโหลด',
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),

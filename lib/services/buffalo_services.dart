@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:buffalo_thai/model/buffalo_model.dart';
+import 'package:path/path.dart';
 
 Future<List<BuffaloModel>> fetchBuffaloes() async {
   try {
@@ -205,8 +206,11 @@ Future<String> registerBuffalo({
   request.fields['password'] = password;
 
   if (imageFile != null) {
-    request.files
-        .add(await http.MultipartFile.fromPath('image', imageFile.path));
+    request.files.add(await http.MultipartFile.fromPath(
+      'image',
+      imageFile.path,
+      contentType: MediaType('image', basename(imageFile.path).split('.').last),
+    ));
   }
 
   // Send the request
@@ -266,30 +270,35 @@ Future<String> uploadImageBuffalo({
 Future<String> uploadVideoBuffalo({
   required int buffaloId,
   required File? imageFile,
+  required File? videoFile,
   required String password,
   required String farmId,
-  required String url,
   // required String videoUrl,
-  required String title,
 }) async {
-  const String url = '${ApiUtils.baseUrl}/api/buffalo/buffaloClips/';
+  const String url = '${ApiUtils.baseUrl}/api/video/uploadVideo';
   final uri = Uri.parse(url);
   final request = http.MultipartRequest('POST', uri);
-
-
 
   // เพิ่มข้อมูลฟิลด์ต่าง ๆ ที่จะส่งไปพร้อมกัน
   request.fields['buffaloId'] = buffaloId.toString();
   request.fields['password'] = password;
   request.fields['farmId'] = farmId.toString();
-  request.fields['url'] = url;
-  // request.fields['videoUrl'] = videoUrl;  // ส่ง URL ของวิดีโอ
-  request.fields['title'] = title;        // ส่งชื่อของวิดีโอ
 
   // เช็คว่า imageFile ไม่ใช่ null และเพิ่มไฟล์วิดีโอใน request
   if (imageFile != null) {
-    request.files
-        .add(await http.MultipartFile.fromPath('image', imageFile.path,));
+    request.files.add(await http.MultipartFile.fromPath(
+      'image',
+      imageFile.path,
+      contentType: MediaType('image', 'jpeg'),
+    ));
+  }
+
+  if (videoFile != null) {
+    request.files.add(await http.MultipartFile.fromPath(
+      'video',
+      videoFile.path,
+      contentType: MediaType('video', 'mp4'),
+    ));
   }
 
   try {
@@ -313,37 +322,87 @@ Future<String> uploadVideoBuffalo({
   }
 }
 
-Future<String> updateBuffalo({
-  required String name,
-  required String buffaloId,
-  required String birthDate,
-  required String farmId,
-  required String birthMethod,
-  required String gender,
-  required String? fatherName,
-  required String? fatherFarmName,
-  required String? motherName,
-  required String? motherFarmName,
-  required String? fatherGrandfatherName,
-  required String? fatherGrandfatherFarmName,
-  required String? fatherGrandmotherName,
-  required String? fatherGrandmotherFarmName,
-  required String? motherGrandfatherName,
-  required String? motherGrandfatherFarmName,
-  required String? motherGrandmotherName,
-  required String? motherGrandmotherFarmName,
-  required String? fatherGreatGrandfatherName,
-  required String? fatherGreatGrandfatherFarmName,
-  required String? fatherGreatGrandmotherName,
-  required String? fatherGreatGrandmotherFarmName,
-  required String? motherGreatGrandfatherName,
-  required String? motherGreatGrandfatherFarmName,
-  required String? motherGreatGrandmotherName,
-  required String? motherGreatGrandmotherFarmName,
-  required String bornAt,
-  required String color,
+Future<String> uploadVideoBuffaloWithLink({
+  required int buffaloId,
+  required File? imageFile,
+  required String videoUrl,
   required String password,
+  required String farmId,
+  required String title
+  // required String videoUrl,
 }) async {
+  const String url = '${ApiUtils.baseUrl}/api/buffalo/buffaloClips';
+  final uri = Uri.parse(url);
+  final request = http.MultipartRequest('POST', uri);
+
+  // เพิ่มข้อมูลฟิลด์ต่าง ๆ ที่จะส่งไปพร้อมกัน
+  request.fields['buffaloId'] = buffaloId.toString();
+  request.fields['password'] = password;
+  request.fields['farmId'] = farmId.toString();
+  request.fields['url'] = videoUrl;
+  request.fields['title'] = title;
+
+  // เช็คว่า imageFile ไม่ใช่ null และเพิ่มไฟล์วิดีโอใน request
+  if (imageFile != null) {
+    request.files.add(await http.MultipartFile.fromPath(
+      'image',
+      imageFile.path,
+      contentType: MediaType('image', 'jpeg'),
+    ));
+  }
+
+  try {
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 201) {
+      final responseData = jsonDecode(response.body);
+      if (responseData['message'] != null) {
+        return responseData['message'].toString();
+      } else {
+        throw Exception('Farm data not found.');
+      }
+    } else {
+      throw Exception(
+        'Failed to upload video. Status code: ${response.statusCode}. Response body: ${response.body}',
+      );
+    }
+  } catch (e) {
+    throw Exception('Failed to upload video: $e');
+  }
+}
+
+Future<String> updateBuffalo(
+    {required String name,
+    required String buffaloId,
+    required String birthDate,
+    required String farmId,
+    required String birthMethod,
+    required String gender,
+    required String? fatherName,
+    required String? fatherFarmName,
+    required String? motherName,
+    required String? motherFarmName,
+    required String? fatherGrandfatherName,
+    required String? fatherGrandfatherFarmName,
+    required String? fatherGrandmotherName,
+    required String? fatherGrandmotherFarmName,
+    required String? motherGrandfatherName,
+    required String? motherGrandfatherFarmName,
+    required String? motherGrandmotherName,
+    required String? motherGrandmotherFarmName,
+    required String? fatherGreatGrandfatherName,
+    required String? fatherGreatGrandfatherFarmName,
+    required String? fatherGreatGrandmotherName,
+    required String? fatherGreatGrandmotherFarmName,
+    required String? motherGreatGrandfatherName,
+    required String? motherGreatGrandfatherFarmName,
+    required String? motherGreatGrandmotherName,
+    required String? motherGreatGrandmotherFarmName,
+    required String bornAt,
+    required String color,
+    required String password,
+    required File? imageFile}) async {
   String url = '${ApiUtils.baseUrl}/api/buffalo/update/$buffaloId';
   final uri = Uri.parse(url);
   final request = http.MultipartRequest('PUT', uri);
@@ -399,6 +458,13 @@ Future<String> updateBuffalo({
   request.fields['password'] = password;
 
   // Send the request
+  if (imageFile != null) {
+    request.files.add(await http.MultipartFile.fromPath(
+      'image',
+      imageFile.path,
+      contentType: MediaType('image', basename(imageFile.path).split('.').last),
+    ));
+  }
   final streamedResponse = await request.send();
   final response = await http.Response.fromStream(streamedResponse);
 

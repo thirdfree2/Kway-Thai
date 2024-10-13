@@ -251,7 +251,7 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                   child: CustomDatePickerTextFormField(
                                     controller: _dateAwardController,
                                     labelText:
-                                        'วันเกิด', // Label for birth date
+                                        'วันที่ประกวด', // Label for birth date
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'กรุณากรอกข้อมูล';

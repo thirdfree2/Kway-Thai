@@ -91,14 +91,22 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
     });
 
     try {
-      for (var image in _selectedImages) {
-        var msg = await uploadImageBuffalo(
+      // ใช้ Future.wait เพื่อรอการอัปโหลดทุกไฟล์
+      List<Future> uploadFutures = _selectedImages.map((image) {
+        return uploadImageBuffalo(
           imageFile: image,
           buffaloId: buffalo?.id ?? 0,
           password: _inputCode,
           farmId: selectedFarm.farmId,
         );
+      }).toList();
 
+      // รอให้ Future ทั้งหมดเสร็จสิ้น
+      var results = await Future.wait(uploadFutures);
+
+      // ตรวจสอบผลลัพธ์การอัปโหลดทั้งหมด
+      bool hasError = false;
+      for (var msg in results) {
         if (msg == "Buffalo image inserted successfully") {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -115,26 +123,30 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
               duration: Duration(seconds: 2),
             ),
           );
-          setState(() {
-            isLoading = false; // หยุดการโหลดหากรหัสผิด
-          });
-          return;
+          hasError = true;
+          break;
         }
       }
 
-      setState(() {
-        _selectedImages = []; // รีเซ็ตลิสต์รูปภาพ
-        _inputCode = ""; // ล้างรหัสผ่าน
-        isLoading = false; // สิ้นสุดการโหลด
-      });
+      if (!hasError) {
+        setState(() {
+          _selectedImages = []; // รีเซ็ตลิสต์รูปภาพ
+          _inputCode = ""; // ล้างรหัสผ่าน
+          isLoading = false; // สิ้นสุดการโหลด
+        });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('อัปโหลดรูปภาพทั้งหมดเสร็จสิ้นแล้ว'),
-          backgroundColor: Colors.blue,
-          duration: Duration(seconds: 2),
-        ),
-      );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('อัปโหลดรูปภาพทั้งหมดเสร็จสิ้นแล้ว'),
+            backgroundColor: Colors.blue,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        setState(() {
+          isLoading = false; // หยุดการโหลดหากมีข้อผิดพลาด
+        });
+      }
     } catch (e) {
       setState(() {
         isLoading = false; // หยุดการโหลดในกรณีเกิดข้อผิดพลาด
@@ -245,6 +257,7 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
                         onTap: () async {
                           try {
                             await _showCodeDialog(context);
+                            Navigator.pop(context);
                             Navigator.pop(context);
                             Navigator.pop(context);
                             Navigator.of(context).pushReplacement(

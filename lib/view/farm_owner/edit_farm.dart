@@ -236,16 +236,16 @@ class _EditFarmState extends State<EditFarm> {
                                   await _showCodeDialog();
 
                                   if (_passwordController.text != null) {
-                                    await updateUser(
-                                        firstName: _nameController.text,
-                                        userId: _userIdController.text,
-                                        lastName: _lastNameController.text,
-                                        nickname: _nickNameController.text,
-                                        position: _selectedStatus ?? '',
-                                        phoneNumber: _phoneController.text,
-                                        farmId: _farmIdController.text,
-                                        lineId: _lineIdController.text,
-                                        password: _passwordController.text);
+                                    // await updateUser(
+                                    //     firstName: _nameController.text,
+                                    //     userId: _userIdController.text,
+                                    //     lastName: _lastNameController.text,
+                                    //     nickname: _nickNameController.text,
+                                    //     position: _selectedStatus ?? '',
+                                    //     phoneNumber: _phoneController.text,
+                                    //     farmId: _farmIdController.text,
+                                    //     lineId: _lineIdController.text,
+                                    //     password: _passwordController.text);
                                     Navigator.pop(context);
                                     Navigator.pushReplacement(
                                       context,

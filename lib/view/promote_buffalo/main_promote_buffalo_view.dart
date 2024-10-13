@@ -19,7 +19,7 @@ class MainPromoteBuffaloView extends StatefulWidget {
 class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
   String _formatDateToBuddhist(DateTime date) {
     // แปลงปี ค.ศ. เป็น พ.ศ. โดยบวกเพิ่ม 543
-    final thaiDate = DateTime(date.year + 543, date.month, date.day);
+    final thaiDate = DateTime(date.year, date.month, date.day);
     return DateFormat('dd MMMM yyyy', 'th_TH')
         .format(thaiDate); // กำหนดฟอร์แมตวันที่
   }
@@ -158,7 +158,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                         ? _formatDateToBuddhist(buffalo!
                                             .birthDate!) // เรียกฟังก์ชันสำหรับแปลงวันที่
                                         : '-',
-                                    Colors.amber[800],
+                                    Colors.amber[900],
                                   ),
                                 const SizedBox(height: 5),
                                 if (buffalo?.bornAt != '')

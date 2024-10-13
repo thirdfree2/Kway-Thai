@@ -8,6 +8,7 @@ import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -100,10 +101,10 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
     if (buffalo != null) {
       _nameController.text = buffalo.name;
       _nicknameController.text = buffalo.name;
-       if (buffalo.birthDate != null) {
-      DateTime? birthDate = buffalo.birthDate;
-      _birthDateController.text = DateFormat('dd/MM/yyyy').format(birthDate!);
-    }
+      if (buffalo.birthDate != null) {
+        DateTime? birthDate = buffalo.birthDate;
+        _birthDateController.text = DateFormat('dd/MM/yyyy').format(birthDate!);
+      }
       _birthPlaceController.text = buffalo.bornAt ?? '';
       _editColorController.text = buffalo.color;
 
@@ -173,6 +174,16 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
         );
       },
     );
+  }
+
+  Future<void> _pickImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _selectedImage = File(pickedImage.path);
+      });
+    }
   }
 
 // late TextEditingController _nameController = TextEditingController();
@@ -338,25 +349,39 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                       Row(
                         children: [
                           Expanded(
-                              flex: 1,
-                              child: Column(
-                                children: [
-                                  AutoSizeText(
-                                    maxLines: 1,
-                                    'ลงทะเบียนควายสำหรับฟาร์ม',
-                                    style: TextStyle(
-                                        fontSize: ScreenUtils.calculateFontSize(
-                                            context, 8)),
+                            flex: 1,
+                            child: Column(
+                              children: [
+                                AutoSizeText(
+                                  maxLines: 1,
+                                  'ลงทะเบียนควายสำหรับฟาร์ม',
+                                  style: TextStyle(
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                          context, 8)),
+                                ),
+                                AutoSizeText(
+                                  maxLines: 1,
+                                  _farmNameController.text,
+                                  style: TextStyle(
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                          context, 24)),
+                                ),
+                                Container(
+                                  width: 150,
+                                  height: 150,
+                                  child: ImagePickerWidget(
+                                    width: 150,
+                                    height: 150,
+                                    selectedImage: _selectedImage,
+                                    onPickImage: _pickImage,
                                   ),
-                                  AutoSizeText(
-                                    maxLines: 1,
-                                    _farmNameController.text,
-                                    style: TextStyle(
-                                        fontSize: ScreenUtils.calculateFontSize(
-                                            context, 24)),
-                                  ),
-                                ],
-                              )),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                )
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 10),
@@ -659,6 +684,7 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                                         .buffalo?.id
                                                         .toString() ??
                                                     '',
+                                                imageFile: _selectedImage,
                                               );
                                               Navigator.of(context).pop();
                                               print(
@@ -843,7 +869,21 @@ class ImagePickerWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [Icon(Icons.add, size: 30), Text('รูปโปรไฟล์')],
               )
-            : Image.file(selectedImage!, fit: BoxFit.cover),
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.grey.shade300, // สีพื้นหลัง
+                  ),
+                  child: Image.file(
+                    selectedImage!,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
       ),
     );
   }
