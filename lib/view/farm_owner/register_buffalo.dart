@@ -512,43 +512,56 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                   bornAt: _birthPlaceController
                                                       .text,
                                                 );
-                                                Navigator.of(context).pop();
-                                                print(
-                                                    'ลงทะเบียนฟาร์มสำเร็จ: $result');
-                                                Navigator.pop(context);
-                                                Navigator.pop(context);
-                                                Navigator.pop(context);
-                                                showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return AlertDialog(
-                                                      title: const Text(
-                                                          'ลงทะเบียนสำเร็จ'),
-                                                      content: const Text(
-                                                          'ข้อมูลฟาร์มถูกลงทะเบียนเรียบร้อยแล้ว'),
-                                                      actions: <Widget>[
-                                                        TextButton(
-                                                          child: const Text(
-                                                              'ตกลง'),
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pushReplacement(
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        DetailFarmView(),
-                                                              ),
-                                                            );
-                                                          },
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                );
+                                                print(result);
+                                                if (result ==
+                                                    'รหัสผ่านไม่ถูกต้อง') {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                          'เกิดข้อผิดพลาด: $result'),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  Navigator.of(context).pop();
+                                                  print(
+                                                      'ลงทะเบียนฟาร์มสำเร็จ: $result');
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: const Text(
+                                                            'ลงทะเบียนสำเร็จ'),
+                                                        content: const Text(
+                                                            'ข้อมูลฟาร์มถูกลงทะเบียนเรียบร้อยแล้ว'),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            child: const Text(
+                                                                'ตกลง'),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pushReplacement(
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          DetailFarmView(),
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                }
                                               } catch (e) {
                                                 print(e);
+                                                Navigator.of(context).pop();
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                   const SnackBar(

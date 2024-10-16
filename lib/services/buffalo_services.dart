@@ -227,7 +227,7 @@ Future<String> registerBuffalo({
     }
   } else {
     throw Exception(
-      'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}',
+      '${response.body}',
     );
   }
 }
@@ -476,7 +476,11 @@ Future<String> updateBuffalo(
     } else {
       throw Exception('Farm data not found.');
     }
-  } else {
+  } else if (response.statusCode == 400) {
+    final responseData = jsonDecode(response.body);
+    return responseData['message'].toString();
+  }
+   else {
     throw Exception(
       'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}',
     );
