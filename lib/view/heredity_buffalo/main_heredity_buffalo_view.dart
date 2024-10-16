@@ -243,6 +243,8 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                                       const SizedBox(height: 5),
                                       StrokeText(
                                         text: buffalo.name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                         textStyle: TextStyle(
                                           fontSize: ScreenUtils.calculateFontSize(
                                               context, 12),

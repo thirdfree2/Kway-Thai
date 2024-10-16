@@ -336,6 +336,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                                   ),
                                   const SizedBox(height: 5),
                                   StrokeText(
+                                    overflow: TextOverflow.ellipsis,
                                     text: buffalo
                                         .name, // Assuming 'name' is a property in BuffaloModel
                                     textStyle: TextStyle(

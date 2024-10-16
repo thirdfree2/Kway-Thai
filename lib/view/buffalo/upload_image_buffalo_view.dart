@@ -80,86 +80,98 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
     );
   }
 
-  Future<void> _uploadImages(BuildContext context) async {
-    final selectedBuffalo =
-        Provider.of<SelectedBuffalo>(context, listen: false);
-    final buffalo = selectedBuffalo.buffalo;
-    final selectedFarm = Provider.of<SelectedFarm>(context, listen: false);
+Future<void> _uploadImages(BuildContext context) async {
+  final selectedBuffalo =
+      Provider.of<SelectedBuffalo>(context, listen: false);
+  final buffalo = selectedBuffalo.buffalo;
+  final selectedFarm = Provider.of<SelectedFarm>(context, listen: false);
 
-    setState(() {
-      isLoading = true; // เริ่มการโหลด
-    });
+  setState(() {
+    isLoading = true; // เริ่มการโหลด
+  });
 
-    try {
-      // ใช้ Future.wait เพื่อรอการอัปโหลดทุกไฟล์
-      List<Future> uploadFutures = _selectedImages.map((image) {
-        return uploadImageBuffalo(
-          imageFile: image,
-          buffaloId: buffalo?.id ?? 0,
-          password: _inputCode,
-          farmId: selectedFarm.farmId,
-        );
-      }).toList();
+  try {
+    // ใช้ Future.wait เพื่อรอการอัปโหลดทุกไฟล์
+    List<Future> uploadFutures = _selectedImages.map((image) {
+      return uploadImageBuffalo(
+        imageFile: image,
+        buffaloId: buffalo?.id ?? 0,
+        password: _inputCode,
+        farmId: selectedFarm.farmId,
+      );
+    }).toList();
 
-      // รอให้ Future ทั้งหมดเสร็จสิ้น
-      var results = await Future.wait(uploadFutures);
+    // รอให้ Future ทั้งหมดเสร็จสิ้น
+    var results = await Future.wait(uploadFutures);
 
-      // ตรวจสอบผลลัพธ์การอัปโหลดทั้งหมด
-      bool hasError = false;
-      for (var msg in results) {
-        if (msg == "Buffalo image inserted successfully") {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('อัปโหลดรูปภาพสำเร็จ'),
-              backgroundColor: Colors.green,
-              duration: Duration(seconds: 2),
-            ),
-          );
-        } else if (msg == "รหัสผ่านไม่ถูกต้อง") {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('รหัสผ่านไม่ถูกต้อง'),
-              backgroundColor: Colors.red,
-              duration: Duration(seconds: 2),
-            ),
-          );
-          hasError = true;
-          break;
-        }
-      }
-
-      if (!hasError) {
-        setState(() {
-          _selectedImages = []; // รีเซ็ตลิสต์รูปภาพ
-          _inputCode = ""; // ล้างรหัสผ่าน
-          isLoading = false; // สิ้นสุดการโหลด
-        });
-
+    // ตรวจสอบผลลัพธ์การอัปโหลดทั้งหมด
+    bool hasError = false;
+    for (var msg in results) {
+      if (msg == "Buffalo image inserted successfully") {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('อัปโหลดรูปภาพทั้งหมดเสร็จสิ้นแล้ว'),
-            backgroundColor: Colors.blue,
+            content: Text('อัปโหลดรูปภาพสำเร็จ'),
+            backgroundColor: Colors.green,
             duration: Duration(seconds: 2),
           ),
         );
-      } else {
-        setState(() {
-          isLoading = false; // หยุดการโหลดหากมีข้อผิดพลาด
-        });
+      } else if (msg == "รหัสผ่านไม่ถูกต้อง") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('รหัสผ่านไม่ถูกต้อง'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 2),
+          ),
+        );
+        hasError = true;
+        break;
       }
-    } catch (e) {
+    }
+
+    if (!hasError && mounted) {
       setState(() {
-        isLoading = false; // หยุดการโหลดในกรณีเกิดข้อผิดพลาด
+        _selectedImages = []; // รีเซ็ตลิสต์รูปภาพ
+        _inputCode = ""; // ล้างรหัสผ่าน
+        isLoading = false; // สิ้นสุดการโหลด
       });
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('การอัปโหลดล้มเหลว'),
-          backgroundColor: Colors.red,
+          content: Text('อัปโหลดรูปภาพทั้งหมดเสร็จสิ้นแล้ว'),
+          backgroundColor: Colors.blue,
           duration: Duration(seconds: 2),
         ),
       );
+
+      // Delay navigation to allow the SnackBar to show up properly
+      await Future.delayed(const Duration(seconds: 1));
+
+      // Navigate after snack bars are shown
+      Navigator.pop(context);
+      Navigator.pop(context);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => DetailFarmView(),
+        ),
+      );
+    } else {
+      setState(() {
+        isLoading = false; // หยุดการโหลดหากมีข้อผิดพลาด
+      });
     }
+  } catch (e) {
+    setState(() {
+      isLoading = false; // หยุดการโหลดในกรณีเกิดข้อผิดพลาด
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('การอัปโหลดล้มเหลว'),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -201,8 +213,7 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
                 isLoading // แสดง Loading เมื่อกำลังอัปโหลด
                     ? const CircularProgressIndicator()
                     : GestureDetector(
-                        onTap:
-                            _pickMultipleImages, // เปลี่ยนเป็นการเลือกรูปหลายรูป
+                        onTap: _pickMultipleImages,
                         child: Container(
                           height: 400,
                           width: 300,
@@ -257,7 +268,6 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
                         onTap: () async {
                           try {
                             await _showCodeDialog(context);
-                            Navigator.pop(context);
                             Navigator.pop(context);
                             Navigator.pop(context);
                             Navigator.of(context).pushReplacement(

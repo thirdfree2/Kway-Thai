@@ -416,6 +416,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                     const SizedBox(height: 5),
                                     StrokeText(
                                       text: user?.nickname ?? '',
+                                      overflow: TextOverflow.ellipsis,
                                       textStyle: TextStyle(
                                         fontSize: ScreenUtils.calculateFontSize(
                                             context, 12),
@@ -602,6 +603,8 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                         color: Colors.white,
                                       ),
                                       strokeColor: Colors.black,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       strokeWidth: 3,
                                     ),
                                   ],

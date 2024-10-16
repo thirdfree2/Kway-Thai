@@ -144,8 +144,8 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
         } catch (e) {
           print(e);
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('การอัปโหลดล้มเหลว: $e'),
+            const SnackBar(
+              content: Text('การอัปโหลดล้มเหลว: รหัสผ่านไม่ถูกต้อง'),
               backgroundColor: Colors.red,
               duration: Duration(seconds: 2),
             ),
@@ -191,8 +191,8 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
         } catch (e) {
           print(e);
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('การอัปโหลดล้มเหลว: $e'),
+            const SnackBar(
+              content: Text('การอัปโหลดล้มเหลว: รหัสผ่านไม่ถูก'),
               backgroundColor: Colors.red,
               duration: Duration(seconds: 2),
             ),
