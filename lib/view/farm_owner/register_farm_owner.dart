@@ -381,6 +381,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                           }
                                         } catch (e) {
                                           print('Error: $e');
+                                          Navigator.of(context).pop();
                                           // แสดง dialog แจ้งข้อผิดพลาด
                                           showDialog(
                                             context: context,
