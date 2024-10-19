@@ -29,189 +29,193 @@ class _MainAwardsViewState extends State<MainAwardsView> {
             fit: BoxFit.cover,
           ),
         ),
-        child: SizedBox(
-          height: screenHeight,
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 30,
-              ),
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: const Icon(
-                      Icons.arrow_back,
-                      size: 30,
-                    ),
-                  )
-                ],
-              ),
-              Card(
-                color: Colors.white.withOpacity(0.8),
-                child: Column(
+        child: SafeArea(
+          child: SizedBox(
+            height: screenHeight,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
                   children: [
-                    StrokeText(
-                      text: "รางวัลงานประกวด",
-                      textStyle: TextStyle(
-                          fontSize: ScreenUtils.calculateFontSize(context, 26),
-                          color: Colors.yellow),
-                      strokeColor: Colors.black,
-                      strokeWidth: 3,
+                    const SizedBox(
+                      width: 20,
                     ),
-                    const SizedBox(height: 20),
-                    // การแสดงชื่อควาย
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        StrokeText(
-                          text: buffalo?.name ?? "ชื่อควาย",
-                          textStyle: TextStyle(
-                              fontSize:
-                                  ScreenUtils.calculateFontSize(context, 24),
-                              color: Colors.red),
-                          strokeColor: Colors.white,
-                          strokeWidth: 3,
-                        ),
-                        Column(
-                          children: [
-                            StrokeText(
-                              text: '${buffalo?.competitions.length ?? 0}',
-                              textStyle: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                      context, 28),
-                                  color: Colors.white),
-                              strokeColor: Colors.black,
-                              strokeWidth: 3,
-                            ),
-                            StrokeText(
-                              text: "(รางวัล)",
-                              textStyle: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                      context, 20),
-                                  color: Colors.white),
-                              strokeColor: Colors.black,
-                              strokeWidth: 3,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    // แสดงข้อมูลการแข่งขันทั้งหมด
-                    ...competitions.asMap().entries.map((entry) {
-                      int index = entry.key; // ดึง index ของรายการ
-                      var competition = entry.value; // ดึงค่าของการแข่งขัน
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: AutoSizeText(
-                                "(${index+1})${competition.rank}: ${competition.name}, ${competition.province}",
-                                maxLines: 3,
-                                style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                      context, 18),
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                // แสดงรูปภาพเมื่อคลิก
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          Container(
-                                            width: screenWidth,
-                                            height: screenHeight * 0.5,
-                                            clipBehavior: Clip.antiAlias,
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(
-                                                    15) // Adjust the radius as needed
-                                                ),
-                                            child: Image.network(
-                                              competition.imageBuffalo ?? '',
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text("ปิด"),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.red[600],
-                                    borderRadius: BorderRadius.circular(20)),
-                                width: 50,
-                                height: 50,
-                                child: const Icon(Icons.camera_alt),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    }).toList(),
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: const Icon(
+                        Icons.arrow_back,
+                        size: 30,
+                      ),
+                    )
                   ],
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MainRegisterAward(),
+                Card(
+                  color: Colors.white.withOpacity(0.8),
+                  child: Column(
+                    children: [
+                      StrokeText(
+                        text: "รางวัลงานประกวดkk",
+                        textStyle: TextStyle(
+                            fontSize:
+                                ScreenUtils.calculateFontSize(context, 26),
+                            color: Colors.yellow),
+                        strokeColor: Colors.black,
+                        strokeWidth: 3,
+                      ),
+                      const SizedBox(height: 20),
+                      // การแสดงชื่อควาย
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          StrokeText(
+                            text: buffalo?.name ?? "ชื่อควาย",
+                            textStyle: TextStyle(
+                                fontSize:
+                                    ScreenUtils.calculateFontSize(context, 24),
+                                color: Colors.red),
+                            strokeColor: Colors.white,
+                            strokeWidth: 3,
+                          ),
+                          Column(
+                            children: [
+                              StrokeText(
+                                text: '${buffalo?.competitions.length ?? 0}',
+                                textStyle: TextStyle(
+                                    fontSize: ScreenUtils.calculateFontSize(
+                                        context, 28),
+                                    color: Colors.white),
+                                strokeColor: Colors.black,
+                                strokeWidth: 3,
+                              ),
+                              StrokeText(
+                                text: "(รางวัล)",
+                                textStyle: TextStyle(
+                                    fontSize: ScreenUtils.calculateFontSize(
+                                        context, 20),
+                                    color: Colors.white),
+                                strokeColor: Colors.black,
+                                strokeWidth: 3,
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      // แสดงข้อมูลการแข่งขันทั้งหมด
+                      ...competitions.asMap().entries.map((entry) {
+                        int index = entry.key; // ดึง index ของรายการ
+                        var competition = entry.value; // ดึงค่าของการแข่งขัน
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: AutoSizeText(
+                                  "(${index + 1})${competition.rank}: ${competition.name}, ${competition.province}",
+                                  maxLines: 3,
+                                  style: TextStyle(
+                                    fontSize: ScreenUtils.calculateFontSize(
+                                        context, 18),
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  // แสดงรูปภาพเมื่อคลิก
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            Container(
+                                              width: screenWidth,
+                                              height: screenHeight * 0.5,
+                                              clipBehavior: Clip.antiAlias,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15) // Adjust the radius as needed
+                                                  ),
+                                              child: Image.network(
+                                                competition.imageBuffalo ?? '',
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text("ปิด"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.red[600],
+                                      borderRadius: BorderRadius.circular(20)),
+                                  width: 50,
+                                  height: 50,
+                                  child: const Icon(Icons.camera_alt),
+                                ),
+                              )
+                            ],
                           ),
                         );
-                      },
-                      child: Container(
-                        height: 50,
-                        width: 250,
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'เพิ่มรางวัลการแข่งขัน',
-                            style: TextStyle(
-                              color: Colors.white,
+                      }).toList(),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MainRegisterAward(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 250,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'เพิ่มรางวัลการแข่งขัน',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

@@ -14,7 +14,8 @@ class PromotePhotoBuffaloView extends StatefulWidget {
   const PromotePhotoBuffaloView({super.key});
 
   @override
-  State<PromotePhotoBuffaloView> createState() => _PromotePhotoBuffaloViewState();
+  State<PromotePhotoBuffaloView> createState() =>
+      _PromotePhotoBuffaloViewState();
 }
 
 class _PromotePhotoBuffaloViewState extends State<PromotePhotoBuffaloView> {
@@ -46,55 +47,58 @@ class _PromotePhotoBuffaloViewState extends State<PromotePhotoBuffaloView> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        size: 30,
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 20,
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Center(
-                      child: StrokeText(
-                        text: buffalo.name, // แสดงชื่อของ buffalo
-                        textStyle: TextStyle(
-                          fontSize: ScreenUtils.calculateFontSize(context, 24),
-                          color: Colors.black,
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: const Icon(
+                          Icons.arrow_back,
+                          size: 30,
                         ),
-                        strokeColor: Colors.white,
-                        strokeWidth: 2,
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: GalleryImage(
-                        numOfShowImages: numOfShowImages,
-                        imageUrls:
-                            imageUrls, // ใช้ list ของ URLs ที่ได้จาก buffaloImages
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Center(
+                        child: StrokeText(
+                          text: buffalo.name, // แสดงชื่อของ buffalo
+                          textStyle: TextStyle(
+                            fontSize:
+                                ScreenUtils.calculateFontSize(context, 24),
+                            color: Colors.black,
+                          ),
+                          strokeColor: Colors.white,
+                          strokeWidth: 2,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: GalleryImage(
+                          numOfShowImages: numOfShowImages,
+                          imageUrls:
+                              imageUrls, // ใช้ list ของ URLs ที่ได้จาก buffaloImages
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

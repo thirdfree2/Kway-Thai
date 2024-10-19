@@ -28,7 +28,7 @@ class DetailFarmView extends StatefulWidget {
 class _DetailFarmViewState extends State<DetailFarmView> {
   late Future<List<BuffaloModel>> futureBuffaloes;
   late Future<List<UserModel>> futureUser;
-   bool isLoading = false;
+  bool isLoading = false;
 
   bool isEditMode = false;
   final TextEditingController _farmNameController = TextEditingController();
@@ -182,340 +182,111 @@ class _DetailFarmViewState extends State<DetailFarmView> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Column(
-          children: [
-            const SizedBox(height: 30),
-            Row(
-              children: [
-                const SizedBox(width: 20),
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(
-                    Icons.arrow_back,
-                    size: 35,
+        child: SafeArea(
+          child: Column(
+            children: [
+              const SizedBox(height: 30),
+              Row(
+                children: [
+                  const SizedBox(width: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.arrow_back,
+                      size: 35,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: isEditMode
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: TextFormField(
-                            controller: _farmNameController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'ชื่อฟาร์ม',
-                            ),
-                            onFieldSubmitted: (newValue) {
-                              setState(() {
-                                isEditMode = false;
-                              });
-                            },
-                          ),
-                        )
-                      : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 22),
-                        child: Center(
-                            child: StrokeText(
-                              text: farmNames,
-                              textStyle: TextStyle(
-                                fontSize:
-                                    ScreenUtils.calculateFontSize(context, 20),
-                                color: Colors.red,
-                              ),
-                              strokeColor: Colors.white,
-                              strokeWidth: 6,
-                            ),
-                          ),
-                      ),
-                ),
-                IconButton(
-                  icon: Icon(isEditMode
-                      ? Icons.check
-                      : Icons.edit), // แสดงไอคอนตามสถานะ
-                  onPressed: () {
-                    if (isEditMode) {
-                      // เมื่อเป็นสถานะ check (isEditMode = true) ให้แสดง dialog
-                      setState(() {
-                        isEditMode = false;
-                      });
-
-                      // เรียก dialog หลังจาก setState เสร็จสมบูรณ์
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        _showPasswordDialog(context);
-                      });
-                    } else {
-                      // เมื่อเป็นสถานะ edit (isEditMode = false) ให้เปลี่ยนเป็น edit mode
-                      setState(() {
-                        isEditMode = true;
-                      });
-                    }
-                  },
-                )
-              ],
-            ),
-            const SizedBox(height: 10),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: FutureBuilder<List<UserModel>>(
-                  future: futureUser,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Center(
-                        child: Column(
-                          children: [
-                            const Text('ไม่พบสมาชิกในฟาร์มนี้'),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            RegisterFarmOwner()));
-                              },
-                              child: Container(
-                                height: 50,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Center(
-                                  child: AutoSizeText(
-                                    'ลงสมาชิก',
-                                    maxLines: 1,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    final users = snapshot.data!;
-
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              StrokeText(
-                                text: 'สมาชิก (${users.length})',
-                                textStyle: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                      context, 14),
-                                  color: Colors.white,
-                                ),
-                                strokeColor: Colors.black,
-                                strokeWidth: 3,
-                              ),
-                              const Spacer(),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => RegisterFarmOwner(),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  height: 50,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: const Center(
-                                    child: Text(
-                                      'ลงทะเบียนสมาชิก',
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Expanded(
-                          child: GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              childAspectRatio: 0.75,
-                            ),
-                            itemCount: users.length,
-                            itemBuilder: (context, index) {
-                              final user = users[index];
-                              final imageUrl = user.userImages.isNotEmpty
-                                  ? user.userImages[0].imageUrl
-                                  : 'https://placeholder.com/150';
-                              return InkWell(
-                                onTap: () {
-                                  Provider.of<SelectedFarmOwner>(context,
-                                          listen: false)
-                                      .setSelectedFarmOwner(
-                                    user.userId.toString() ?? '',
-                                    user.nickname ?? '',
-                                    user.userImages[0].imageUrl,
-                                    user.firstName,
-                                    user.lastName,
-                                    user.position,
-                                    user.phoneNumber ?? '',
-                                    user.lineId ?? '',
-                                  );
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MainFarmOwner(),
-                                    ),
-                                  );
-                                },
-                                child: Column(
-                                  children: [
-                                    AspectRatio(
-                                      aspectRatio: 1,
-                                      child: Container(
-                                        clipBehavior: Clip.antiAlias,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        child: Image.network(
-                                          imageUrl,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    StrokeText(
-                                      text: user?.nickname ?? '',
-                                      overflow: TextOverflow.ellipsis,
-                                      textStyle: TextStyle(
-                                        fontSize: ScreenUtils.calculateFontSize(
-                                            context, 12),
-                                        color: Colors.white,
-                                      ),
-                                      strokeColor: Colors.black,
-                                      strokeWidth: 3,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                ],
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              flex: 3,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: FutureBuilder<List<BuffaloModel>>(
-                  future: futureBuffaloes,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Center(
-                        child: Column(
-                          children: [
-                            const Text('ไม่พบควายในฟาร์มนี้'),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            RegisterBuffalo()));
-                              },
-                              child: Container(
-                                height: 50,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Center(
-                                    child: AutoSizeText(
-                                      'ลงทะเบียนควาย',
-                                      maxLines: 1,
-                                      style: TextStyle(color: Colors.white, fontSize: 8),
-                                    ),
-                                  ),
-                                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: isEditMode
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: TextFormField(
+                              controller: _farmNameController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'ชื่อฟาร์ม',
                               ),
+                              onFieldSubmitted: (newValue) {
+                                setState(() {
+                                  isEditMode = false;
+                                });
+                              },
                             ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    final buffaloes = snapshot.data!;
-
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              StrokeText(
-                                text: 'ควาย (${buffaloes.length})',
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 22),
+                            child: Center(
+                              child: StrokeText(
+                                text: farmNames,
                                 textStyle: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
-                                      context, 14),
-                                  color: Colors.white,
+                                      context, 20),
+                                  color: Colors.red,
                                 ),
-                                strokeColor: Colors.black,
-                                strokeWidth: 3,
+                                strokeColor: Colors.white,
+                                strokeWidth: 6,
                               ),
-                              const Spacer(),
+                            ),
+                          ),
+                  ),
+                  IconButton(
+                    icon: Icon(isEditMode
+                        ? Icons.check
+                        : Icons.edit), // แสดงไอคอนตามสถานะ
+                    onPressed: () {
+                      if (isEditMode) {
+                        // เมื่อเป็นสถานะ check (isEditMode = true) ให้แสดง dialog
+                        setState(() {
+                          isEditMode = false;
+                        });
+
+                        // เรียก dialog หลังจาก setState เสร็จสมบูรณ์
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          _showPasswordDialog(context);
+                        });
+                      } else {
+                        // เมื่อเป็นสถานะ edit (isEditMode = false) ให้เปลี่ยนเป็น edit mode
+                        setState(() {
+                          isEditMode = true;
+                        });
+                      }
+                    },
+                  )
+                ],
+              ),
+              const SizedBox(height: 10),
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: FutureBuilder<List<UserModel>>(
+                    future: futureUser,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Center(
+                          child: Column(
+                            children: [
+                              const Text('ไม่พบสมาชิกในฟาร์มนี้'),
                               InkWell(
                                 onTap: () {
                                   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => RegisterBuffalo(),
-                                    ),
-                                  );
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RegisterFarmOwner()));
                                 },
                                 child: Container(
                                   height: 50,
@@ -526,7 +297,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                   ),
                                   child: const Center(
                                     child: AutoSizeText(
-                                      'ลงทะเบียนควาย',
+                                      'ลงสมาชิก',
                                       maxLines: 1,
                                       style: TextStyle(color: Colors.white),
                                     ),
@@ -535,91 +306,326 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                               ),
                             ],
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        Expanded(
-                          child: GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              childAspectRatio: 0.75,
+                        );
+                      }
+
+                      final users = snapshot.data!;
+
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                StrokeText(
+                                  text: 'สมาชิก (${users.length})',
+                                  textStyle: TextStyle(
+                                    fontSize: ScreenUtils.calculateFontSize(
+                                        context, 14),
+                                    color: Colors.white,
+                                  ),
+                                  strokeColor: Colors.black,
+                                  strokeWidth: 3,
+                                ),
+                                const Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            RegisterFarmOwner(),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    width: 150,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'ลงทะเบียนสมาชิก',
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            itemCount: buffaloes.length,
-                            itemBuilder: (context, index) {
-                              final buffalo = buffaloes[index];
-                              final profileImage =
-                                  buffalo.buffaloImages.firstWhere(
-                                (image) => image.isProfileImage,
-                                orElse: () => BuffaloImageModel(
-                                  imageId: 0,
-                                  imagePath: 'https://placeholder.com/150',
-                                  isProfileImage: false,
-                                  createdAt: DateTime.now(),
-                                  updatedAt: DateTime.now(),
-                                  buffaloId: buffalo.id,
-                                ),
-                              );
-
-                              final imageUrl = profileImage != null
-                                  ? profileImage.imagePath
-                                  : 'https://placeholder.com/150';
-
-                              return InkWell(
-                                onTap: () {
-                                  Provider.of<SelectedBuffalo>(context,
-                                          listen: false)
-                                      .setSelectedBuffalo(buffalo);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Buffalo(),
-                                    ),
-                                  );
-                                },
-                                child: Column(
-                                  children: [
-                                    AspectRatio(
-                                      aspectRatio: 1,
-                                      child: Container(
-                                        clipBehavior: Clip.antiAlias,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        child: Image.network(
-                                          imageUrl,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    StrokeText(
-                                      text: buffalo.name,
-                                      textStyle: TextStyle(
-                                        fontSize: ScreenUtils.calculateFontSize(
-                                            context, 12),
-                                        color: Colors.white,
-                                      ),
-                                      strokeColor: Colors.black,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      strokeWidth: 3,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
                           ),
-                        ),
-                      ],
-                    );
-                  },
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Expanded(
+                            child: GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                                childAspectRatio: 0.75,
+                              ),
+                              itemCount: users.length,
+                              itemBuilder: (context, index) {
+                                final user = users[index];
+                                final imageUrl = user.userImages.isNotEmpty
+                                    ? user.userImages[0].imageUrl
+                                    : 'https://placeholder.com/150';
+                                return InkWell(
+                                  onTap: () {
+                                    Provider.of<SelectedFarmOwner>(context,
+                                            listen: false)
+                                        .setSelectedFarmOwner(
+                                      user.userId.toString() ?? '',
+                                      user.nickname ?? '',
+                                      user.userImages[0].imageUrl,
+                                      user.firstName,
+                                      user.lastName,
+                                      user.position,
+                                      user.phoneNumber ?? '',
+                                      user.lineId ?? '',
+                                    );
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MainFarmOwner(),
+                                      ),
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          child: Image.network(
+                                            imageUrl,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      StrokeText(
+                                        text: user?.nickname ?? '',
+                                        overflow: TextOverflow.ellipsis,
+                                        textStyle: TextStyle(
+                                          fontSize:
+                                              ScreenUtils.calculateFontSize(
+                                                  context, 12),
+                                          color: Colors.white,
+                                        ),
+                                        strokeColor: Colors.black,
+                                        strokeWidth: 3,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 10,
+              ),
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: FutureBuilder<List<BuffaloModel>>(
+                    future: futureBuffaloes,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Center(
+                          child: Column(
+                            children: [
+                              const Text('ไม่พบควายในฟาร์มนี้'),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RegisterBuffalo()));
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Center(
+                                      child: AutoSizeText(
+                                        'ลงทะเบียนควาย',
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 8),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      final buffaloes = snapshot.data!;
+
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                StrokeText(
+                                  text: 'ควาย (${buffaloes.length})',
+                                  textStyle: TextStyle(
+                                    fontSize: ScreenUtils.calculateFontSize(
+                                        context, 14),
+                                    color: Colors.white,
+                                  ),
+                                  strokeColor: Colors.black,
+                                  strokeWidth: 3,
+                                ),
+                                const Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => RegisterBuffalo(),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    width: 150,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: const Center(
+                                      child: AutoSizeText(
+                                        'ลงทะเบียนควาย',
+                                        maxLines: 1,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Expanded(
+                            child: GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                                childAspectRatio: 0.75,
+                              ),
+                              itemCount: buffaloes.length,
+                              itemBuilder: (context, index) {
+                                final buffalo = buffaloes[index];
+                                final profileImage =
+                                    buffalo.buffaloImages.firstWhere(
+                                  (image) => image.isProfileImage,
+                                  orElse: () => BuffaloImageModel(
+                                    imageId: 0,
+                                    imagePath: 'https://placeholder.com/150',
+                                    isProfileImage: false,
+                                    createdAt: DateTime.now(),
+                                    updatedAt: DateTime.now(),
+                                    buffaloId: buffalo.id,
+                                  ),
+                                );
+
+                                final imageUrl = profileImage != null
+                                    ? profileImage.imagePath
+                                    : 'https://placeholder.com/150';
+
+                                return InkWell(
+                                  onTap: () {
+                                    Provider.of<SelectedBuffalo>(context,
+                                            listen: false)
+                                        .setSelectedBuffalo(buffalo);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Buffalo(),
+                                      ),
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          child: Image.network(
+                                            imageUrl,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      StrokeText(
+                                        text: buffalo.name,
+                                        textStyle: TextStyle(
+                                          fontSize:
+                                              ScreenUtils.calculateFontSize(
+                                                  context, 12),
+                                          color: Colors.white,
+                                        ),
+                                        strokeColor: Colors.black,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        strokeWidth: 3,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
