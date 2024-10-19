@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:buffalo_thai/mainwrapper.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/auth/main_auth_view.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +20,7 @@ class _MainSplashViewState extends State<MainSplashView> {
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MainAuthView()),
+        MaterialPageRoute(builder: (context) => const MainAuthView()),
       );
     });
   }
