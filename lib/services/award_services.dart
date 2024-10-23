@@ -16,6 +16,7 @@ Future<String> addBuffaloAward({
   required String name,
   required String rank,
   required String date,
+  required String color,
   required File image, // Adding image parameter as File type
 }) async {
   const String url = '${ApiUtils.baseUrl}/api/competition/create-competition';
@@ -33,6 +34,7 @@ Future<String> addBuffaloAward({
   request.fields['date'] = formattedDate;
   request.fields['name'] = name;
   request.fields['rank'] = rank;
+  request.fields['color'] = color;
 
    if (image != null) {
     request.files

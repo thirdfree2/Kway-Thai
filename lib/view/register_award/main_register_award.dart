@@ -25,6 +25,7 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
   final TextEditingController _awardNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _provinceController = TextEditingController();
+  final TextEditingController _colorController = TextEditingController();
   File? _selectedImage;
 
   String? _selectedGender;
@@ -144,8 +145,8 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                 Expanded(
                                   flex: 2,
                                   child: CustomTextFormField(
-                                    controller: _awardController,
-                                    labelText: 'รายการประกวด',
+                                    controller: _rankController,
+                                    labelText: 'อันดับ',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'กรุณากรอกข้อมูล';
@@ -162,8 +163,8 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                 Expanded(
                                   flex: 2,
                                   child: CustomTextFormField(
-                                    controller: _rankController,
-                                    labelText: 'อันดับ',
+                                    controller: _generationController,
+                                    labelText: 'ประเภท/รุ่น',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'กรุณากรอกข้อมูล';
@@ -198,8 +199,8 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: CustomTextFormField(
-                                    controller: _generationController,
-                                    labelText: 'ประเภท/รุ่น',
+                                    controller: _colorController,
+                                    labelText: 'สี',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'กรุณากรอกข้อมูล';
@@ -290,7 +291,7 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                         try {
                                           // แสดง dialog เพื่อกรอกรหัส 6 หลัก
                                           await _showCodeDialog();
-            
+
                                           if (_passwordController.text !=
                                               null) {
                                             await addBuffaloAward(
@@ -305,11 +306,11 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                                 type:
                                                     _generationController.text,
                                                 name: _awardNameController.text,
-                                                rank:
-                                                    _rankController.text,
+                                                rank: _rankController.text,
                                                 date: _dateAwardController.text,
-                                                image: imageFile);
-            
+                                                image: imageFile,
+                                                color: _colorController.text);
+
                                             // ทำการ pop หน้าหลังจากเสร็จสิ้นการทำงาน
                                             Navigator.pop(context);
                                             Navigator.pop(context);
@@ -320,7 +321,7 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                                     DetailFarmView(),
                                               ),
                                             );
-            
+
                                             showDialog(
                                               context: context,
                                               builder: (BuildContext context) {
