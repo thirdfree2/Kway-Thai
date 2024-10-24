@@ -17,7 +17,8 @@ class MainHeredityBuffaloView extends StatefulWidget {
   const MainHeredityBuffaloView({super.key});
 
   @override
-  State<MainHeredityBuffaloView> createState() => _MainHeredityBuffaloViewState();
+  State<MainHeredityBuffaloView> createState() =>
+      _MainHeredityBuffaloViewState();
 }
 
 class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
@@ -43,31 +44,33 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
   }
 
   void filterBuffaloes() async {
-  String query = searchController.text.trim().toLowerCase(); // Trim ข้อมูลและแปลงเป็นตัวพิมพ์เล็ก
-  List<BuffaloModel> buffaloList = await futureBuffaloes;
+    String query = searchController.text
+        .trim()
+        .toLowerCase(); // Trim ข้อมูลและแปลงเป็นตัวพิมพ์เล็ก
+    List<BuffaloModel> buffaloList = await futureBuffaloes;
 
-  // เช็คว่า buffaloList มีข้อมูลหรือไม่
-  if (buffaloList.isNotEmpty) {
-    setState(() {
-      if (query.isNotEmpty) {
-        filteredBuffaloes = buffaloList.where((buffalo) {
-          // ตรวจสอบว่าชื่อควายมีค่าและไม่เป็น null หรือ empty ก่อนทำการกรอง
-          if (buffalo.name != null && buffalo.name.isNotEmpty) {
-            return buffalo.name.toLowerCase().contains(query);
-          }
-          return false;
-        }).toList();
-      } else {
-        // คืนค่าเป็นข้อมูลทั้งหมดเมื่อไม่มีการค้นหา
-        filteredBuffaloes = buffaloList;
-      }
-    });
-  } else {
-    setState(() {
-      filteredBuffaloes = [];
-    });
+    // เช็คว่า buffaloList มีข้อมูลหรือไม่
+    if (buffaloList.isNotEmpty) {
+      setState(() {
+        if (query.isNotEmpty) {
+          filteredBuffaloes = buffaloList.where((buffalo) {
+            // ตรวจสอบว่าชื่อควายมีค่าและไม่เป็น null หรือ empty ก่อนทำการกรอง
+            if (buffalo.name != null && buffalo.name.isNotEmpty) {
+              return buffalo.name.toLowerCase().contains(query);
+            }
+            return false;
+          }).toList();
+        } else {
+          // คืนค่าเป็นข้อมูลทั้งหมดเมื่อไม่มีการค้นหา
+          filteredBuffaloes = buffaloList;
+        }
+      });
+    } else {
+      setState(() {
+        filteredBuffaloes = [];
+      });
+    }
   }
-}
 
   @override
   void dispose() {
@@ -80,9 +83,12 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: Colors.green[200],
       body: DecoratedBox(
         decoration: const BoxDecoration(
+          color: Colors.black,
           image: DecorationImage(
+              opacity: 0.7,
               image: AssetImage("assets/images/background-2.jpg"),
               fit: BoxFit.cover),
         ),
@@ -103,13 +109,11 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                 ],
               ),
               const SizedBox(height: 40),
-              StrokeText(
-                text: "พันธุกรรมเหล่ากอ",
-                textStyle: TextStyle(
+              Text(
+                "พันธุกรรมเหล่ากอ",
+                style: TextStyle(
                     fontSize: ScreenUtils.calculateFontSize(context, 30),
-                    color: Colors.red),
-                strokeColor: Colors.white,
-                strokeWidth: 6,
+                    color: Colors.white),
               ),
               const SizedBox(height: 30),
               Center(
@@ -147,16 +151,13 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                StrokeText(
-                                  text:
-                                      'พบควายที่ค้นหา (${filteredBuffaloes.length})',
-                                  textStyle: TextStyle(
+                                Text(
+                                  'พบควายที่ค้นหา (${filteredBuffaloes.length})',
+                                  style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                         context, 14),
                                     color: Colors.white,
                                   ),
-                                  strokeColor: Colors.black,
-                                  strokeWidth: 3,
                                 ),
                                 const Spacer(),
                                 InkWell(
@@ -207,11 +208,11 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                                     buffaloId: buffalo.id,
                                   ),
                                 );
-                  
+
                                 final imageUrl = profileImage != null
                                     ? profileImage.imagePath
                                     : 'https://placeholder.com/150';
-                  
+
                                 return InkWell(
                                   onTap: () {
                                     Provider.of<SelectedBuffalo>(context,
@@ -241,18 +242,16 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                                         ),
                                       ),
                                       const SizedBox(height: 5),
-                                      StrokeText(
-                                        text: buffalo.name,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        textStyle: TextStyle(
-                                          fontSize: ScreenUtils.calculateFontSize(
-                                              context, 12),
+                                      Text(
+                                        buffalo.name,
+                                        style: TextStyle(
+                                          fontSize:
+                                              ScreenUtils.calculateFontSize(
+                                                  context, 12),
                                           color: Colors.white,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                        strokeColor: Colors.black,
-                                        strokeWidth: 3,
-                                      ),
+                                      )
                                     ],
                                   ),
                                 );
@@ -272,16 +271,21 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                     child: FutureBuilder<List<BuffaloModel>>(
                       future: futureBuffaloes,
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
-                          return Center(child: Text('Error: ${snapshot.error}'));
-                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                          return const Center(child: Text('No buffaloes found.'));
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
+                          return const Center(
+                              child: Text('No buffaloes found.'));
                         }
-          
+
                         final buffaloes = snapshot.data!;
-          
+
                         return GridView.builder(
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
@@ -293,7 +297,8 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                           itemCount: 6,
                           itemBuilder: (context, index) {
                             final buffalo = buffaloes[index];
-                            final profileImage = buffalo.buffaloImages.firstWhere(
+                            final profileImage =
+                                buffalo.buffaloImages.firstWhere(
                               (image) => image.isProfileImage,
                               orElse: () => BuffaloImageModel(
                                 imageId: 0,
@@ -304,7 +309,7 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                                 buffaloId: buffalo.id,
                               ),
                             );
-          
+
                             final imageUrl = profileImage != null
                                 ? profileImage.imagePath
                                 : 'https://placeholder.com/150';
@@ -337,17 +342,15 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                                     ),
                                   ),
                                   const SizedBox(height: 5),
-                                  StrokeText(
-                                    text: buffalo
-                                        .name, // Assuming 'name' is a property in BuffaloModel
-                                    textStyle: TextStyle(
+                                  Text(
+                                    buffalo.name,
+                                    style: TextStyle(
                                       fontSize: ScreenUtils.calculateFontSize(
                                           context, 12),
                                       color: Colors.white,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    strokeColor: Colors.black,
-                                    strokeWidth: 3,
-                                  ),
+                                  )
                                 ],
                               ),
                             );

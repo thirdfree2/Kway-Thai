@@ -111,7 +111,9 @@ class _EditFarmState extends State<EditFarm> {
     return Scaffold(
       body: DecoratedBox(
         decoration: const BoxDecoration(
+          color: Colors.black,
           image: DecorationImage(
+            opacity: 0.7,
             image: AssetImage("assets/images/background-1.jpg"),
             fit: BoxFit.cover,
           ),

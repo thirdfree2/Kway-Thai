@@ -119,14 +119,9 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Colors.green[200],
       body: SingleChildScrollView(
-        child: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/background-1.jpg"),
-              fit: BoxFit.cover,
-            ),
-          ),
+        child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Card(

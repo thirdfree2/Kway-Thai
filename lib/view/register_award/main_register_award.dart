@@ -82,252 +82,275 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
     final selectedBuffalo = Provider.of<SelectedBuffalo>(context);
     final buffalo = selectedBuffalo.buffalo;
     return Scaffold(
-      body: DecoratedBox(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/background-1.jpg"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: SizedBox(
-          height: screenHeight,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Card(
-                    color: Colors.white.withOpacity(0.8),
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    elevation: 8,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 30),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Icon(Icons.arrow_back),
+      backgroundColor: Colors.green[200],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 5),
+          child: SizedBox(
+            height: screenHeight * 0.9,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Card(
+                      color: Colors.white.withOpacity(0.8),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      elevation: 8,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 30),
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Icon(Icons.arrow_back),
+                                    ),
                                   ),
-                                ),
-                                const Expanded(
-                                  child: Text(
-                                    'รางวัลงานประกวด',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red),
+                                  const Expanded(
+                                    child: Text(
+                                      'รางวัลงานประกวด',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 10),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: CustomTextFormField(
-                                    controller: _rankController,
-                                    labelText: 'อันดับ',
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'กรุณากรอกข้อมูล';
-                                      }
-                                      return null;
-                                    },
+                                  const SizedBox(width: 10),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: CustomTextFormField(
+                                      controller: _rankController,
+                                      labelText: 'อันดับ',
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: CustomTextFormField(
-                                    controller: _generationController,
-                                    labelText: 'ประเภท/รุ่น',
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'กรุณากรอกข้อมูล';
-                                      }
-                                      return null;
-                                    },
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: CustomTextFormField(
+                                      controller: _generationController,
+                                      labelText: 'ประเภท/รุ่น',
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      Flexible(
-                                        child: DropdownBuffalo(
-                                          selectedStatus: _selectedGender,
-                                          statusOptions: _genderOptions,
-                                          onChanged: (newValue) {
-                                            setState(() {
-                                              _selectedGender = newValue;
-                                            });
-                                          },
-                                          name: 'เพศ',
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: DropdownBuffalo(
+                                            selectedStatus: _selectedGender,
+                                            statusOptions: _genderOptions,
+                                            onChanged: (newValue) {
+                                              setState(() {
+                                                _selectedGender = newValue;
+                                              });
+                                            },
+                                            name: 'เพศ',
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: CustomTextFormField(
-                                    controller: _colorController,
-                                    labelText: 'สี',
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'กรุณากรอกข้อมูล';
-                                      }
-                                      return null;
-                                    },
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      controller: _colorController,
+                                      labelText: 'สี',
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomTextFormField(
-                                    controller: _awardNameController,
-                                    labelText: 'งานประกวด',
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'กรุณากรอกข้อมูล';
-                                      }
-                                      return null;
-                                    },
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      controller: _awardNameController,
+                                      labelText: 'งานประกวด',
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomTextFormField(
-                                    controller: _provinceController,
-                                    labelText: 'จังหวัด',
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'กรุณากรอกข้อมูล';
-                                      }
-                                      return null;
-                                    },
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      controller: _provinceController,
+                                      labelText: 'จังหวัด',
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomDatePickerTextFormField(
-                                    controller: _dateAwardController,
-                                    labelText:
-                                        'วันที่ประกวด', // Label for birth date
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'กรุณากรอกข้อมูล';
-                                      }
-                                      return null;
-                                    },
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomDatePickerTextFormField(
+                                      controller: _dateAwardController,
+                                      labelText:
+                                          'วันที่ประกวด', // Label for birth date
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรุณากรอกข้อมูล';
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: ImagePickerWidget(
-                                    selectedImage: _selectedImage,
-                                    onPickImage: _pickImage,
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: ImagePickerWidget(
+                                      selectedImage: _selectedImage,
+                                      onPickImage: _pickImage,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Container(
-                              height: 50,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Center(
-                                child: TextButton(
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      final imageFile = _selectedImage;
-                                      if (imageFile != null) {
-                                        try {
-                                          // แสดง dialog เพื่อกรอกรหัส 6 หลัก
-                                          await _showCodeDialog();
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                height: 50,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                  child: TextButton(
+                                    onPressed: () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        final imageFile = _selectedImage;
+                                        if (imageFile != null) {
+                                          try {
+                                            // แสดง dialog เพื่อกรอกรหัส 6 หลัก
+                                            await _showCodeDialog();
 
-                                          if (_passwordController.text !=
-                                              null) {
-                                            await addBuffaloAward(
-                                                buffaloId: buffalo?.id ?? 0,
-                                                password:
-                                                    _passwordController.text,
-                                                farmId: selectedFarm.farmId,
-                                                province:
-                                                    _provinceController.text,
-                                                gender:
-                                                    _selectedGender.toString(),
-                                                type:
-                                                    _generationController.text,
-                                                name: _awardNameController.text,
-                                                rank: _rankController.text,
-                                                date: _dateAwardController.text,
-                                                image: imageFile,
-                                                color: _colorController.text);
+                                            if (_passwordController.text !=
+                                                null) {
+                                              await addBuffaloAward(
+                                                  buffaloId: buffalo?.id ?? 0,
+                                                  password:
+                                                      _passwordController.text,
+                                                  farmId: selectedFarm.farmId,
+                                                  province:
+                                                      _provinceController.text,
+                                                  gender: _selectedGender
+                                                      .toString(),
+                                                  type: _generationController
+                                                      .text,
+                                                  name:
+                                                      _awardNameController.text,
+                                                  rank: _rankController.text,
+                                                  date:
+                                                      _dateAwardController.text,
+                                                  image: imageFile,
+                                                  color: _colorController.text);
 
-                                            // ทำการ pop หน้าหลังจากเสร็จสิ้นการทำงาน
-                                            Navigator.pop(context);
-                                            Navigator.pop(context);
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DetailFarmView(),
-                                              ),
-                                            );
+                                              // ทำการ pop หน้าหลังจากเสร็จสิ้นการทำงาน
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DetailFarmView(),
+                                                ),
+                                              );
 
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: const Text(
+                                                        'ลงทะเบียนสำเร็จ'),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        child: const Text('OK'),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          } catch (e) {
+                                            print('Error: $e');
+                                            // แสดง dialog แจ้งข้อผิดพลาด
                                             showDialog(
                                               context: context,
                                               builder: (BuildContext context) {
                                                 return AlertDialog(
-                                                  title: const Text(
-                                                      'ลงทะเบียนสำเร็จ'),
+                                                  title: const Text('Error'),
+                                                  content: const Text(
+                                                      'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.'),
                                                   actions: <Widget>[
                                                     TextButton(
                                                       child: const Text('OK'),
@@ -341,16 +364,17 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                               },
                                             );
                                           }
-                                        } catch (e) {
-                                          print('Error: $e');
-                                          // แสดง dialog แจ้งข้อผิดพลาด
+                                        } else {
+                                          // ถ้าไม่ได้เลือกภาพให้แสดงข้อความแจ้งเตือน
+                                          print('Please select an image');
                                           showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
-                                                title: const Text('Error'),
+                                                title: const Text(
+                                                    'Image Required'),
                                                 content: const Text(
-                                                    'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.'),
+                                                    'Please select an image.'),
                                                 actions: <Widget>[
                                                   TextButton(
                                                     child: const Text('OK'),
@@ -364,46 +388,24 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                             },
                                           );
                                         }
-                                      } else {
-                                        // ถ้าไม่ได้เลือกภาพให้แสดงข้อความแจ้งเตือน
-                                        print('Please select an image');
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title:
-                                                  const Text('Image Required'),
-                                              content: const Text(
-                                                  'Please select an image.'),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  child: const Text('OK'),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
                                       }
-                                    }
-                                  },
-                                  child: const Text(
-                                    'ยืนยันการเพิ่มรางวัลประกวด',
-                                    style: TextStyle(color: Colors.white),
+                                    },
+                                    child: const Text(
+                                      'ยืนยันการเพิ่มรางวัลประกวด',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 20),
-                          ],
+                              const SizedBox(height: 20),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -445,7 +447,7 @@ class ImagePickerWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onPickImage,
       child: Container(
-        height: 150,
+        height: 120,
         width: 150,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),

@@ -14,12 +14,12 @@ class PromoteBuffalo extends StatefulWidget {
 
 class _PromoteBuffaloState extends State<PromoteBuffalo> {
   int _selectedIndex = 0;
-  
 
   static const List<Widget> _widgetOptions = <Widget>[
     MainPromoteBuffaloView(),
     Text('Genetics',
-        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+        style: TextStyle(
+            fontSize: 35, fontWeight: FontWeight.bold, color: Colors.white)),
     PromotePhotoBuffaloView(),
     PromoteVideoBuffaloView(),
     MainPromoteAwardsView(),
@@ -34,12 +34,14 @@ class _PromoteBuffaloState extends State<PromoteBuffalo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.green[200],
       body: DecoratedBox(
         decoration: const BoxDecoration(
+          color: Colors.black,
           image: DecorationImage(
-            image: AssetImage("assets/images/background-2.jpg"),
-            fit: BoxFit.cover,
-          ),
+              opacity: 0.7,
+              image: AssetImage("assets/images/background-2.jpg"),
+              fit: BoxFit.cover),
         ),
         child: Center(
           child: _widgetOptions.elementAt(_selectedIndex),
@@ -94,7 +96,9 @@ class _PromoteBuffaloState extends State<PromoteBuffalo> {
             color: Colors.black,
           ),
         ),
-        SizedBox(height: 5,),
+        SizedBox(
+          height: 5,
+        ),
         Text(
           label,
           style: TextStyle(fontSize: 10, color: Colors.white),

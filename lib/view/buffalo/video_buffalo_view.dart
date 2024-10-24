@@ -22,7 +22,9 @@ class _VideoBuffaloViewState extends State<VideoBuffaloView> {
     return Scaffold(
       body: DecoratedBox(
         decoration: const BoxDecoration(
+          color: Colors.black,
           image: DecorationImage(
+              opacity: 0.8,
               image: AssetImage("assets/images/background-2.jpg"),
               fit: BoxFit.cover),
         ),
@@ -30,9 +32,6 @@ class _VideoBuffaloViewState extends State<VideoBuffaloView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(
-                height: 30,
-              ),
               Row(
                 children: [
                   const SizedBox(
@@ -47,13 +46,11 @@ class _VideoBuffaloViewState extends State<VideoBuffaloView> {
                   )
                 ],
               ),
-              StrokeText(
-                text: buffalo?.name ?? '',
-                textStyle: TextStyle(
+              Text(
+                buffalo?.name ?? '',
+                style: TextStyle(
                     fontSize: ScreenUtils.calculateFontSize(context, 26),
-                    color: Colors.red),
-                strokeColor: Colors.white,
-                strokeWidth: 6,
+                    color: Colors.white),
               ),
               const SizedBox(
                 height: 30,

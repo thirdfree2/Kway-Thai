@@ -1,5 +1,6 @@
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stroke_text/stroke_text.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -24,10 +25,11 @@ class _MainAwardsViewState extends State<MainAwardsView> {
     return Scaffold(
       body: DecoratedBox(
         decoration: const BoxDecoration(
+          color: Colors.black,
           image: DecorationImage(
-            image: AssetImage("assets/images/background-2.jpg"),
-            fit: BoxFit.cover,
-          ),
+              image: AssetImage("assets/images/background-2.jpg"),
+              fit: BoxFit.cover,
+              opacity: 0.8),
         ),
         child: SafeArea(
           child: SizedBox(
@@ -55,14 +57,12 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                   color: Colors.white.withOpacity(0.8),
                   child: Column(
                     children: [
-                      StrokeText(
-                        text: "รางวัลงานประกวดkk",
-                        textStyle: TextStyle(
+                      Text(
+                        "รางวัลงานประกวด",
+                        style: TextStyle(
                             fontSize:
                                 ScreenUtils.calculateFontSize(context, 26),
-                            color: Colors.yellow),
-                        strokeColor: Colors.black,
-                        strokeWidth: 3,
+                            color: Colors.black),
                       ),
                       const SizedBox(height: 20),
                       // การแสดงชื่อควาย
@@ -70,34 +70,28 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          StrokeText(
-                            text: buffalo?.name ?? "ชื่อควาย",
-                            textStyle: TextStyle(
+                          Text(
+                            buffalo?.name ?? "ชื่อควาย",
+                            style: TextStyle(
                                 fontSize:
                                     ScreenUtils.calculateFontSize(context, 24),
                                 color: Colors.red),
-                            strokeColor: Colors.white,
-                            strokeWidth: 3,
                           ),
                           Column(
                             children: [
-                              StrokeText(
-                                text: '${buffalo?.competitions.length ?? 0}',
-                                textStyle: TextStyle(
+                              Text(
+                                '${buffalo?.competitions.length ?? 0}',
+                                style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                         context, 28),
-                                    color: Colors.white),
-                                strokeColor: Colors.black,
-                                strokeWidth: 3,
+                                    color: Colors.black),
                               ),
-                              StrokeText(
-                                text: "(รางวัล)",
-                                textStyle: TextStyle(
+                              Text(
+                                "(รางวัล)",
+                                style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                         context, 20),
-                                    color: Colors.white),
-                                strokeColor: Colors.black,
-                                strokeWidth: 3,
+                                    color: Colors.black),
                               ),
                             ],
                           )
@@ -115,7 +109,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                             children: [
                               Expanded(
                                 child: AutoSizeText(
-                                  "(${index + 1})${competition.rank}: ${competition.name}, ${competition.province}",
+                                  "(${index + 1})${competition.rank}: ${competition.name}, ${competition.province}, ${DateFormat('dd/MM/yyyy').format(competition.date!)}",
                                   maxLines: 3,
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
@@ -147,7 +141,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                                                   ),
                                               child: Image.network(
                                                 competition.imageBuffalo ?? '',
-                                                fit: BoxFit.cover,
+                                                fit: BoxFit.fitWidth,
                                               ),
                                             ),
                                           ],
@@ -203,7 +197,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                           ),
                           child: const Center(
                             child: Text(
-                              'เพิ่มรางวัลการแข่งขัน',
+                              'เพิ่มรางวัลงานประกวด',
                               style: TextStyle(
                                 color: Colors.white,
                               ),

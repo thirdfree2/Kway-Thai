@@ -125,14 +125,12 @@ class _FarmViewState extends State<FarmView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      StrokeText(
-                        text: "คอก/ฟาร์ม",
-                        textStyle: TextStyle(
+                      Text(
+                        'คอก/ฟาร์ม',
+                        style: TextStyle(
                           fontSize: ScreenUtils.calculateFontSize(context, 28),
-                          color: Colors.red,
+                          color: Colors.black,
                         ),
-                        strokeColor: Colors.white,
-                        strokeWidth: 4,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(

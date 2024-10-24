@@ -47,16 +47,18 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
         : 'https://placeholder.com/150';
 
     return Scaffold(
-      body: Stack(
-        children: [
-          DecoratedBox(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/background-2.jpg"),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: SafeArea(
+      backgroundColor: Colors.green[200],
+      body: DecoratedBox(
+        decoration: const BoxDecoration(
+          color: Colors.black,
+          image: DecorationImage(
+              opacity: 0.7,
+              image: AssetImage("assets/images/background-2.jpg"),
+              fit: BoxFit.cover),
+        ),
+        child: Stack(
+          children: [
+            SafeArea(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -115,33 +117,28 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Center(
-                              child: StrokeText(
-                                text: "ประวัติ",
-                                textStyle: TextStyle(
+                              child: Text(
+                                "ประวัติ",
+                                style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
                                       context, 14),
                                   color: Colors.black,
                                 ),
-                                strokeColor: Colors.white,
-                                strokeWidth: 2,
                               ),
                             ),
                             Center(
-                              child: StrokeText(
-                                text: buffalo?.name ?? '',
-                                textStyle: TextStyle(
+                              child: Text(
+                                buffalo?.name ?? '',
+                                style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
                                       context, 24),
                                   color: Colors.red,
                                 ),
-                                strokeColor: Colors.white,
-                                strokeWidth: 2,
                               ),
                             ),
                             SizedBox(
-                              height: screenHeight * 0.35,
+                              height: screenHeight * 0.27,
                               child: ListView(
-                                // เปลี่ยนจาก SingleChildScrollView เป็น ListView
                                 children: [
                                   const SizedBox(height: 10),
                                   if (buffalo?.gender != '')
@@ -161,12 +158,12 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                           ? _formatDateToBuddhist(buffalo!
                                               .birthDate!) // เรียกฟังก์ชันสำหรับแปลงวันที่
                                           : '-',
-                                      Colors.amber[900],
+                                      Colors.red[900],
                                     ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.bornAt != '')
                                     _buildInfoRow(
-                                        'เกิดที่ ลอก/ฟาร์ม ',
+                                        'เกิดที่ คอก/ฟาร์ม ',
                                         buffalo?.bornAt ?? '-',
                                         Colors.green[800]),
                                   const SizedBox(height: 5),
@@ -254,84 +251,84 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                 ],
               ),
             ),
-          ),
-          Positioned(
-            right: screenWidth * 0.05,
-            bottom: screenHeight * 0.075,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Column(
-                  children: [
-                    const Text(
-                      'สังกัดปัจจุบัน',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.green,
+            Positioned(
+              right: screenWidth * 0.05,
+              bottom: screenHeight * 0.075,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Column(
+                    children: [
+                      const Text(
+                        'สังกัดปัจจุบัน',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.green,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Container(
-                      width: 150,
-                      child: Card(
-                        color: Colors.green[500],
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            buffalo?.farm?.farmName ?? 'Not Found 404',
-                            style: const TextStyle(color: Colors.white),
-                            maxLines: 2, // กำหนดจำนวนบรรทัดสูงสุดของข้อความ
-                            overflow: TextOverflow
-                                .ellipsis, // ทำให้ข้อความที่ยาวเกินไปแสดง ... (ellipsis)
+                      Container(
+                        width: 150,
+                        child: Card(
+                          color: Colors.green[500],
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              buffalo?.farm?.farmName ?? 'Not Found 404',
+                              style: const TextStyle(color: Colors.white),
+                              maxLines: 2, // กำหนดจำนวนบรรทัดสูงสุดของข้อความ
+                              overflow: TextOverflow
+                                  .ellipsis, // ทำให้ข้อความที่ยาวเกินไปแสดง ... (ellipsis)
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          Positioned(
-            bottom: screenHeight * 0.025,
-            left: 20,
-            child: InkWell(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      content: Image.network(
-                        imageUrl,
-                        fit: BoxFit.cover,
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop(); // Close the popup
-                          },
-                          child: Text("ปิด"),
+            Positioned(
+              bottom: screenHeight * 0.025,
+              left: 20,
+              child: InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: Image.network(
+                          imageUrl,
+                          fit: BoxFit.cover,
                         ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: Container(
-                width: screenWidth * 0.5,
-                height: screenHeight * 0.29,
-                clipBehavior: Clip.antiAlias,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                child: Image.network(
-                  imageUrl,
-                  fit: BoxFit.cover,
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Close the popup
+                            },
+                            child: Text("ปิด"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Container(
+                  width: screenWidth * 0.5,
+                  height: screenHeight * 0.29,
+                  clipBehavior: Clip.antiAlias,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

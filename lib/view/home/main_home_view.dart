@@ -4,7 +4,6 @@ import 'package:buffalo_thai/model/buffalo_model.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/services/anounce_services.dart';
 import 'package:buffalo_thai/services/buffalo_services.dart';
-import 'package:buffalo_thai/view/buffalo/main_buffalo_wrapper.dart';
 import 'package:buffalo_thai/view/promote_buffalo/main_promote_buffalo_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,9 +12,7 @@ import 'package:stroke_text/stroke_text.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:buffalo_thai/view/farm/main_farm_view.dart';
-import 'package:buffalo_thai/view/farm_owner/register_farm_owner.dart';
 import 'package:buffalo_thai/view/farm_register/main_farm_register.dart';
-import 'package:buffalo_thai/view/register_award/main_register_award.dart';
 import 'package:buffalo_thai/view/history_buffalo/main_history_buffalo_view.dart';
 import 'package:buffalo_thai/view/heredity_buffalo/main_heredity_buffalo_view.dart';
 
@@ -87,129 +84,16 @@ class _HomeViewState extends State<HomeView> {
     CarouselSliderController buttonCarouselController =
         CarouselSliderController();
 
-    final List<Widget> child = [
-      GestureDetector(
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text("ประชาสัมพันธ์"),
-                content: Image.asset(
-                  'assets/images/banner-4.jpg',
-                  fit: BoxFit.cover,
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the popup
-                    },
-                    child: Text("ปิด"),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        child: Container(
-          width: screenWidth,
-          height: screenHeight * 0.18,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-              borderRadius:
-                  BorderRadius.circular(15) // Adjust the radius as needed
-              ),
-          child: Image.asset(
-            'assets/images/banner-4.jpg',
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-      GestureDetector(
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text("ประชาสัมพันธ์"),
-                content: Image.asset(
-                  'assets/images/banner-4.jpg',
-                  fit: BoxFit.cover,
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the popup
-                    },
-                    child: Text("ปิด"),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        child: Container(
-          width: screenWidth,
-          height: screenHeight * 0.18,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-              borderRadius:
-                  BorderRadius.circular(15) // Adjust the radius as needed
-              ),
-          child: Image.asset(
-            'assets/images/banner-4.jpg',
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-      GestureDetector(
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text("ประชาสัมพันธ์"),
-                content: Image.asset(
-                  'assets/images/banner-4.jpg',
-                  fit: BoxFit.cover,
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the popup
-                    },
-                    child: Text("ปิด"),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        child: Container(
-          width: screenWidth,
-          height: screenHeight * 0.18,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-              borderRadius:
-                  BorderRadius.circular(15) // Adjust the radius as needed
-              ),
-          child: Image.asset(
-            'assets/images/banner-4.jpg',
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-    ];
-
     return Scaffold(
-      backgroundColor: Colors.green[20],
-      body: SingleChildScrollView(
-        child: DecoratedBox(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/images/background-2.jpg"),
-                fit: BoxFit.cover),
-          ),
+      body: DecoratedBox(
+        decoration: const BoxDecoration(
+          color: Colors.black,
+          image: DecorationImage(
+              opacity: 0.7,
+              image: AssetImage("assets/images/background-2.jpg"),
+              fit: BoxFit.cover),
+        ),
+        child: SingleChildScrollView(
           child: Container(
             height: screenHeight,
             child: SingleChildScrollView(
@@ -234,24 +118,42 @@ class _HomeViewState extends State<HomeView> {
                                         context, 12),
                                   ),
                                 ),
-                                StrokeText(
-                                  text: "ควายไทย",
-                                  textStyle: TextStyle(
+                                Text(
+                                  'ควายไทย',
+                                  style: TextStyle(
                                       fontSize: ScreenUtils.calculateFontSize(
-                                          context, 21),
-                                      color: Colors.red),
-                                  strokeColor: Colors.white,
-                                  strokeWidth: 6,
-                                ),
-                                StrokeText(
-                                  text: "KWAY THAI",
-                                  textStyle: TextStyle(
-                                      fontSize: ScreenUtils.calculateFontSize(
-                                          context, 15),
+                                        context,
+                                        21,
+                                      ),
                                       color: Colors.white),
-                                  strokeColor: Colors.black,
-                                  strokeWidth: 4,
                                 ),
+                                Text(
+                                  'KWAY THAI',
+                                  style: TextStyle(
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                        context,
+                                        21,
+                                      ),
+                                      color: Colors.black),
+                                ),
+                                // StrokeText(
+                                //   text: "ควายไทย",
+                                //   textStyle: TextStyle(
+                                //       fontSize: ScreenUtils.calculateFontSize(
+                                //           context, 21),
+                                //       color: Colors.red),
+                                //   strokeColor: Colors.white,
+                                //   strokeWidth: 6,
+                                // ),
+                                // StrokeText(
+                                //   text: "KWAY THAI",
+                                //   textStyle: TextStyle(
+                                //       fontSize: ScreenUtils.calculateFontSize(
+                                //           context, 15),
+                                //       color: Colors.white),
+                                //   strokeColor: Colors.black,
+                                //   strokeWidth: 4,
+                                // ),
                                 const SizedBox(
                                   height: 10,
                                 ),
@@ -261,7 +163,7 @@ class _HomeViewState extends State<HomeView> {
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
-                                        return CircularProgressIndicator(); // แสดงโหลดเดอร์ขณะรอ
+                                        return const CircularProgressIndicator(); // แสดงโหลดเดอร์ขณะรอ
                                       } else if (snapshot.hasError) {
                                         return Text(
                                             'Error: ${snapshot.error}'); // แสดงข้อความเมื่อเกิดข้อผิดพลาด
@@ -269,9 +171,10 @@ class _HomeViewState extends State<HomeView> {
                                           snapshot.data!.isNotEmpty) {
                                         BuffaloModel firstBuffalo = snapshot
                                             .data![0]; // เข้าถึงข้อมูลตัวแรก
-                        
-                                        final profileImage =
-                                            firstBuffalo.buffaloImages.firstWhere(
+
+                                        final profileImage = firstBuffalo
+                                            .buffaloImages
+                                            .firstWhere(
                                           (image) => image.isProfileImage,
                                           orElse: () => BuffaloImageModel(
                                             imageId: 0,
@@ -283,25 +186,41 @@ class _HomeViewState extends State<HomeView> {
                                             buffaloId: firstBuffalo.id,
                                           ),
                                         );
-                        
+
                                         final imageUrl = profileImage != null
                                             ? profileImage.imagePath
                                             : 'https://placeholder.com/150';
                                         return InkWell(
                                           onTap: () {
-                                            Provider.of<SelectedBuffalo>(context,
+                                            Provider.of<SelectedBuffalo>(
+                                                    context,
                                                     listen: false)
-                                                .setSelectedBuffalo(firstBuffalo);
+                                                .setSelectedBuffalo(
+                                                    firstBuffalo);
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    PromoteBuffalo(),
+                                                    const PromoteBuffalo(),
                                               ),
                                             );
                                           },
                                           child: Column(
                                             children: [
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                firstBuffalo.name,
+                                                style: TextStyle(
+                                                    fontSize: ScreenUtils
+                                                        .calculateFontSize(
+                                                      context,
+                                                      12,
+                                                    ),
+                                                    color: Colors.white),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                               Container(
                                                 width: screenHeight *
                                                     0.12, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
@@ -309,32 +228,34 @@ class _HomeViewState extends State<HomeView> {
                                                     0.12, // ใช้ screenHeight เพื่อให้เท่ากับขนาดของไอคอนด้านล่าง
                                                 clipBehavior: Clip.antiAlias,
                                                 decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(
-                                                      15), // ปรับแต่งความโค้งของมุมตามต้องการ
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15), // ปรับแต่งความโค้งของมุมตามต้องการ
                                                 ),
                                                 child: Image.network(
                                                   imageUrl,
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),
-                                              const SizedBox(
+                                              SizedBox(
                                                 height: 10,
-                                              ),
-                                              StrokeText(
-                                                text: firstBuffalo.name,
-                                                textStyle: TextStyle(
-                                                    fontSize: ScreenUtils
-                                                        .calculateFontSize(
-                                                            context, 10),
-                                                    color: Colors.red),
-                                                strokeColor: Colors.white,
-                                                strokeWidth: 3,
-                                              ),
+                                              )
+
+                                              // StrokeText(
+                                              //   text: firstBuffalo.name,
+                                              //   textStyle: TextStyle(
+                                              //       fontSize: ScreenUtils
+                                              //           .calculateFontSize(
+                                              //               context, 10),
+                                              //       color: Colors.red),
+                                              //   strokeColor: Colors.white,
+                                              //   strokeWidth: 3,
+                                              // ),
                                             ],
                                           ),
                                         );
                                       } else {
-                                        return Text(
+                                        return const Text(
                                             'No Buffaloes found'); // เมื่อไม่มีข้อมูล
                                       }
                                     },
@@ -423,7 +344,7 @@ class _HomeViewState extends State<HomeView> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator(); // แสดงโหลดเดอร์ขณะรอ
+                              return const CircularProgressIndicator(); // แสดงโหลดเดอร์ขณะรอ
                             } else if (snapshot.hasError) {
                               return Text(
                                   'Error: ${snapshot.error}'); // แสดงข้อความเมื่อเกิดข้อผิดพลาด
@@ -431,12 +352,12 @@ class _HomeViewState extends State<HomeView> {
                                 snapshot.data!.isNotEmpty) {
                               // ถ้ามีข้อมูลและไม่ว่าง
                               List<BuffaloModel> buffaloList = snapshot.data!;
-                        
+
                               // ถ้าข้อมูลมีมากกว่า 1 buffalo ให้ข้ามรายการแรก
                               if (buffaloList.length > 1) {
                                 return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: List.generate(
@@ -444,7 +365,7 @@ class _HomeViewState extends State<HomeView> {
                                       // เริ่มที่ index 1
                                       BuffaloModel buffalo =
                                           buffaloList[index + 1];
-                        
+
                                       final profileImage =
                                           buffalo.buffaloImages.firstWhere(
                                         (image) => image.isProfileImage,
@@ -458,9 +379,9 @@ class _HomeViewState extends State<HomeView> {
                                           buffaloId: buffalo.id,
                                         ),
                                       );
-                        
+
                                       final imageUrl = profileImage.imagePath;
-                        
+
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 5),
@@ -471,12 +392,13 @@ class _HomeViewState extends State<HomeView> {
                                                 Provider.of<SelectedBuffalo>(
                                                         context,
                                                         listen: false)
-                                                    .setSelectedBuffalo(buffalo);
+                                                    .setSelectedBuffalo(
+                                                        buffalo);
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        PromoteBuffalo(),
+                                                        const PromoteBuffalo(),
                                                   ),
                                                 );
                                               },
@@ -494,18 +416,29 @@ class _HomeViewState extends State<HomeView> {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(height: 10),
-                                            StrokeText(
-                                              text: buffalo.name,
-                                              textStyle: TextStyle(
-                                                fontSize:
-                                                    ScreenUtils.calculateFontSize(
-                                                        context, 10),
-                                                color: Colors.red,
-                                              ),
-                                              strokeColor: Colors.white,
-                                              strokeWidth: 3,
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              buffalo.name,
+                                              style: TextStyle(
+                                                  fontSize: ScreenUtils
+                                                      .calculateFontSize(
+                                                    context,
+                                                    12,
+                                                  ),
+                                                  color: Colors.white),
+                                              overflow: TextOverflow.ellipsis,
                                             ),
+                                            // StrokeText(
+                                            //   text: buffalo.name,
+                                            //   textStyle: TextStyle(
+                                            //     fontSize:
+                                            //         ScreenUtils.calculateFontSize(
+                                            //             context, 10),
+                                            //     color: Colors.red,
+                                            //   ),
+                                            //   strokeColor: Colors.white,
+                                            //   strokeWidth: 3,
+                                            // ),
                                           ],
                                         ),
                                       );
@@ -513,17 +446,18 @@ class _HomeViewState extends State<HomeView> {
                                   ),
                                 );
                               } else {
-                                return Text('No additional buffaloes found');
+                                return const Text(
+                                    'No additional buffaloes found');
                               }
                             } else {
-                              return Text(
+                              return const Text(
                                   'No Buffaloes found'); // เมื่อไม่มีข้อมูล
                             }
                           },
                         )
                       ],
                     ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   if (!searchController.text.isNotEmpty)
@@ -535,22 +469,21 @@ class _HomeViewState extends State<HomeView> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               const SizedBox(width: 20),
-                              StrokeText(
-                                text: "ข่าวประชาสัมพันธ์",
-                                textStyle: TextStyle(
-                                  fontSize:
-                                      ScreenUtils.calculateFontSize(context, 20),
-                                  color: Colors.red,
+                              Text(
+                                "ข่าวประชาสัมพันธ์",
+                                style: TextStyle(
+                                  fontSize: ScreenUtils.calculateFontSize(
+                                      context, 20),
+                                  color: Colors.white,
                                 ),
-                                strokeColor: Colors.white,
-                                strokeWidth: 3,
                               ),
                             ],
                           ),
                           Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: FutureBuilder<List<AnnouceModel>>(
-                              future: annoucement, // Future ที่จะดึงข้อมูลประกาศ
+                              future:
+                                  annoucement, // Future ที่จะดึงข้อมูลประกาศ
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
@@ -570,7 +503,7 @@ class _HomeViewState extends State<HomeView> {
                                 } else {
                                   // กรณีดึงข้อมูลได้สำเร็จ
                                   final annoucements = snapshot.data!;
-                        
+
                                   // สร้าง List<Widget> สำหรับ CarouselSlider
                                   final List<Widget> child =
                                       annoucements.map((annouce) {
@@ -580,13 +513,14 @@ class _HomeViewState extends State<HomeView> {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
-                                              title: Text("ประชาสัมพันธ์"),
+                                              title:
+                                                  const Text("ประชาสัมพันธ์"),
                                               content: Image.network(
                                                 annouce
                                                     .filepath, // ใช้ URL ของรูปภาพจาก AnnouceModel
                                                 fit: BoxFit.cover,
-                                                errorBuilder:
-                                                    (context, error, stackTrace) {
+                                                errorBuilder: (context, error,
+                                                    stackTrace) {
                                                   return const Text(
                                                       'ไม่สามารถโหลดรูปภาพได้');
                                                 },
@@ -615,7 +549,8 @@ class _HomeViewState extends State<HomeView> {
                                               15), // ปรับ radius ตามต้องการ
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.5),
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
                                               spreadRadius: 2,
                                               blurRadius: 5,
                                               offset: const Offset(0, 3),
@@ -632,8 +567,8 @@ class _HomeViewState extends State<HomeView> {
                                               child: Text(
                                                 'ไม่สามารถโหลดรูปภาพได้',
                                                 textAlign: TextAlign.center,
-                                                style:
-                                                    TextStyle(color: Colors.red),
+                                                style: TextStyle(
+                                                    color: Colors.red),
                                               ),
                                             );
                                           },
@@ -641,11 +576,12 @@ class _HomeViewState extends State<HomeView> {
                                       ),
                                     );
                                   }).toList();
-                        
+
                                   // แสดง CarouselSlider ด้วย child ที่สร้างจาก annoucements
                                   return CarouselSlider(
                                     items: child,
-                                    carouselController: buttonCarouselController,
+                                    carouselController:
+                                        buttonCarouselController,
                                     options: CarouselOptions(
                                       autoPlay: true,
                                       enlargeCenterPage: true,
@@ -679,14 +615,16 @@ class _HomeViewState extends State<HomeView> {
                                   onTap: () => Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => FarmView())),
+                                          builder: (context) =>
+                                              const FarmView())),
                                   child: Column(
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
                                           color: const Color.fromARGB(
                                               255, 243, 243, 243),
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                         ),
                                         height: screenHeight * 0.09,
                                         width: screenHeight * 0.09,
@@ -700,16 +638,14 @@ class _HomeViewState extends State<HomeView> {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      StrokeText(
-                                        text: "คอก/ฟาร์ม",
-                                        textStyle: TextStyle(
+                                      Text(
+                                        "คอก/ฟาร์ม",
+                                        style: TextStyle(
                                             fontSize:
                                                 ScreenUtils.calculateFontSize(
                                                     context, 10),
-                                            color: Colors.black),
-                                        strokeColor: Colors.white,
-                                        strokeWidth: 3,
-                                      ),
+                                            color: Colors.white),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -722,14 +658,15 @@ class _HomeViewState extends State<HomeView> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              MainHistoryBuffaloView())),
+                                              const MainHistoryBuffaloView())),
                                   child: Column(
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
                                           color: const Color.fromARGB(
                                               255, 243, 243, 243),
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                         ),
                                         height: screenHeight * 0.09,
                                         width: screenHeight * 0.09,
@@ -744,16 +681,14 @@ class _HomeViewState extends State<HomeView> {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      StrokeText(
-                                        text: "ประวัติ",
-                                        textStyle: TextStyle(
+                                      Text(
+                                        "คอก/ฟาร์ม",
+                                        style: TextStyle(
                                             fontSize:
                                                 ScreenUtils.calculateFontSize(
                                                     context, 10),
-                                            color: Colors.black),
-                                        strokeColor: Colors.white,
-                                        strokeWidth: 3,
-                                      ),
+                                            color: Colors.white),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -766,14 +701,15 @@ class _HomeViewState extends State<HomeView> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              MainHeredityBuffaloView())),
+                                              const MainHeredityBuffaloView())),
                                   child: Column(
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
                                           color: const Color.fromARGB(
                                               255, 243, 243, 243),
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                         ),
                                         height: screenHeight * 0.09,
                                         width: screenHeight * 0.09,
@@ -788,15 +724,13 @@ class _HomeViewState extends State<HomeView> {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      StrokeText(
-                                        text: "พันธุกรรม",
-                                        textStyle: TextStyle(
+                                      Text(
+                                        "พันธุกรรม",
+                                        style: TextStyle(
                                             fontSize:
                                                 ScreenUtils.calculateFontSize(
                                                     context, 10),
-                                            color: Colors.black),
-                                        strokeColor: Colors.white,
-                                        strokeWidth: 3,
+                                            color: Colors.white),
                                       ),
                                     ],
                                   ),
@@ -819,11 +753,13 @@ class _HomeViewState extends State<HomeView> {
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
                                             colors: [
-                                              Color.fromARGB(255, 255, 227, 225),
+                                              Color.fromARGB(
+                                                  255, 255, 227, 225),
                                               Color.fromARGB(255, 255, 98, 86),
                                             ],
                                           ),
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                         ),
                                         height: screenHeight * 0.09,
                                         width: screenHeight * 0.09,
@@ -839,14 +775,14 @@ class _HomeViewState extends State<HomeView> {
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    StrokeText(
-                                      text: "ลงทะเบียน",
-                                      textStyle: TextStyle(
-                                          fontSize: ScreenUtils.calculateFontSize(
-                                              context, 10),
-                                          color: Colors.black),
-                                      strokeColor: Colors.white,
-                                      strokeWidth: 3,
+                                    Text(
+                                      "ลงทะเบียน",
+                                      style: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        fontSize: ScreenUtils.calculateFontSize(
+                                            context, 10),
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -874,16 +810,13 @@ class _HomeViewState extends State<HomeView> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    StrokeText(
-                                      text:
-                                          'พบควายที่ค้นหา (${filteredBuffaloes.length})',
-                                      textStyle: TextStyle(
+                                    Text(
+                                      'พบควายที่ค้นหา (${filteredBuffaloes.length})',
+                                      style: TextStyle(
                                         fontSize: ScreenUtils.calculateFontSize(
                                             context, 14),
                                         color: Colors.white,
                                       ),
-                                      strokeColor: Colors.black,
-                                      strokeWidth: 3,
                                     ),
                                     const Spacer(),
                                     InkWell(
@@ -901,8 +834,8 @@ class _HomeViewState extends State<HomeView> {
                                           child: Center(
                                             child: Text(
                                               'ล้างการค้นหา',
-                                              style:
-                                                  TextStyle(color: Colors.white),
+                                              style: TextStyle(
+                                                  color: Colors.white),
                                             ),
                                           ),
                                         ),
@@ -929,18 +862,19 @@ class _HomeViewState extends State<HomeView> {
                                       (image) => image.isProfileImage,
                                       orElse: () => BuffaloImageModel(
                                         imageId: 0,
-                                        imagePath: 'https://placeholder.com/150',
+                                        imagePath:
+                                            'https://placeholder.com/150',
                                         isProfileImage: false,
                                         createdAt: DateTime.now(),
                                         updatedAt: DateTime.now(),
                                         buffaloId: buffalo.id,
                                       ),
                                     );
-                        
+
                                     final imageUrl = profileImage != null
                                         ? profileImage.imagePath
                                         : 'https://placeholder.com/150';
-                        
+
                                     return InkWell(
                                       onTap: () {
                                         Provider.of<SelectedBuffalo>(context,
@@ -950,7 +884,7 @@ class _HomeViewState extends State<HomeView> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                PromoteBuffalo(),
+                                                const PromoteBuffalo(),
                                           ),
                                         );
                                       },
@@ -971,17 +905,16 @@ class _HomeViewState extends State<HomeView> {
                                             ),
                                           ),
                                           const SizedBox(height: 5),
-                                          StrokeText(
-                                            text: buffalo.name,
-                                            textStyle: TextStyle(
+                                          Text(
+                                            buffalo.name,
+                                            style: TextStyle(
+                                              overflow: TextOverflow.ellipsis,
                                               fontSize:
                                                   ScreenUtils.calculateFontSize(
                                                       context, 12),
                                               color: Colors.white,
                                             ),
-                                            strokeColor: Colors.black,
-                                            strokeWidth: 3,
-                                          ),
+                                          )
                                         ],
                                       ),
                                     );

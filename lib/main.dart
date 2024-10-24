@@ -1,3 +1,4 @@
+import 'package:buffalo_thai/view/splash/main_splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         textTheme: GoogleFonts.chonburiTextTheme(textTheme),
       ),
-      home: const HomeView(),
+      home: const MainSplashView(),
     );
   }
 }

@@ -177,7 +177,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
     return Scaffold(
       body: DecoratedBox(
         decoration: const BoxDecoration(
+          color: Colors.black,
           image: DecorationImage(
+            opacity: 0.8,
             image: AssetImage("assets/images/background-1.jpg"),
             fit: BoxFit.cover,
           ),
@@ -225,15 +227,13 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                         : Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 22),
                             child: Center(
-                              child: StrokeText(
-                                text: farmNames,
-                                textStyle: TextStyle(
+                              child: Text(
+                                farmNames,
+                                style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
                                       context, 20),
-                                  color: Colors.red,
+                                  color: Colors.black,
                                 ),
-                                strokeColor: Colors.white,
-                                strokeWidth: 6,
                               ),
                             ),
                           ),
@@ -297,7 +297,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                   ),
                                   child: const Center(
                                     child: AutoSizeText(
-                                      'ลงสมาชิก',
+                                      'ลงทะเบียนสมาชิก',
                                       maxLines: 1,
                                       style: TextStyle(color: Colors.white),
                                     ),
@@ -318,15 +318,13 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                StrokeText(
-                                  text: 'สมาชิก (${users.length})',
-                                  textStyle: TextStyle(
+                                Text(
+                                  'สมาชิก (${users.length})',
+                                  style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                         context, 14),
                                     color: Colors.white,
                                   ),
-                                  strokeColor: Colors.black,
-                                  strokeWidth: 3,
                                 ),
                                 const Spacer(),
                                 InkWell(
@@ -350,7 +348,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                       child: Text(
                                         'ลงทะเบียนสมาชิก',
                                         style: TextStyle(
-                                          fontSize: 10,
+                                          fontSize: 12,
                                           color: Colors.white,
                                         ),
                                       ),
@@ -360,7 +358,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Expanded(
@@ -416,17 +414,15 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                         ),
                                       ),
                                       const SizedBox(height: 5),
-                                      StrokeText(
-                                        text: user?.nickname ?? '',
+                                      Text(
+                                        user?.nickname ?? '',
                                         overflow: TextOverflow.ellipsis,
-                                        textStyle: TextStyle(
+                                        style: TextStyle(
                                           fontSize:
                                               ScreenUtils.calculateFontSize(
                                                   context, 12),
                                           color: Colors.white,
                                         ),
-                                        strokeColor: Colors.black,
-                                        strokeWidth: 3,
                                       ),
                                     ],
                                   ),
@@ -501,15 +497,13 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                StrokeText(
-                                  text: 'ควาย (${buffaloes.length})',
-                                  textStyle: TextStyle(
+                                Text(
+                                  'ควาย (${buffaloes.length})',
+                                  style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                         context, 14),
                                     color: Colors.white,
                                   ),
-                                  strokeColor: Colors.black,
-                                  strokeWidth: 3,
                                 ),
                                 const Spacer(),
                                 InkWell(
@@ -599,18 +593,16 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                         ),
                                       ),
                                       const SizedBox(height: 5),
-                                      StrokeText(
-                                        text: buffalo.name,
-                                        textStyle: TextStyle(
+                                      Text(
+                                        buffalo.name,
+                                        style: TextStyle(
                                           fontSize:
                                               ScreenUtils.calculateFontSize(
                                                   context, 12),
                                           color: Colors.white,
                                         ),
-                                        strokeColor: Colors.black,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        strokeWidth: 3,
                                       ),
                                     ],
                                   ),

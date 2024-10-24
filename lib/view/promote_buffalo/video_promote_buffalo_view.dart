@@ -22,12 +22,14 @@ class _PromoteVideoBuffaloViewState extends State<PromoteVideoBuffaloView> {
     final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
 
     return Scaffold(
+      backgroundColor: Colors.green[200],
       body: DecoratedBox(
         decoration: const BoxDecoration(
+          color: Colors.black,
           image: DecorationImage(
-            image: AssetImage("assets/images/background-2.jpg"),
-            fit: BoxFit.cover,
-          ),
+              opacity: 0.7,
+              image: AssetImage("assets/images/background-2.jpg"),
+              fit: BoxFit.cover),
         ),
         child: SafeArea(
           child: Column(
@@ -46,14 +48,12 @@ class _PromoteVideoBuffaloViewState extends State<PromoteVideoBuffaloView> {
                   )
                 ],
               ),
-              StrokeText(
-                text: buffalo?.name ?? '',
-                textStyle: TextStyle(
+              Text(
+                buffalo?.name ?? '',
+                style: TextStyle(
                   fontSize: ScreenUtils.calculateFontSize(context, 26),
-                  color: Colors.red,
+                  color: Colors.white,
                 ),
-                strokeColor: Colors.white,
-                strokeWidth: 6,
               ),
               const SizedBox(height: 30),
 

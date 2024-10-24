@@ -51,7 +51,9 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
         children: [
           DecoratedBox(
             decoration: const BoxDecoration(
+              color: Colors.black,
               image: DecorationImage(
+                opacity: 0.8,
                 image: AssetImage("assets/images/background-2.jpg"),
                 fit: BoxFit.cover,
               ),
@@ -61,9 +63,6 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
-                    height: 25,
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -129,31 +128,27 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Center(
-                              child: StrokeText(
-                                text: "ประวัติ",
-                                textStyle: TextStyle(
+                              child: Text(
+                                "ประวัติ",
+                                style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
                                       context, 14),
                                   color: Colors.black,
                                 ),
-                                strokeColor: Colors.white,
-                                strokeWidth: 2,
                               ),
                             ),
                             Center(
-                              child: StrokeText(
-                                text: buffalo?.name ?? '',
-                                textStyle: TextStyle(
+                              child: Text(
+                                buffalo?.name ?? '',
+                                style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
                                       context, 24),
                                   color: Colors.red,
                                 ),
-                                strokeColor: Colors.white,
-                                strokeWidth: 2,
                               ),
                             ),
                             SizedBox(
-                              height: screenHeight * 0.35,
+                              height: screenHeight * 0.27,
                               child: ListView(
                                 // เปลี่ยนจาก SingleChildScrollView เป็น ListView
                                 children: [
@@ -175,12 +170,12 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                                           ? _formatDateToBuddhist(buffalo!
                                               .birthDate!) // เรียกฟังก์ชันสำหรับแปลงวันที่
                                           : '',
-                                      Colors.amber[900],
+                                      Colors.red[900],
                                     ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.bornAt != '')
                                     _buildInfoRow(
-                                        'เกิดที่ ลอก/ฟาร์ม ',
+                                        'เกิดที่ คอก/ฟาร์ม ',
                                         buffalo?.bornAt ?? '',
                                         Colors.green[800]),
                                   const SizedBox(height: 5),

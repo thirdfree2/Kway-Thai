@@ -37,7 +37,7 @@ class _ListFarmViewState extends State<ListFarmView> {
 
     double cardHeight = search.isEmpty
         ? screenHeight - viewInsets - 500 // ความสูงเมื่อไม่มีการค้นหา
-        : screenHeight - viewInsets - 300;
+        : screenHeight - viewInsets - 500;
 
     // กรองรายการฟาร์มตามค่าการค้นหา
     final filteredFarms = search.isEmpty
@@ -76,14 +76,12 @@ class _ListFarmViewState extends State<ListFarmView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    StrokeText(
-                      text: "คอก/ฟาร์ม",
-                      textStyle: TextStyle(
+                    Text(
+                      'คอก/ฟาร์ม',
+                      style: TextStyle(
                         fontSize: ScreenUtils.calculateFontSize(context, 28),
-                        color: Colors.red,
+                        color: Colors.black,
                       ),
-                      strokeColor: Colors.white,
-                      strokeWidth: 4,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(

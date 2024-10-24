@@ -13,12 +13,12 @@ class Buffalo extends StatefulWidget {
 
 class _BuffaloState extends State<Buffalo> {
   int _selectedIndex = 0;
-  
 
   static const List<Widget> _widgetOptions = <Widget>[
     MainBuffaloView(),
     Text('Genetics',
-        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+        style: TextStyle(
+            fontSize: 35, fontWeight: FontWeight.bold, color: Colors.white)),
     PhotoBuffaloView(),
     VideoBuffaloView(),
     MainAwardsView(),
@@ -93,7 +93,9 @@ class _BuffaloState extends State<Buffalo> {
             color: Colors.black,
           ),
         ),
-        SizedBox(height: 5,),
+        SizedBox(
+          height: 5,
+        ),
         Text(
           label,
           style: TextStyle(fontSize: 10, color: Colors.white),

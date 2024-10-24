@@ -216,7 +216,9 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
     return Scaffold(
       body: DecoratedBox(
         decoration: const BoxDecoration(
+          color: Colors.black,
           image: DecorationImage(
+            opacity: 0.8,
             image: AssetImage("assets/images/background-2.jpg"),
             fit: BoxFit.cover,
           ),

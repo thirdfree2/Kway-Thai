@@ -131,16 +131,16 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          height: screenHeight,
-          child: DecoratedBox(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/background-1.jpg"),
-                fit: BoxFit.cover,
-              ),
-            ),
+      body: DecoratedBox(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/background-1.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SafeArea(
+          child: Container(
+            height: screenHeight,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -349,7 +349,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 80),
+                            const SizedBox(height: 10),
                             Container(
                               height: 50,
                               width: double.infinity,
@@ -468,7 +468,13 @@ class ImagePickerWidget extends StatelessWidget {
         child: selectedImage == null
             ? const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Icon(Icons.add, size: 30), Text('เพิ่มรูปภาพ', style: TextStyle(fontSize: 10),)],
+                children: [
+                  Icon(Icons.add, size: 30),
+                  Text(
+                    'เพิ่มรูปภาพ',
+                    style: TextStyle(fontSize: 10),
+                  )
+                ],
               )
             : Image.file(selectedImage!, fit: BoxFit.cover),
       ),

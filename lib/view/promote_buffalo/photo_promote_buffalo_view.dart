@@ -40,12 +40,14 @@ class _PromotePhotoBuffaloViewState extends State<PromotePhotoBuffaloView> {
     final int numOfShowImages = imageUrls.length >= 12 ? 12 : imageUrls.length;
 
     return Scaffold(
+      backgroundColor: Colors.green[200],
       body: DecoratedBox(
         decoration: const BoxDecoration(
+          color: Colors.black,
           image: DecorationImage(
-            image: AssetImage("assets/images/background-2.jpg"),
-            fit: BoxFit.cover,
-          ),
+              opacity: 0.7,
+              image: AssetImage("assets/images/background-2.jpg"),
+              fit: BoxFit.cover),
         ),
         child: SafeArea(
           child: Center(
@@ -73,15 +75,13 @@ class _PromotePhotoBuffaloViewState extends State<PromotePhotoBuffaloView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Center(
-                        child: StrokeText(
-                          text: buffalo.name, // แสดงชื่อของ buffalo
-                          textStyle: TextStyle(
+                        child: Text(
+                          buffalo?.name ?? '',
+                          style: TextStyle(
                             fontSize:
-                                ScreenUtils.calculateFontSize(context, 24),
-                            color: Colors.black,
+                                ScreenUtils.calculateFontSize(context, 26),
+                            color: Colors.white,
                           ),
-                          strokeColor: Colors.white,
-                          strokeWidth: 2,
                         ),
                       ),
                       Padding(

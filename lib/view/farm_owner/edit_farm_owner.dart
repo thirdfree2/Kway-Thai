@@ -107,164 +107,185 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
     return Scaffold(
       body: DecoratedBox(
         decoration: const BoxDecoration(
+          color: Colors.black,
           image: DecorationImage(
+            opacity: 0.8,
             image: AssetImage("assets/images/background-1.jpg"),
             fit: BoxFit.cover,
           ),
         ),
-        child: SizedBox(
-          height: screenHeight,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 50,
-                ),
-                Row(
-                  children: [
-                    const SizedBox(width: 30),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Icon(Icons.arrow_back),
+        child: SafeArea(
+          child: SizedBox(
+            height: screenHeight,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const SizedBox(width: 30),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(Icons.arrow_back),
+                        ),
                       ),
-                    ),
-                    const AutoSizeText(
-                      'แก้ไขสมาชิก',
-                      style: TextStyle(fontSize: 24),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Card(
-                    color: Colors.white.withOpacity(0.8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            height: 150,
-                            width: 150,
-                            child: ImagePickerWidget(
-                              selectedImage: _selectedImage,
-                              onPickImage: _pickImage,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          CustomTextFormField(
-                            controller: _nameController,
-                            labelText: 'ชื่อ',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกข้อมูล';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          CustomTextFormField(
-                            controller: _lastNameController,
-                            labelText: 'นามสกุล',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกข้อมูล';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          CustomTextFormField(
-                            controller: _nickNameController,
-                            labelText: 'ชื่อเล่น',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกข้อมูล';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: [
-                              Flexible(
-                                child: StatusDropdown(
-                                  selectedStatus: _selectedStatus,
-                                  statusOptions: _statusOptions,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      _selectedStatus = newValue;
-                                    });
-                                  },
-                                ),
+                      const AutoSizeText(
+                        'แก้ไขสมาชิก',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Card(
+                      color: Colors.white.withOpacity(0.8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: 150,
+                              width: 150,
+                              child: ImagePickerWidget(
+                                selectedImage: _selectedImage,
+                                onPickImage: _pickImage,
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          CustomTextFormField(
-                            controller: _phoneController,
-                            labelText: 'เบอร์โทร',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกข้อมูล';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          CustomTextFormField(
-                            controller: _lineIdController,
-                            labelText: 'Line ID',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกข้อมูล';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          Container(
-                            height: 50,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Center(
-                              child: TextButton(
-                                onPressed: () async {
-                                  try {
-                                    await _showCodeDialog();
+                            ),
+                            SizedBox(height: 10),
+                            CustomTextFormField(
+                              controller: _nameController,
+                              labelText: 'ชื่อ',
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณากรอกข้อมูล';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            CustomTextFormField(
+                              controller: _lastNameController,
+                              labelText: 'นามสกุล',
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณากรอกข้อมูล';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            CustomTextFormField(
+                              controller: _nickNameController,
+                              labelText: 'ชื่อเล่น',
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณากรอกข้อมูล';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: StatusDropdown(
+                                    selectedStatus: _selectedStatus,
+                                    statusOptions: _statusOptions,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        _selectedStatus = newValue;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            CustomTextFormField(
+                              controller: _phoneController,
+                              labelText: 'เบอร์โทร',
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณากรอกข้อมูล';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            CustomTextFormField(
+                              controller: _lineIdController,
+                              labelText: 'Line ID',
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณากรอกข้อมูล';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            Container(
+                              height: 50,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Center(
+                                child: TextButton(
+                                  onPressed: () async {
+                                    try {
+                                      await _showCodeDialog();
 
-                                    if (_passwordController.text != null) {
-                                      await updateUser(
-                                          firstName: _nameController.text,
-                                          userId: _userIdController.text,
-                                          lastName: _lastNameController.text,
-                                          nickname: _nickNameController.text,
-                                          position: _selectedStatus ?? '',
-                                          phoneNumber: _phoneController.text,
-                                          farmId: _farmIdController.text,
-                                          lineId: _lineIdController.text,
-                                          password: _passwordController.text,
-                                          imageFile: _selectedImage);
-                                      Navigator.pop(context);
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              DetailFarmView(),
-                                        ),
-                                      );
+                                      if (_passwordController.text != null) {
+                                        await updateUser(
+                                            firstName: _nameController.text,
+                                            userId: _userIdController.text,
+                                            lastName: _lastNameController.text,
+                                            nickname: _nickNameController.text,
+                                            position: _selectedStatus ?? '',
+                                            phoneNumber: _phoneController.text,
+                                            farmId: _farmIdController.text,
+                                            lineId: _lineIdController.text,
+                                            password: _passwordController.text,
+                                            imageFile: _selectedImage);
+                                        Navigator.pop(context);
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                DetailFarmView(),
+                                          ),
+                                        );
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title:
+                                                  const Text('ลงทะเบียนสำเร็จ'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  child: const Text('OK'),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
+                                    } catch (e) {
+                                      print('$e');
                                       showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title:
-                                                const Text('ลงทะเบียนสำเร็จ'),
+                                            title: const Text('Error'),
+                                            content: const Text(
+                                                'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.'),
                                             actions: <Widget>[
                                               TextButton(
                                                 child: const Text('OK'),
@@ -277,41 +298,21 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                         },
                                       );
                                     }
-                                  } catch (e) {
-                                    print('$e');
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Error'),
-                                          content: const Text(
-                                              'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              child: const Text('OK'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  }
-                                },
-                                child: const Text(
-                                  'ยืนยันการแก้ไข',
-                                  style: TextStyle(color: Colors.white),
+                                  },
+                                  child: const Text(
+                                    'ยืนยันการแก้ไข',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

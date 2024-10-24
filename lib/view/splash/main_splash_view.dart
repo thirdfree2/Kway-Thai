@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:buffalo_thai/mainwrapper.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/auth/main_auth_view.dart';
+import 'package:buffalo_thai/view/home/main_home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:stroke_text/stroke_text.dart';
 
@@ -20,7 +21,7 @@ class _MainSplashViewState extends State<MainSplashView> {
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MainAuthView()),
+        MaterialPageRoute(builder: (context) => HomeView()),
       );
     });
   }
@@ -28,9 +29,12 @@ class _MainSplashViewState extends State<MainSplashView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.green[200],
       body: DecoratedBox(
         decoration: const BoxDecoration(
+          color: Colors.white,
           image: DecorationImage(
+              opacity: 0.8,
               image: AssetImage("assets/images/background-2.jpg"),
               fit: BoxFit.cover),
         ),
@@ -39,29 +43,23 @@ class _MainSplashViewState extends State<MainSplashView> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              StrokeText(
-                text: "สวัสดี",
-                textStyle: TextStyle(
+              Text(
+                "สวัสดี",
+                style: TextStyle(
+                    fontSize: ScreenUtils.calculateFontSize(context, 20),
+                    color: Colors.black),
+              ),
+              Text(
+                "ควายไทย",
+                style: TextStyle(
                     fontSize: ScreenUtils.calculateFontSize(context, 20),
                     color: Colors.white),
-                strokeColor: Colors.black,
-                strokeWidth: 4,
               ),
-              StrokeText(
-                text: "ควายไทย",
-                textStyle: TextStyle(
-                    fontSize: ScreenUtils.calculateFontSize(context, 28),
-                    color: Colors.red),
-                strokeColor: Colors.white,
-                strokeWidth: 6,
-              ),
-              StrokeText(
-                text: "KWAY THAI",
-                textStyle: TextStyle(
+              Text(
+                "KWAY THAI",
+                style: TextStyle(
                     fontSize: ScreenUtils.calculateFontSize(context, 20),
-                    color: Colors.white),
-                strokeColor: Colors.black,
-                strokeWidth: 4,
+                    color: Colors.black),
               ),
             ],
           ),

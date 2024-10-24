@@ -34,195 +34,185 @@ class _MainFarmOwnerState extends State<MainFarmOwner> {
     return Scaffold(
       body: DecoratedBox(
         decoration: const BoxDecoration(
+          color: Colors.black,
           image: DecorationImage(
+              opacity: 0.8,
               image: AssetImage("assets/images/background-1.jpg"),
               fit: BoxFit.cover),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: StrokeText(
-                  text: farmName,
-                  textStyle: TextStyle(
-                    fontSize: ScreenUtils.calculateFontSize(context, 26),
-                    color: Colors.red,
-                  ),
-                  strokeColor: Colors.white,
-                  strokeWidth: 3,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 20,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  color: Colors.white.withOpacity(0.8),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Stack(children: [
-                            Positioned(
-                              top: 0,
-                              right: 0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const EditFarmOwnerScreen(), // Corrected syntax here
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.amber,
-                                      borderRadius: BorderRadius.circular(5)),
-                                  padding: const EdgeInsets.all(5),
-                                  child: const Icon(Icons.edit),
+                Center(
+                  child: Text(
+                    farmName,
+                    style: TextStyle(
+                      fontSize: ScreenUtils.calculateFontSize(context, 26),
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    color: Colors.white.withOpacity(0.8),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Stack(children: [
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const EditFarmOwnerScreen(), // Corrected syntax here
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.amber,
+                                        borderRadius: BorderRadius.circular(5)),
+                                    padding: const EdgeInsets.all(5),
+                                    child: const Icon(Icons.edit),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 120,
-                                  height: 120,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          15) // Adjust the radius as needed
-                                      ),
-                                  child: Image.network(
-                                    imgUrl,
-                                    fit: BoxFit.cover,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 120,
+                                    height: 120,
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            15) // Adjust the radius as needed
+                                        ),
+                                    child: Image.network(
+                                      imgUrl,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                StrokeText(
-                                  text: 'ชื่อเล่น : $nickname',
-                                  textStyle: TextStyle(
-                                    fontSize: ScreenUtils.calculateFontSize(
-                                        context, 34),
-                                    color: Colors.black,
+                                  const SizedBox(
+                                    height: 10,
                                   ),
-                                  strokeColor: Colors.white,
-                                  strokeWidth: 3,
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                StrokeText(
-                                  text: 'นามสกุล : $lastName',
-                                  textStyle: TextStyle(
-                                    fontSize: ScreenUtils.calculateFontSize(
-                                        context, 22),
-                                    color: Colors.black,
+                                  Text(
+                                    'ชื่อเล่น : $nickname',
+                                    style: TextStyle(
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                          context, 34),
+                                      color: Colors.black,
+                                    ),
                                   ),
-                                  strokeColor: Colors.white,
-                                  strokeWidth: 3,
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                StrokeText(
-                                  text: 'ตำแหน่ง : $position',
-                                  textStyle: TextStyle(
-                                    fontSize: ScreenUtils.calculateFontSize(
-                                        context, 22),
-                                    color: Colors.black,
+                                  const SizedBox(
+                                    height: 10,
                                   ),
-                                  strokeColor: Colors.white,
-                                  strokeWidth: 3,
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                StrokeText(
-                                  text: 'ชื่อ : $farmerName $lastName',
-                                  textStyle: TextStyle(
-                                    fontSize: ScreenUtils.calculateFontSize(
-                                        context, 18),
-                                    color: Colors.black,
+                                  Text(
+                                    'นามสกุล : $lastName',
+                                    style: TextStyle(
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                          context, 22),
+                                      color: Colors.black,
+                                    ),
                                   ),
-                                  strokeColor: Colors.white,
-                                  strokeWidth: 3,
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                StrokeText(
-                                  text: 'เบอร์โทร : $phone',
-                                  textStyle: TextStyle(
-                                    fontSize: ScreenUtils.calculateFontSize(
-                                        context, 18),
-                                    color: Colors.black,
+                                  const SizedBox(
+                                    height: 10,
                                   ),
-                                  strokeColor: Colors.white,
-                                  strokeWidth: 3,
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                StrokeText(
-                                  text: 'ID line : $lineId',
-                                  textStyle: TextStyle(
-                                    fontSize: ScreenUtils.calculateFontSize(
-                                        context, 18),
-                                    color: Colors.black,
+                                  Text(
+                                    'ตำแหน่ง : $position',
+                                    style: TextStyle(
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                          context, 22),
+                                      color: Colors.black,
+                                    ),
                                   ),
-                                  strokeColor: Colors.white,
-                                  strokeWidth: 3,
-                                ),
-                              ],
-                            ),
-                          ]),
-                        ),
-                      ],
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'ชื่อ : $farmerName $lastName',
+                                    style: TextStyle(
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                          context, 18),
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'เบอร์โทร : $phone',
+                                    style: TextStyle(
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                          context, 18),
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'ID line : $lineId',
+                                    style: TextStyle(
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                          context, 18),
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ]),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(10)),
-                      height: 50,
-                      width: 100,
-                      child: GestureDetector(
-                        child: Center(
-                            child: Text(
-                          'ย้อนกลับ',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize:
-                                  ScreenUtils.calculateFontSize(context, 18)),
-                        )),
-                        onTap: () {
-                          Navigator.pop(
-                            context,
-                          );
-                        },
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10)),
+                        height: 50,
+                        width: 100,
+                        child: GestureDetector(
+                          child: Center(
+                              child: Text(
+                            'ย้อนกลับ',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize:
+                                    ScreenUtils.calculateFontSize(context, 18)),
+                          )),
+                          onTap: () {
+                            Navigator.pop(
+                              context,
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
