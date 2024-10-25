@@ -4,8 +4,6 @@
 <dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Buffalo Thai</string>
 	<key>CFBundleExecutable</key>
@@ -27,11 +25,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>We need access to your camera to take pictures.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>We need access to your microphone to record video.</string>
+	<string>ขอเข้าถึงกล้อง เพื่ออัพโหลดรูปควายและสมาชิกเข้าสู่ระบบ</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to your photo library to select pictures.</string>
+	<string>ขอเข้าถึงรูป เพื่ออัพโหลดรูปควายและสมาชิกเข้าสู่ระบบ</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
