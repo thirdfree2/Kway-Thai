@@ -682,7 +682,7 @@ class _HomeViewState extends State<HomeView> {
                                         height: 5,
                                       ),
                                       Text(
-                                        "คอก/ฟาร์ม",
+                                        "ประวัติ",
                                         style: TextStyle(
                                             fontSize:
                                                 ScreenUtils.calculateFontSize(

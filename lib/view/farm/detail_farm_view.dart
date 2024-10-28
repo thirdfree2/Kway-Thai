@@ -1,8 +1,7 @@
 import 'package:buffalo_thai/services/farm_services.dart';
+import 'package:buffalo_thai/view/farm/main_farm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stroke_text/stroke_text.dart';
-import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/model/user_model.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
@@ -107,7 +106,8 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                               duration: Duration(seconds: 2),
                             ),
                           );
-
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => DetailFarmView(),

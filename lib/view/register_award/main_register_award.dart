@@ -313,6 +313,7 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                               // ทำการ pop หน้าหลังจากเสร็จสิ้นการทำงาน
                                               Navigator.pop(context);
                                               Navigator.pop(context);
+                                              Navigator.pop(context);
                                               Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(

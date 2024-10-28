@@ -18,10 +18,8 @@ class MainBuffaloView extends StatefulWidget {
 
 class _MainBuffaloViewState extends State<MainBuffaloView> {
   String _formatDateToBuddhist(DateTime date) {
-    // แปลงปี ค.ศ. เป็น พ.ศ. โดยบวกเพิ่ม 543
     final thaiDate = DateTime(date.year, date.month, date.day);
-    return DateFormat('dd MMMM yyyy', 'th_TH')
-        .format(thaiDate); // กำหนดฟอร์แมตวันที่
+    return DateFormat('dd MMMM yyyy', 'th_TH').format(thaiDate);
   }
 
   @override
