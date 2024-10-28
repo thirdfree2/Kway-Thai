@@ -1,8 +1,12 @@
+import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/view/awards_announcement/main_awards_view.dart';
 import 'package:buffalo_thai/view/buffalo/main_buffalo_view.dart';
 import 'package:buffalo_thai/view/buffalo/photo_buffalo_view.dart';
 import 'package:buffalo_thai/view/buffalo/video_buffalo_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Buffalo extends StatefulWidget {
   const Buffalo({super.key});
@@ -24,10 +28,33 @@ class _BuffaloState extends State<Buffalo> {
     MainAwardsView(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  void _onItemTapped(int index) async {
+    if (index == 1) {
+      await _openGeneticsLink();
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    }
+  }
+
+  Future<void> _openGeneticsLink() async {
+    final buffalo =
+        Provider.of<SelectedBuffalo>(context, listen: false).buffalo;
+    final url = 'https://poonework.com/kw.html?${buffalo?.id ?? ''}';
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+      );
+    } else {
+      throw 'ไม่สามารถเปิดลิงก์ $url ได้';
+    }
   }
 
   @override
