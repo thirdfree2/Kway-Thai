@@ -306,6 +306,58 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                 ),
                               ),
                             ),
+                            const SizedBox(height: 5),
+                            InkWell(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('ยืนยันการลบสมาชิก'),
+                                      content: const Text(
+                                          'กรุณายืนยันเพือทำการลบสมาชิก'),
+                                      actions: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            TextButton(
+                                              child: const Text('ยกเลิก'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            ElevatedButton(
+                                              style: ButtonStyle(
+                                                  backgroundColor:
+                                                      WidgetStateProperty.all<
+                                                          Color>(Colors.red)),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                Navigator.of(context).pop();
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text(
+                                                'ยืนยัน',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: Text(
+                                'ลบสมาชิก',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            )
                           ],
                         ),
                       ),
