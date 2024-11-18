@@ -645,7 +645,7 @@ class _HomeViewState extends State<HomeView> {
                                                 ScreenUtils.calculateFontSize(
                                                     context, 10),
                                             color: Colors.white),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
