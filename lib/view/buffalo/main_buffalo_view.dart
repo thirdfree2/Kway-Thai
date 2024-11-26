@@ -82,7 +82,8 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                               onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => UpdateBuffaloView()),
+                                    builder: (context) =>
+                                        const UpdateBuffaloView()),
                               ),
                               child: const Icon(
                                 Icons.edit,
@@ -96,7 +97,7 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                               onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomeView()),
+                                    builder: (context) => const HomeView()),
                               ),
                               child: const Icon(
                                 Icons.home,
@@ -125,6 +126,7 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text(buffalo?.birthDate.toString() ?? ''),
                             Center(
                               child: Text(
                                 "ประวัติ",
@@ -278,7 +280,7 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    Container(
+                    SizedBox(
                       width: 150,
                       child: Card(
                         color: Colors.green[500],
@@ -318,7 +320,7 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                           onPressed: () {
                             Navigator.of(context).pop(); // Close the popup
                           },
-                          child: Text("ปิด"),
+                          child: const Text("ปิด"),
                         ),
                       ],
                     );

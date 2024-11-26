@@ -227,7 +227,7 @@ Future<String> registerBuffalo({
     }
   } else {
     throw Exception(
-      '${response.body}',
+      response.body,
     );
   }
 }
@@ -322,15 +322,15 @@ Future<String> uploadVideoBuffalo({
   }
 }
 
-Future<String> uploadVideoBuffaloWithLink({
-  required int buffaloId,
-  required File? imageFile,
-  required String videoUrl,
-  required String password,
-  required String farmId,
-  required String title
-  // required String videoUrl,
-}) async {
+Future<String> uploadVideoBuffaloWithLink(
+    {required int buffaloId,
+    required File? imageFile,
+    required String videoUrl,
+    required String password,
+    required String farmId,
+    required String title
+    // required String videoUrl,
+    }) async {
   const String url = '${ApiUtils.baseUrl}/api/buffalo/buffaloClips';
   final uri = Uri.parse(url);
   final request = http.MultipartRequest('POST', uri);
@@ -479,8 +479,7 @@ Future<String> updateBuffalo(
   } else if (response.statusCode == 400) {
     final responseData = jsonDecode(response.body);
     return responseData['message'].toString();
-  }
-   else {
+  } else {
     throw Exception(
       'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}',
     );

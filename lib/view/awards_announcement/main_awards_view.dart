@@ -109,7 +109,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                             children: [
                               Expanded(
                                 child: AutoSizeText(
-                                  "(${index + 1})${competition.rank}: ${competition.name}, ${competition.province}, ${DateFormat('dd/MM/yyyy').format(competition.date!)}",
+                                  "(${index + 1})${competition.rank}: ${competition.name}, ${competition.province}, ${competition.type}, เพศ ${buffalo?.gender ?? ''}, สี ${buffalo?.color ?? ''},",
                                   maxLines: 3,
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
@@ -170,7 +170,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                             ],
                           ),
                         );
-                      }).toList(),
+                      }),
                     ],
                   ),
                 ),
