@@ -11,6 +11,7 @@ CompetitionsModel _$CompetitionsModelFromJson(Map<String, dynamic> json) =>
       competitionId: (json['competitionId'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
       rank: json['rank'] as String? ?? '',
+      color: json['color'] as String? ?? '',
       gender: json['gender'] as String? ?? '',
       type: json['type'] as String? ?? '',
       province: json['province'] as String? ?? '',
@@ -27,6 +28,7 @@ Map<String, dynamic> _$CompetitionsModelToJson(CompetitionsModel instance) =>
     <String, dynamic>{
       'competitionId': instance.competitionId,
       'name': instance.name,
+      'color': instance.color,
       'rank': instance.rank,
       'gender': instance.gender,
       'type': instance.type,

@@ -17,6 +17,11 @@ class MainAwardsView extends StatefulWidget {
 class _MainAwardsViewState extends State<MainAwardsView> {
   @override
   Widget build(BuildContext context) {
+    String formatDateToBuddhist(DateTime date) {
+      final thaiDate = DateTime(date.year, date.month, date.day);
+      return DateFormat('dd MMMM yyyy', 'th_TH').format(thaiDate);
+    }
+
     final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
     final competitions = buffalo?.competitions ?? [];
     final screenWidth = MediaQuery.of(context).size.width;
@@ -109,7 +114,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                             children: [
                               Expanded(
                                 child: AutoSizeText(
-                                  "(${index + 1})${competition.rank}: ${competition.name}, ${competition.province}, ${competition.type}, เพศ ${buffalo?.gender ?? ''}, สี ${buffalo?.color ?? ''},",
+                                  "(${index + 1}) ${competition.rank}, ${competition.type} เพศ ${buffalo?.gender ?? ''}, สี ${buffalo?.color ?? ''} ${competition.name} ${competition.province}, ${formatDateToBuddhist(competition.date!)} ",
                                   maxLines: 3,
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(

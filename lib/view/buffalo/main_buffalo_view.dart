@@ -126,7 +126,6 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(buffalo?.birthDate.toString() ?? ''),
                             Center(
                               child: Text(
                                 "ประวัติ",

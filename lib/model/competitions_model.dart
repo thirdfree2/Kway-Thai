@@ -10,6 +10,9 @@ class CompetitionsModel {
   @JsonKey(name: 'name', defaultValue: '')
   final String name;
 
+  @JsonKey(name: 'color', defaultValue: '')
+  final String? color;
+
   @JsonKey(name: 'rank', defaultValue: '')
   final String rank;
 
@@ -28,10 +31,12 @@ class CompetitionsModel {
   @JsonKey(name: 'date', fromJson: _fromJsonDateTime, toJson: _toJsonDateTime)
   final DateTime? date;
 
-  @JsonKey(name: 'createdAt', fromJson: _fromJsonDateTime, toJson: _toJsonDateTime)
+  @JsonKey(
+      name: 'createdAt', fromJson: _fromJsonDateTime, toJson: _toJsonDateTime)
   final DateTime? createdAt;
 
-  @JsonKey(name: 'updatedAt', fromJson: _fromJsonDateTime, toJson: _toJsonDateTime)
+  @JsonKey(
+      name: 'updatedAt', fromJson: _fromJsonDateTime, toJson: _toJsonDateTime)
   final DateTime? updatedAt;
 
   @JsonKey(name: 'buffaloId', defaultValue: null)
@@ -41,6 +46,7 @@ class CompetitionsModel {
     required this.competitionId,
     required this.name,
     required this.rank,
+    this.color,
     this.gender,
     this.type,
     this.province,
@@ -59,6 +65,5 @@ class CompetitionsModel {
   static DateTime? _fromJsonDateTime(String? date) =>
       date != null ? DateTime.parse(date) : null;
 
-  static String? _toJsonDateTime(DateTime? date) =>
-      date?.toIso8601String();
+  static String? _toJsonDateTime(DateTime? date) => date?.toIso8601String();
 }
