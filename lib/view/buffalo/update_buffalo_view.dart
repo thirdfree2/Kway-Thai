@@ -815,13 +815,11 @@ class CustomDatePickerTextFormField extends StatelessWidget {
       lastDate: DateTime(2100),
     );
 
-    if (pickedDate != null) {
-      final buddhistYear = pickedDate.year + 543;
-      controller.text = DateFormat('dd/MM/yyyy').format(
-        DateTime(buddhistYear, pickedDate.month, pickedDate.day),
-      );
+    final buddhistYear = pickedDate?.year ?? 0 + 543;
+    controller.text = DateFormat('dd/MM/yyyy').format(
+      DateTime(buddhistYear, pickedDate!.month, pickedDate!.day),
+    );
     }
-  }
 
   @override
   Widget build(BuildContext context) {

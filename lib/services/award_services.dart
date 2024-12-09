@@ -36,10 +36,8 @@ Future<String> addBuffaloAward({
   request.fields['rank'] = rank;
   request.fields['color'] = color;
 
-   if (image != null) {
-    request.files
-        .add(await http.MultipartFile.fromPath('image', image.path));
-  }
+  request.files
+      .add(await http.MultipartFile.fromPath('image', image.path));
 
   // Send the request
   final response = await request.send();
