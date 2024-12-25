@@ -17,20 +17,24 @@ class MainPromoteAwardsView extends StatefulWidget {
 class _MainPromoteAwardsViewState extends State<MainPromoteAwardsView> {
   @override
   Widget build(BuildContext context) {
+    String formatDateToBuddhist(DateTime date) {
+      final thaiDate = DateTime(date.year, date.month, date.day);
+      return DateFormat('dd MMMM yyyy', 'th_TH').format(thaiDate);
+    }
+
     final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
     final competitions = buffalo?.competitions ?? [];
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.green[200],
       body: DecoratedBox(
         decoration: const BoxDecoration(
           color: Colors.black,
           image: DecorationImage(
-              opacity: 0.7,
               image: AssetImage("assets/images/background-2.jpg"),
-              fit: BoxFit.cover),
+              fit: BoxFit.cover,
+              opacity: 0.8),
         ),
         child: SafeArea(
           child: SizedBox(
@@ -65,7 +69,6 @@ class _MainPromoteAwardsViewState extends State<MainPromoteAwardsView> {
                                 ScreenUtils.calculateFontSize(context, 26),
                             color: Colors.black),
                       ),
-
                       const SizedBox(height: 20),
                       // การแสดงชื่อควาย
                       Row(
@@ -89,7 +92,7 @@ class _MainPromoteAwardsViewState extends State<MainPromoteAwardsView> {
                                     color: Colors.black),
                               ),
                               Text(
-                                '(รางวัล)',
+                                "(รางวัล)",
                                 style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                         context, 20),
@@ -111,7 +114,7 @@ class _MainPromoteAwardsViewState extends State<MainPromoteAwardsView> {
                             children: [
                               Expanded(
                                 child: AutoSizeText(
-                                  "(${index + 1})${competition.rank}: ${competition.name}, ${competition.province}, ${DateFormat('dd/MM/yyyy').format(competition.date!)}",
+                                  "(${index + 1}) ${competition.rank}, ${competition.type} เพศ ${buffalo?.gender ?? ''}, สี ${buffalo?.color ?? ''} ${competition.name} ${competition.province}, ${formatDateToBuddhist(competition.date!)} ",
                                   maxLines: 3,
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
@@ -172,10 +175,44 @@ class _MainPromoteAwardsViewState extends State<MainPromoteAwardsView> {
                             ],
                           ),
                         );
-                      }).toList(),
+                      }),
                     ],
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MainRegisterAward(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 250,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'เพิ่มรางวัลงานประกวด',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),

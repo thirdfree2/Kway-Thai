@@ -805,21 +805,24 @@ class CustomDatePickerTextFormField extends StatelessWidget {
     this.validator,
   }) : super(key: key);
 
-  Future<void> _selectDate(BuildContext context) async {
-    DateTime? pickedDate = await showRoundedDatePicker(
-      locale: const Locale("th", "TH"),
-      context: context,
-      era: EraMode.BUDDHIST_YEAR,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100),
-    );
+   Future<void> _selectDate(BuildContext context) async {
+  DateTime? pickedDate = await showRoundedDatePicker(
+    locale: const Locale("th", "TH"),
+    context: context,
+    era: EraMode.BUDDHIST_YEAR,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(1900),
+    lastDate: DateTime(2100),
+  );
 
-    final buddhistYear = pickedDate?.year ?? 0 + 543;
+  if (pickedDate != null) {
+    // เพิ่ม 543 เฉพาะเมื่อแสดงผลใน controller
+    final buddhistYear = pickedDate.year + 543;
     controller.text = DateFormat('dd/MM/yyyy').format(
-      DateTime(buddhistYear, pickedDate!.month, pickedDate!.day),
+      DateTime(buddhistYear, pickedDate.month, pickedDate.day),
     );
-    }
+  }
+}
 
   @override
   Widget build(BuildContext context) {
