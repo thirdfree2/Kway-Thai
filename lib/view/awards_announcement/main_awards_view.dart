@@ -114,7 +114,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                             children: [
                               Expanded(
                                 child: AutoSizeText(
-                                  "(${index + 1}) ${competition.rank}, ${competition.type} เพศ ${buffalo?.gender ?? ''}, สี ${buffalo?.color ?? ''} ${competition.name} ${competition.province}, ${formatDateToBuddhist(competition.date!)} ",
+                                  "(${index + 1}) ${competition.rank}, ${competition.type} เพศ ${buffalo?.gender ?? ''}, สี ${competition.color ?? ''} ${competition.name} ${competition.province}, ${formatDateToBuddhist(competition.date!)} ",
                                   maxLines: 3,
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
