@@ -712,7 +712,10 @@ class ImagePickerWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Icon(Icons.add, size: 30),
-                  Text(labelName ?? 'รูปโปรไฟล์')
+                  Text(
+                    labelName ?? 'รูปโปรไฟล์',
+                    textAlign: TextAlign.center,
+                  )
                 ],
               )
             : Image.file(selectedImage!, fit: BoxFit.cover),

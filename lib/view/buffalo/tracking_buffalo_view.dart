@@ -43,9 +43,7 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
 
   @override
   Widget build(BuildContext context) {
-    final buffalo = Provider.of<SelectedBuffalo>(context).buffalo;
     final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: DecoratedBox(
@@ -90,7 +88,7 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "รายงานพัฒนาการ (Reports)",
+                                "การพัฒนาการ (Development)",
                                 style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                         context, 19),
@@ -173,14 +171,16 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                                "ส่วนสูง: ${track.buffaloHeight} ซม."),
+                                                "ช่วงอายุ (Age Period): ${track.agePeriod}"),
                                             Text(
-                                                "น้ำหนัก: ${track.buffaloWeight} กก."),
+                                                "ส่วนสูง (Height): ${track.buffaloHeight} ซม."),
+                                            Text(
+                                                "น้ำหนัก (Weight): ${track.buffaloWeight} กก."),
                                             Text(
                                               track.createdAt != null
-                                                  ? "วันที่บันทึก: ${DateFormat('dd MMM yyyy', 'th').format(DateTime(track.createdAt!.year + 543, track.createdAt!.month, track.createdAt!.day))}"
-                                                  : "ไม่พบวันที่บันทึก",
-                                            )
+                                                  ? "วันที่บันทึก (Save Date): ${DateFormat('dd MMM yyyy', 'th').format(DateTime(track.createdAt!.year + 543, track.createdAt!.month, track.createdAt!.day))}"
+                                                  : "ไม่พบวันที่บันทึก (Not Found Record Date)",
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -215,7 +215,7 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                           ),
                           child: const Center(
                             child: Text(
-                              'เพิ่มพัฒนาการ \n (Add Report)',
+                              'เพิ่มพัฒนาการ \n (Add Develop)',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
@@ -300,230 +300,255 @@ void showAddTrackingDialog(
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(24),
-              child: SizedBox(
-                width: screenWidth,
-                height: screenHeight,
-                child: Scaffold(
-                  appBar: AppBar(
-                    title: const Text("เพิ่มพัฒนาการ"),
-                    leading: IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                  ),
-                  body: SingleChildScrollView(
-                    padding: const EdgeInsets.all(20),
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        children: [
-                          DropdownBuffalo(
-                            validateName: "กรุณาระบุอายุปัจจุบัน",
-                            selectedStatus: selectAgePeriod,
-                            statusOptions: agePeriodOptions,
-                            onChanged: (newValue) {
-                              setState(() {
-                                selectAgePeriod = newValue;
-                              });
-                            },
-                            name: 'อายุปัจจุบัน',
-                          ),
-                          const SizedBox(height: 20),
-                          CustomTextFormField(
-                            controller: weightController,
-                            labelText: 'น้ำหนัก กก. (Weight kg.)',
-                            keyboardType: const TextInputType.numberWithOptions(
-                                decimal: true),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(RegExp(
-                                  r'^\d*\.?\d{0,2}')), // รองรับทศนิยม 2 ตำแหน่ง
-                            ],
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'กรุณาระบุน้ำหนัก';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          CustomTextFormField(
-                            controller: heightController,
-                            labelText: 'ส่วนสูง ม. (Height m.)',
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(RegExp(
-                                  r'^\d*\.?\d{0,2}')), // รองรับทศนิยม 2 ตำแหน่ง
-                            ],
-                            keyboardType: const TextInputType.numberWithOptions(
-                                decimal: true),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'กรุณาระบุส่วนสูง';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          ImagePickerWidget(
-                            width: 150,
-                            height: 150,
-                            selectedImage: selectedImage,
-                            onPickImage: () async {
-                              await pickImage();
-                              setState(() {
-                                imageErrorText =
-                                    null; // clear error เมื่อเลือกรูป
-                              });
-                            },
-                            labelName: 'เพิ่มรูปภาพ',
-                          ),
-                          if (imageErrorText != null)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Text(
-                                imageErrorText!,
-                                style: const TextStyle(color: Colors.red),
-                              ),
-                            ),
-                        ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: SizedBox(
+                  width: screenWidth,
+                  height: screenHeight,
+                  child: Scaffold(
+                    appBar: AppBar(
+                      title: const Text("เพิ่มการพัฒนาการ \n (Development)"),
+                      leading: IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.of(context).pop(),
                       ),
                     ),
-                  ),
-                  bottomNavigationBar: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text("ยกเลิก"),
+                    body: SingleChildScrollView(
+                      padding: const EdgeInsets.all(20),
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            DropdownBuffalo(
+                              validateName:
+                                  "กรุณาระบุอายุปัจจุบัน (Please enter current age)",
+                              selectedStatus: selectAgePeriod,
+                              statusOptions: agePeriodOptions,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  selectAgePeriod = newValue;
+                                });
+                              },
+                              name: 'อายุปัจจุบัน (Current Age)',
+                            ),
+                            const SizedBox(height: 20),
+                            CustomTextFormField(
+                              controller: weightController,
+                              labelText: 'น้ำหนัก กก. (Weight kg.)',
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(RegExp(
+                                    r'^\d*\.?\d{0,2}')), // รองรับทศนิยม 2 ตำแหน่ง
+                              ],
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'กรุณาระบุน้ำหนัก (Please enter weight)';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            CustomTextFormField(
+                              controller: heightController,
+                              labelText: 'ส่วนสูง ม. (Height m.)',
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(RegExp(
+                                    r'^\d*\.?\d{0,2}')), // รองรับทศนิยม 2 ตำแหน่ง
+                              ],
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'กรุณาระบุส่วนสูง (Please enter height)';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            ImagePickerWidget(
+                              width: 150,
+                              height: 150,
+                              selectedImage: selectedImage,
+                              onPickImage: () async {
+                                await pickImage();
+                                setState(() {
+                                  imageErrorText =
+                                      null; // clear error เมื่อเลือกรูป
+                                });
+                              },
+                              labelName: 'เพิ่มรูปภาพ \n (Add Photo)',
+                            ),
+                            if (imageErrorText != null)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                  imageErrorText!,
+                                  style: const TextStyle(color: Colors.red),
+                                ),
+                              ),
+                          ],
                         ),
-                        ElevatedButton(
-                          onPressed: isLoading
-                              ? null
-                              : () async {
-                                  final isFormValid =
-                                      formKey.currentState!.validate();
-                                  final isImageValid = selectedImage != null;
+                      ),
+                    ),
+                    bottomNavigationBar: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text(
+                              "ยกเลิก \n (Cancel)",
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: isLoading
+                                ? null
+                                : () async {
+                                    final isFormValid =
+                                        formKey.currentState!.validate();
+                                    final isImageValid = selectedImage != null;
 
-                                  if (!isImageValid) {
-                                    setState(() {
-                                      imageErrorText = 'กรุณาเลือกรูปภาพ';
-                                    });
-                                  }
+                                    if (!isImageValid) {
+                                      setState(() {
+                                        imageErrorText =
+                                            'กรุณาเลือกรูปภาพ (Please enter photo)';
+                                      });
+                                    }
 
-                                  if (isFormValid && isImageValid) {
-                                    showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        final passwordController =
-                                            TextEditingController();
-                                        final passwordFormKey =
-                                            GlobalKey<FormState>();
+                                    if (isFormValid && isImageValid) {
+                                      showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          final passwordController =
+                                              TextEditingController();
+                                          final passwordFormKey =
+                                              GlobalKey<FormState>();
 
-                                        return AlertDialog(
-                                          title: const Text("ยืนยันรหัสผ่าน"),
-                                          content: Form(
-                                            key: passwordFormKey,
-                                            child: TextFormField(
-                                              controller: passwordController,
-                                              obscureText: true,
-                                              decoration: const InputDecoration(
-                                                labelText: 'รหัสผ่าน',
-                                                border: OutlineInputBorder(),
-                                              ),
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.isEmpty) {
-                                                  return 'กรุณากรอกรหัสผ่าน';
-                                                }
-                                                return null;
-                                              },
-                                            ),
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context).pop(),
-                                              child: const Text("ยกเลิก"),
-                                            ),
-                                            ElevatedButton(
-                                              onPressed: () async {
-                                                if (passwordFormKey
-                                                    .currentState!
-                                                    .validate()) {
-                                                  Navigator.of(context)
-                                                      .pop(); // ปิด dialog
-
-                                                  setState(() {
-                                                    isLoading = true;
-                                                  });
-
-                                                  try {
-                                                    final message =
-                                                        await createTrackingBuffalo(
-                                                      buffaloId: buffalo!.id,
-                                                      password:
-                                                          passwordController
-                                                              .text,
-                                                      farmId: buffalo.farmId
-                                                          .toString(),
-                                                      imageFile: selectedImage,
-                                                      buffaloWeight: int.parse(
-                                                          weightController
-                                                              .text),
-                                                      buffaloHeight: int.parse(
-                                                          heightController
-                                                              .text),
-                                                      agePeriod:
-                                                          selectAgePeriod!,
-                                                    );
-
-                                                    ScaffoldMessenger.of(
-                                                            scaffoldContext)
-                                                        .showSnackBar(
-                                                      const SnackBar(
-                                                          content: Text(
-                                                              "สำเร็จ: สร้างรายงานพัฒนาการสำเร็จ")),
-                                                    );
-
-                                                    Navigator.of(
-                                                            scaffoldContext)
-                                                        .pop(); // ปิดฟอร์ม
-                                                    onSubmitSuccess();
-                                                  } catch (e) {
-                                                    ScaffoldMessenger.of(
-                                                            scaffoldContext)
-                                                        .showSnackBar(
-                                                      const SnackBar(
-                                                          content: Text(
-                                                              "เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง")),
-                                                    );
-                                                  } finally {
-                                                    setState(() {
-                                                      isLoading = false;
-                                                    });
+                                          return AlertDialog(
+                                            title: const Text(
+                                                "ยืนยันรหัสผ่าน (Confirm Password)"),
+                                            content: Form(
+                                              key: passwordFormKey,
+                                              child: TextFormField(
+                                                controller: passwordController,
+                                                obscureText: true,
+                                                decoration:
+                                                    const InputDecoration(
+                                                  labelText:
+                                                      'รหัสผ่าน (Password)',
+                                                  border: OutlineInputBorder(),
+                                                ),
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'กรุณากรอกรหัสผ่าน \n (Plase enter password)';
                                                   }
-                                                }
-                                              },
-                                              child: const Text("ยืนยัน"),
+                                                  return null;
+                                                },
+                                              ),
                                             ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  }
-                                },
-                          child: isLoading
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child:
-                                      CircularProgressIndicator(strokeWidth: 2),
-                                )
-                              : const Text("บันทึก"),
-                        )
-                      ],
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context).pop(),
+                                                child: const Text(
+                                                  "ยกเลิก \n (Cancel)",
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                              ElevatedButton(
+                                                onPressed: () async {
+                                                  if (passwordFormKey
+                                                      .currentState!
+                                                      .validate()) {
+                                                    Navigator.of(context)
+                                                        .pop(); // ปิด dialog
+
+                                                    setState(() {
+                                                      isLoading = true;
+                                                    });
+
+                                                    try {
+                                                      final message =
+                                                          await createTrackingBuffalo(
+                                                        buffaloId: buffalo!.id,
+                                                        password:
+                                                            passwordController
+                                                                .text,
+                                                        farmId: buffalo.farmId
+                                                            .toString(),
+                                                        imageFile:
+                                                            selectedImage,
+                                                        buffaloWeight:
+                                                            int.parse(
+                                                                weightController
+                                                                    .text),
+                                                        buffaloHeight:
+                                                            int.parse(
+                                                                heightController
+                                                                    .text),
+                                                        agePeriod:
+                                                            selectAgePeriod!,
+                                                      );
+
+                                                      ScaffoldMessenger.of(
+                                                              scaffoldContext)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                            content: Text(
+                                                                "สำเร็จ: สร้างรายงานพัฒนาการสำเร็จ (Create Record success)")),
+                                                      );
+
+                                                      Navigator.of(
+                                                              scaffoldContext)
+                                                          .pop(); // ปิดฟอร์ม
+                                                      onSubmitSuccess();
+                                                    } catch (e) {
+                                                      ScaffoldMessenger.of(
+                                                              scaffoldContext)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                            content: Text(
+                                                                "เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง (Wrong password)")),
+                                                      );
+                                                    } finally {
+                                                      setState(() {
+                                                        isLoading = false;
+                                                      });
+                                                    }
+                                                  }
+                                                },
+                                                child: const Text(
+                                                  "ยืนยัน \n (Save)",
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                  },
+                            child: isLoading
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                        strokeWidth: 2),
+                                  )
+                                : const Text(
+                                    "บันทึก \n (Save)",
+                                    textAlign: TextAlign.center,
+                                  ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
