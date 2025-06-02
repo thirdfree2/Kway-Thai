@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:buffalo_thai/model/buffalo_tracking_model.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -17,7 +18,6 @@ Future<List<BuffaloModel>> fetchBuffaloes() async {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       if (jsonResponse['response_status'] == 'SUCCESS') {
         List<dynamic> farmsList = jsonResponse['data'];
-        print(farmsList);
         return farmsList.map((json) => BuffaloModel.fromJson(json)).toList();
       } else {
         throw Exception('API response status is not SUCCESS');
@@ -42,7 +42,6 @@ Future<List<BuffaloModel>> fetchHistoryBuffaloes() async {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       if (jsonResponse['response_status'] == 'SUCCESS') {
         List<dynamic> farmsList = jsonResponse['data'];
-        print(farmsList);
         return farmsList.map((json) => BuffaloModel.fromJson(json)).toList();
       } else {
         throw Exception('API response status is not SUCCESS');
@@ -52,6 +51,26 @@ Future<List<BuffaloModel>> fetchHistoryBuffaloes() async {
     }
   } catch (e) {
     // ใช้ catch เพื่อจัดการข้อผิดพลาดและแสดงข้อความข้อผิดพลาด
+    throw Exception('Failed to load buffaloes: $e');
+  }
+}
+
+Future<List<BuffaloTrackingModel>> fetchTrackingBuffaloes(String id) async {
+  try {
+    final response = await http.get(
+      Uri.parse('${ApiUtils.baseUrl}/api/buffalo/tracking/$id'),
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      List<dynamic> trackList = jsonResponse['data'];
+      return trackList
+          .map((json) => BuffaloTrackingModel.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to load buffaloes: ${response.statusCode}');
+    }
+  } catch (e) {
     throw Exception('Failed to load buffaloes: $e');
   }
 }
@@ -67,7 +86,6 @@ Future<List<BuffaloModel>> fetchAllBuffaloes() async {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       if (jsonResponse['response_status'] == 'SUCCESS') {
         List<dynamic> farmsList = jsonResponse['data'];
-        print(farmsList);
         return farmsList.map((json) => BuffaloModel.fromJson(json)).toList();
       } else {
         throw Exception('API response status is not SUCCESS');
@@ -242,6 +260,47 @@ Future<String> uploadImageBuffalo({
   final uri = Uri.parse(url);
   final request = http.MultipartRequest('POST', uri);
 
+  request.fields['buffaloId'] = buffaloId.toString();
+  request.fields['password'] = password;
+  request.fields['farmId'] = farmId.toString();
+  if (imageFile != null) {
+    request.files
+        .add(await http.MultipartFile.fromPath('image', imageFile.path));
+  }
+
+  final streamedResponse = await request.send();
+  final response = await http.Response.fromStream(streamedResponse);
+
+  if (response.statusCode == 201) {
+    final responseData = jsonDecode(response.body);
+    if (responseData['message'] != null) {
+      return responseData['message'].toString();
+    } else {
+      throw Exception('Farm data not found.');
+    }
+  } else {
+    throw Exception(
+      'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}',
+    );
+  }
+}
+
+Future<String> createTrackingBuffalo({
+  required int buffaloId,
+  required String password,
+  required String farmId,
+  required File? imageFile,
+  required int buffaloWeight,
+  required int buffaloHeight,
+  required String agePeriod,
+}) async {
+  const String url = '${ApiUtils.baseUrl}/api/buffalo/tracking';
+  final uri = Uri.parse(url);
+  final request = http.MultipartRequest('POST', uri);
+
+  request.fields['buffaloWeight'] = buffaloWeight.toString();
+  request.fields['buffaloHeight'] = buffaloHeight.toString();
+  request.fields['agePeriod'] = agePeriod.toString();
   request.fields['buffaloId'] = buffaloId.toString();
   request.fields['password'] = password;
   request.fields['farmId'] = farmId.toString();
@@ -471,7 +530,6 @@ Future<String> updateBuffalo(
   if (response.statusCode == 200) {
     final responseData = jsonDecode(response.body);
     if (responseData['message'] != null && responseData['message'] != null) {
-      print(responseData);
       return responseData['message'].toString(); // Return the farmId
     } else {
       throw Exception('Farm data not found.');

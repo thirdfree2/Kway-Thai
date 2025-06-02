@@ -3,8 +3,7 @@ import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
-import 'package:http_parser/http_parser.dart';
-import 'package:intl/intl.dart'; // For handling image uploads
+import 'package:intl/intl.dart';
 
 Future<String> addBuffaloAward({
   required int buffaloId,
@@ -36,8 +35,7 @@ Future<String> addBuffaloAward({
   request.fields['rank'] = rank;
   request.fields['color'] = color;
 
-  request.files
-      .add(await http.MultipartFile.fromPath('image', image.path));
+  request.files.add(await http.MultipartFile.fromPath('image', image.path));
 
   // Send the request
   final response = await request.send();
@@ -45,10 +43,7 @@ Future<String> addBuffaloAward({
   if (response.statusCode == 201) {
     final responseData = await http.Response.fromStream(response);
     final jsonResponse = jsonDecode(responseData.body);
-
-    print(jsonResponse);
-    if (jsonResponse['data'] != null &&
-        jsonResponse['data'] != null) {
+    if (jsonResponse['data'] != null && jsonResponse['data'] != null) {
       return jsonResponse['data']['farmId'].toString(); // Returning farmId
     } else {
       throw Exception('Error: Duplicate phone number');

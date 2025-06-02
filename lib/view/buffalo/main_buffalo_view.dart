@@ -1,8 +1,8 @@
+import 'package:buffalo_thai/view/buffalo/tracking_buffalo_view.dart';
 import 'package:buffalo_thai/view/buffalo/update_buffalo_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:stroke_text/stroke_text.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/home/main_home_view.dart';
@@ -115,6 +115,7 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                       height: screenHeight * 0.65,
                       padding: const EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
+                        // ignore: deprecated_member_use
                         color: Colors.white.withOpacity(0.5),
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(65),
@@ -126,15 +127,55 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Center(
-                              child: Text(
-                                "ประวัติ",
-                                style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                      context, 14),
-                                  color: Colors.black,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const SizedBox(
+                                    width:
+                                        80), // เว้นด้านซ้ายไว้ให้เท่ากับปุ่มด้านขวา
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "ประวัติ",
+                                      style: TextStyle(
+                                        fontSize: ScreenUtils.calculateFontSize(
+                                            context, 14),
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const TrackingBuffaloView(),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    width: 90,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blueGrey,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'บันทึก \n (Record)',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                             Center(
                               child: Text(
@@ -162,9 +203,11 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                                     _buildInfoRow('สี ', buffalo?.color ?? '',
                                         Colors.black),
                                   const SizedBox(height: 5),
+                                  // ignore: unrelated_type_equality_checks
                                   if (buffalo?.birthDate != '')
                                     _buildInfoRow(
                                       'เกิด ',
+                                      // ignore: unrelated_type_equality_checks
                                       buffalo?.birthDate != ''
                                           ? _formatDateToBuddhist(buffalo!
                                               .birthDate!) // เรียกฟังก์ชันสำหรับแปลงวันที่

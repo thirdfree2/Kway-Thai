@@ -4,21 +4,18 @@ import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:buffalo_thai/utils/api_utils.dart';
-import 'package:buffalo_thai/model/user_model.dart';
 
-
-Future<String> registerFarmOwner({
-  required String firstName,
-  required String lastName,
-  required String nickname,
-  required String position,
-  required String phoneNumber,
-  required String farmId,
-  required String lineId,
-  required String password,
-  required File? imageFile,
-  required String status
-}) async {
+Future<String> registerFarmOwner(
+    {required String firstName,
+    required String lastName,
+    required String nickname,
+    required String position,
+    required String phoneNumber,
+    required String farmId,
+    required String lineId,
+    required String password,
+    required File? imageFile,
+    required String status}) async {
   const String url = '${ApiUtils.baseUrl}/api/user/';
 
   final request = http.MultipartRequest('POST', Uri.parse(url))
@@ -30,18 +27,18 @@ Future<String> registerFarmOwner({
     ..fields['phoneNumber'] = phoneNumber
     ..fields['farmId'] = farmId
     ..fields['lineId'] = lineId
-     ..fields['password'] = password
+    ..fields['password'] = password
     ..files.add(await http.MultipartFile.fromPath(
       'image',
       imageFile?.path ?? '',
-      contentType: MediaType('image', basename(imageFile?.path ?? '').split('.').last),
+      contentType:
+          MediaType('image', basename(imageFile?.path ?? '').split('.').last),
     ));
 
   final response = await request.send();
 
   if (response.statusCode == 201) {
     final responseData = await response.stream.bytesToString();
-    print(responseData);
     return responseData;
   } else {
     final responseData = await response.stream.bytesToString();

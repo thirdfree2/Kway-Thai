@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -99,10 +100,8 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final selectedFarm = Provider.of<SelectedFarm>(context, listen: false);
-    if (selectedFarm != null) {
-      _farmIdController.text = selectedFarm.farmId;
-      _farmNameController.text = selectedFarm.farmNames ?? '';
-    }
+    _farmIdController.text = selectedFarm.farmId;
+    _farmNameController.text = selectedFarm.farmNames ?? '';
   }
 
   Future<void> _pickImage() async {
@@ -544,7 +543,7 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                                 MaterialPageRoute(
                                                                   builder:
                                                                       (context) =>
-                                                                          DetailFarmView(),
+                                                                          const DetailFarmView(),
                                                                 ),
                                                               );
                                                             },
@@ -606,18 +605,23 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
   final FormFieldValidator<String>? validator;
+  final TextInputType keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextFormField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
+    this.keyboardType = TextInputType.text,
+    this.inputFormatters,
     this.validator,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: labelText,
@@ -633,30 +637,30 @@ class CustomDatePickerTextFormField extends StatelessWidget {
   final FormFieldValidator<String>? validator;
 
   const CustomDatePickerTextFormField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
     this.validator,
-  }) : super(key: key);
+  });
 
   Future<void> _selectDate(BuildContext context) async {
-  DateTime? pickedDate = await showRoundedDatePicker(
-    locale: const Locale("th", "TH"),
-    context: context,
-    era: EraMode.BUDDHIST_YEAR,
-    initialDate: DateTime.now(),
-    firstDate: DateTime(1900),
-    lastDate: DateTime(2100),
-  );
-
-  if (pickedDate != null) {
-    // เพิ่ม 543 เฉพาะเมื่อแสดงผลใน controller
-    final buddhistYear = pickedDate.year + 543;
-    controller.text = DateFormat('dd/MM/yyyy').format(
-      DateTime(buddhistYear, pickedDate.month, pickedDate.day),
+    DateTime? pickedDate = await showRoundedDatePicker(
+      locale: const Locale("th", "TH"),
+      context: context,
+      era: EraMode.BUDDHIST_YEAR,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
     );
+
+    if (pickedDate != null) {
+      // เพิ่ม 543 เฉพาะเมื่อแสดงผลใน controller
+      final buddhistYear = pickedDate.year + 543;
+      controller.text = DateFormat('dd/MM/yyyy').format(
+        DateTime(buddhistYear, pickedDate.month, pickedDate.day),
+      );
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -677,17 +681,19 @@ class CustomDatePickerTextFormField extends StatelessWidget {
 
 class ImagePickerWidget extends StatelessWidget {
   final File? selectedImage;
+  final String? labelName;
   final VoidCallback onPickImage;
   final double width;
   final double height;
 
   const ImagePickerWidget({
-    Key? key,
+    super.key,
+    this.labelName,
     this.selectedImage,
     required this.onPickImage,
     required this.width,
     required this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -702,9 +708,12 @@ class ImagePickerWidget extends StatelessWidget {
           color: Colors.white.withOpacity(0.8),
         ),
         child: selectedImage == null
-            ? const Column(
+            ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Icon(Icons.add, size: 30), Text('รูปโปรไฟล์')],
+                children: [
+                  const Icon(Icons.add, size: 30),
+                  Text(labelName ?? 'รูปโปรไฟล์')
+                ],
               )
             : Image.file(selectedImage!, fit: BoxFit.cover),
       ),
@@ -717,14 +726,16 @@ class DropdownBuffalo extends StatelessWidget {
   final List<String> statusOptions;
   final ValueChanged<String?> onChanged;
   final String name;
+  final String? validateName;
 
   const DropdownBuffalo({
-    Key? key,
+    super.key,
+    this.validateName,
     required this.name,
     required this.selectedStatus,
     required this.statusOptions,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -741,7 +752,8 @@ class DropdownBuffalo extends StatelessWidget {
         border: const OutlineInputBorder(),
         labelText: name,
       ),
-      validator: (value) => value == null ? 'กรุณาเลือกสถานะ' : null,
+      validator: (value) =>
+          value == null ? validateName ?? 'กรุณาเลือกสถานะ' : null,
     );
   }
 }
@@ -752,12 +764,12 @@ class FamilyForm extends StatelessWidget {
   final String buffaloHeadText;
   final String buffaloNameText;
   const FamilyForm({
-    Key? key,
+    super.key,
     required this.nameController,
     required this.farmController,
     required this.buffaloHeadText,
     required this.buffaloNameText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
