@@ -247,8 +247,7 @@ void showAddTrackingDialog(
   bool isLoading = false;
   final weightController = TextEditingController();
   final heightController = TextEditingController();
-  final imagePathController = TextEditingController();
-  File? selectedImage;
+
   String? selectAgePeriod;
 
   final List<String> agePeriodOptions = [
@@ -263,14 +262,6 @@ void showAddTrackingDialog(
     '36 เดือน',
     '48 เดือน',
   ];
-
-  void pickImage() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
-      selectedImage = File(pickedImage.path);
-    }
-  }
 
   final scaffoldContext = context;
   showDialog(
@@ -478,8 +469,7 @@ void showAddTrackingDialog(
                                                     });
 
                                                     try {
-                                                      final message =
-                                                          await createTrackingBuffalo(
+                                                      await createTrackingBuffalo(
                                                         buffaloId: buffalo!.id,
                                                         password:
                                                             passwordController
@@ -501,6 +491,7 @@ void showAddTrackingDialog(
                                                       );
 
                                                       ScaffoldMessenger.of(
+                                                              // ignore: use_build_context_synchronously
                                                               scaffoldContext)
                                                           .showSnackBar(
                                                         const SnackBar(
@@ -509,11 +500,13 @@ void showAddTrackingDialog(
                                                       );
 
                                                       Navigator.of(
+                                                              // ignore: use_build_context_synchronously
                                                               scaffoldContext)
                                                           .pop(); // ปิดฟอร์ม
                                                       onSubmitSuccess();
                                                     } catch (e) {
                                                       ScaffoldMessenger.of(
+                                                              // ignore: use_build_context_synchronously
                                                               scaffoldContext)
                                                           .showSnackBar(
                                                         const SnackBar(
