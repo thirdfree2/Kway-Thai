@@ -106,11 +106,14 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                             } else if (snapshot.hasError) {
                               return Center(
                                   child: Text(
-                                      'เกิดข้อผิดพลาด: ${snapshot.error}'));
+                                      'เกิดข้อผิดพลาด (Error): ${snapshot.error}'));
                             } else if (!snapshot.hasData ||
                                 snapshot.data!.isEmpty) {
                               return const Center(
-                                  child: Text('ไม่พบข้อมูลพัฒนาการของควาย'));
+                                  child: Text(
+                                'ไม่พบข้อมูลพัฒนาการของควาย \n (Not Found Record)',
+                                textAlign: TextAlign.center,
+                              ));
                             } else {
                               final trackingList = snapshot.data!;
                               return SizedBox(
@@ -165,13 +168,13 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                                           ),
                                         ),
                                         title: Text(
-                                            "ช่วงอายุ: ${track.agePeriod}"),
+                                          "ช่วงอายุ (Age Period): ${track.agePeriod}",
+                                          style: const TextStyle(fontSize: 15),
+                                        ),
                                         subtitle: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                                "ช่วงอายุ (Age Period): ${track.agePeriod}"),
                                             Text(
                                                 "ส่วนสูง (Height): ${track.buffaloHeight} ซม."),
                                             Text(
