@@ -31,12 +31,16 @@ def keystorePropertiesFile = rootProject.file('key.properties')
 
 android {
     namespace = "com.example.buffalo_thai"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8" // <<< กำหนดให้ Kotlin compile target เป็น 1.8
     }
 
     defaultConfig {
@@ -63,6 +67,11 @@ android {
            signingConfig signingConfigs.release
        }
    }
+}
+
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 flutter {
