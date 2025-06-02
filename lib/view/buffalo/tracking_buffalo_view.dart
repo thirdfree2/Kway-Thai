@@ -241,6 +241,7 @@ void showAddTrackingDialog(
   VoidCallback onSubmitSuccess,
 ) {
   final formKey = GlobalKey<FormState>();
+  bool isLoading = false;
   final weightController = TextEditingController();
   final heightController = TextEditingController();
   final imagePathController = TextEditingController();
@@ -268,6 +269,7 @@ void showAddTrackingDialog(
     }
   }
 
+  final scaffoldContext = context;
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -396,107 +398,131 @@ void showAddTrackingDialog(
                           child: const Text("ยกเลิก"),
                         ),
                         ElevatedButton(
-                          onPressed: () {
-                            final isFormValid =
-                                formKey.currentState!.validate();
-                            final isImageValid = selectedImage != null;
+                          onPressed: isLoading
+                              ? null
+                              : () async {
+                                  final isFormValid =
+                                      formKey.currentState!.validate();
+                                  final isImageValid = selectedImage != null;
 
-                            if (!isImageValid) {
-                              setState(() {
-                                imageErrorText = 'กรุณาเลือกรูปภาพ';
-                              });
-                            }
+                                  if (!isImageValid) {
+                                    setState(() {
+                                      imageErrorText = 'กรุณาเลือกรูปภาพ';
+                                    });
+                                  }
 
-                            if (isFormValid && isImageValid) {
-                              showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  final passwordController =
-                                      TextEditingController();
-                                  final passwordFormKey =
-                                      GlobalKey<FormState>();
+                                  if (isFormValid && isImageValid) {
+                                    showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        final passwordController =
+                                            TextEditingController();
+                                        final passwordFormKey =
+                                            GlobalKey<FormState>();
 
-                                  return AlertDialog(
-                                    title: const Text("ยืนยันรหัสผ่าน"),
-                                    content: Form(
-                                      key: passwordFormKey,
-                                      child: TextFormField(
-                                        controller: passwordController,
-                                        obscureText: true,
-                                        decoration: const InputDecoration(
-                                          labelText: 'รหัสผ่าน',
-                                          border: OutlineInputBorder(),
-                                        ),
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'กรุณากรอกรหัสผ่าน';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(),
-                                        child: const Text("ยกเลิก"),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          if (passwordFormKey.currentState!
-                                              .validate()) {
-                                            Navigator.of(context)
-                                                .pop(); // ปิด dialog
+                                        return AlertDialog(
+                                          title: const Text("ยืนยันรหัสผ่าน"),
+                                          content: Form(
+                                            key: passwordFormKey,
+                                            child: TextFormField(
+                                              controller: passwordController,
+                                              obscureText: true,
+                                              decoration: const InputDecoration(
+                                                labelText: 'รหัสผ่าน',
+                                                border: OutlineInputBorder(),
+                                              ),
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  return 'กรุณากรอกรหัสผ่าน';
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(),
+                                              child: const Text("ยกเลิก"),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () async {
+                                                if (passwordFormKey
+                                                    .currentState!
+                                                    .validate()) {
+                                                  Navigator.of(context)
+                                                      .pop(); // ปิด dialog
 
-                                            try {
-                                              final message =
-                                                  await createTrackingBuffalo(
-                                                buffaloId:
-                                                    buffalo!.id, // ต้องไม่ null
-                                                password:
-                                                    passwordController.text,
-                                                farmId:
-                                                    buffalo.farmId.toString(),
-                                                imageFile: selectedImage,
-                                                buffaloWeight: int.parse(
-                                                    weightController.text),
-                                                buffaloHeight: int.parse(
-                                                    heightController.text),
-                                                agePeriod: selectAgePeriod!,
-                                              );
+                                                  setState(() {
+                                                    isLoading = true;
+                                                  });
 
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                SnackBar(
-                                                    content: Text(
-                                                        "สำเร็จ: $message")),
-                                              );
+                                                  try {
+                                                    final message =
+                                                        await createTrackingBuffalo(
+                                                      buffaloId: buffalo!.id,
+                                                      password:
+                                                          passwordController
+                                                              .text,
+                                                      farmId: buffalo.farmId
+                                                          .toString(),
+                                                      imageFile: selectedImage,
+                                                      buffaloWeight: int.parse(
+                                                          weightController
+                                                              .text),
+                                                      buffaloHeight: int.parse(
+                                                          heightController
+                                                              .text),
+                                                      agePeriod:
+                                                          selectAgePeriod!,
+                                                    );
 
-                                              Navigator.of(context)
-                                                  .pop(); // ปิดฟอร์ม
+                                                    ScaffoldMessenger.of(
+                                                            scaffoldContext)
+                                                        .showSnackBar(
+                                                      const SnackBar(
+                                                          content: Text(
+                                                              "สำเร็จ: สร้างรายงานพัฒนาการสำเร็จ")),
+                                                    );
 
-                                              onSubmitSuccess();
-                                            } catch (e) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                SnackBar(
-                                                    content: Text(
-                                                        "เกิดข้อผิดพลาด: $e")),
-                                              );
-                                            }
-                                          }
-                                        },
-                                        child: const Text("ยืนยัน"),
-                                      ),
-                                    ],
-                                  );
+                                                    Navigator.of(
+                                                            scaffoldContext)
+                                                        .pop(); // ปิดฟอร์ม
+                                                    onSubmitSuccess();
+                                                  } catch (e) {
+                                                    ScaffoldMessenger.of(
+                                                            scaffoldContext)
+                                                        .showSnackBar(
+                                                      const SnackBar(
+                                                          content: Text(
+                                                              "เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง")),
+                                                    );
+                                                  } finally {
+                                                    setState(() {
+                                                      isLoading = false;
+                                                    });
+                                                  }
+                                                }
+                                              },
+                                              child: const Text("ยืนยัน"),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
                                 },
-                              );
-                            }
-                          },
-                          child: const Text("บันทึก"),
-                        ),
+                          child: isLoading
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 2),
+                                )
+                              : const Text("บันทึก"),
+                        )
                       ],
                     ),
                   ),

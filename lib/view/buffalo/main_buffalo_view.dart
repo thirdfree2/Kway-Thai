@@ -1,3 +1,4 @@
+import 'package:buffalo_thai/view/buffalo/record_buffalo_view.dart';
 import 'package:buffalo_thai/view/buffalo/tracking_buffalo_view.dart';
 import 'package:buffalo_thai/view/buffalo/update_buffalo_view.dart';
 import 'package:flutter/material.dart';
@@ -153,7 +154,7 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const TrackingBuffaloView(),
+                                            const RecordBuffaloView(),
                                       ),
                                     );
                                   },
