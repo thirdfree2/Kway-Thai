@@ -14,6 +14,10 @@ FarmModel _$FarmModelFromJson(Map<String, dynamic> json) => FarmModel(
       lineId: json['lineId'] as String? ?? '',
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
+      associations: (json['associations'] as List<dynamic>?)
+              ?.map((e) => AssociationModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
 
 Map<String, dynamic> _$FarmModelToJson(FarmModel instance) => <String, dynamic>{
@@ -24,4 +28,5 @@ Map<String, dynamic> _$FarmModelToJson(FarmModel instance) => <String, dynamic>{
       'lineId': instance.lineId,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
+      'associations': instance.associations,
     };

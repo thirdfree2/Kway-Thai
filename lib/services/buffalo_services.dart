@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:buffalo_thai/model/buffalo_tracking_model.dart';
+import 'package:buffalo_thai/model/buffalo_vaccine_model.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -66,6 +67,26 @@ Future<List<BuffaloTrackingModel>> fetchTrackingBuffaloes(String id) async {
       List<dynamic> trackList = jsonResponse['data'];
       return trackList
           .map((json) => BuffaloTrackingModel.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to load buffaloes: ${response.statusCode}');
+    }
+  } catch (e) {
+    throw Exception('Failed to load buffaloes: $e');
+  }
+}
+
+Future<List<BuffaloVaccineModel>> fetchVaccineBuffaloes(String id) async {
+  try {
+    final response = await http.get(
+      Uri.parse('${ApiUtils.baseUrl}/api/buffalo/vaccine/$id'),
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      List<dynamic> trackList = jsonResponse['data'];
+      return trackList
+          .map((json) => BuffaloVaccineModel.fromJson(json))
           .toList();
     } else {
       throw Exception('Failed to load buffaloes: ${response.statusCode}');
@@ -428,6 +449,39 @@ Future<String> uploadVideoBuffaloWithLink(
     }
   } catch (e) {
     throw Exception('Failed to upload video: $e');
+  }
+}
+
+Future<String> createVaccine({
+  required String farmId,
+  required String password,
+  required String buffaloId,
+  required List<Map<String, dynamic>> vaccines,
+}) async {
+  final url = Uri.parse('${ApiUtils.baseUrl}/api/buffalo/vaccine');
+
+  final Map<String, dynamic> body = {
+    "farmId": farmId,
+    "password": password,
+    "buffaloId": buffaloId,
+    "vaccines": vaccines,
+  };
+
+  final response = await http.post(
+    url,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(body),
+  );
+
+  if (response.statusCode == 201) {
+    return "success";
+  } else {
+    // คุณสามารถ decode error message ได้ถ้าจำเป็น
+    final error = jsonDecode(response.body);
+    throw Exception(
+        "เกิดข้อผิดพลาด: ${error['message'] ?? response.statusCode}");
   }
 }
 

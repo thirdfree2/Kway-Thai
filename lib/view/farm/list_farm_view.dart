@@ -12,6 +12,8 @@ import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
 import 'package:stroke_text/stroke_text.dart';
 
 class ListFarmView extends StatefulWidget {
+  const ListFarmView({super.key});
+
   @override
   State<ListFarmView> createState() => _ListFarmViewState();
 }
@@ -165,7 +167,11 @@ class _ListFarmViewState extends State<ListFarmView> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 20),
                                           child: Text(
-                                              '00${index + 1} ${filteredFarms[index].farmName}'),
+                                            '00${index + 1} ${filteredFarms[index].farmName} '
+                                            '${filteredFarms[index].associations.map((a) => 'A${a.associationId}').join(' ')}',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -180,7 +186,7 @@ class _ListFarmViewState extends State<ListFarmView> {
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               if (search.isEmpty)
                 Column(
                   children: [
@@ -286,7 +292,7 @@ class CustomButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
 
-  const CustomButton({required this.label, required this.onPressed});
+  const CustomButton({super.key, required this.label, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

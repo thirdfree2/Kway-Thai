@@ -111,7 +111,7 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                                 snapshot.data!.isEmpty) {
                               return const Center(
                                   child: Text(
-                                'ไม่พบข้อมูลพัฒนาการของควาย \n (Not Found Record)',
+                                'ไม่พบข้อมูลการพัฒนาของควาย \n (Not Found Record)',
                                 textAlign: TextAlign.center,
                               ));
                             } else {
@@ -181,7 +181,7 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                                                 "น้ำหนัก (Weight): ${track.buffaloWeight} กก."),
                                             Text(
                                               track.createdAt != null
-                                                  ? "วันที่บันทึก (Save Date): ${DateFormat('dd MMM yyyy', 'th').format(DateTime(track.createdAt!.year + 543, track.createdAt!.month, track.createdAt!.day))}"
+                                                  ? "วันที่ (Date): ${DateFormat('dd MMM yyyy', 'th').format(DateTime(track.createdAt!.year + 543, track.createdAt!.month, track.createdAt!.day))}"
                                                   : "ไม่พบวันที่บันทึก (Not Found Record Date)",
                                             ),
                                           ],

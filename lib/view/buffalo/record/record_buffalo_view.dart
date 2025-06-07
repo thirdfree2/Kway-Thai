@@ -1,5 +1,6 @@
 import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/buffalo/tracking_buffalo_view.dart';
+import 'package:buffalo_thai/view/buffalo/record/develop/tracking_buffalo_view.dart';
+import 'package:buffalo_thai/view/buffalo/record/vaccine/vaccine_buffalo_view.dart';
 import 'package:flutter/material.dart';
 
 class RecordBuffaloView extends StatefulWidget {
@@ -91,10 +92,15 @@ class _RecordBuffaloViewState extends State<RecordBuffaloView> {
                       const SizedBox(height: 10),
 
                       RecordCard(
-                        title: "การฉีดวัคซีน \n (Vaccine))",
+                        title: "การฉีดวัคซีน \n (Vaccine)",
                         height: screenHeight * 0.3,
                         onTap: () {
-                          print("Hello");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const VaccineBuffaloView(),
+                            ),
+                          );
                         },
                       ),
                     ],

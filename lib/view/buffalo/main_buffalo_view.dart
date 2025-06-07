@@ -1,5 +1,5 @@
-import 'package:buffalo_thai/view/buffalo/record_buffalo_view.dart';
-import 'package:buffalo_thai/view/buffalo/tracking_buffalo_view.dart';
+import 'package:buffalo_thai/view/buffalo/record/record_buffalo_view.dart';
+import 'package:buffalo_thai/view/buffalo/record/develop/tracking_buffalo_view.dart';
 import 'package:buffalo_thai/view/buffalo/update_buffalo_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
