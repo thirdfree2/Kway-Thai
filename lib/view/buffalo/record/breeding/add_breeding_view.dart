@@ -1,4 +1,13 @@
+import 'dart:io';
+
+import 'package:buffalo_thai/providers/selected_buffalo.dart';
+import 'package:buffalo_thai/services/buffalo_services.dart';
+import 'package:buffalo_thai/view/farm_owner/register_buffalo.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class AddBreedingView extends StatefulWidget {
   const AddBreedingView({super.key});
@@ -10,6 +19,14 @@ class AddBreedingView extends StatefulWidget {
 class _AddBreedingViewState extends State<AddBreedingView> {
   final formKey = GlobalKey<FormState>();
 
+  final maleNameController = TextEditingController();
+  final breedingCountController = TextEditingController();
+  final recheckDateController = TextEditingController();
+  final expectedBirthDateController = TextEditingController();
+
+  String? breedingMethod;
+  File? image;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,27 +35,272 @@ class _AddBreedingViewState extends State<AddBreedingView> {
         child: SingleChildScrollView(
           child: Form(
             key: formKey,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 20,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                  const Center(
+                    child: Text(
+                      'จดบันทึกการผสมพันธุ์ \n (Add Breeding)',
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    InkWell(
-                      onTap: () => Navigator.pop(context, true),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        size: 30,
+                  ),
+                  const SizedBox(height: 12),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                    elevation: 6,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          _buildTextField(
+                              maleNameController, 'ชื่อพ่อพันธุ์ (Male Breed)'),
+                          _buildDropdownMethod(),
+                          _buildTextField(breedingCountController,
+                              'จำนวนครั้งที่ผสม (Count)',
+                              type: TextInputType.number),
+                          _buildDatePickerField(recheckDateController,
+                              'วันที่ตรวจซ้ำ (Recheck Date)'),
+                          _buildDatePickerField(expectedBirthDateController,
+                              'กำหนดคลอด (Expected Birth Date)'),
+                          _buildImagePicker(),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          ElevatedButton(
+                            onPressed: _save,
+                            child: const Text("บันทึก (Save)"),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label,
+      {TextInputType type = TextInputType.text}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: TextFormField(
+        controller: controller,
+        keyboardType: type,
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),
+        ),
+        validator: _validateRequired,
+      ),
+    );
+  }
+
+  Widget _buildDatePickerField(TextEditingController controller, String label) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: CustomDatePickerTextFormField(
+        controller: controller,
+        labelText: label,
+        validator: _validateRequired,
+      ),
+    );
+  }
+
+  Widget _buildDropdownMethod() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: DropdownButtonFormField<String>(
+        value: breedingMethod,
+        items: const [
+          DropdownMenuItem(
+              value: 'ผสมเทียม', child: Text('ผสมเทียม (Artificial)')),
+          DropdownMenuItem(
+              value: 'ธรรมชาติ', child: Text('ธรรมชาติ (Natural)')),
+        ],
+        onChanged: (value) => setState(() => breedingMethod = value),
+        decoration: const InputDecoration(
+          labelText: 'วิธีผสม (Breeding Method)',
+          border: OutlineInputBorder(),
+        ),
+        validator: (value) => value == null
+            ? 'กรุณาเลือกวิธีผสม \n(Please Select Breeding Method)'
+            : null,
+      ),
+    );
+  }
+
+  Widget _buildImagePicker() {
+    String? imageErrorText;
+
+    Future<void> pickImage() async {
+      final pickedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedImage != null) {
+        setState(() {
+          image = File(pickedImage.path); // ✅ เก็บในตัวแปร image ที่เป็น state
+          imageErrorText = null;
+        });
+      }
+    }
+
+    return ImagePickerWidget(
+      width: 150,
+      height: 150,
+      selectedImage: image,
+      onPickImage: () async {
+        await pickImage();
+        setState(() {
+          imageErrorText = null; // clear error เมื่อเลือกรูป
+        });
+      },
+      labelName: 'เพิ่มรูปภาพ \n (Add Photo)',
+    );
+  }
+
+  void _save() {
+    void showPasswordDialog() {
+      final passwordController = TextEditingController();
+
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("ยืนยันรหัสผ่าน (Password Required)"),
+            content: TextField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: "รหัสผ่าน (Password)",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context), // ยกเลิก
+                child: const Text("ยกเลิก (Cancel)"),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  final password = passwordController.text;
+                  if (password.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("กรุณากรอกรหัสผ่าน")),
+                    );
+                  } else {
+                    try {
+                      String convertThaiDateToIso(String thaiDate) {
+                        try {
+                          // แปลงจาก "06 ก.ค. 2568" → DateTime
+                          // ใช้ฟอร์แมต dd/MM/yyyy กับปี พ.ศ.
+                          final thDate =
+                              DateFormat('dd/MM/yyyy', 'th').parse(thaiDate);
+
+                          // แปลงจาก พ.ศ. เป็น ค.ศ.
+                          final christianDate = DateTime(
+                              thDate.year - 543, thDate.month, thDate.day);
+
+                          return DateFormat('yyyy-MM-dd').format(christianDate);
+                        } catch (_) {
+                          return ""; // หรือ throw Error
+                        }
+                      }
+
+                      final buffalo =
+                          Provider.of<SelectedBuffalo>(context, listen: false)
+                              .buffalo;
+
+                      try {
+                        Response res = await createBreeding(
+                          farmId: buffalo?.farmId.toString() ?? '1',
+                          password: password,
+                          buffaloId: buffalo?.id.toString() ?? '0',
+                          maleName: maleNameController.text,
+                          breedingMethod: breedingMethod!,
+                          breedingCount:
+                              int.parse(breedingCountController.text),
+                          recheckDate:
+                              convertThaiDateToIso(recheckDateController.text),
+                          expectedBirthDate: convertThaiDateToIso(
+                              expectedBirthDateController.text),
+                          isNatural: breedingMethod == 'ธรรมชาติ' ? '1' : '0',
+                          imageFile: image!,
+                        );
+
+                        if (res.statusCode == 201) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text("บันทึกสำเร็จ (Save Success)")),
+                          );
+                          Navigator.pop(context);
+                          Navigator.pop(context, true);
+                        }
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content:
+                                  Text("รหัสผ่านไม่ถูกต้อง (Wrong Password)")),
+                        );
+                      }
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text(
+                                "บันทึกข้อมูลวัคซีนเรียบร้อย Record Success")),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(e.toString())),
+                      );
+                    }
+                  }
+                },
+                child: const Text(
+                  "ยืนยัน \n (Confirm)",
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    if (formKey.currentState?.validate() ?? false) {
+      // TODO: Save logic here
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text("บันทึกสำเร็จ")),
+      // );
+      showPasswordDialog();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("กรุณากรอกข้อมูลให้ครบทุกช่อง")),
+      );
+    }
+  }
+
+  String? _validateRequired(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'กรุณากรอกข้อมูล (Please Enter)';
+    }
+    return null;
   }
 }

@@ -506,6 +506,42 @@ Future<String> createVaccine({
   }
 }
 
+Future<http.Response> createBreeding({
+  required String farmId,
+  required String password,
+  required String buffaloId,
+  required String maleName,
+  required String breedingMethod,
+  required int breedingCount,
+  required String recheckDate,
+  required String expectedBirthDate,
+  required String isNatural,
+  required File imageFile,
+}) async {
+  final url = Uri.parse('${ApiUtils.baseUrl}/api/buffalo/breeding');
+
+  final request = http.MultipartRequest('POST', url)
+    ..fields['farmId'] = farmId
+    ..fields['password'] = password
+    ..fields['buffaloId'] = buffaloId
+    ..fields['maleName'] = maleName
+    ..fields['breedingMethod'] = breedingMethod
+    ..fields['breedingCount'] = breedingCount.toString()
+    ..fields['recheckDate'] = recheckDate
+    ..fields['expectedBirthDate'] = expectedBirthDate
+    ..fields['isNatural'] = isNatural
+    ..files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+
+  final streamedResponse = await request.send();
+  final response = await http.Response.fromStream(streamedResponse);
+
+  if (response.statusCode == 201) {
+    return response;
+  } else {
+    throw Exception('ส่งข้อมูลไม่สำเร็จ: ${response.body}');
+  }
+}
+
 Future<String> updateBuffalo(
     {required String name,
     required String buffaloId,

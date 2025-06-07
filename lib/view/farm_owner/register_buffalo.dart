@@ -718,7 +718,15 @@ class ImagePickerWidget extends StatelessWidget {
                   )
                 ],
               )
-            : Image.file(selectedImage!, fit: BoxFit.cover),
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.file(
+                  selectedImage!,
+                  fit: BoxFit.cover,
+                  width: width,
+                  height: height,
+                ),
+              ),
       ),
     );
   }
