@@ -94,7 +94,7 @@ class _HomeViewState extends State<HomeView> {
               fit: BoxFit.cover),
         ),
         child: SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             height: screenHeight,
             child: SingleChildScrollView(
               child: Column(
@@ -237,7 +237,7 @@ class _HomeViewState extends State<HomeView> {
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 10,
                                               )
 
@@ -310,6 +310,16 @@ class _HomeViewState extends State<HomeView> {
                                                 'https://lin.ee/Uu7X7Vsa', // Replace with your Line ID URL
                                             version: QrVersions.auto,
                                             size: screenWidth * 0.2,
+                                          ),
+                                          const SizedBox(height: 2.0),
+                                          //line ID : @kwaythai
+                                          Text(
+                                            'line ID',
+                                            style: TextStyle(
+                                              fontSize:
+                                                  ScreenUtils.calculateFontSize(
+                                                      context, 10),
+                                            ),
                                           ),
                                           const SizedBox(height: 2.0),
                                           Text(
@@ -746,7 +756,7 @@ class _HomeViewState extends State<HomeView> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  MainFarmRegister())),
+                                                  const MainFarmRegister())),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           gradient: const LinearGradient(

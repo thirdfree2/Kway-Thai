@@ -77,42 +77,49 @@ class _BreedingBuffaloViewState extends State<BreedingBuffaloView> {
           ],
         ),
         Center(
-          child: Text(
-            "การผสมพันธุ์ \n (Breeding)",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: ScreenUtils.calculateFontSize(context, 24),
-              color: Colors.white,
-            ),
+          child: Column(
+            children: [
+              Text(
+                "การผสมพันธุ์ \n (Breeding)",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: ScreenUtils.calculateFontSize(context, 24),
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 20),
-        FutureBuilder<List<BuffaloBreedingModel>>(
-          future: futureBreeding,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(
-                  child: Text('เกิดข้อผิดพลาด (Error): ${snapshot.error}'));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(
+        Card(
+          color: Colors.white.withOpacity(0.8),
+          child: FutureBuilder<List<BuffaloBreedingModel>>(
+            future: futureBreeding,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(
+                    child: Text('เกิดข้อผิดพลาด (Error): ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(
+                    child: Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Text(
-                'ไม่พบข้อมูลการฉีดวัคซีนของควาย \n (Not Found Record)',
-                textAlign: TextAlign.center,
-              ));
-            } else {
-              // final vaccineList = snapshot.data!;
-              final breedingList = snapshot.data!
-                ..sort((a, b) {
-                  return b.createdAt.compareTo(a.createdAt);
-                });
-              return SizedBox(
-                height: screenHeight / 1.70,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    color: Colors.white.withOpacity(0.8),
+                    'ไม่พบข้อมูลการผสมพันธุ์ของควาย \n (Not Found Record)',
+                    textAlign: TextAlign.center,
+                  ),
+                ));
+              } else {
+                // final vaccineList = snapshot.data!;
+                final breedingList = snapshot.data!
+                  ..sort((a, b) {
+                    return b.createdAt.compareTo(a.createdAt);
+                  });
+                return SizedBox(
+                  height: screenHeight / 1.70,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: ListView.builder(
                       shrinkWrap:
                           true, // สำคัญ: ให้แสดงใน SingleChildScrollView ได้
@@ -123,10 +130,10 @@ class _BreedingBuffaloViewState extends State<BreedingBuffaloView> {
                       },
                     ),
                   ),
-                ),
-              );
-            }
-          },
+                );
+              }
+            },
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
