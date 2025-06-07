@@ -1,4 +1,5 @@
 import 'package:buffalo_thai/utils/screen_utils.dart';
+import 'package:buffalo_thai/view/buffalo/record/breeding/breeding_buffalo_view.dart';
 import 'package:buffalo_thai/view/buffalo/record/develop/tracking_buffalo_view.dart';
 import 'package:buffalo_thai/view/buffalo/record/vaccine/vaccine_buffalo_view.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +83,13 @@ class _RecordBuffaloViewState extends State<RecordBuffaloView> {
                               title: "การผสมพันธุ์ \n (Breeding)",
                               height: screenHeight * 0.3,
                               onTap: () {
-                                print("Hello");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BreedingBuffaloView(),
+                                  ),
+                                );
                               },
                             ),
                           ),

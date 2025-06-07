@@ -1,9 +1,11 @@
 import 'package:buffalo_thai/components/kwai_thai_bg.dart';
+import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/services/buffalo_services.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/farm_owner/register_buffalo.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class AddVaccineView extends StatefulWidget {
   const AddVaccineView({super.key});
@@ -76,8 +78,6 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                     );
                   } else {
                     try {
-                      Navigator.pop(context);
-
                       String convertThaiDateToIso(String thaiDate) {
                         try {
                           // แปลงจาก "06 ก.ค. 2568" → DateTime
@@ -95,10 +95,14 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                         }
                       }
 
+                      final buffalo =
+                          Provider.of<SelectedBuffalo>(context, listen: false)
+                              .buffalo;
+
                       final result = await createVaccine(
-                        farmId: '1',
+                        farmId: buffalo?.farmId.toString() ?? '1',
                         password: password,
-                        buffaloId: '514',
+                        buffaloId: buffalo?.id.toString() ?? '0',
                         vaccines: vaccines
                             .map((item) => {
                                   "vaccineName": item["vaccineName"].text,
@@ -113,26 +117,12 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                             .toList(),
                       );
 
-                      print(vaccines
-                          .map((item) => {
-                                "vaccineName": item["vaccineName"].text,
-                                "doseNumber":
-                                    int.parse(item["doseNumber"].text),
-                                "volume": double.parse(item["volume"].text),
-                                "injectionDate": convertThaiDateToIso(
-                                    item["injectionDate"].text),
-                                "nextInjectionDate": convertThaiDateToIso(
-                                    item["nextInjectionDate"].text),
-                              })
-                          .toList());
-                      print(result);
-
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                             content: Text(
                                 "บันทึกข้อมูลวัคซีนเรียบร้อย Record Success")),
                       );
-
+                      Navigator.pop(context);
                       Navigator.pop(context, true);
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(

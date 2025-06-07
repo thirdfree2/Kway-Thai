@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:buffalo_thai/model/buffalo_breeding_model.dart';
 import 'package:buffalo_thai/model/buffalo_tracking_model.dart';
 import 'package:buffalo_thai/model/buffalo_vaccine_model.dart';
 import 'package:http_parser/http_parser.dart';
@@ -28,6 +29,26 @@ Future<List<BuffaloModel>> fetchBuffaloes() async {
     }
   } catch (e) {
     // ใช้ catch เพื่อจัดการข้อผิดพลาดและแสดงข้อความข้อผิดพลาด
+    throw Exception('Failed to load buffaloes: $e');
+  }
+}
+
+Future<List<BuffaloBreedingModel>> fetchBuffaloeBreeding(String id) async {
+  try {
+    final response = await http.get(
+      Uri.parse('${ApiUtils.baseUrl}/api/buffalo/breeding/$id'),
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      List<dynamic> breedingList = jsonResponse['data'];
+      return breedingList
+          .map((json) => BuffaloBreedingModel.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to load buffaloes: ${response.statusCode}');
+    }
+  } catch (e) {
     throw Exception('Failed to load buffaloes: $e');
   }
 }

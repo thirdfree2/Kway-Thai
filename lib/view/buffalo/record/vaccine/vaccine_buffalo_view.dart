@@ -128,10 +128,11 @@ class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
                               ));
                             } else {
                               // final vaccineList = snapshot.data!;
-                              final vaccineList = snapshot.data!
-                                ..sort((a, b) {
-                                  return b.createdAt.compareTo(a.createdAt);
-                                });
+                              final vaccineList =
+                                  snapshot.data!.reversed.toList();
+                              // ..sort((a, b) {
+                              //   return b.createdAt.compareTo(a.createdAt);
+                              // });
                               return SizedBox(
                                 height: screenHeight / 1.70,
                                 child: ListView.builder(
@@ -140,7 +141,9 @@ class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
                                   itemCount: vaccineList.length,
                                   itemBuilder: (context, index) {
                                     return ExpandableVaccineCard(
-                                        vaccine: vaccineList[index]);
+                                      vaccine: vaccineList[index],
+                                      index: vaccineList.length - index,
+                                    );
                                   },
                                 ),
                               );
@@ -193,8 +196,10 @@ class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
 
 class ExpandableVaccineCard extends StatefulWidget {
   final BuffaloVaccineModel vaccine;
+  final int index;
 
-  const ExpandableVaccineCard({super.key, required this.vaccine});
+  const ExpandableVaccineCard(
+      {super.key, required this.vaccine, required this.index});
 
   @override
   State<ExpandableVaccineCard> createState() => _ExpandableVaccineCardState();
@@ -222,7 +227,7 @@ class _ExpandableVaccineCardState extends State<ExpandableVaccineCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "ครั้งที่ (Vaccination Round): ${widget.vaccine.buffaloVaccineId}",
+                    "ครั้งที่ (Vaccination Round): ${widget.index + 1}",
                     style: const TextStyle(
                         fontSize: 15, fontWeight: FontWeight.bold),
                   ),
