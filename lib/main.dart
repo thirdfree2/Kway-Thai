@@ -1,3 +1,4 @@
+import 'package:buffalo_thai/providers/selected_association.dart';
 import 'package:buffalo_thai/view/splash/main_splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +22,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => SelectedBuffalo()),
         ChangeNotifierProvider(create: (_) => SelectedFarmOwner()),
         ChangeNotifierProvider(create: (_) => FarmDataProvider()),
+        ChangeNotifierProvider(create: (_) => SelectedAssociation()),
       ],
       child: const MyApp(),
     ),

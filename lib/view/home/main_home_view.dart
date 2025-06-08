@@ -4,6 +4,7 @@ import 'package:buffalo_thai/model/buffalo_model.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/services/anounce_services.dart';
 import 'package:buffalo_thai/services/buffalo_services.dart';
+import 'package:buffalo_thai/view/association/association_list_view.dart';
 import 'package:buffalo_thai/view/promote_buffalo/main_promote_buffalo_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -337,6 +338,33 @@ class _HomeViewState extends State<HomeView> {
                                 ),
                               ],
                             ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AssociationListView(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(8)),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Center(
+                                    child: Text(
+                                      'สมาคม \n(Association)',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ],
