@@ -1,4 +1,6 @@
+import 'package:buffalo_thai/components/detail_section.dart';
 import 'package:buffalo_thai/components/kwai_thai_bg.dart';
+import 'package:buffalo_thai/components/label_value_text.dart';
 import 'package:buffalo_thai/model/buffalo_breeding_model.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/services/buffalo_services.dart';
@@ -206,50 +208,40 @@ class _BreedingBuffaloViewState extends State<BreedingBuffaloView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "ชื่อพ่อพันธุ์ (Male): ${breeding.maleName}",
+                  "ชื่อพ่อพันธุ์ (Stud): ${breeding.maleName}",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
                 const SizedBox(height: 6),
-                _infoText("วิธีผสม (Method)", breeding.breedingMethod),
-                _infoText(
-                    "จำนวนครั้งที่ผสม (Count)", "${breeding.breedingCount}"),
-                _infoText("วันที่ตรวจซ้ำ (Recheck Date)",
-                    _formatThaiDate(breeding.recheckDate)),
-                _infoText("กำหนดคลอด (Expected Birth)",
-                    _formatThaiDate(breeding.expectedBirthDate)),
-                _infoText("วันที่บันทึก (Created At)",
-                    _formatThaiDate(breeding.createdAt)),
+                LabelValueText(
+                  label: "วิธีผสม (Method)",
+                  value: breeding.breedingMethod,
+                ),
+                LabelValueText(
+                  label: "จำนวนครั้งที่ผสม (Count)",
+                  value: breeding.breedingCount.toString(),
+                ),
+                LabelValueText(
+                  label: "วันที่ผสม (Breeding date)",
+                  value: breeding.breedingDate,
+                  type: LabelValueType.date,
+                ),
+                LabelValueText(
+                  label: "กำหนดคลอด (Expected Birth)",
+                  value: breeding.breedingDate,
+                  type: LabelValueType.date,
+                ),
+                LabelValueText(
+                  label: "วันที่บันทึก (Created At)",
+                  value: breeding.breedingDate,
+                  type: LabelValueType.date,
+                ),
               ],
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _infoText(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: RichText(
-        text: TextSpan(
-          text: "$label: ",
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            fontSize: 14,
-          ),
-          children: [
-            TextSpan(
-              text: value,
-              style: const TextStyle(
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

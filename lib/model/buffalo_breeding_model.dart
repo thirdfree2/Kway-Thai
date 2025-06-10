@@ -23,6 +23,9 @@ class BuffaloBreedingModel {
   @JsonKey(name: 'expectedBirthDate')
   final DateTime expectedBirthDate;
 
+  @JsonKey(name: 'breedingDate')
+  final DateTime breedingDate;
+
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;
 
@@ -46,6 +49,7 @@ class BuffaloBreedingModel {
     required this.updatedAt,
     required this.buffaloId,
     required this.buffaloBreedingImages,
+    required this.breedingDate,
   });
 
   factory BuffaloBreedingModel.fromJson(Map<String, dynamic> json) =>

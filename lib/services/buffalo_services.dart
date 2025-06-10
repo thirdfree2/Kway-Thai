@@ -511,6 +511,7 @@ Future<http.Response> createBreeding({
   required String password,
   required String buffaloId,
   required String maleName,
+  required String breedingDate,
   required String breedingMethod,
   required int breedingCount,
   required String recheckDate,
@@ -526,6 +527,7 @@ Future<http.Response> createBreeding({
     ..fields['buffaloId'] = buffaloId
     ..fields['maleName'] = maleName
     ..fields['breedingMethod'] = breedingMethod
+    ..fields['breedingDate'] = breedingDate
     ..fields['breedingCount'] = breedingCount.toString()
     ..fields['recheckDate'] = recheckDate
     ..fields['expectedBirthDate'] = expectedBirthDate

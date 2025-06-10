@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:buffalo_thai/components/label_value_text.dart';
 import 'package:buffalo_thai/model/buffalo_tracking_model.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/services/buffalo_services.dart';
@@ -85,16 +86,20 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                           height: 20,
                         ),
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "การพัฒนาการ (Development)",
-                                style: TextStyle(
-                                    fontSize: ScreenUtils.calculateFontSize(
-                                        context, 19),
-                                    color: Colors.black),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "การพัฒนาการ (Development)",
+                              style: TextStyle(
+                                fontSize: ScreenUtils.calculateFontSize(
+                                  context,
+                                  19,
+                                ),
+                                color: Colors.black,
                               ),
-                            ]),
+                            ),
+                          ],
+                        ),
                         const SizedBox(height: 20),
                         FutureBuilder<List<BuffaloTrackingModel>>(
                           future: futureTracking,
@@ -102,18 +107,22 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return const Center(
-                                  child: CircularProgressIndicator());
+                                child: CircularProgressIndicator(),
+                              );
                             } else if (snapshot.hasError) {
                               return Center(
-                                  child: Text(
-                                      'เกิดข้อผิดพลาด (Error): ${snapshot.error}'));
+                                child: Text(
+                                  'เกิดข้อผิดพลาด (Error): ${snapshot.error}',
+                                ),
+                              );
                             } else if (!snapshot.hasData ||
                                 snapshot.data!.isEmpty) {
                               return const Center(
-                                  child: Text(
-                                'ไม่พบข้อมูลการพัฒนาของควาย \n (Not Found Record)',
-                                textAlign: TextAlign.center,
-                              ));
+                                child: Text(
+                                  'ไม่พบข้อมูลการพัฒนาของควาย \n (Not Found Record)',
+                                  textAlign: TextAlign.center,
+                                ),
+                              );
                             } else {
                               final trackingList = snapshot.data!;
                               return SizedBox(
@@ -126,7 +135,9 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                                     final track = trackingList[index];
                                     return Card(
                                       margin: const EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 16),
+                                        vertical: 8,
+                                        horizontal: 16,
+                                      ),
                                       child: ListTile(
                                         leading: GestureDetector(
                                           onTap: () {
@@ -138,10 +149,14 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                                                     track
                                                         .imagePath, // ใช้ URL ของรูปภาพจาก AnnouceModel
                                                     fit: BoxFit.cover,
-                                                    errorBuilder: (context,
-                                                        error, stackTrace) {
+                                                    errorBuilder: (
+                                                      context,
+                                                      error,
+                                                      stackTrace,
+                                                    ) {
                                                       return const Text(
-                                                          'ไม่สามารถโหลดรูปภาพได้');
+                                                        'ไม่สามารถโหลดรูปภาพได้',
+                                                      );
                                                     },
                                                   ),
                                                   actions: [
@@ -164,26 +179,47 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                                             fit: BoxFit.cover,
                                             errorBuilder: (_, __, ___) =>
                                                 const Icon(
-                                                    Icons.image_not_supported),
+                                              Icons.image_not_supported,
+                                            ),
                                           ),
                                         ),
                                         title: Text(
                                           "ช่วงอายุ (Age Period): ${track.agePeriod}",
-                                          style: const TextStyle(fontSize: 15),
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                          ),
                                         ),
+                                        // title: Text(
+                                        //   "ช่วงอายุ (Age Period): ${track.agePeriod}",
+                                        //   style: const TextStyle(fontSize: 15),
+                                        // ),
                                         subtitle: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                                "ส่วนสูง (Height): ${track.buffaloHeight} ซม."),
-                                            Text(
-                                                "น้ำหนัก (Weight): ${track.buffaloWeight} กก."),
-                                            Text(
-                                              track.createdAt != null
-                                                  ? "วันที่ (Date): ${DateFormat('dd MMM yyyy', 'th').format(DateTime(track.createdAt!.year + 543, track.createdAt!.month, track.createdAt!.day))}"
-                                                  : "ไม่พบวันที่บันทึก (Not Found Record Date)",
+                                            LabelValueText(
+                                              label: "ส่วนสูง (Height)",
+                                              value:
+                                                  "${track.buffaloHeight} ซม.",
                                             ),
+                                            LabelValueText(
+                                              label: "น้ำหนัก (Weight)",
+                                              value:
+                                                  "${track.buffaloWeight} ซม.",
+                                            ),
+                                            if (track.createdAt != null)
+                                              LabelValueText(
+                                                label: "วันที่บันทึก (Date)",
+                                                value: track.createdAt ?? "",
+                                                type: LabelValueType.date,
+                                              )
+                                            else
+                                              const LabelValueText(
+                                                label: "วันที่บันทึก (Date)",
+                                                value:
+                                                    "ไม่พบวันที่บันทึก (Not Found)",
+                                              ),
                                           ],
                                         ),
                                       ),
@@ -229,7 +265,7 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -331,10 +367,14 @@ void showAddTrackingDialog(
                               labelText: 'น้ำหนัก กก. (Weight kg.)',
                               keyboardType:
                                   const TextInputType.numberWithOptions(
-                                      decimal: true),
+                                decimal: true,
+                              ),
                               inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp(
-                                    r'^\d*\.?\d{0,2}')), // รองรับทศนิยม 2 ตำแหน่ง
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(
+                                    r'^\d*\.?\d{0,2}',
+                                  ),
+                                ), // รองรับทศนิยม 2 ตำแหน่ง
                               ],
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
@@ -348,12 +388,16 @@ void showAddTrackingDialog(
                               controller: heightController,
                               labelText: 'ส่วนสูง ม. (Height m.)',
                               inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp(
-                                    r'^\d*\.?\d{0,2}')), // รองรับทศนิยม 2 ตำแหน่ง
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(
+                                    r'^\d*\.?\d{0,2}',
+                                  ),
+                                ), // รองรับทศนิยม 2 ตำแหน่ง
                               ],
                               keyboardType:
                                   const TextInputType.numberWithOptions(
-                                      decimal: true),
+                                decimal: true,
+                              ),
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
                                   return 'กรุณาระบุส่วนสูง (Please enter height)';
@@ -426,7 +470,8 @@ void showAddTrackingDialog(
 
                                           return AlertDialog(
                                             title: const Text(
-                                                "ยืนยันรหัสผ่าน (Confirm Password)"),
+                                              "ยืนยันรหัสผ่าน (Confirm Password)",
+                                            ),
                                             content: Form(
                                               key: passwordFormKey,
                                               child: TextFormField(
@@ -480,38 +525,42 @@ void showAddTrackingDialog(
                                                             selectedImage,
                                                         buffaloWeight:
                                                             int.parse(
-                                                                weightController
-                                                                    .text),
+                                                          weightController.text,
+                                                        ),
                                                         buffaloHeight:
                                                             int.parse(
-                                                                heightController
-                                                                    .text),
+                                                          heightController.text,
+                                                        ),
                                                         agePeriod:
                                                             selectAgePeriod!,
                                                       );
 
                                                       ScaffoldMessenger.of(
-                                                              // ignore: use_build_context_synchronously
-                                                              scaffoldContext)
-                                                          .showSnackBar(
+                                                        // ignore: use_build_context_synchronously
+                                                        scaffoldContext,
+                                                      ).showSnackBar(
                                                         const SnackBar(
-                                                            content: Text(
-                                                                "สำเร็จ: สร้างรายงานพัฒนาการสำเร็จ (Create Record success)")),
+                                                          content: Text(
+                                                            "สำเร็จ: สร้างรายงานพัฒนาการสำเร็จ (Create Record success)",
+                                                          ),
+                                                        ),
                                                       );
 
                                                       Navigator.of(
-                                                              // ignore: use_build_context_synchronously
-                                                              scaffoldContext)
-                                                          .pop(); // ปิดฟอร์ม
+                                                        // ignore: use_build_context_synchronously
+                                                        scaffoldContext,
+                                                      ).pop(); // ปิดฟอร์ม
                                                       onSubmitSuccess();
                                                     } catch (e) {
                                                       ScaffoldMessenger.of(
-                                                              // ignore: use_build_context_synchronously
-                                                              scaffoldContext)
-                                                          .showSnackBar(
+                                                        // ignore: use_build_context_synchronously
+                                                        scaffoldContext,
+                                                      ).showSnackBar(
                                                         const SnackBar(
-                                                            content: Text(
-                                                                "เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง (Wrong password)")),
+                                                          content: Text(
+                                                            "เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง (Wrong password)",
+                                                          ),
+                                                        ),
                                                       );
                                                     } finally {
                                                       setState(() {
@@ -536,13 +585,14 @@ void showAddTrackingDialog(
                                     width: 20,
                                     height: 20,
                                     child: CircularProgressIndicator(
-                                        strokeWidth: 2),
+                                      strokeWidth: 2,
+                                    ),
                                   )
                                 : const Text(
                                     "บันทึก \n (Save)",
                                     textAlign: TextAlign.center,
                                   ),
-                          )
+                          ),
                         ],
                       ),
                     ),

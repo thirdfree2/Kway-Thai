@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": true,
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  },
+  "dart.lineLength": 100,
+  "dart.formatOnSave": true,
+  "dart.sortMembers": true
+}

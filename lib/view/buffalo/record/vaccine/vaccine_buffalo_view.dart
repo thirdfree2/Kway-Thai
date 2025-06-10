@@ -1,3 +1,4 @@
+import 'package:buffalo_thai/components/label_value_text.dart';
 import 'package:buffalo_thai/model/buffalo_vaccine_model.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/services/buffalo_services.dart';
@@ -25,7 +26,8 @@ class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
     final buffalo =
         Provider.of<SelectedBuffalo>(context, listen: false).buffalo;
     futureVaccine = fetchVaccineBuffaloes(
-        buffalo?.id.toString() ?? ''); // กำหนดค่าให้เรียบร้อย
+      buffalo?.id.toString() ?? '',
+    ); // กำหนดค่าให้เรียบร้อย
   }
 
   @override
@@ -97,16 +99,20 @@ class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
                           height: 20,
                         ),
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "การฉีดวัคซีน (Vaccine)",
-                                style: TextStyle(
-                                    fontSize: ScreenUtils.calculateFontSize(
-                                        context, 19),
-                                    color: Colors.black),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "การฉีดวัคซีน (Vaccine)",
+                              style: TextStyle(
+                                fontSize: ScreenUtils.calculateFontSize(
+                                  context,
+                                  19,
+                                ),
+                                color: Colors.black,
                               ),
-                            ]),
+                            ),
+                          ],
+                        ),
                         const SizedBox(height: 20),
                         FutureBuilder<List<BuffaloVaccineModel>>(
                           future: futureVaccine,
@@ -114,18 +120,22 @@ class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return const Center(
-                                  child: CircularProgressIndicator());
+                                child: CircularProgressIndicator(),
+                              );
                             } else if (snapshot.hasError) {
                               return Center(
-                                  child: Text(
-                                      'เกิดข้อผิดพลาด (Error): ${snapshot.error}'));
+                                child: Text(
+                                  'เกิดข้อผิดพลาด (Error): ${snapshot.error}',
+                                ),
+                              );
                             } else if (!snapshot.hasData ||
                                 snapshot.data!.isEmpty) {
                               return const Center(
-                                  child: Text(
-                                'ไม่พบข้อมูลการฉีดวัคซีนของควาย \n (Not Found Record)',
-                                textAlign: TextAlign.center,
-                              ));
+                                child: Text(
+                                  'ไม่พบข้อมูลการฉีดวัคซีนของควาย \n (Not Found Record)',
+                                  textAlign: TextAlign.center,
+                                ),
+                              );
                             } else {
                               // final vaccineList = snapshot.data!;
                               final vaccineList =
@@ -184,7 +194,7 @@ class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -195,11 +205,13 @@ class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
 }
 
 class ExpandableVaccineCard extends StatefulWidget {
+  const ExpandableVaccineCard({
+    super.key,
+    required this.vaccine,
+    required this.index,
+  });
   final BuffaloVaccineModel vaccine;
   final int index;
-
-  const ExpandableVaccineCard(
-      {super.key, required this.vaccine, required this.index});
 
   @override
   State<ExpandableVaccineCard> createState() => _ExpandableVaccineCardState();
@@ -229,7 +241,9 @@ class _ExpandableVaccineCardState extends State<ExpandableVaccineCard> {
                   Text(
                     "ครั้งที่ (Vaccination Round): ${widget.index + 1}",
                     style: const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.bold),
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(width: 10),
                   Icon(
@@ -240,6 +254,9 @@ class _ExpandableVaccineCardState extends State<ExpandableVaccineCard> {
                 ],
               ),
               if (isExpanded) ...[
+                const SizedBox(
+                  height: 10,
+                ),
                 if (widget.vaccine.buffaloVaccineRecords.isEmpty)
                   const Padding(
                     padding: EdgeInsets.all(8.0),
@@ -251,36 +268,39 @@ class _ExpandableVaccineCardState extends State<ExpandableVaccineCard> {
                   ...widget.vaccine.buffaloVaccineRecords.map((record) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 10),
+                        horizontal: 8,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("วัคซีน (Vaccine): ${record.vaccineName}"),
-                          const SizedBox(height: 4),
-                          Text("เข็มที่ (Dose Number): ${record.doseNumber}"),
-                          const SizedBox(height: 4),
-                          Text(
-                              "ปริมาณ (Volume): ${record.volume} มิลลิลิตร (ml)"),
-                          const SizedBox(height: 4),
-                          Text(
-                            // ignore: unnecessary_null_comparison
-                            record.injectionDate != null
-                                ? "วันที่ฉีด (Injection Date): ${DateFormat('dd MMM yyyy', 'th').format(DateTime(record.injectionDate.year + 543, record.injectionDate.month, record.injectionDate.day))}"
-                                : "ไม่พบวันที่บันทึก (Not Found Record Date)",
+                          LabelValueText(
+                            label: "วัคซีน (Vaccine)",
+                            value: record.vaccineName ?? "",
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            // ignore: unnecessary_null_comparison
-                            record.nextInjectionDate != null
-                                ? "วันที่เข็มถัดไป(Next Injection): ${DateFormat('dd MMM yyyy', 'th').format(DateTime(record.nextInjectionDate.year + 543, record.nextInjectionDate.month, record.nextInjectionDate.day))}"
-                                : "ไม่พบวันที่บันทึก (Not Found Record Date)",
+                          LabelValueText(
+                            label: "เข็มที่ (Dose Number)",
+                            value: record.doseNumber ?? "",
+                          ),
+                          LabelValueText(
+                            label: "ปริมาณ (Volume)",
+                            value: "${record.volume} มิลลิลิตร (ml)",
+                          ),
+                          LabelValueText(
+                            label: "วันที่ฉีด (Injection Date)",
+                            value: record.injectionDate,
+                            type: LabelValueType.date,
+                          ),
+                          LabelValueText(
+                            label: "วันที่เข็มถัดไป (Next Injection)",
+                            value: record.nextInjectionDate,
+                            type: LabelValueType.date,
                           ),
                           const Divider(),
                         ],
                       ),
                     );
-                  })
-              ]
+                  }),
+              ],
             ],
           ),
         ),

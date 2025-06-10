@@ -23,6 +23,7 @@ BuffaloBreedingModel _$BuffaloBreedingModelFromJson(
                   BuffaloBreedingImageModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
+      breedingDate: DateTime.parse(json['breedingDate'] as String),
     );
 
 Map<String, dynamic> _$BuffaloBreedingModelToJson(
@@ -34,6 +35,7 @@ Map<String, dynamic> _$BuffaloBreedingModelToJson(
       'breedingCount': instance.breedingCount,
       'recheckDate': instance.recheckDate.toIso8601String(),
       'expectedBirthDate': instance.expectedBirthDate.toIso8601String(),
+      'breedingDate': instance.breedingDate.toIso8601String(),
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
       'buffaloId': instance.buffaloId,

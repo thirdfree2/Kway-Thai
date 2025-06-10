@@ -21,6 +21,7 @@ class _AddBreedingViewState extends State<AddBreedingView> {
 
   final maleNameController = TextEditingController();
   final breedingCountController = TextEditingController();
+  final breedingDateController = TextEditingController();
   final recheckDateController = TextEditingController();
   final expectedBirthDateController = TextEditingController();
 
@@ -65,13 +66,15 @@ class _AddBreedingViewState extends State<AddBreedingView> {
                       child: Column(
                         children: [
                           _buildTextField(
-                              maleNameController, 'ชื่อพ่อพันธุ์ (Male Breed)'),
+                              maleNameController, 'ชื่อพ่อพันธุ์ (Stud)'),
                           _buildDropdownMethod(),
                           _buildTextField(breedingCountController,
                               'จำนวนครั้งที่ผสม (Count)',
                               type: TextInputType.number),
+                          _buildDatePickerField(breedingDateController,
+                              'วันที่ผสม (Breeding date)'),
                           _buildDatePickerField(recheckDateController,
-                              'วันที่ตรวจซ้ำ (Recheck Date)'),
+                              'วันที่เช็คกลับสัด (Recheck Date)'),
                           _buildDatePickerField(expectedBirthDateController,
                               'กำหนดคลอด (Expected Birth Date)'),
                           _buildImagePicker(),
@@ -234,6 +237,8 @@ class _AddBreedingViewState extends State<AddBreedingView> {
                           password: password,
                           buffaloId: buffalo?.id.toString() ?? '0',
                           maleName: maleNameController.text,
+                          breedingDate:
+                              convertThaiDateToIso(breedingDateController.text),
                           breedingMethod: breedingMethod!,
                           breedingCount:
                               int.parse(breedingCountController.text),
