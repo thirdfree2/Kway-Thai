@@ -71,8 +71,9 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
               child: const Text('ยืนยัน'),
               onPressed: () {
                 if (_passwordController.text.length == 6) {
-                  Navigator.of(context).pop(_passwordController
-                      .text); // ส่งรหัส 6 หลักกลับเป็น string
+                  Navigator.of(context).pop(
+                    _passwordController.text,
+                  ); // ส่งรหัส 6 หลักกลับเป็น string
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('กรุณากรอกรหัสให้ครบ 6 หลัก')),
@@ -96,9 +97,12 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
             children: [
               const CircularProgressIndicator(),
               const SizedBox(width: 20),
-              Text('กำลังโหลด...',
-                  style: TextStyle(
-                      fontSize: ScreenUtils.calculateFontSize(context, 16))),
+              Text(
+                'กำลังโหลด...',
+                style: TextStyle(
+                  fontSize: ScreenUtils.calculateFontSize(context, 16),
+                ),
+              ),
             ],
           ),
         );
@@ -130,9 +134,11 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Card(
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withAlpha((0.6 * 255).round()),
                       margin: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 20),
+                        horizontal: 16,
+                        vertical: 20,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
@@ -150,7 +156,8 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
+                                      horizontal: 10,
+                                    ),
                                     child: InkWell(
                                       onTap: () {
                                         Navigator.pop(context);
@@ -163,11 +170,13 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                       'ลงทะเบียนสมาชิก',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          fontSize:
-                                              ScreenUtils.calculateFontSize(
-                                                  context, 24),
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.red),
+                                        fontSize: ScreenUtils.calculateFontSize(
+                                          context,
+                                          24,
+                                        ),
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 10),
@@ -177,27 +186,34 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                               Row(
                                 children: [
                                   Expanded(
-                                      flex: 1,
-                                      child: Column(
-                                        children: [
-                                          AutoSizeText(
-                                            maxLines: 1,
-                                            'ลงทะเบียนสมาชิกสำหรับฟาร์ม',
-                                            style: TextStyle(
-                                                fontSize: ScreenUtils
-                                                    .calculateFontSize(
-                                                        context, 8)),
+                                    flex: 1,
+                                    child: Column(
+                                      children: [
+                                        AutoSizeText(
+                                          maxLines: 1,
+                                          'ลงทะเบียนสมาชิกสำหรับฟาร์ม',
+                                          style: TextStyle(
+                                            fontSize:
+                                                ScreenUtils.calculateFontSize(
+                                              context,
+                                              8,
+                                            ),
                                           ),
-                                          AutoSizeText(
-                                            maxLines: 1,
-                                            _farmNameController.text,
-                                            style: TextStyle(
-                                                fontSize: ScreenUtils
-                                                    .calculateFontSize(
-                                                        context, 24)),
+                                        ),
+                                        AutoSizeText(
+                                          maxLines: 1,
+                                          _farmNameController.text,
+                                          style: TextStyle(
+                                            fontSize:
+                                                ScreenUtils.calculateFontSize(
+                                              context,
+                                              24,
+                                            ),
                                           ),
-                                        ],
-                                      )),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                   const SizedBox(width: 10),
                                   Expanded(
                                     flex: 1,
@@ -320,8 +336,9 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                 height: 50,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(10)),
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                                 child: Center(
                                   child: TextButton(
                                     onPressed: () async {
@@ -333,58 +350,55 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                             // แสดง dialog เพื่อกรอกรหัส 6 หลัก
                                             await _showCodeDialog();
 
-                                            if (_passwordController.text !=
-                                                null) {
-                                              // ส่งข้อมูลไปยัง API หลังจากกรอกรหัสถูกต้องแล้ว
-                                              final userId =
-                                                  await registerFarmOwner(
-                                                firstName:
-                                                    _firstNameController.text,
-                                                lastName:
-                                                    _lastNameController.text,
-                                                nickname:
-                                                    _nicknameController.text,
-                                                position: _selectedStatus ?? '',
-                                                phoneNumber:
-                                                    _phoneNumberController.text,
-                                                farmId: _farmIdController.text,
-                                                lineId: _lineIdController.text,
-                                                imageFile: imageFile,
-                                                password:
-                                                    _passwordController.text,
-                                                status: 'รอนุมัติ',
-                                              );
-                                              Navigator.pop(context);
-                                              // ทำการ pop หน้าหลังจากเสร็จสิ้นการทำงาน
-                                              Navigator.pop(context);
-                                              Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      DetailFarmView(),
-                                                ),
-                                              );
+                                            // ส่งข้อมูลไปยัง API หลังจากกรอกรหัสถูกต้องแล้ว
+                                            final userId =
+                                                await registerFarmOwner(
+                                              firstName:
+                                                  _firstNameController.text,
+                                              lastName:
+                                                  _lastNameController.text,
+                                              nickname:
+                                                  _nicknameController.text,
+                                              position: _selectedStatus ?? '',
+                                              phoneNumber:
+                                                  _phoneNumberController.text,
+                                              farmId: _farmIdController.text,
+                                              lineId: _lineIdController.text,
+                                              imageFile: imageFile,
+                                              password:
+                                                  _passwordController.text,
+                                              status: 'รอนุมัติ',
+                                            );
+                                            Navigator.pop(context);
+                                            // ทำการ pop หน้าหลังจากเสร็จสิ้นการทำงาน
+                                            Navigator.pop(context);
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const DetailFarmView(),
+                                              ),
+                                            );
 
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: const Text(
-                                                        'ลงทะเบียนสำเร็จ'),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        child: const Text('OK'),
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            }
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: const Text(
+                                                    'ลงทะเบียนสำเร็จ',
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      child: const Text('OK'),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
                                           } catch (e) {
                                             print('Error: $e');
                                             Navigator.of(context).pop();
@@ -395,7 +409,8 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                                 return AlertDialog(
                                                   title: const Text('Error'),
                                                   content: const Text(
-                                                      'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.'),
+                                                    'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.',
+                                                  ),
                                                   actions: <Widget>[
                                                     TextButton(
                                                       child: const Text('OK'),
@@ -417,9 +432,11 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                             builder: (BuildContext context) {
                                               return AlertDialog(
                                                 title: const Text(
-                                                    'Image Required'),
+                                                  'Image Required',
+                                                ),
                                                 content: const Text(
-                                                    'Please select an image.'),
+                                                  'Please select an image.',
+                                                ),
                                                 actions: <Widget>[
                                                   TextButton(
                                                     child: const Text('OK'),
@@ -461,16 +478,15 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
 
 // ฟิลด์ป้อนข้อมูลทั่วไป
 class CustomTextFormField extends StatelessWidget {
-  final TextEditingController controller;
-  final String labelText;
-  final FormFieldValidator<String>? validator;
-
   const CustomTextFormField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
     this.validator,
-  }) : super(key: key);
+  });
+  final TextEditingController controller;
+  final String labelText;
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -486,16 +502,15 @@ class CustomTextFormField extends StatelessWidget {
 
 // ส่วนของ Dropdown
 class StatusDropdown extends StatelessWidget {
-  final String? selectedStatus;
-  final List<String> statusOptions;
-  final ValueChanged<String?> onChanged;
-
   const StatusDropdown({
-    Key? key,
+    super.key,
     required this.selectedStatus,
     required this.statusOptions,
     required this.onChanged,
-  }) : super(key: key);
+  });
+  final String? selectedStatus;
+  final List<String> statusOptions;
+  final ValueChanged<String?> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -519,14 +534,13 @@ class StatusDropdown extends StatelessWidget {
 
 // ส่วนของการเลือกภาพ
 class ImagePickerWidget extends StatelessWidget {
-  final File? selectedImage;
-  final VoidCallback onPickImage;
-
   const ImagePickerWidget({
-    Key? key,
+    super.key,
     this.selectedImage,
     required this.onPickImage,
-  }) : super(key: key);
+  });
+  final File? selectedImage;
+  final VoidCallback onPickImage;
 
   @override
   Widget build(BuildContext context) {
@@ -538,7 +552,7 @@ class ImagePickerWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.black),
-          color: Colors.white.withOpacity(0.8),
+          color: Colors.white.withAlpha((0.6 * 255).round()),
         ),
         child: selectedImage == null
             ? const Column(

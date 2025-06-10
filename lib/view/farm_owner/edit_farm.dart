@@ -80,8 +80,9 @@ class _EditFarmState extends State<EditFarm> {
               child: const Text('ยืนยัน'),
               onPressed: () {
                 if (_passwordController.text.length == 6) {
-                  Navigator.of(context).pop(_passwordController
-                      .text); // ส่งรหัส 6 หลักกลับเป็น string
+                  Navigator.of(context).pop(
+                    _passwordController.text,
+                  ); // ส่งรหัส 6 หลักกลับเป็น string
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('กรุณากรอกรหัสให้ครบ 6 หลัก')),
@@ -146,7 +147,7 @@ class _EditFarmState extends State<EditFarm> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Card(
-                  color: Colors.white.withOpacity(0.8),
+                  color: Colors.white.withAlpha((0.6 * 255).round()),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -229,49 +230,49 @@ class _EditFarmState extends State<EditFarm> {
                           height: 50,
                           width: double.infinity,
                           decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(10)),
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: Center(
                             child: TextButton(
                               onPressed: () async {
                                 try {
                                   await _showCodeDialog();
 
-                                  if (_passwordController.text != null) {
-                                    // await updateUser(
-                                    //     firstName: _nameController.text,
-                                    //     userId: _userIdController.text,
-                                    //     lastName: _lastNameController.text,
-                                    //     nickname: _nickNameController.text,
-                                    //     position: _selectedStatus ?? '',
-                                    //     phoneNumber: _phoneController.text,
-                                    //     farmId: _farmIdController.text,
-                                    //     lineId: _lineIdController.text,
-                                    //     password: _passwordController.text);
-                                    Navigator.pop(context);
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => DetailFarmView(),
-                                      ),
-                                    );
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('ลงทะเบียนสำเร็จ'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              child: const Text('OK'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  }
+                                  // await updateUser(
+                                  //     firstName: _nameController.text,
+                                  //     userId: _userIdController.text,
+                                  //     lastName: _lastNameController.text,
+                                  //     nickname: _nickNameController.text,
+                                  //     position: _selectedStatus ?? '',
+                                  //     phoneNumber: _phoneController.text,
+                                  //     farmId: _farmIdController.text,
+                                  //     lineId: _lineIdController.text,
+                                  //     password: _passwordController.text);
+                                  Navigator.pop(context);
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DetailFarmView(),
+                                    ),
+                                  );
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('ลงทะเบียนสำเร็จ'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('OK'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 } catch (e) {
                                   print('$e');
                                   showDialog(
@@ -280,7 +281,8 @@ class _EditFarmState extends State<EditFarm> {
                                       return AlertDialog(
                                         title: const Text('Error'),
                                         content: const Text(
-                                            'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.'),
+                                          'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.',
+                                        ),
                                         actions: <Widget>[
                                           TextButton(
                                             child: const Text('OK'),
@@ -315,16 +317,15 @@ class _EditFarmState extends State<EditFarm> {
 }
 
 class CustomTextFormField extends StatelessWidget {
-  final TextEditingController controller;
-  final String labelText;
-  final String? Function(String?) validator;
-
   const CustomTextFormField({
     required this.controller,
     required this.labelText,
     required this.validator,
     super.key,
   });
+  final TextEditingController controller;
+  final String labelText;
+  final String? Function(String?) validator;
 
   @override
   Widget build(BuildContext context) {

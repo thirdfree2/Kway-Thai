@@ -32,7 +32,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
     'ใต้',
     'ตะวันตก',
     'ตะวันออก',
-    'อีสาน'
+    'อีสาน',
   ];
 
   Future<void> _pickImage() async {
@@ -92,8 +92,11 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
           password: _digitController.text,
         );
 
-        _showDialog(context, 'ลงทะเบียนสำเร็จ',
-            'ข้อมูลฟาร์มและเจ้าของถูกลงทะเบียนเรียบร้อยแล้ว');
+        _showDialog(
+          context,
+          'ลงทะเบียนสำเร็จ',
+          'ข้อมูลฟาร์มและเจ้าของถูกลงทะเบียนเรียบร้อยแล้ว',
+        );
       } catch (e) {
         _showSnackBar(context, 'เกิดข้อผิดพลาด: พบชื่อฟาร์มนี้แล้ว');
       }
@@ -139,7 +142,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
           ),
         ),
         child: SafeArea(
-          child: Container(
+          child: SizedBox(
             height: screenHeight,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,9 +150,11 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Card(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withAlpha((0.6 * 255).round()),
                     margin: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 20),
+                      horizontal: 16,
+                      vertical: 20,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
@@ -167,7 +172,8 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
+                                    horizontal: 10,
+                                  ),
                                   child: InkWell(
                                     onTap: () {
                                       Navigator.pop(context);
@@ -180,10 +186,13 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                     'ลงทะเบียนสมาชิก',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: ScreenUtils.calculateFontSize(
-                                            context, 24),
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red),
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                        context,
+                                        24,
+                                      ),
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 10),
@@ -226,7 +235,8 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                   flex: 1,
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 5),
+                                      horizontal: 5,
+                                    ),
                                     child: ImagePickerWidget(
                                       selectedImage: _selectedImage,
                                       onPickImage: _pickImage,
@@ -354,8 +364,9 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                               height: 50,
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(10)),
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               child: Center(
                                 child: TextButton(
                                   onPressed:
@@ -384,16 +395,15 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
 }
 
 class CustomTextFormField extends StatelessWidget {
-  final TextEditingController controller;
-  final String labelText;
-  final FormFieldValidator<String>? validator;
-
   const CustomTextFormField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
     this.validator,
-  }) : super(key: key);
+  });
+  final TextEditingController controller;
+  final String labelText;
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -409,18 +419,17 @@ class CustomTextFormField extends StatelessWidget {
 
 // ส่วนของ Dropdown
 class StatusDropdown extends StatelessWidget {
-  final String? selectedStatus;
-  final List<String> statusOptions;
-  final ValueChanged<String?> onChanged;
-  final String labelName;
-
   const StatusDropdown({
-    Key? key,
+    super.key,
     required this.selectedStatus,
     required this.statusOptions,
     required this.onChanged,
     required this.labelName,
-  }) : super(key: key);
+  });
+  final String? selectedStatus;
+  final List<String> statusOptions;
+  final ValueChanged<String?> onChanged;
+  final String labelName;
 
   @override
   Widget build(BuildContext context) {
@@ -434,7 +443,7 @@ class StatusDropdown extends StatelessWidget {
       }).toList(),
       onChanged: onChanged,
       decoration: InputDecoration(
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
         labelText: labelName,
       ),
       validator: (value) => value == null ? 'กรุณาเลือกสถานะ' : null,
@@ -444,14 +453,13 @@ class StatusDropdown extends StatelessWidget {
 
 // ส่วนของการเลือกภาพ
 class ImagePickerWidget extends StatelessWidget {
-  final File? selectedImage;
-  final VoidCallback onPickImage;
-
   const ImagePickerWidget({
-    Key? key,
+    super.key,
     this.selectedImage,
     required this.onPickImage,
-  }) : super(key: key);
+  });
+  final File? selectedImage;
+  final VoidCallback onPickImage;
 
   @override
   Widget build(BuildContext context) {
@@ -463,7 +471,7 @@ class ImagePickerWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.black),
-          color: Colors.white.withOpacity(0.8),
+          color: Colors.white.withAlpha((0.6 * 255).round()),
         ),
         child: selectedImage == null
             ? const Column(
@@ -473,7 +481,7 @@ class ImagePickerWidget extends StatelessWidget {
                   Text(
                     'เพิ่มรูปภาพ',
                     style: TextStyle(fontSize: 10),
-                  )
+                  ),
                 ],
               )
             : Image.file(selectedImage!, fit: BoxFit.cover),

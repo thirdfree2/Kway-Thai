@@ -137,7 +137,7 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
             Navigator.pop(context);
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => DetailFarmView(),
+                builder: (context) => const DetailFarmView(),
               ),
             );
           }
@@ -184,7 +184,7 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
             Navigator.pop(context);
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => DetailFarmView(),
+                builder: (context) => const DetailFarmView(),
               ),
             );
           }
@@ -228,7 +228,7 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Card(
-                color: Colors.white.withOpacity(0.8),
+                color: Colors.white.withAlpha((0.6 * 255).round()),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Form(
@@ -271,7 +271,9 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
+                                  horizontal: 20,
+                                  vertical: 10,
+                                ),
                               ),
                               child: const Center(
                                 child: AutoSizeText(
@@ -300,7 +302,9 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
+                                  horizontal: 20,
+                                  vertical: 10,
+                                ),
                               ),
                               child: const Center(
                                 child: AutoSizeText(
@@ -327,7 +331,8 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(color: Colors.black),
-                                        color: Colors.white.withOpacity(0.8),
+                                        color: Colors.white
+                                            .withAlpha((0.6 * 255).round()),
                                       ),
                                       child: _selectedImage == null
                                           ? const Column(
@@ -338,8 +343,10 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                                                 Text('เพิ่มปกคลิป'),
                                               ],
                                             )
-                                          : Image.file(_selectedImage!,
-                                              fit: BoxFit.cover),
+                                          : Image.file(
+                                              _selectedImage!,
+                                              fit: BoxFit.cover,
+                                            ),
                                     ),
                                   ),
                                   const SizedBox(height: 10),
@@ -351,7 +358,8 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(color: Colors.black),
-                                        color: Colors.white.withOpacity(0.8),
+                                        color: Colors.white
+                                            .withAlpha((0.6 * 255).round()),
                                       ),
                                       child: _selectedVideo == null
                                           ? const Column(
@@ -366,9 +374,11 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Icon(Icons.video_camera_back,
-                                                    color: Colors.green,
-                                                    size: 30),
+                                                Icon(
+                                                  Icons.video_camera_back,
+                                                  color: Colors.green,
+                                                  size: 30,
+                                                ),
                                                 Text('อัพโหลดสำเร็จ'),
                                               ],
                                             ),
@@ -387,7 +397,8 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(color: Colors.black),
-                                        color: Colors.white.withOpacity(0.8),
+                                        color: Colors.white
+                                            .withAlpha((0.6 * 255).round()),
                                       ),
                                       child: _selectedImagelink == null
                                           ? const Column(

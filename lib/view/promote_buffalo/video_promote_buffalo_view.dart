@@ -1,11 +1,7 @@
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/buffalo/photo_buffalo_view.dart';
-import 'package:buffalo_thai/view/buffalo/upload_video_buffalo.dart';
-import 'package:buffalo_thai/view/home/main_home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stroke_text/stroke_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PromoteVideoBuffaloView extends StatefulWidget {
@@ -27,9 +23,10 @@ class _PromoteVideoBuffaloViewState extends State<PromoteVideoBuffaloView> {
         decoration: const BoxDecoration(
           color: Colors.black,
           image: DecorationImage(
-              opacity: 0.7,
-              image: AssetImage("assets/images/background-2.jpg"),
-              fit: BoxFit.cover),
+            opacity: 0.7,
+            image: AssetImage("assets/images/background-2.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: SafeArea(
           child: Column(
@@ -45,7 +42,7 @@ class _PromoteVideoBuffaloViewState extends State<PromoteVideoBuffaloView> {
                       Icons.arrow_back,
                       size: 30,
                     ),
-                  )
+                  ),
                 ],
               ),
               Text(
@@ -100,10 +97,12 @@ class _PromoteVideoBuffaloViewState extends State<PromoteVideoBuffaloView> {
                               mode: LaunchMode.externalApplication,
                             );
                           } else {
+                            if (!context.mounted) return;
                             // แสดงข้อความแจ้งเตือนเมื่อไม่สามารถเปิด URL ได้
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                  content: Text('ไม่สามารถเปิดลิงก์ได้')),
+                                content: Text('ไม่สามารถเปิดลิงก์ได้'),
+                              ),
                             );
                           }
                         },
@@ -113,7 +112,8 @@ class _PromoteVideoBuffaloViewState extends State<PromoteVideoBuffaloView> {
                           clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(
-                                15), // ปรับ radius ตามต้องการ
+                              15,
+                            ), // ปรับ radius ตามต้องการ
                             border: Border.all(
                               color: Colors.grey,
                               width: 2,

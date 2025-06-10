@@ -141,7 +141,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Card(
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withAlpha((0.6 * 255).round()),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -155,7 +155,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                 onPickImage: _pickImage,
                               ),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             CustomTextFormField(
                               controller: _nameController,
                               labelText: 'ชื่อ',
@@ -231,52 +231,52 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                               height: 50,
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(10)),
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               child: Center(
                                 child: TextButton(
                                   onPressed: () async {
                                     try {
                                       await _showCodeDialog();
 
-                                      if (_passwordController.text != null) {
-                                        await updateUser(
-                                            firstName: _nameController.text,
-                                            userId: _userIdController.text,
-                                            lastName: _lastNameController.text,
-                                            nickname: _nickNameController.text,
-                                            position: _selectedStatus ?? '',
-                                            phoneNumber: _phoneController.text,
-                                            farmId: _farmIdController.text,
-                                            lineId: _lineIdController.text,
-                                            password: _passwordController.text,
-                                            imageFile: _selectedImage);
-                                        Navigator.pop(context);
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                DetailFarmView(),
-                                          ),
-                                        );
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title:
-                                                  const Text('ลงทะเบียนสำเร็จ'),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  child: const Text('OK'),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      }
+                                      await updateUser(
+                                        firstName: _nameController.text,
+                                        userId: _userIdController.text,
+                                        lastName: _lastNameController.text,
+                                        nickname: _nickNameController.text,
+                                        position: _selectedStatus ?? '',
+                                        phoneNumber: _phoneController.text,
+                                        farmId: _farmIdController.text,
+                                        lineId: _lineIdController.text,
+                                        password: _passwordController.text,
+                                        imageFile: _selectedImage,
+                                      );
+                                      Navigator.pop(context);
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const DetailFarmView(),
+                                        ),
+                                      );
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title:
+                                                const Text('ลงทะเบียนสำเร็จ'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: const Text('OK'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     } catch (e) {
                                       print('$e');
                                       showDialog(
@@ -285,7 +285,8 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                           return AlertDialog(
                                             title: const Text('Error'),
                                             content: const Text(
-                                                'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.'),
+                                              'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.',
+                                            ),
                                             actions: <Widget>[
                                               TextButton(
                                                 child: const Text('OK'),
@@ -315,7 +316,8 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                     return AlertDialog(
                                       title: const Text('ยืนยันการลบสมาชิก'),
                                       content: const Text(
-                                          'กรุณายืนยันเพือทำการลบสมาชิก'),
+                                        'กรุณายืนยันเพือทำการลบสมาชิก',
+                                      ),
                                       actions: <Widget>[
                                         Row(
                                           mainAxisAlignment:
@@ -332,9 +334,10 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                             ),
                                             ElevatedButton(
                                               style: ButtonStyle(
-                                                  backgroundColor:
-                                                      WidgetStateProperty.all<
-                                                          Color>(Colors.red)),
+                                                backgroundColor:
+                                                    WidgetStateProperty.all<
+                                                        Color>(Colors.red),
+                                              ),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                                 Navigator.of(context).pop();
@@ -343,7 +346,8 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                               child: const Text(
                                                 'ยืนยัน',
                                                 style: TextStyle(
-                                                    color: Colors.white),
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -353,11 +357,11 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                   },
                                 );
                               },
-                              child: Text(
+                              child: const Text(
                                 'ลบสมาชิก',
                                 style: TextStyle(color: Colors.red),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -374,16 +378,15 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
 }
 
 class CustomTextFormField extends StatelessWidget {
-  final TextEditingController controller;
-  final String labelText;
-  final String? Function(String?) validator;
-
   const CustomTextFormField({
     required this.controller,
     required this.labelText,
     required this.validator,
     super.key,
   });
+  final TextEditingController controller;
+  final String labelText;
+  final String? Function(String?) validator;
 
   @override
   Widget build(BuildContext context) {
@@ -401,16 +404,15 @@ class CustomTextFormField extends StatelessWidget {
 }
 
 class StatusDropdown extends StatelessWidget {
-  final String? selectedStatus;
-  final List<String> statusOptions;
-  final ValueChanged<String?> onChanged;
-
   const StatusDropdown({
-    Key? key,
+    super.key,
     required this.selectedStatus,
     required this.statusOptions,
     required this.onChanged,
-  }) : super(key: key);
+  });
+  final String? selectedStatus;
+  final List<String> statusOptions;
+  final ValueChanged<String?> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -432,14 +434,13 @@ class StatusDropdown extends StatelessWidget {
 }
 
 class ImagePickerWidget extends StatelessWidget {
-  final File? selectedImage;
-  final VoidCallback onPickImage;
-
   const ImagePickerWidget({
-    Key? key,
+    super.key,
     this.selectedImage,
     required this.onPickImage,
-  }) : super(key: key);
+  });
+  final File? selectedImage;
+  final VoidCallback onPickImage;
 
   @override
   Widget build(BuildContext context) {
@@ -451,7 +452,7 @@ class ImagePickerWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.black),
-          color: Colors.white.withOpacity(0.8),
+          color: Colors.white.withAlpha((0.6 * 255).round()),
         ),
         child: selectedImage == null
             ? const Column(

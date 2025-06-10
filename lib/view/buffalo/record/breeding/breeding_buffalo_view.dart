@@ -28,7 +28,8 @@ class _BreedingBuffaloViewState extends State<BreedingBuffaloView> {
     final buffalo =
         Provider.of<SelectedBuffalo>(context, listen: false).buffalo;
     futureBreeding = fetchBuffaloeBreeding(
-        buffalo?.id.toString() ?? ''); // กำหนดค่าให้เรียบร้อย
+      buffalo?.id.toString() ?? '',
+    ); // กำหนดค่าให้เรียบร้อย
   }
 
   @override
@@ -62,111 +63,114 @@ class _BreedingBuffaloViewState extends State<BreedingBuffaloView> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return KwaiThaiBg(
-        child: ListView(
-      children: [
-        Row(
-          children: [
-            const SizedBox(
-              width: 20,
-            ),
-            InkWell(
-              onTap: () => Navigator.pop(context),
-              child: const Icon(
-                Icons.arrow_back,
-                size: 30,
-              ),
-            ),
-          ],
-        ),
-        Center(
-          child: Column(
+      child: ListView(
+        children: [
+          Row(
             children: [
-              Text(
-                "การผสมพันธุ์ \n (Breeding)",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: ScreenUtils.calculateFontSize(context, 24),
-                  color: Colors.white,
+              const SizedBox(
+                width: 20,
+              ),
+              InkWell(
+                onTap: () => Navigator.pop(context),
+                child: const Icon(
+                  Icons.arrow_back,
+                  size: 30,
                 ),
               ),
             ],
           ),
-        ),
-        const SizedBox(height: 20),
-        Card(
-          color: Colors.white.withOpacity(0.8),
-          child: FutureBuilder<List<BuffaloBreedingModel>>(
-            future: futureBreeding,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(
-                    child: Text('เกิดข้อผิดพลาด (Error): ${snapshot.error}'));
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(
-                    child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'ไม่พบข้อมูลการผสมพันธุ์ของควาย \n (Not Found Record)',
-                    textAlign: TextAlign.center,
+          Center(
+            child: Column(
+              children: [
+                Text(
+                  "การผสมพันธุ์ \n (Breeding)",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: ScreenUtils.calculateFontSize(context, 24),
+                    color: Colors.white,
                   ),
-                ));
-              } else {
-                // final vaccineList = snapshot.data!;
-                final breedingList = snapshot.data!
-                  ..sort((a, b) {
-                    return b.createdAt.compareTo(a.createdAt);
-                  });
-                return SizedBox(
-                  height: screenHeight / 1.70,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListView.builder(
-                      shrinkWrap:
-                          true, // สำคัญ: ให้แสดงใน SingleChildScrollView ได้
-                      itemCount: breedingList.length,
-                      itemBuilder: (context, index) {
-                        final breeding = breedingList[index];
-                        return buildBreedingCard(breeding);
-                      },
-                    ),
-                  ),
-                );
-              }
-            },
+                ),
+              ],
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              InkWell(
-                onTap: () => navigateToAddPage(),
-                child: Container(
-                  height: 50,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'เพิ่มการผสมพันธุ์ \n (Add Breeding)',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
+          const SizedBox(height: 20),
+          Card(
+            color: Colors.white.withAlpha((0.6 * 255).round()),
+            child: FutureBuilder<List<BuffaloBreedingModel>>(
+              future: futureBreeding,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('เกิดข้อผิดพลาด (Error): ${snapshot.error}'),
+                  );
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'ไม่พบข้อมูลการผสมพันธุ์ของควาย \n (Not Found Record)',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                } else {
+                  // final vaccineList = snapshot.data!;
+                  final breedingList = snapshot.data!
+                    ..sort((a, b) {
+                      return b.createdAt.compareTo(a.createdAt);
+                    });
+                  return SizedBox(
+                    height: screenHeight / 1.70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView.builder(
+                        shrinkWrap:
+                            true, // สำคัญ: ให้แสดงใน SingleChildScrollView ได้
+                        itemCount: breedingList.length,
+                        itemBuilder: (context, index) {
+                          final breeding = breedingList[index];
+                          return buildBreedingCard(breeding);
+                        },
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                InkWell(
+                  onTap: () => navigateToAddPage(),
+                  child: Container(
+                    height: 50,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'เพิ่มการผสมพันธุ์ \n (Add Breeding)',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        )
-      ],
-    ));
+        ],
+      ),
+    );
   }
 
   String _formatThaiDate(DateTime dateStr) {

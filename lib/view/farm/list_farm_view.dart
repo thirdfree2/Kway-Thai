@@ -51,8 +51,9 @@ class _ListFarmViewState extends State<ListFarmView> {
       body: DecoratedBox(
         decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/images/background-1.jpg"),
-              fit: BoxFit.cover),
+            image: AssetImage("assets/images/background-1.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: SafeArea(
           child: Column(
@@ -87,13 +88,16 @@ class _ListFarmViewState extends State<ListFarmView> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 15),
+                        horizontal: 10,
+                        vertical: 15,
+                      ),
                       child: SizedBox(
                         width: screenWidth * 0.4,
                         child: TextFormField(
                           decoration: InputDecoration(
                             filled: true,
-                            fillColor: Colors.white.withOpacity(0.8),
+                            fillColor:
+                                Colors.white.withAlpha((0.6 * 255).round()),
                             prefixIcon: const Icon(Icons.search),
                             hintText: 'ค้นหา',
                             border: OutlineInputBorder(
@@ -116,8 +120,9 @@ class _ListFarmViewState extends State<ListFarmView> {
                 child: Container(
                   width: 250,
                   decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(20)),
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: Center(
                     child: Text(
                       'ภาค$region (${filteredFarms.length})',
@@ -132,7 +137,7 @@ class _ListFarmViewState extends State<ListFarmView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: Card(
-                  color: Colors.white.withOpacity(0.8),
+                  color: Colors.white.withAlpha((0.6 * 255).round()),
                   child: SizedBox(
                     height: cardHeight, // Define a specific height for the Card
                     child: Column(
@@ -146,9 +151,10 @@ class _ListFarmViewState extends State<ListFarmView> {
                                   height: 80,
                                   child: InkWell(
                                     onTap: () {
-                                      Provider.of<SelectedFarm>(context,
-                                              listen: false)
-                                          .setSelectedFarm(
+                                      Provider.of<SelectedFarm>(
+                                        context,
+                                        listen: false,
+                                      ).setSelectedFarm(
                                         region,
                                         filteredFarms[index].farmName,
                                         filteredFarms[index].farmId.toString(),
@@ -165,12 +171,14 @@ class _ListFarmViewState extends State<ListFarmView> {
                                       child: Center(
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
-                                              horizontal: 20),
+                                            horizontal: 20,
+                                          ),
                                           child: Text(
                                             '00${index + 1} ${filteredFarms[index].farmName} '
                                             '${filteredFarms[index].associations.map((a) => 'A${a.associationId}').join(' ')}',
                                             style: const TextStyle(
-                                                fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -265,8 +273,10 @@ class _ListFarmViewState extends State<ListFarmView> {
     );
   }
 
-  void loadRegionData(BuildContext context,
-      Future<List<FarmModel>> Function() fetchFarms) async {
+  void loadRegionData(
+    BuildContext context,
+    Future<List<FarmModel>> Function() fetchFarms,
+  ) async {
     try {
       List<FarmModel> farms = await fetchFarms();
       Provider.of<SelectedRegion>(context, listen: false)
@@ -278,7 +288,9 @@ class _ListFarmViewState extends State<ListFarmView> {
 }
 
 void loadRegionData(
-    BuildContext context, Future<List<FarmModel>> Function() fetchFarms) async {
+  BuildContext context,
+  Future<List<FarmModel>> Function() fetchFarms,
+) async {
   try {
     List<FarmModel> farms = await fetchFarms();
     Provider.of<SelectedRegion>(context, listen: false)
@@ -289,10 +301,9 @@ void loadRegionData(
 }
 
 class CustomButton extends StatelessWidget {
+  const CustomButton({super.key, required this.label, required this.onPressed});
   final String label;
   final VoidCallback onPressed;
-
-  const CustomButton({super.key, required this.label, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

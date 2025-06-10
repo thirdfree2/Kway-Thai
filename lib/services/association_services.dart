@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:buffalo_thai/model/association_model.dart';
 import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
 
 Future<List<AssociationModel>> fetchAssociation() async {
   try {

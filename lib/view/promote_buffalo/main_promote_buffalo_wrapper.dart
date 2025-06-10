@@ -1,5 +1,4 @@
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
-import 'package:buffalo_thai/view/awards_announcement/main_awards_view.dart';
 import 'package:buffalo_thai/view/promote_buffalo/award_promote_buffalo.dart';
 import 'package:buffalo_thai/view/promote_buffalo/main_promote_buffalo_view.dart';
 import 'package:buffalo_thai/view/promote_buffalo/photo_promote_buffalo_view.dart';
@@ -21,9 +20,14 @@ class _PromoteBuffaloState extends State<PromoteBuffalo> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     MainPromoteBuffaloView(),
-    Text('Genetics',
-        style: TextStyle(
-            fontSize: 35, fontWeight: FontWeight.bold, color: Colors.white)),
+    Text(
+      'Genetics',
+      style: TextStyle(
+        fontSize: 35,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+    ),
     PromotePhotoBuffaloView(),
     PromoteVideoBuffaloView(),
     MainPromoteAwardsView(),
@@ -66,9 +70,10 @@ class _PromoteBuffaloState extends State<PromoteBuffalo> {
         decoration: const BoxDecoration(
           color: Colors.black,
           image: DecorationImage(
-              opacity: 0.7,
-              image: AssetImage("assets/images/background-2.jpg"),
-              fit: BoxFit.cover),
+            opacity: 0.7,
+            image: AssetImage("assets/images/background-2.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: Center(
           child: _widgetOptions.elementAt(_selectedIndex),
@@ -77,25 +82,30 @@ class _PromoteBuffaloState extends State<PromoteBuffalo> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: _customIcon(Icons.home, 'หน้าแรก'),
-              label: '',
-              backgroundColor: Colors.green[900]),
+            icon: _customIcon(Icons.home, 'หน้าแรก'),
+            label: '',
+            backgroundColor: Colors.green[900],
+          ),
           BottomNavigationBarItem(
-              icon: _customIcon(Icons.share, 'พันธุกรรม'),
-              label: '',
-              backgroundColor: Colors.green[900]),
+            icon: _customIcon(Icons.share, 'พันธุกรรม'),
+            label: '',
+            backgroundColor: Colors.green[900],
+          ),
           BottomNavigationBarItem(
-              icon: _customIcon(Icons.photo, 'รูปภาพที่เกี่ยวข้อง'),
-              label: '',
-              backgroundColor: Colors.green[900]),
+            icon: _customIcon(Icons.photo, 'รูปภาพที่เกี่ยวข้อง'),
+            label: '',
+            backgroundColor: Colors.green[900],
+          ),
           BottomNavigationBarItem(
-              icon: _customIcon(Icons.video_collection, 'วิดีโอที่เกี่ยวข้อง'),
-              label: '',
-              backgroundColor: Colors.green[900]),
+            icon: _customIcon(Icons.video_collection, 'วิดีโอที่เกี่ยวข้อง'),
+            label: '',
+            backgroundColor: Colors.green[900],
+          ),
           BottomNavigationBarItem(
-              icon: _customIcon(Icons.star, 'รางวัลประกวด'),
-              label: '',
-              backgroundColor: Colors.green[900]),
+            icon: _customIcon(Icons.star, 'รางวัลประกวด'),
+            label: '',
+            backgroundColor: Colors.green[900],
+          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.red[900],
@@ -123,12 +133,12 @@ class _PromoteBuffaloState extends State<PromoteBuffalo> {
             color: Colors.black,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         Text(
           label,
-          style: TextStyle(fontSize: 10, color: Colors.white),
+          style: const TextStyle(fontSize: 10, color: Colors.white),
         ),
       ],
     );

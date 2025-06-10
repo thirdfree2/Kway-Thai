@@ -123,16 +123,15 @@ class _RecordBuffaloViewState extends State<RecordBuffaloView> {
 }
 
 class RecordCard extends StatelessWidget {
-  final String title;
-  final VoidCallback onTap;
-  final double height;
-
   const RecordCard({
     super.key,
     required this.title,
     required this.onTap,
     this.height = 200, // ค่า default ถ้าไม่ส่งมา
   });
+  final String title;
+  final VoidCallback onTap;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +143,7 @@ class RecordCard extends StatelessWidget {
         child: Container(
           height: height,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.8),
+            color: Colors.white.withAlpha((0.6 * 255).round()),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Center(

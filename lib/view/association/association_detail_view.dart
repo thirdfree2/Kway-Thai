@@ -20,11 +20,11 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
   late Future<AssociationModel> futureAssociation;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     final selectAsso = Provider.of<SelectedAssociation>(context, listen: false);
     futureAssociation = futureAssociation = fetchAssociationById(
-        id: selectAsso.association?.associationId.toString() ?? '0');
+      id: selectAsso.association?.associationId.toString() ?? '0',
+    );
   }
 
   void navigateToAddPage() async {
@@ -33,17 +33,22 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
       MaterialPageRoute(builder: (_) => const RegisterAssociationView()),
     );
 
+    if (!mounted) return;
+
     if (result == true) {
       final buffalo = Provider.of<SelectedAssociation>(context, listen: false);
       setState(() {
         futureAssociation = futureAssociation = fetchAssociationById(
-            id: buffalo.association?.associationId.toString() ?? '0');
+          id: buffalo.association?.associationId.toString() ?? '0',
+        );
       });
     }
   }
 
   void showPasswordDialog(
-      BuildContext context, void Function(String) onConfirm) {
+    BuildContext context,
+    void Function(String) onConfirm,
+  ) {
     final passwordController = TextEditingController();
 
     showDialog(
@@ -89,16 +94,14 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: DecoratedBox(
         decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/images/background-1.jpg"),
-              fit: BoxFit.cover),
+            image: AssetImage("assets/images/background-1.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: SafeArea(
           child: Column(
@@ -130,10 +133,12 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return const Center(
-                              child: CircularProgressIndicator());
+                            child: CircularProgressIndicator(),
+                          );
                         } else if (snapshot.hasError) {
                           return Center(
-                              child: Text('เกิดข้อผิดพลาด: ${snapshot.error}'));
+                            child: Text('เกิดข้อผิดพลาด: ${snapshot.error}'),
+                          );
                         } else if (!snapshot.hasData) {
                           return const Center(child: Text('ไม่พบข้อมูลสมาคม'));
                         } else {
@@ -162,7 +167,8 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                       return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Center(
-                          child: Text('เกิดข้อผิดพลาด: ${snapshot.error}'));
+                        child: Text('เกิดข้อผิดพลาด: ${snapshot.error}'),
+                      );
                     } else if (!snapshot.hasData) {
                       return const Center(child: Text('ไม่พบข้อมูลสมาคม'));
                     } else {
@@ -173,10 +179,11 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
 
                       if (users.isEmpty) {
                         return const Center(
-                            child: Text(
-                          'ไม่พบสมาชิกในสมาคมนี้ \n (Member Not fund)',
-                          textAlign: TextAlign.center,
-                        ));
+                          child: Text(
+                            'ไม่พบสมาชิกในสมาคมนี้ \n (Member Not fund)',
+                            textAlign: TextAlign.center,
+                          ),
+                        );
                       }
 
                       return Column(
@@ -195,7 +202,9 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
-                                        context, 14),
+                                      context,
+                                      14,
+                                    ),
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
                                   ),
@@ -262,7 +271,9 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: ScreenUtils.calculateFontSize(
-                                            context, 12),
+                                          context,
+                                          12,
+                                        ),
                                         color: Colors.black,
                                       ),
                                     ),
@@ -285,7 +296,8 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                       return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Center(
-                          child: Text('เกิดข้อผิดพลาด: ${snapshot.error}'));
+                        child: Text('เกิดข้อผิดพลาด: ${snapshot.error}'),
+                      );
                     } else if (!snapshot.hasData) {
                       return const Center(child: Text('ไม่พบข้อมูลสมาคม'));
                     } else {
@@ -294,7 +306,8 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
 
                       if (farm.isEmpty) {
                         return const Center(
-                            child: Text('ไม่พบสมาชิกในสมาคมนี้'));
+                          child: Text('ไม่พบสมาชิกในสมาคมนี้'),
+                        );
                       }
 
                       return Column(
@@ -309,7 +322,9 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                                   'สมาชิก คอก/ฟาร์ม (Farm Member) (${farm.length})',
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
-                                        context, 14),
+                                      context,
+                                      14,
+                                    ),
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
                                   ),
@@ -335,9 +350,10 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                                 final f = farm[index];
                                 return InkWell(
                                   onTap: () {
-                                    Provider.of<SelectedFarm>(context,
-                                            listen: false)
-                                        .setSelectedFarm(
+                                    Provider.of<SelectedFarm>(
+                                      context,
+                                      listen: false,
+                                    ).setSelectedFarm(
                                       f.region,
                                       f.farmName,
                                       f.farmId.toString(),

@@ -1,14 +1,8 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
-import 'package:buffalo_thai/utils/cache_manager.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/buffalo/upload_image_buffalo_view.dart';
-import 'package:buffalo_thai/view/home/main_home_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:galleryimage/galleryimage.dart';
 import 'package:provider/provider.dart';
-import 'package:stroke_text/stroke_text.dart';
 
 class PromotePhotoBuffaloView extends StatefulWidget {
   const PromotePhotoBuffaloView({super.key});
@@ -22,9 +16,6 @@ class _PromotePhotoBuffaloViewState extends State<PromotePhotoBuffaloView> {
   @override
   void initState() {
     super.initState();
-    final buffalo =
-        Provider.of<SelectedBuffalo>(context, listen: false).buffalo;
-    print(buffalo?.buffaloImages);
   }
 
   @override
@@ -45,9 +36,10 @@ class _PromotePhotoBuffaloViewState extends State<PromotePhotoBuffaloView> {
         decoration: const BoxDecoration(
           color: Colors.black,
           image: DecorationImage(
-              opacity: 0.7,
-              image: AssetImage("assets/images/background-2.jpg"),
-              fit: BoxFit.cover),
+            opacity: 0.7,
+            image: AssetImage("assets/images/background-2.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: SafeArea(
           child: Center(
@@ -76,7 +68,7 @@ class _PromotePhotoBuffaloViewState extends State<PromotePhotoBuffaloView> {
                     children: <Widget>[
                       Center(
                         child: Text(
-                          buffalo?.name ?? '',
+                          buffalo.name,
                           style: TextStyle(
                             fontSize:
                                 ScreenUtils.calculateFontSize(context, 26),

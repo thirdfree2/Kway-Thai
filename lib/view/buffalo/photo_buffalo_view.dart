@@ -1,14 +1,9 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
-import 'package:buffalo_thai/utils/cache_manager.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/buffalo/upload_image_buffalo_view.dart';
-import 'package:buffalo_thai/view/home/main_home_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:galleryimage/galleryimage.dart';
 import 'package:provider/provider.dart';
-import 'package:stroke_text/stroke_text.dart';
 
 class PhotoBuffaloView extends StatefulWidget {
   const PhotoBuffaloView({super.key});
@@ -67,7 +62,7 @@ class _PhotoBuffaloViewState extends State<PhotoBuffaloView> {
                       ),
                     ],
                   ),
-                  if (imageUrls.isEmpty ?? true)
+                  if (imageUrls.isEmpty)
                     const Expanded(
                       child: Center(
                         child: Text(
@@ -116,7 +111,8 @@ class _PhotoBuffaloViewState extends State<PhotoBuffaloView> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => UploadImageBuffaloView(),
+                                builder: (context) =>
+                                    const UploadImageBuffaloView(),
                               ),
                             );
                           },
@@ -139,7 +135,7 @@ class _PhotoBuffaloViewState extends State<PhotoBuffaloView> {
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

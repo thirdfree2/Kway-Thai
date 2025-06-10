@@ -2,12 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class FarmCard extends StatelessWidget {
-  final String region;
-  final List<String> farms;
-  final double screenWidth;
-  final double screenHeight;
-  final VoidCallback onMorePressed;
-
   const FarmCard({
     required this.region,
     required this.farms,
@@ -16,13 +10,18 @@ class FarmCard extends StatelessWidget {
     required this.onMorePressed,
     super.key,
   });
+  final String region;
+  final List<String> farms;
+  final double screenWidth;
+  final double screenHeight;
+  final VoidCallback onMorePressed;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        color: Colors.white.withOpacity(0.8),
+        color: Colors.white.withAlpha((0.6 * 255).round()),
         child: SizedBox(
           width: screenWidth / 2.4,
           height: screenHeight * 0.25,
@@ -47,7 +46,7 @@ class FarmCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: screenHeight * 0.15,
                 child: ListView.builder(
                   itemCount: farms.length,
@@ -56,7 +55,7 @@ class FarmCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: Padding(
                         padding: const EdgeInsets.all(2.0),
-                      child: Text('${index+1} ${farms[index]}'),
+                        child: Text('${index + 1} ${farms[index]}'),
                       ),
                     );
                   },

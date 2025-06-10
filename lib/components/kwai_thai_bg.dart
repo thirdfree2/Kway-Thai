@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 
 class KwaiThaiBg extends StatelessWidget {
-  final Widget child;
-  final bool showAppBar;
-  final PreferredSizeWidget? appBar;
-  final bool? customeBg;
-
   const KwaiThaiBg({
     super.key,
     required this.child,
@@ -14,10 +9,13 @@ class KwaiThaiBg extends StatelessWidget {
     this.customeBg,
   });
 
+  final Widget child;
+  final bool showAppBar;
+  final PreferredSizeWidget? appBar;
+  final bool? customeBg;
+
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       appBar: showAppBar ? appBar : null,
       body: SizedBox(

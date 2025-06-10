@@ -87,7 +87,10 @@ class _AddVaccineViewState extends State<AddVaccineView> {
 
                           // แปลงจาก พ.ศ. เป็น ค.ศ.
                           final christianDate = DateTime(
-                              thDate.year - 543, thDate.month, thDate.day);
+                            thDate.year - 543,
+                            thDate.month,
+                            thDate.day,
+                          );
 
                           return DateFormat('yyyy-MM-dd').format(christianDate);
                         } catch (_) {
@@ -104,23 +107,29 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                         password: password,
                         buffaloId: buffalo?.id.toString() ?? '0',
                         vaccines: vaccines
-                            .map((item) => {
-                                  "vaccineName": item["vaccineName"].text,
-                                  "doseNumber":
-                                      int.parse(item["doseNumber"].text),
-                                  "volume": double.parse(item["volume"].text),
-                                  "injectionDate": convertThaiDateToIso(
-                                      item["injectionDate"].text),
-                                  "nextInjectionDate": convertThaiDateToIso(
-                                      item["nextInjectionDate"].text),
-                                })
+                            .map(
+                              (item) => {
+                                "vaccineName": item["vaccineName"].text,
+                                "doseNumber":
+                                    int.parse(item["doseNumber"].text),
+                                "volume": double.parse(item["volume"].text),
+                                "injectionDate": convertThaiDateToIso(
+                                  item["injectionDate"].text,
+                                ),
+                                "nextInjectionDate": convertThaiDateToIso(
+                                  item["nextInjectionDate"].text,
+                                ),
+                              },
+                            )
                             .toList(),
                       );
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text(
-                                "บันทึกข้อมูลวัคซีนเรียบร้อย Record Success")),
+                          content: Text(
+                            "บันทึกข้อมูลวัคซีนเรียบร้อย Record Success",
+                          ),
+                        ),
                       );
                       Navigator.pop(context);
                       Navigator.pop(context, true);
@@ -169,7 +178,7 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withAlpha((0.6 * 255).round()),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
@@ -186,7 +195,9 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
-                                        context, 16),
+                                      context,
+                                      16,
+                                    ),
                                     fontWeight: FontWeight.bold,
                                     color: Colors.red,
                                   ),
@@ -215,7 +226,7 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                           const SizedBox(height: 2),
@@ -225,7 +236,8 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                               margin: const EdgeInsets.symmetric(vertical: 8),
                               color: Colors.white.withOpacity(1),
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12)),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                               child: Padding(
                                 padding: const EdgeInsets.all(12),
                                 child: Column(
@@ -272,8 +284,10 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: IconButton(
-                                        icon: const Icon(Icons.delete,
-                                            color: Colors.red),
+                                        icon: const Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
                                         onPressed: () => removeVaccine(index),
                                       ),
                                     ),
@@ -288,8 +302,10 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                               if (vaccines.isEmpty) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                      content: Text(
-                                          "กรุณาเพิ่มข้อมูลวัคซีนอย่างน้อย 1 รายการ (Please add at least one vaccine)")),
+                                    content: Text(
+                                      "กรุณาเพิ่มข้อมูลวัคซีนอย่างน้อย 1 รายการ (Please add at least one vaccine)",
+                                    ),
+                                  ),
                                 );
                                 return;
                               }
@@ -309,8 +325,9 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                      content:
-                                          Text("กรุณากรอกข้อมูลให้ครบทุกช่อง")),
+                                    content:
+                                        Text("กรุณากรอกข้อมูลให้ครบทุกช่อง"),
+                                  ),
                                 );
                               }
                             },

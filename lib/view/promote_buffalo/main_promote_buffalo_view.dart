@@ -1,8 +1,6 @@
-import 'package:buffalo_thai/view/buffalo/update_buffalo_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:stroke_text/stroke_text.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/home/main_home_view.dart';
@@ -52,9 +50,10 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
         decoration: const BoxDecoration(
           color: Colors.black,
           image: DecorationImage(
-              opacity: 0.7,
-              image: AssetImage("assets/images/background-2.jpg"),
-              fit: BoxFit.cover),
+            opacity: 0.7,
+            image: AssetImage("assets/images/background-2.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: Stack(
           children: [
@@ -87,7 +86,8 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                               onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomeView()),
+                                  builder: (context) => const HomeView(),
+                                ),
                               ),
                               child: const Icon(
                                 Icons.home,
@@ -105,7 +105,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                       height: screenHeight * 0.65,
                       padding: const EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.5),
+                        color: Colors.white.withAlpha((0.6 * 255).round()),
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(65),
                           bottomLeft: Radius.circular(65),
@@ -121,7 +121,9 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                 "ประวัติ",
                                 style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
-                                      context, 14),
+                                    context,
+                                    14,
+                                  ),
                                   color: Colors.black,
                                 ),
                               ),
@@ -131,7 +133,9 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                 buffalo?.name ?? '',
                                 style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
-                                      context, 24),
+                                    context,
+                                    24,
+                                  ),
                                   color: Colors.red,
                                 ),
                               ),
@@ -143,99 +147,116 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   const SizedBox(height: 10),
                                   if (buffalo?.gender != '')
                                     _buildInfoRow(
-                                        'ควายไทย เพศ ',
-                                        buffalo?.gender ?? '-',
-                                        Colors.blue[800]),
+                                      'ควายไทย เพศ ',
+                                      buffalo?.gender ?? '-',
+                                      Colors.blue[800],
+                                    ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.color != '')
-                                    _buildInfoRow('สี ', buffalo?.color ?? '',
-                                        Colors.black),
+                                    _buildInfoRow(
+                                      'สี ',
+                                      buffalo?.color ?? '',
+                                      Colors.black,
+                                    ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.birthDate != '')
                                     _buildInfoRow(
                                       'เกิด ',
                                       buffalo?.birthDate != '-'
-                                          ? _formatDateToBuddhist(buffalo!
-                                              .birthDate!) // เรียกฟังก์ชันสำหรับแปลงวันที่
+                                          ? _formatDateToBuddhist(
+                                              buffalo!.birthDate!,
+                                            ) // เรียกฟังก์ชันสำหรับแปลงวันที่
                                           : '-',
                                       Colors.red[900],
                                     ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.bornAt != '')
                                     _buildInfoRow(
-                                        'เกิดที่ คอก/ฟาร์ม ',
-                                        buffalo?.bornAt ?? '-',
-                                        Colors.green[800]),
+                                      'เกิดที่ คอก/ฟาร์ม ',
+                                      buffalo?.bornAt ?? '-',
+                                      Colors.green[800],
+                                    ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.birthMethod != null)
                                     _buildInfoRow(
-                                        'โดยวิธีการ ',
-                                        buffalo?.birthMethod ?? '-',
-                                        Colors.red[800]),
+                                      'โดยวิธีการ ',
+                                      buffalo?.birthMethod ?? '-',
+                                      Colors.red[800],
+                                    ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.fatherName != '')
                                     _buildInfoRow(
-                                        'พ่อพันธุ์ คือ',
-                                        buffalo?.fatherName ?? '-',
-                                        Colors.red[800]),
+                                      'พ่อพันธุ์ คือ',
+                                      buffalo?.fatherName ?? '-',
+                                      Colors.red[800],
+                                    ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.motherName != '')
                                     _buildInfoRow(
-                                        'แม่พันธุ์ คือ ',
-                                        buffalo?.motherName ?? '-',
-                                        Colors.red[800]),
+                                      'แม่พันธุ์ คือ ',
+                                      buffalo?.motherName ?? '-',
+                                      Colors.red[800],
+                                    ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.fatherGrandfatherName != '')
                                     _buildInfoRow(
-                                        'สายเลือดทางปู่',
-                                        buffalo?.fatherGrandfatherName ?? '-',
-                                        Colors.pink[800]),
+                                      'สายเลือดทางปู่',
+                                      buffalo?.fatherGrandfatherName ?? '-',
+                                      Colors.pink[800],
+                                    ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.fatherGrandmotherName != '')
                                     _buildInfoRow(
-                                        'สายเลือดทางย่า',
-                                        buffalo?.fatherGrandmotherName ?? '-',
-                                        Colors.pink[800]),
+                                      'สายเลือดทางย่า',
+                                      buffalo?.fatherGrandmotherName ?? '-',
+                                      Colors.pink[800],
+                                    ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.motherGrandfatherName != '')
                                     _buildInfoRow(
-                                        'สายเลือดทางตา',
-                                        buffalo?.motherGrandfatherName ?? '-',
-                                        Colors.pink[800]),
+                                      'สายเลือดทางตา',
+                                      buffalo?.motherGrandfatherName ?? '-',
+                                      Colors.pink[800],
+                                    ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.motherGrandmotherName != '')
                                     _buildInfoRow(
-                                        'สายเลือดทางยาย',
-                                        buffalo?.motherGrandmotherName ?? '-',
-                                        Colors.pink[800]),
+                                      'สายเลือดทางยาย',
+                                      buffalo?.motherGrandmotherName ?? '-',
+                                      Colors.pink[800],
+                                    ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.fatherGreatGrandfatherName != '')
                                     _buildInfoRow(
-                                        'สืบสายเลือดปู่ทวด',
-                                        buffalo?.fatherGreatGrandfatherName ??
-                                            '-',
-                                        Colors.pink[800]),
+                                      'สืบสายเลือดปู่ทวด',
+                                      buffalo?.fatherGreatGrandfatherName ??
+                                          '-',
+                                      Colors.pink[800],
+                                    ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.motherGreatGrandfatherName != '')
                                     _buildInfoRow(
-                                        'สืบสายเลือดตาทวด',
-                                        buffalo?.motherGreatGrandfatherName ??
-                                            '-',
-                                        Colors.pink[800]),
+                                      'สืบสายเลือดตาทวด',
+                                      buffalo?.motherGreatGrandfatherName ??
+                                          '-',
+                                      Colors.pink[800],
+                                    ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.fatherGreatGrandmotherName != '')
                                     _buildInfoRow(
-                                        'สืบสายเลือดย่าทวด',
-                                        buffalo?.fatherGreatGrandmotherName ??
-                                            '-',
-                                        Colors.pink[800]),
+                                      'สืบสายเลือดย่าทวด',
+                                      buffalo?.fatherGreatGrandmotherName ??
+                                          '-',
+                                      Colors.pink[800],
+                                    ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.motherGreatGrandmotherName != '')
                                     _buildInfoRow(
-                                        'สืบสายเลือดยายทวด',
-                                        buffalo?.motherGreatGrandmotherName ??
-                                            '-',
-                                        Colors.pink[800]),
+                                      'สืบสายเลือดยายทวด',
+                                      buffalo?.motherGreatGrandmotherName ??
+                                          '-',
+                                      Colors.pink[800],
+                                    ),
                                   const SizedBox(height: 10),
                                 ],
                               ),
@@ -267,7 +288,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      Container(
+                      SizedBox(
                         width: 150,
                         child: Card(
                           color: Colors.green[500],
@@ -307,7 +328,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                             onPressed: () {
                               Navigator.of(context).pop(); // Close the popup
                             },
-                            child: Text("ปิด"),
+                            child: const Text("ปิด"),
                           ),
                         ],
                       );

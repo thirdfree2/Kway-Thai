@@ -166,9 +166,12 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
             children: [
               const CircularProgressIndicator(),
               const SizedBox(width: 20),
-              Text('กำลังโหลด...',
-                  style: TextStyle(
-                      fontSize: ScreenUtils.calculateFontSize(context, 16))),
+              Text(
+                'กำลังโหลด...',
+                style: TextStyle(
+                  fontSize: ScreenUtils.calculateFontSize(context, 16),
+                ),
+              ),
             ],
           ),
         );
@@ -303,7 +306,7 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Card(
-                color: Colors.white.withOpacity(0.8),
+                color: Colors.white.withAlpha((0.6 * 255).round()),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
@@ -333,7 +336,9 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
-                                      context, 24),
+                                    context,
+                                    24,
+                                  ),
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red,
                                 ),
@@ -353,17 +358,23 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                     maxLines: 1,
                                     'ลงทะเบียนควายสำหรับฟาร์ม',
                                     style: TextStyle(
-                                        fontSize: ScreenUtils.calculateFontSize(
-                                            context, 8)),
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                        context,
+                                        8,
+                                      ),
+                                    ),
                                   ),
                                   AutoSizeText(
                                     maxLines: 1,
                                     _farmNameController.text,
                                     style: TextStyle(
-                                        fontSize: ScreenUtils.calculateFontSize(
-                                            context, 24)),
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                        context,
+                                        24,
+                                      ),
+                                    ),
                                   ),
-                                  Container(
+                                  SizedBox(
                                     width: 150,
                                     height: 150,
                                     child: ImagePickerWidget(
@@ -373,9 +384,9 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                       onPickImage: _pickImage,
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
@@ -687,7 +698,8 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                                 );
                                                 Navigator.of(context).pop();
                                                 print(
-                                                    'ลงทะเบียนฟาร์มสำเร็จ: $result');
+                                                  'ลงทะเบียนฟาร์มสำเร็จ: $result',
+                                                );
                                                 Navigator.pop(context);
                                                 Navigator.pop(context);
                                                 Navigator.pop(context);
@@ -698,21 +710,24 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                                       (BuildContext context) {
                                                     return AlertDialog(
                                                       title: const Text(
-                                                          'ลงทะเบียนสำเร็จ'),
+                                                        'ลงทะเบียนสำเร็จ',
+                                                      ),
                                                       content: const Text(
-                                                          'ข้อมูลฟาร์มถูกลงทะเบียนเรียบร้อยแล้ว'),
+                                                        'ข้อมูลฟาร์มถูกลงทะเบียนเรียบร้อยแล้ว',
+                                                      ),
                                                       actions: <Widget>[
                                                         TextButton(
                                                           child: const Text(
-                                                              'ตกลง'),
+                                                            'ตกลง',
+                                                          ),
                                                           onPressed: () {
                                                             Navigator.of(
-                                                                    context)
-                                                                .pushReplacement(
+                                                              context,
+                                                            ).pushReplacement(
                                                               MaterialPageRoute(
                                                                 builder:
                                                                     (context) =>
-                                                                        DetailFarmView(),
+                                                                        const DetailFarmView(),
                                                               ),
                                                             );
                                                           },
@@ -727,7 +742,8 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                                     .showSnackBar(
                                                   SnackBar(
                                                     content: Text(
-                                                        'เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง $e'),
+                                                      'เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง $e',
+                                                    ),
                                                   ),
                                                 );
                                               }
@@ -736,7 +752,8 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                                   .showSnackBar(
                                                 const SnackBar(
                                                   content: Text(
-                                                      'กรุณากรอกรหัสฟาร์มให้ครบ 6 หลัก'),
+                                                    'กรุณากรอกรหัสฟาร์มให้ครบ 6 หลัก',
+                                                  ),
                                                 ),
                                               );
                                             }
@@ -769,16 +786,15 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
 }
 
 class CustomTextFormField extends StatelessWidget {
-  final TextEditingController controller;
-  final String labelText;
-  final FormFieldValidator<String>? validator;
-
   const CustomTextFormField({
     super.key,
     required this.controller,
     required this.labelText,
     this.validator,
   });
+  final TextEditingController controller;
+  final String labelText;
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -794,35 +810,34 @@ class CustomTextFormField extends StatelessWidget {
 }
 
 class CustomDatePickerTextFormField extends StatelessWidget {
+  const CustomDatePickerTextFormField({
+    super.key,
+    required this.controller,
+    required this.labelText,
+    this.validator,
+  });
   final TextEditingController controller;
   final String labelText;
   final FormFieldValidator<String>? validator;
 
-  const CustomDatePickerTextFormField({
-    Key? key,
-    required this.controller,
-    required this.labelText,
-    this.validator,
-  }) : super(key: key);
-
-   Future<void> _selectDate(BuildContext context) async {
-  DateTime? pickedDate = await showRoundedDatePicker(
-    locale: const Locale("th", "TH"),
-    context: context,
-    era: EraMode.BUDDHIST_YEAR,
-    initialDate: DateTime.now(),
-    firstDate: DateTime(1900),
-    lastDate: DateTime(2100),
-  );
-
-  if (pickedDate != null) {
-    // เพิ่ม 543 เฉพาะเมื่อแสดงผลใน controller
-    final buddhistYear = pickedDate.year + 543;
-    controller.text = DateFormat('dd/MM/yyyy').format(
-      DateTime(buddhistYear, pickedDate.month, pickedDate.day),
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? pickedDate = await showRoundedDatePicker(
+      locale: const Locale("th", "TH"),
+      context: context,
+      era: EraMode.BUDDHIST_YEAR,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
     );
+
+    if (pickedDate != null) {
+      // เพิ่ม 543 เฉพาะเมื่อแสดงผลใน controller
+      final buddhistYear = pickedDate.year + 543;
+      controller.text = DateFormat('dd/MM/yyyy').format(
+        DateTime(buddhistYear, pickedDate.month, pickedDate.day),
+      );
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -842,18 +857,17 @@ class CustomDatePickerTextFormField extends StatelessWidget {
 }
 
 class ImagePickerWidget extends StatelessWidget {
-  final File? selectedImage;
-  final VoidCallback onPickImage;
-  final double width;
-  final double height;
-
   const ImagePickerWidget({
-    Key? key,
+    super.key,
     this.selectedImage,
     required this.onPickImage,
     required this.width,
     required this.height,
-  }) : super(key: key);
+  });
+  final File? selectedImage;
+  final VoidCallback onPickImage;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -865,7 +879,7 @@ class ImagePickerWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.black),
-          color: Colors.white.withOpacity(0.8),
+          color: Colors.white.withAlpha((0.6 * 255).round()),
         ),
         child: selectedImage == null
             ? const Column(
@@ -893,18 +907,17 @@ class ImagePickerWidget extends StatelessWidget {
 }
 
 class DropdownBuffalo extends StatelessWidget {
-  final String? selectedStatus;
-  final List<String> statusOptions;
-  final ValueChanged<String?> onChanged;
-  final String name;
-
   const DropdownBuffalo({
-    Key? key,
+    super.key,
     required this.name,
     required this.selectedStatus,
     required this.statusOptions,
     required this.onChanged,
-  }) : super(key: key);
+  });
+  final String? selectedStatus;
+  final List<String> statusOptions;
+  final ValueChanged<String?> onChanged;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -927,17 +940,17 @@ class DropdownBuffalo extends StatelessWidget {
 }
 
 class FamilyForm extends StatelessWidget {
-  final TextEditingController nameController;
-  final TextEditingController farmController;
-  final String buffaloHeadText;
-  final String buffaloNameText;
   const FamilyForm({
-    Key? key,
+    super.key,
     required this.nameController,
     required this.farmController,
     required this.buffaloHeadText,
     required this.buffaloNameText,
-  }) : super(key: key);
+  });
+  final TextEditingController nameController;
+  final TextEditingController farmController;
+  final String buffaloHeadText;
+  final String buffaloNameText;
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,6 @@ import 'package:buffalo_thai/view/promote_buffalo/main_promote_buffalo_wrapper.d
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:stroke_text/stroke_text.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:buffalo_thai/view/farm/main_farm_view.dart';
@@ -90,9 +89,10 @@ class _HomeViewState extends State<HomeView> {
         decoration: const BoxDecoration(
           color: Colors.black,
           image: DecorationImage(
-              opacity: 0.7,
-              image: AssetImage("assets/images/background-2.jpg"),
-              fit: BoxFit.cover),
+            opacity: 0.7,
+            image: AssetImage("assets/images/background-2.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: SingleChildScrollView(
           child: SizedBox(
@@ -116,26 +116,30 @@ class _HomeViewState extends State<HomeView> {
                                   'สวัสดี',
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
-                                        context, 12),
+                                      context,
+                                      12,
+                                    ),
                                   ),
                                 ),
                                 Text(
                                   'ควายไทย',
                                   style: TextStyle(
-                                      fontSize: ScreenUtils.calculateFontSize(
-                                        context,
-                                        21,
-                                      ),
-                                      color: Colors.white),
+                                    fontSize: ScreenUtils.calculateFontSize(
+                                      context,
+                                      21,
+                                    ),
+                                    color: Colors.white,
+                                  ),
                                 ),
                                 Text(
                                   'KWAY THAI',
                                   style: TextStyle(
-                                      fontSize: ScreenUtils.calculateFontSize(
-                                        context,
-                                        21,
-                                      ),
-                                      color: Colors.black),
+                                    fontSize: ScreenUtils.calculateFontSize(
+                                      context,
+                                      21,
+                                    ),
+                                    color: Colors.black,
+                                  ),
                                 ),
                                 // StrokeText(
                                 //   text: "ควายไทย",
@@ -167,7 +171,8 @@ class _HomeViewState extends State<HomeView> {
                                         return const CircularProgressIndicator(); // แสดงโหลดเดอร์ขณะรอ
                                       } else if (snapshot.hasError) {
                                         return Text(
-                                            'Error: ${snapshot.error}'); // แสดงข้อความเมื่อเกิดข้อผิดพลาด
+                                          'Error: ${snapshot.error}',
+                                        ); // แสดงข้อความเมื่อเกิดข้อผิดพลาด
                                       } else if (snapshot.hasData &&
                                           snapshot.data!.isNotEmpty) {
                                         BuffaloModel firstBuffalo = snapshot
@@ -188,16 +193,15 @@ class _HomeViewState extends State<HomeView> {
                                           ),
                                         );
 
-                                        final imageUrl = profileImage != null
-                                            ? profileImage.imagePath
-                                            : 'https://placeholder.com/150';
+                                        final imageUrl = profileImage.imagePath;
                                         return InkWell(
                                           onTap: () {
                                             Provider.of<SelectedBuffalo>(
-                                                    context,
-                                                    listen: false)
-                                                .setSelectedBuffalo(
-                                                    firstBuffalo);
+                                              context,
+                                              listen: false,
+                                            ).setSelectedBuffalo(
+                                              firstBuffalo,
+                                            );
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -214,12 +218,13 @@ class _HomeViewState extends State<HomeView> {
                                               Text(
                                                 firstBuffalo.name,
                                                 style: TextStyle(
-                                                    fontSize: ScreenUtils
-                                                        .calculateFontSize(
-                                                      context,
-                                                      12,
-                                                    ),
-                                                    color: Colors.white),
+                                                  fontSize: ScreenUtils
+                                                      .calculateFontSize(
+                                                    context,
+                                                    12,
+                                                  ),
+                                                  color: Colors.white,
+                                                ),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                               Container(
@@ -231,7 +236,8 @@ class _HomeViewState extends State<HomeView> {
                                                 decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(
-                                                          15), // ปรับแต่งความโค้งของมุมตามต้องการ
+                                                    15,
+                                                  ), // ปรับแต่งความโค้งของมุมตามต้องการ
                                                 ),
                                                 child: Image.network(
                                                   imageUrl,
@@ -240,7 +246,7 @@ class _HomeViewState extends State<HomeView> {
                                               ),
                                               const SizedBox(
                                                 height: 10,
-                                              )
+                                              ),
 
                                               // StrokeText(
                                               //   text: firstBuffalo.name,
@@ -257,7 +263,8 @@ class _HomeViewState extends State<HomeView> {
                                         );
                                       } else {
                                         return const Text(
-                                            'No Buffaloes found'); // เมื่อไม่มีข้อมูล
+                                          'No Buffaloes found',
+                                        ); // เมื่อไม่มีข้อมูล
                                       }
                                     },
                                   ),
@@ -273,7 +280,8 @@ class _HomeViewState extends State<HomeView> {
                                 controller: searchController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: Colors.white.withOpacity(0.8),
+                                  fillColor: Colors.white
+                                      .withAlpha((0.6 * 255).round()),
                                   prefixIcon: const Icon(Icons.search),
                                   hintText: 'ค้นหา',
                                   border: OutlineInputBorder(
@@ -287,19 +295,22 @@ class _HomeViewState extends State<HomeView> {
                               children: [
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 10),
+                                    horizontal: 5,
+                                    vertical: 10,
+                                  ),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(16.0),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.grey.withOpacity(0.2),
+                                        color: Colors.grey
+                                            .withAlpha((0.2 * 255).round()),
                                         offset: const Offset(2.0, 4.0),
                                         blurRadius: 4.0,
                                       ),
                                     ],
                                   ),
                                   child: Card(
-                                    color: Colors.white.withOpacity(0.5),
+                                    color: Colors.white.withAlpha(128),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
@@ -319,7 +330,9 @@ class _HomeViewState extends State<HomeView> {
                                             style: TextStyle(
                                               fontSize:
                                                   ScreenUtils.calculateFontSize(
-                                                      context, 10),
+                                                context,
+                                                10,
+                                              ),
                                             ),
                                           ),
                                           const SizedBox(height: 2.0),
@@ -328,7 +341,9 @@ class _HomeViewState extends State<HomeView> {
                                             style: TextStyle(
                                               fontSize:
                                                   ScreenUtils.calculateFontSize(
-                                                      context, 10),
+                                                context,
+                                                10,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -351,8 +366,9 @@ class _HomeViewState extends State<HomeView> {
                               child: Container(
                                 width: 150,
                                 decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(8)),
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
                                 child: const Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Center(
@@ -364,7 +380,7 @@ class _HomeViewState extends State<HomeView> {
                                   ),
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ],
@@ -385,7 +401,8 @@ class _HomeViewState extends State<HomeView> {
                               return const CircularProgressIndicator(); // แสดงโหลดเดอร์ขณะรอ
                             } else if (snapshot.hasError) {
                               return Text(
-                                  'Error: ${snapshot.error}'); // แสดงข้อความเมื่อเกิดข้อผิดพลาด
+                                'Error: ${snapshot.error}',
+                              ); // แสดงข้อความเมื่อเกิดข้อผิดพลาด
                             } else if (snapshot.hasData &&
                                 snapshot.data!.isNotEmpty) {
                               // ถ้ามีข้อมูลและไม่ว่าง
@@ -395,7 +412,8 @@ class _HomeViewState extends State<HomeView> {
                               if (buffaloList.length > 1) {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
+                                    horizontal: 10,
+                                  ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: List.generate(
@@ -422,16 +440,18 @@ class _HomeViewState extends State<HomeView> {
 
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 5),
+                                          horizontal: 5,
+                                        ),
                                         child: Column(
                                           children: [
                                             InkWell(
                                               onTap: () {
                                                 Provider.of<SelectedBuffalo>(
-                                                        context,
-                                                        listen: false)
-                                                    .setSelectedBuffalo(
-                                                        buffalo);
+                                                  context,
+                                                  listen: false,
+                                                ).setSelectedBuffalo(
+                                                  buffalo,
+                                                );
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
@@ -458,12 +478,13 @@ class _HomeViewState extends State<HomeView> {
                                             Text(
                                               buffalo.name,
                                               style: TextStyle(
-                                                  fontSize: ScreenUtils
-                                                      .calculateFontSize(
-                                                    context,
-                                                    12,
-                                                  ),
-                                                  color: Colors.white),
+                                                fontSize: ScreenUtils
+                                                    .calculateFontSize(
+                                                  context,
+                                                  12,
+                                                ),
+                                                color: Colors.white,
+                                              ),
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                             // StrokeText(
@@ -485,14 +506,16 @@ class _HomeViewState extends State<HomeView> {
                                 );
                               } else {
                                 return const Text(
-                                    'No additional buffaloes found');
+                                  'No additional buffaloes found',
+                                );
                               }
                             } else {
                               return const Text(
-                                  'No Buffaloes found'); // เมื่อไม่มีข้อมูล
+                                'No Buffaloes found',
+                              ); // เมื่อไม่มีข้อมูล
                             }
                           },
-                        )
+                        ),
                       ],
                     ),
                   const SizedBox(
@@ -511,7 +534,9 @@ class _HomeViewState extends State<HomeView> {
                                 "ข่าวประชาสัมพันธ์",
                                 style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
-                                      context, 20),
+                                    context,
+                                    20,
+                                  ),
                                   color: Colors.white,
                                 ),
                               ),
@@ -527,17 +552,21 @@ class _HomeViewState extends State<HomeView> {
                                     ConnectionState.waiting) {
                                   // กรณีที่กำลังโหลดข้อมูล
                                   return const Center(
-                                      child: CircularProgressIndicator());
+                                    child: CircularProgressIndicator(),
+                                  );
                                 } else if (snapshot.hasError) {
                                   // กรณีที่เกิดข้อผิดพลาดในการดึงข้อมูล
                                   return Center(
-                                      child: Text(
-                                          'เกิดข้อผิดพลาด: ${snapshot.error}'));
+                                    child: Text(
+                                      'เกิดข้อผิดพลาด: ${snapshot.error}',
+                                    ),
+                                  );
                                 } else if (!snapshot.hasData ||
                                     snapshot.data!.isEmpty) {
                                   // กรณีไม่มีข้อมูลที่จะแสดง
                                   return const Center(
-                                      child: Text('ไม่พบประกาศใดๆ'));
+                                    child: Text('ไม่พบประกาศใดๆ'),
+                                  );
                                 } else {
                                   // กรณีดึงข้อมูลได้สำเร็จ
                                   final annoucements = snapshot.data!;
@@ -557,10 +586,14 @@ class _HomeViewState extends State<HomeView> {
                                                 annouce
                                                     .filepath, // ใช้ URL ของรูปภาพจาก AnnouceModel
                                                 fit: BoxFit.cover,
-                                                errorBuilder: (context, error,
-                                                    stackTrace) {
+                                                errorBuilder: (
+                                                  context,
+                                                  error,
+                                                  stackTrace,
+                                                ) {
                                                   return const Text(
-                                                      'ไม่สามารถโหลดรูปภาพได้');
+                                                    'ไม่สามารถโหลดรูปภาพได้',
+                                                  );
                                                 },
                                               ),
                                               actions: [
@@ -581,14 +614,15 @@ class _HomeViewState extends State<HomeView> {
                                         height: screenHeight * 0.18,
                                         clipBehavior: Clip.antiAlias,
                                         margin: const EdgeInsets.symmetric(
-                                            vertical: 5),
+                                          vertical: 5,
+                                        ),
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(
-                                              15), // ปรับ radius ตามต้องการ
+                                            15,
+                                          ), // ปรับ radius ตามต้องการ
                                           boxShadow: [
                                             BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
+                                              color: Colors.grey.withAlpha(128),
                                               spreadRadius: 2,
                                               blurRadius: 5,
                                               offset: const Offset(0, 3),
@@ -606,7 +640,8 @@ class _HomeViewState extends State<HomeView> {
                                                 'ไม่สามารถโหลดรูปภาพได้',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                    color: Colors.red),
+                                                  color: Colors.red,
+                                                ),
                                               ),
                                             );
                                           },
@@ -651,16 +686,21 @@ class _HomeViewState extends State<HomeView> {
                                     const EdgeInsets.symmetric(horizontal: 5),
                                 child: InkWell(
                                   onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const FarmView())),
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const FarmView(),
+                                    ),
+                                  ),
                                   child: Column(
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
                                           color: const Color.fromARGB(
-                                              255, 243, 243, 243),
+                                            255,
+                                            243,
+                                            243,
+                                            243,
+                                          ),
                                           borderRadius:
                                               BorderRadius.circular(20),
                                         ),
@@ -679,10 +719,13 @@ class _HomeViewState extends State<HomeView> {
                                       Text(
                                         "คอก/ฟาร์ม",
                                         style: TextStyle(
-                                            fontSize:
-                                                ScreenUtils.calculateFontSize(
-                                                    context, 10),
-                                            color: Colors.white),
+                                          fontSize:
+                                              ScreenUtils.calculateFontSize(
+                                            context,
+                                            10,
+                                          ),
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -693,16 +736,22 @@ class _HomeViewState extends State<HomeView> {
                                     const EdgeInsets.symmetric(horizontal: 5),
                                 child: InkWell(
                                   onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const MainHistoryBuffaloView())),
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const MainHistoryBuffaloView(),
+                                    ),
+                                  ),
                                   child: Column(
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
                                           color: const Color.fromARGB(
-                                              255, 243, 243, 243),
+                                            255,
+                                            243,
+                                            243,
+                                            243,
+                                          ),
                                           borderRadius:
                                               BorderRadius.circular(20),
                                         ),
@@ -722,11 +771,14 @@ class _HomeViewState extends State<HomeView> {
                                       Text(
                                         "ประวัติ",
                                         style: TextStyle(
-                                            fontSize:
-                                                ScreenUtils.calculateFontSize(
-                                                    context, 10),
-                                            color: Colors.white),
-                                      )
+                                          fontSize:
+                                              ScreenUtils.calculateFontSize(
+                                            context,
+                                            10,
+                                          ),
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -736,16 +788,22 @@ class _HomeViewState extends State<HomeView> {
                                     const EdgeInsets.symmetric(horizontal: 5),
                                 child: InkWell(
                                   onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const MainHeredityBuffaloView())),
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const MainHeredityBuffaloView(),
+                                    ),
+                                  ),
                                   child: Column(
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
                                           color: const Color.fromARGB(
-                                              255, 243, 243, 243),
+                                            255,
+                                            243,
+                                            243,
+                                            243,
+                                          ),
                                           borderRadius:
                                               BorderRadius.circular(20),
                                         ),
@@ -765,10 +823,13 @@ class _HomeViewState extends State<HomeView> {
                                       Text(
                                         "พันธุกรรม",
                                         style: TextStyle(
-                                            fontSize:
-                                                ScreenUtils.calculateFontSize(
-                                                    context, 10),
-                                            color: Colors.white),
+                                          fontSize:
+                                              ScreenUtils.calculateFontSize(
+                                            context,
+                                            10,
+                                          ),
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -781,10 +842,12 @@ class _HomeViewState extends State<HomeView> {
                                   children: [
                                     InkWell(
                                       onTap: () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const MainFarmRegister())),
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MainFarmRegister(),
+                                        ),
+                                      ),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           gradient: const LinearGradient(
@@ -792,7 +855,11 @@ class _HomeViewState extends State<HomeView> {
                                             end: Alignment.bottomRight,
                                             colors: [
                                               Color.fromARGB(
-                                                  255, 255, 227, 225),
+                                                255,
+                                                255,
+                                                227,
+                                                225,
+                                              ),
                                               Color.fromARGB(255, 255, 98, 86),
                                             ],
                                           ),
@@ -818,7 +885,9 @@ class _HomeViewState extends State<HomeView> {
                                       style: TextStyle(
                                         overflow: TextOverflow.ellipsis,
                                         fontSize: ScreenUtils.calculateFontSize(
-                                            context, 10),
+                                          context,
+                                          10,
+                                        ),
                                         color: Colors.white,
                                       ),
                                     ),
@@ -852,7 +921,9 @@ class _HomeViewState extends State<HomeView> {
                                       'พบควายที่ค้นหา (${filteredBuffaloes.length})',
                                       style: TextStyle(
                                         fontSize: ScreenUtils.calculateFontSize(
-                                            context, 14),
+                                          context,
+                                          14,
+                                        ),
                                         color: Colors.white,
                                       ),
                                     ),
@@ -864,21 +935,23 @@ class _HomeViewState extends State<HomeView> {
                                       child: Container(
                                         width: 150,
                                         decoration: BoxDecoration(
-                                            color: Colors.red,
-                                            borderRadius:
-                                                BorderRadius.circular(8)),
+                                          color: Colors.red,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
                                         child: const Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Center(
                                             child: Text(
                                               'ล้างการค้นหา',
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -908,16 +981,14 @@ class _HomeViewState extends State<HomeView> {
                                         buffaloId: buffalo.id,
                                       ),
                                     );
-
-                                    final imageUrl = profileImage != null
-                                        ? profileImage.imagePath
-                                        : 'https://placeholder.com/150';
+                                    final imageUrl = profileImage.imagePath;
 
                                     return InkWell(
                                       onTap: () {
-                                        Provider.of<SelectedBuffalo>(context,
-                                                listen: false)
-                                            .setSelectedBuffalo(buffalo);
+                                        Provider.of<SelectedBuffalo>(
+                                          context,
+                                          listen: false,
+                                        ).setSelectedBuffalo(buffalo);
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -949,10 +1020,12 @@ class _HomeViewState extends State<HomeView> {
                                               overflow: TextOverflow.ellipsis,
                                               fontSize:
                                                   ScreenUtils.calculateFontSize(
-                                                      context, 12),
+                                                context,
+                                                12,
+                                              ),
                                               color: Colors.white,
                                             ),
-                                          )
+                                          ),
                                         ],
                                       ),
                                     );
@@ -963,7 +1036,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                         ),
                       ),
-                    )
+                    ),
                 ],
               ),
             ),

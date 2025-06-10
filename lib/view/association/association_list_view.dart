@@ -18,14 +18,12 @@ class _AssociationListViewState extends State<AssociationListView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     futureAssociation = fetchAssociation();
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -33,8 +31,9 @@ class _AssociationListViewState extends State<AssociationListView> {
       body: DecoratedBox(
         decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/images/background-1.jpg"),
-              fit: BoxFit.cover),
+            image: AssetImage("assets/images/background-1.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: SafeArea(
           child: Column(
@@ -77,7 +76,7 @@ class _AssociationListViewState extends State<AssociationListView> {
                   width: double.infinity,
                   height: screenHeight / 1.5,
                   child: Card(
-                    color: Colors.white.withOpacity(0.6),
+                    color: Colors.white.withAlpha((0.6 * 255).round()),
                     elevation: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -93,15 +92,19 @@ class _AssociationListViewState extends State<AssociationListView> {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
                                   return const Center(
-                                      child: CircularProgressIndicator());
+                                    child: CircularProgressIndicator(),
+                                  );
                                 } else if (snapshot.hasError) {
                                   return Center(
-                                      child: Text(
-                                          'เกิดข้อผิดพลาด: ${snapshot.error}'));
+                                    child: Text(
+                                      'เกิดข้อผิดพลาด: ${snapshot.error}',
+                                    ),
+                                  );
                                 } else if (!snapshot.hasData ||
                                     snapshot.data!.isEmpty) {
                                   return const Center(
-                                      child: Text('ไม่พบข้อมูลสมาคม'));
+                                    child: Text('ไม่พบข้อมูลสมาคม'),
+                                  );
                                 } else {
                                   final associations = snapshot.data!;
                                   return ListView.builder(
@@ -113,10 +116,11 @@ class _AssociationListViewState extends State<AssociationListView> {
                                           child: InkWell(
                                             onTap: () {
                                               Provider.of<SelectedAssociation>(
-                                                      context,
-                                                      listen: false)
-                                                  .setSelectedAssociation(
-                                                      associations[index]);
+                                                context,
+                                                listen: false,
+                                              ).setSelectedAssociation(
+                                                associations[index],
+                                              );
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -130,12 +134,14 @@ class _AssociationListViewState extends State<AssociationListView> {
                                                 child: Padding(
                                                   padding: const EdgeInsets
                                                       .symmetric(
-                                                      horizontal: 20),
+                                                    horizontal: 20,
+                                                  ),
                                                   child: Text(
                                                     'A0${index + 1} ${associations[index].associationName} ',
                                                     style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -154,7 +160,7 @@ class _AssociationListViewState extends State<AssociationListView> {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

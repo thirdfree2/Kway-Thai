@@ -86,9 +86,12 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
             children: [
               const CircularProgressIndicator(),
               const SizedBox(width: 20),
-              Text('กำลังโหลด...',
-                  style: TextStyle(
-                      fontSize: ScreenUtils.calculateFontSize(context, 16))),
+              Text(
+                'กำลังโหลด...',
+                style: TextStyle(
+                  fontSize: ScreenUtils.calculateFontSize(context, 16),
+                ),
+              ),
             ],
           ),
         );
@@ -124,7 +127,7 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Card(
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withAlpha((0.6 * 255).round()),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
               ),
@@ -167,25 +170,32 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                       Row(
                         children: [
                           Expanded(
-                              flex: 1,
-                              child: Column(
-                                children: [
-                                  AutoSizeText(
-                                    maxLines: 1,
-                                    'ลงทะเบียนควายสำหรับฟาร์ม',
-                                    style: TextStyle(
-                                        fontSize: ScreenUtils.calculateFontSize(
-                                            context, 8)),
+                            flex: 1,
+                            child: Column(
+                              children: [
+                                AutoSizeText(
+                                  maxLines: 1,
+                                  'ลงทะเบียนควายสำหรับฟาร์ม',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtils.calculateFontSize(
+                                      context,
+                                      8,
+                                    ),
                                   ),
-                                  AutoSizeText(
-                                    maxLines: 1,
-                                    _farmNameController.text,
-                                    style: TextStyle(
-                                        fontSize: ScreenUtils.calculateFontSize(
-                                            context, 24)),
+                                ),
+                                AutoSizeText(
+                                  maxLines: 1,
+                                  _farmNameController.text,
+                                  style: TextStyle(
+                                    fontSize: ScreenUtils.calculateFontSize(
+                                      context,
+                                      24,
+                                    ),
                                   ),
-                                ],
-                              )),
+                                ),
+                              ],
+                            ),
+                          ),
                           const SizedBox(width: 10),
                           Expanded(
                             flex: 1,
@@ -513,13 +523,15 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                       .showSnackBar(
                                                     SnackBar(
                                                       content: Text(
-                                                          'เกิดข้อผิดพลาด: $result'),
+                                                        'เกิดข้อผิดพลาด: $result',
+                                                      ),
                                                     ),
                                                   );
                                                 } else {
                                                   Navigator.of(context).pop();
                                                   print(
-                                                      'ลงทะเบียนฟาร์มสำเร็จ: $result');
+                                                    'ลงทะเบียนฟาร์มสำเร็จ: $result',
+                                                  );
                                                   Navigator.pop(context);
                                                   Navigator.pop(context);
                                                   Navigator.pop(context);
@@ -529,17 +541,20 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                         (BuildContext context) {
                                                       return AlertDialog(
                                                         title: const Text(
-                                                            'ลงทะเบียนสำเร็จ'),
+                                                          'ลงทะเบียนสำเร็จ',
+                                                        ),
                                                         content: const Text(
-                                                            'ข้อมูลฟาร์มถูกลงทะเบียนเรียบร้อยแล้ว'),
+                                                          'ข้อมูลฟาร์มถูกลงทะเบียนเรียบร้อยแล้ว',
+                                                        ),
                                                         actions: <Widget>[
                                                           TextButton(
                                                             child: const Text(
-                                                                'ตกลง'),
+                                                              'ตกลง',
+                                                            ),
                                                             onPressed: () {
                                                               Navigator.of(
-                                                                      context)
-                                                                  .pushReplacement(
+                                                                context,
+                                                              ).pushReplacement(
                                                                 MaterialPageRoute(
                                                                   builder:
                                                                       (context) =>
@@ -560,7 +575,8 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                     .showSnackBar(
                                                   const SnackBar(
                                                     content: Text(
-                                                        'เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง'),
+                                                      'เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง',
+                                                    ),
                                                   ),
                                                 );
                                               }
@@ -569,7 +585,8 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                   .showSnackBar(
                                                 const SnackBar(
                                                   content: Text(
-                                                      'กรุณากรอกรหัสฟาร์มให้ครบ 6 หลัก'),
+                                                    'กรุณากรอกรหัสฟาร์มให้ครบ 6 หลัก',
+                                                  ),
                                                 ),
                                               );
                                             }
@@ -602,12 +619,6 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
 }
 
 class CustomTextFormField extends StatelessWidget {
-  final TextEditingController controller;
-  final String labelText;
-  final FormFieldValidator<String>? validator;
-  final TextInputType keyboardType;
-  final List<TextInputFormatter>? inputFormatters;
-
   const CustomTextFormField({
     super.key,
     required this.controller,
@@ -616,6 +627,11 @@ class CustomTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.validator,
   });
+  final TextEditingController controller;
+  final String labelText;
+  final FormFieldValidator<String>? validator;
+  final TextInputType keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -632,16 +648,15 @@ class CustomTextFormField extends StatelessWidget {
 }
 
 class CustomDatePickerTextFormField extends StatelessWidget {
-  final TextEditingController controller;
-  final String labelText;
-  final FormFieldValidator<String>? validator;
-
   const CustomDatePickerTextFormField({
     super.key,
     required this.controller,
     required this.labelText,
     this.validator,
   });
+  final TextEditingController controller;
+  final String labelText;
+  final FormFieldValidator<String>? validator;
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showRoundedDatePicker(
@@ -680,12 +695,6 @@ class CustomDatePickerTextFormField extends StatelessWidget {
 }
 
 class ImagePickerWidget extends StatelessWidget {
-  final File? selectedImage;
-  final String? labelName;
-  final VoidCallback onPickImage;
-  final double width;
-  final double height;
-
   const ImagePickerWidget({
     super.key,
     this.labelName,
@@ -694,6 +703,11 @@ class ImagePickerWidget extends StatelessWidget {
     required this.width,
     required this.height,
   });
+  final File? selectedImage;
+  final String? labelName;
+  final VoidCallback onPickImage;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -705,7 +719,7 @@ class ImagePickerWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.black),
-          color: Colors.white.withOpacity(0.8),
+          color: Colors.white.withAlpha((0.6 * 255).round()),
         ),
         child: selectedImage == null
             ? Column(
@@ -715,7 +729,7 @@ class ImagePickerWidget extends StatelessWidget {
                   Text(
                     labelName ?? 'รูปโปรไฟล์',
                     textAlign: TextAlign.center,
-                  )
+                  ),
                 ],
               )
             : ClipRRect(
@@ -733,12 +747,6 @@ class ImagePickerWidget extends StatelessWidget {
 }
 
 class DropdownBuffalo extends StatelessWidget {
-  final String? selectedStatus;
-  final List<String> statusOptions;
-  final ValueChanged<String?> onChanged;
-  final String name;
-  final String? validateName;
-
   const DropdownBuffalo({
     super.key,
     this.validateName,
@@ -747,6 +755,11 @@ class DropdownBuffalo extends StatelessWidget {
     required this.statusOptions,
     required this.onChanged,
   });
+  final String? selectedStatus;
+  final List<String> statusOptions;
+  final ValueChanged<String?> onChanged;
+  final String name;
+  final String? validateName;
 
   @override
   Widget build(BuildContext context) {
@@ -770,10 +783,6 @@ class DropdownBuffalo extends StatelessWidget {
 }
 
 class FamilyForm extends StatelessWidget {
-  final TextEditingController nameController;
-  final TextEditingController farmController;
-  final String buffaloHeadText;
-  final String buffaloNameText;
   const FamilyForm({
     super.key,
     required this.nameController,
@@ -781,6 +790,10 @@ class FamilyForm extends StatelessWidget {
     required this.buffaloHeadText,
     required this.buffaloNameText,
   });
+  final TextEditingController nameController;
+  final TextEditingController farmController;
+  final String buffaloHeadText;
+  final String buffaloNameText;
 
   @override
   Widget build(BuildContext context) {

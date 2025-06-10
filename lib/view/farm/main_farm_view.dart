@@ -47,12 +47,13 @@ class _FarmViewState extends State<FarmView> {
   }
 
   void _filterFarms(
-      List<FarmModel> farmsNorth,
-      List<FarmModel> farmsNortheast,
-      List<FarmModel> farmsCentral,
-      List<FarmModel> farmsSouth,
-      List<FarmModel> farmsWest,
-      List<FarmModel> farmsEast) {
+    List<FarmModel> farmsNorth,
+    List<FarmModel> farmsNortheast,
+    List<FarmModel> farmsCentral,
+    List<FarmModel> farmsSouth,
+    List<FarmModel> farmsWest,
+    List<FarmModel> farmsEast,
+  ) {
     final searchText = _searchController.text.toLowerCase();
     setState(() {
       search = true; // ตั้งค่า search เป็น true เมื่อทำการค้นหา
@@ -134,14 +135,17 @@ class _FarmViewState extends State<FarmView> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 15),
+                          horizontal: 10,
+                          vertical: 15,
+                        ),
                         child: SizedBox(
                           width: screenWidth * 0.4,
                           child: TextFormField(
                             controller: _searchController,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white.withOpacity(0.8),
+                              fillColor:
+                                  Colors.white.withAlpha((0.6 * 255).round()),
                               prefixIcon: IconButton(
                                 icon: const Icon(Icons.search),
                                 onPressed: () {
@@ -190,7 +194,7 @@ class _FarmViewState extends State<FarmView> {
                       child: SizedBox(
                         height: screenHeight - viewInsets - 350,
                         child: Card(
-                          color: Colors.white.withOpacity(0.8),
+                          color: Colors.white.withAlpha((0.6 * 255).round()),
                           child: Column(
                             children: [
                               const SizedBox(
@@ -200,7 +204,9 @@ class _FarmViewState extends State<FarmView> {
                                 "ผลลัพธ์การค้นหา",
                                 style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
-                                      context, 18),
+                                    context,
+                                    18,
+                                  ),
                                   color: Colors.blue,
                                 ),
                               ),
@@ -213,9 +219,10 @@ class _FarmViewState extends State<FarmView> {
                                         height: 80,
                                         child: InkWell(
                                           onTap: () {
-                                            Provider.of<SelectedFarm>(context,
-                                                    listen: false)
-                                                .setSelectedFarm(
+                                            Provider.of<SelectedFarm>(
+                                              context,
+                                              listen: false,
+                                            ).setSelectedFarm(
                                               '',
                                               filteredFarmsNorth[index]
                                                   .farmName,
@@ -236,9 +243,11 @@ class _FarmViewState extends State<FarmView> {
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.symmetric(
-                                                        horizontal: 20),
+                                                  horizontal: 20,
+                                                ),
                                                 child: Text(
-                                                    '00${index + 1} ${filteredFarmsNorth[index].farmName}'),
+                                                  '00${index + 1} ${filteredFarmsNorth[index].farmName}',
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -253,7 +262,7 @@ class _FarmViewState extends State<FarmView> {
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ] else ...[
                   // กรณีที่ยังไม่มีการค้นหา ให้แสดง UI ปกติ
                   Expanded(
@@ -264,20 +273,23 @@ class _FarmViewState extends State<FarmView> {
                         futureFarmsCentral,
                         futureFarmsSouth,
                         futureFarmsWest,
-                        futureFarmsEast
+                        futureFarmsEast,
                       ]),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return const Center(
-                              child: CircularProgressIndicator());
+                            child: CircularProgressIndicator(),
+                          );
                         } else if (snapshot.hasError) {
                           return Center(
-                              child: Text('Error: ${snapshot.error}'));
+                            child: Text('Error: ${snapshot.error}'),
+                          );
                         } else if (!snapshot.hasData ||
                             snapshot.data!.every((list) => list.isEmpty)) {
                           return const Center(
-                              child: Text('No farms available'));
+                            child: Text('No farms available'),
+                          );
                         } else {
                           filteredFarmsNorth = snapshot.data![0];
                           filteredFarmsNortheast = snapshot.data![1];
@@ -301,15 +313,18 @@ class _FarmViewState extends State<FarmView> {
                                       screenWidth: screenWidth,
                                       screenHeight: screenHeight,
                                       onMorePressed: () {
-                                        Provider.of<SelectedRegion>(context,
-                                                listen: false)
-                                            .setSelectedRegion(
-                                                'ภาคเหนือ', filteredFarmsNorth);
+                                        Provider.of<SelectedRegion>(
+                                          context,
+                                          listen: false,
+                                        ).setSelectedRegion(
+                                          'ภาคเหนือ',
+                                          filteredFarmsNorth,
+                                        );
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ListFarmView(),
+                                                const ListFarmView(),
                                           ),
                                         );
                                       },
@@ -323,15 +338,18 @@ class _FarmViewState extends State<FarmView> {
                                       screenWidth: screenWidth,
                                       screenHeight: screenHeight,
                                       onMorePressed: () {
-                                        Provider.of<SelectedRegion>(context,
-                                                listen: false)
-                                            .setSelectedRegion('ภาคอีสาน',
-                                                filteredFarmsNortheast);
+                                        Provider.of<SelectedRegion>(
+                                          context,
+                                          listen: false,
+                                        ).setSelectedRegion(
+                                          'ภาคอีสาน',
+                                          filteredFarmsNortheast,
+                                        );
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ListFarmView(),
+                                                const ListFarmView(),
                                           ),
                                         );
                                       },
@@ -350,15 +368,18 @@ class _FarmViewState extends State<FarmView> {
                                       screenWidth: screenWidth,
                                       screenHeight: screenHeight,
                                       onMorePressed: () {
-                                        Provider.of<SelectedRegion>(context,
-                                                listen: false)
-                                            .setSelectedRegion('ภาคกลาง',
-                                                filteredFarmsCentral);
+                                        Provider.of<SelectedRegion>(
+                                          context,
+                                          listen: false,
+                                        ).setSelectedRegion(
+                                          'ภาคกลาง',
+                                          filteredFarmsCentral,
+                                        );
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ListFarmView(),
+                                                const ListFarmView(),
                                           ),
                                         );
                                       },
@@ -372,15 +393,18 @@ class _FarmViewState extends State<FarmView> {
                                       screenWidth: screenWidth,
                                       screenHeight: screenHeight,
                                       onMorePressed: () {
-                                        Provider.of<SelectedRegion>(context,
-                                                listen: false)
-                                            .setSelectedRegion(
-                                                'ภาคใต้', filteredFarmsSouth);
+                                        Provider.of<SelectedRegion>(
+                                          context,
+                                          listen: false,
+                                        ).setSelectedRegion(
+                                          'ภาคใต้',
+                                          filteredFarmsSouth,
+                                        );
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ListFarmView(),
+                                                const ListFarmView(),
                                           ),
                                         );
                                       },
@@ -399,15 +423,18 @@ class _FarmViewState extends State<FarmView> {
                                       screenWidth: screenWidth,
                                       screenHeight: screenHeight,
                                       onMorePressed: () {
-                                        Provider.of<SelectedRegion>(context,
-                                                listen: false)
-                                            .setSelectedRegion('ภาคตะวันตก',
-                                                filteredFarmsWest);
+                                        Provider.of<SelectedRegion>(
+                                          context,
+                                          listen: false,
+                                        ).setSelectedRegion(
+                                          'ภาคตะวันตก',
+                                          filteredFarmsWest,
+                                        );
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ListFarmView(),
+                                                const ListFarmView(),
                                           ),
                                         );
                                       },
@@ -421,15 +448,18 @@ class _FarmViewState extends State<FarmView> {
                                       screenWidth: screenWidth,
                                       screenHeight: screenHeight,
                                       onMorePressed: () {
-                                        Provider.of<SelectedRegion>(context,
-                                                listen: false)
-                                            .setSelectedRegion('ภาคตะวันออก',
-                                                filteredFarmsEast);
+                                        Provider.of<SelectedRegion>(
+                                          context,
+                                          listen: false,
+                                        ).setSelectedRegion(
+                                          'ภาคตะวันออก',
+                                          filteredFarmsEast,
+                                        );
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ListFarmView(),
+                                                const ListFarmView(),
                                           ),
                                         );
                                       },

@@ -1,6 +1,5 @@
 import 'package:buffalo_thai/navigation/home_navigation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class MainWrapper extends StatefulWidget {
   const MainWrapper({super.key});
@@ -24,8 +23,14 @@ class MainWrapperState extends State<MainWrapper> {
         selectedIndex: _selectedIndex,
         destinations: [
           NavigationDestination(
-            selectedIcon: Icon(Icons.home, color: Colors.green[900],),
-            icon: Icon(Icons.home_outlined, color: Colors.green[900],),
+            selectedIcon: Icon(
+              Icons.home,
+              color: Colors.green[900],
+            ),
+            icon: Icon(
+              Icons.home_outlined,
+              color: Colors.green[900],
+            ),
             label: 'หน้ารัก',
           ),
           NavigationDestination(
@@ -59,7 +64,7 @@ class MainWrapperState extends State<MainWrapper> {
             Home(),
             Home(),
             Home(),
-            Home()
+            Home(),
           ],
         ),
       ),

@@ -59,24 +59,35 @@ class _AddBreedingViewState extends State<AddBreedingView> {
                   const SizedBox(height: 12),
                   Card(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     elevation: 6,
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         children: [
                           _buildTextField(
-                              maleNameController, 'ชื่อพ่อพันธุ์ (Stud)'),
+                            maleNameController,
+                            'ชื่อพ่อพันธุ์ (Stud)',
+                          ),
                           _buildDropdownMethod(),
-                          _buildTextField(breedingCountController,
-                              'จำนวนครั้งที่ผสม (Count)',
-                              type: TextInputType.number),
-                          _buildDatePickerField(breedingDateController,
-                              'วันที่ผสม (Breeding date)'),
-                          _buildDatePickerField(recheckDateController,
-                              'วันที่เช็คกลับสัด (Recheck Date)'),
-                          _buildDatePickerField(expectedBirthDateController,
-                              'กำหนดคลอด (Expected Birth Date)'),
+                          _buildTextField(
+                            breedingCountController,
+                            'จำนวนครั้งที่ผสม (Count)',
+                            type: TextInputType.number,
+                          ),
+                          _buildDatePickerField(
+                            breedingDateController,
+                            'วันที่ผสม (Breeding date)',
+                          ),
+                          _buildDatePickerField(
+                            recheckDateController,
+                            'วันที่เช็คกลับสัด (Recheck Date)',
+                          ),
+                          _buildDatePickerField(
+                            expectedBirthDateController,
+                            'กำหนดคลอด (Expected Birth Date)',
+                          ),
                           _buildImagePicker(),
                           const SizedBox(
                             height: 10,
@@ -101,8 +112,11 @@ class _AddBreedingViewState extends State<AddBreedingView> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label,
-      {TextInputType type = TextInputType.text}) {
+  Widget _buildTextField(
+    TextEditingController controller,
+    String label, {
+    TextInputType type = TextInputType.text,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: TextFormField(
@@ -135,9 +149,13 @@ class _AddBreedingViewState extends State<AddBreedingView> {
         value: breedingMethod,
         items: const [
           DropdownMenuItem(
-              value: 'ผสมเทียม', child: Text('ผสมเทียม (Artificial)')),
+            value: 'ผสมเทียม',
+            child: Text('ผสมเทียม (Artificial)'),
+          ),
           DropdownMenuItem(
-              value: 'ธรรมชาติ', child: Text('ธรรมชาติ (Natural)')),
+            value: 'ธรรมชาติ',
+            child: Text('ธรรมชาติ (Natural)'),
+          ),
         ],
         onChanged: (value) => setState(() => breedingMethod = value),
         decoration: const InputDecoration(
@@ -219,7 +237,10 @@ class _AddBreedingViewState extends State<AddBreedingView> {
 
                           // แปลงจาก พ.ศ. เป็น ค.ศ.
                           final christianDate = DateTime(
-                              thDate.year - 543, thDate.month, thDate.day);
+                            thDate.year - 543,
+                            thDate.month,
+                            thDate.day,
+                          );
 
                           return DateFormat('yyyy-MM-dd').format(christianDate);
                         } catch (_) {
@@ -245,7 +266,8 @@ class _AddBreedingViewState extends State<AddBreedingView> {
                           recheckDate:
                               convertThaiDateToIso(recheckDateController.text),
                           expectedBirthDate: convertThaiDateToIso(
-                              expectedBirthDateController.text),
+                            expectedBirthDateController.text,
+                          ),
                           isNatural: breedingMethod == 'ธรรมชาติ' ? '1' : '0',
                           imageFile: image!,
                         );
@@ -253,7 +275,8 @@ class _AddBreedingViewState extends State<AddBreedingView> {
                         if (res.statusCode == 201) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                                content: Text("บันทึกสำเร็จ (Save Success)")),
+                              content: Text("บันทึกสำเร็จ (Save Success)"),
+                            ),
                           );
                           Navigator.pop(context);
                           Navigator.pop(context, true);
@@ -261,15 +284,18 @@ class _AddBreedingViewState extends State<AddBreedingView> {
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                              content:
-                                  Text("รหัสผ่านไม่ถูกต้อง (Wrong Password)")),
+                            content:
+                                Text("รหัสผ่านไม่ถูกต้อง (Wrong Password)"),
+                          ),
                         );
                       }
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text(
-                                "บันทึกข้อมูลวัคซีนเรียบร้อย Record Success")),
+                          content: Text(
+                            "บันทึกข้อมูลวัคซีนเรียบร้อย Record Success",
+                          ),
+                        ),
                       );
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(

@@ -4,7 +4,6 @@ import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/services/award_services.dart';
 import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/farm_owner/register_buffalo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +17,6 @@ class MainRegisterAward extends StatefulWidget {
 
 class _MainRegisterAwardState extends State<MainRegisterAward> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _awardController = TextEditingController();
   final TextEditingController _rankController = TextEditingController();
   final TextEditingController _generationController = TextEditingController();
   final TextEditingController _dateAwardController = TextEditingController();
@@ -95,9 +93,11 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Card(
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withAlpha((0.6 * 255).round()),
                       margin: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 20),
+                        horizontal: 16,
+                        vertical: 20,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
@@ -115,7 +115,8 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
+                                      horizontal: 10,
+                                    ),
                                     child: InkWell(
                                       onTap: () {
                                         Navigator.pop(context);
@@ -128,9 +129,10 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                       'รางวัลงานประกวด',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.red),
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 10),
@@ -277,8 +279,9 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                 height: 50,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(10)),
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                                 child: Center(
                                   child: TextButton(
                                     onPressed: () async {
@@ -289,61 +292,65 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                             // แสดง dialog เพื่อกรอกรหัส 6 หลัก
                                             await _showCodeDialog();
 
-                                            if (_passwordController.text !=
-                                                null) {
-                                              await addBuffaloAward(
-                                                  buffaloId: buffalo?.id ?? 0,
-                                                  password:
-                                                      _passwordController.text,
-                                                  farmId: selectedFarm.farmId,
-                                                  province:
-                                                      _provinceController.text,
-                                                  gender: _selectedGender
-                                                      .toString(),
-                                                  type: _generationController
-                                                      .text,
-                                                  name:
-                                                      _awardNameController.text,
-                                                  rank: _rankController.text,
-                                                  date:
-                                                      _dateAwardController.text,
-                                                  image: imageFile,
-                                                  color: _colorController.text);
+                                            if (!context.mounted) return;
 
-                                              // ทำการ pop หน้าหลังจากเสร็จสิ้นการทำงาน
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                              Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      DetailFarmView(),
-                                                ),
-                                              );
+                                            await addBuffaloAward(
+                                              buffaloId: buffalo?.id ?? 0,
+                                              password:
+                                                  _passwordController.text,
+                                              farmId: selectedFarm.farmId,
+                                              province:
+                                                  _provinceController.text,
+                                              gender:
+                                                  _selectedGender.toString(),
+                                              type: _generationController.text,
+                                              name: _awardNameController.text,
+                                              rank: _rankController.text,
+                                              date: _dateAwardController.text,
+                                              image: imageFile,
+                                              color: _colorController.text,
+                                            );
 
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: const Text(
-                                                        'ลงทะเบียนสำเร็จ'),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        child: const Text('OK'),
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            }
+                                            // ทำการ pop หน้าหลังจากเสร็จสิ้นการทำงาน
+                                            if (!context.mounted) return;
+
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+
+                                            if (!context.mounted) return;
+
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const DetailFarmView(),
+                                              ),
+                                            );
+
+                                            if (!context.mounted) return;
+
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: const Text(
+                                                    'ลงทะเบียนสำเร็จ',
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      child: const Text('OK'),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
                                           } catch (e) {
-                                            print('Error: $e');
+                                            if (!context.mounted) return;
                                             // แสดง dialog แจ้งข้อผิดพลาด
                                             showDialog(
                                               context: context,
@@ -351,7 +358,8 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                                 return AlertDialog(
                                                   title: const Text('Error'),
                                                   content: const Text(
-                                                      'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.'),
+                                                    'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.',
+                                                  ),
                                                   actions: <Widget>[
                                                     TextButton(
                                                       child: const Text('OK'),
@@ -366,16 +374,16 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                             );
                                           }
                                         } else {
-                                          // ถ้าไม่ได้เลือกภาพให้แสดงข้อความแจ้งเตือน
-                                          print('Please select an image');
                                           showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
                                                 title: const Text(
-                                                    'Image Required'),
+                                                  'Image Required',
+                                                ),
                                                 content: const Text(
-                                                    'Please select an image.'),
+                                                  'Please select an image.',
+                                                ),
                                                 actions: <Widget>[
                                                   TextButton(
                                                     child: const Text('OK'),
@@ -434,14 +442,13 @@ class SubmitButton extends StatelessWidget {
 }
 
 class ImagePickerWidget extends StatelessWidget {
-  final File? selectedImage;
-  final VoidCallback onPickImage;
-
   const ImagePickerWidget({
     super.key,
     this.selectedImage,
     required this.onPickImage,
   });
+  final File? selectedImage;
+  final VoidCallback onPickImage;
 
   @override
   Widget build(BuildContext context) {
@@ -453,7 +460,7 @@ class ImagePickerWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.black),
-          color: Colors.white.withOpacity(0.8),
+          color: Colors.white.withAlpha((0.6 * 255).round()),
         ),
         child: selectedImage == null
             ? const Column(

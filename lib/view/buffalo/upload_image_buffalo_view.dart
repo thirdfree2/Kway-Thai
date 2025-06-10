@@ -8,7 +8,6 @@ import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:stroke_text/stroke_text.dart';
 
 class UploadImageBuffaloView extends StatefulWidget {
   const UploadImageBuffaloView({super.key});
@@ -24,12 +23,10 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
 
   Future<void> _pickMultipleImages() async {
     final pickedImages = await ImagePicker().pickMultiImage();
-    if (pickedImages != null) {
-      setState(() {
-        _selectedImages =
-            pickedImages.map((pickedFile) => File(pickedFile.path)).toList();
-      });
-    }
+    setState(() {
+      _selectedImages =
+          pickedImages.map((pickedFile) => File(pickedFile.path)).toList();
+    });
   }
 
   Future<void> _showCodeDialog(BuildContext context) async {
@@ -151,7 +148,7 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
         Navigator.pop(context);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => DetailFarmView(),
+            builder: (context) => const DetailFarmView(),
           ),
         );
       } else {
@@ -220,14 +217,14 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.black),
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.white.withAlpha((0.6 * 255).round()),
                           ),
                           child: _selectedImages.isEmpty
                               ? const Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(Icons.add, size: 30),
-                                    Text('รูปโปรไฟล์')
+                                    Text('รูปโปรไฟล์'),
                                   ],
                                 )
                               : GridView.builder(
@@ -272,7 +269,7 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
                             Navigator.pop(context);
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                builder: (context) => DetailFarmView(),
+                                builder: (context) => const DetailFarmView(),
                               ),
                             );
                           } catch (e) {
@@ -298,7 +295,7 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),

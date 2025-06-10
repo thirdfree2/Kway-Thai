@@ -1,15 +1,10 @@
 import 'package:buffalo_thai/model/buffalo_image_model.dart';
 import 'package:buffalo_thai/model/buffalo_model.dart';
 import 'package:buffalo_thai/services/buffalo_services.dart';
-import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/buffalo/main_buffalo_view.dart';
-import 'package:buffalo_thai/view/buffalo/main_buffalo_wrapper.dart';
 import 'package:buffalo_thai/view/promote_buffalo/main_promote_buffalo_wrapper.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:stroke_text/stroke_text.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 
 class MainHistoryBuffaloView extends StatefulWidget {
@@ -53,7 +48,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
         if (query.isNotEmpty) {
           filteredBuffaloes = buffaloList.where((buffalo) {
             // ตรวจสอบว่าชื่อควายมีค่าและไม่เป็น null หรือ empty ก่อนทำการกรอง
-            if (buffalo.name != null && buffalo.name.isNotEmpty) {
+            if (buffalo.name.isNotEmpty) {
               return buffalo.name.toLowerCase().contains(query);
             }
             return false;
@@ -86,9 +81,10 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
         decoration: const BoxDecoration(
           color: Colors.black,
           image: DecorationImage(
-              opacity: 0.7,
-              image: AssetImage("assets/images/background-2.jpg"),
-              fit: BoxFit.cover),
+            opacity: 0.7,
+            image: AssetImage("assets/images/background-2.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: SafeArea(
           child: Column(
@@ -110,8 +106,9 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
               Text(
                 'ประวัติควายไทย',
                 style: TextStyle(
-                    fontSize: ScreenUtils.calculateFontSize(context, 30),
-                    color: Colors.white),
+                  fontSize: ScreenUtils.calculateFontSize(context, 30),
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(height: 30),
               Center(
@@ -125,7 +122,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                       prefixIcon: const Icon(Icons.search),
                       prefixIconColor: Colors.white,
                       hintText: 'ค้นหา',
-                      hintStyle: TextStyle(color: Colors.white),
+                      hintStyle: const TextStyle(color: Colors.white),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
@@ -153,7 +150,9 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                                   'พบควายที่ค้นหา (${filteredBuffaloes.length})',
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
-                                        context, 14),
+                                      context,
+                                      14,
+                                    ),
                                     color: Colors.white,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -166,8 +165,9 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                                   child: Container(
                                     width: 150,
                                     decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(8)),
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
                                     child: const Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Center(
@@ -178,7 +178,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                                       ),
                                     ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -214,13 +214,15 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
 
                                 return InkWell(
                                   onTap: () {
-                                    Provider.of<SelectedBuffalo>(context,
-                                            listen: false)
-                                        .setSelectedBuffalo(buffalo);
+                                    Provider.of<SelectedBuffalo>(
+                                      context,
+                                      listen: false,
+                                    ).setSelectedBuffalo(buffalo);
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => PromoteBuffalo(),
+                                        builder: (context) =>
+                                            const PromoteBuffalo(),
                                       ),
                                     );
                                   },
@@ -246,7 +248,9 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                                         style: TextStyle(
                                           fontSize:
                                               ScreenUtils.calculateFontSize(
-                                                  context, 12),
+                                            context,
+                                            12,
+                                          ),
                                           color: Colors.white,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -273,14 +277,17 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return const Center(
-                              child: CircularProgressIndicator());
+                            child: CircularProgressIndicator(),
+                          );
                         } else if (snapshot.hasError) {
                           return Center(
-                              child: Text('Error: ${snapshot.error}'));
+                            child: Text('Error: ${snapshot.error}'),
+                          );
                         } else if (!snapshot.hasData ||
                             snapshot.data!.isEmpty) {
                           return const Center(
-                              child: Text('No buffaloes found.'));
+                            child: Text('No buffaloes found.'),
+                          );
                         }
 
                         final buffaloes = snapshot.data!;
@@ -314,14 +321,17 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                                 : 'https://placeholder.com/150';
                             return InkWell(
                               onTap: () {
-                                Provider.of<SelectedBuffalo>(context,
-                                        listen: false)
-                                    .setSelectedBuffalo(
-                                        buffalo); // Assuming 'name' is a property in BuffaloModel
+                                Provider.of<SelectedBuffalo>(
+                                  context,
+                                  listen: false,
+                                ).setSelectedBuffalo(
+                                  buffalo,
+                                ); // Assuming 'name' is a property in BuffaloModel
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => PromoteBuffalo(),
+                                    builder: (context) =>
+                                        const PromoteBuffalo(),
                                   ),
                                 );
                               },
@@ -345,7 +355,9 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                                     buffalo.name,
                                     style: TextStyle(
                                       fontSize: ScreenUtils.calculateFontSize(
-                                          context, 12),
+                                        context,
+                                        12,
+                                      ),
                                       color: Colors.white,
                                       overflow: TextOverflow.ellipsis,
                                     ),

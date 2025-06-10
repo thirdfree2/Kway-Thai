@@ -2,7 +2,6 @@ import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:stroke_text/stroke_text.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/register_award/main_register_award.dart';
@@ -32,9 +31,10 @@ class _MainPromoteAwardsViewState extends State<MainPromoteAwardsView> {
         decoration: const BoxDecoration(
           color: Colors.black,
           image: DecorationImage(
-              image: AssetImage("assets/images/background-2.jpg"),
-              fit: BoxFit.cover,
-              opacity: 0.8),
+            image: AssetImage("assets/images/background-2.jpg"),
+            fit: BoxFit.cover,
+            opacity: 0.8,
+          ),
         ),
         child: SafeArea(
           child: SizedBox(
@@ -55,19 +55,19 @@ class _MainPromoteAwardsViewState extends State<MainPromoteAwardsView> {
                         Icons.arrow_back,
                         size: 30,
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Card(
-                  color: Colors.white.withOpacity(0.8),
+                  color: Colors.white.withAlpha((0.6 * 255).round()),
                   child: Column(
                     children: [
                       Text(
                         "รางวัลงานประกวด",
                         style: TextStyle(
-                            fontSize:
-                                ScreenUtils.calculateFontSize(context, 26),
-                            color: Colors.black),
+                          fontSize: ScreenUtils.calculateFontSize(context, 26),
+                          color: Colors.black,
+                        ),
                       ),
                       const SizedBox(height: 20),
                       // การแสดงชื่อควาย
@@ -78,28 +78,35 @@ class _MainPromoteAwardsViewState extends State<MainPromoteAwardsView> {
                           Text(
                             buffalo?.name ?? "ชื่อควาย",
                             style: TextStyle(
-                                fontSize:
-                                    ScreenUtils.calculateFontSize(context, 24),
-                                color: Colors.red),
+                              fontSize:
+                                  ScreenUtils.calculateFontSize(context, 24),
+                              color: Colors.red,
+                            ),
                           ),
                           Column(
                             children: [
                               Text(
                                 '${buffalo?.competitions.length ?? 0}',
                                 style: TextStyle(
-                                    fontSize: ScreenUtils.calculateFontSize(
-                                        context, 28),
-                                    color: Colors.black),
+                                  fontSize: ScreenUtils.calculateFontSize(
+                                    context,
+                                    28,
+                                  ),
+                                  color: Colors.black,
+                                ),
                               ),
                               Text(
                                 "(รางวัล)",
                                 style: TextStyle(
-                                    fontSize: ScreenUtils.calculateFontSize(
-                                        context, 20),
-                                    color: Colors.black),
+                                  fontSize: ScreenUtils.calculateFontSize(
+                                    context,
+                                    20,
+                                  ),
+                                  color: Colors.black,
+                                ),
                               ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: 20),
@@ -109,7 +116,9 @@ class _MainPromoteAwardsViewState extends State<MainPromoteAwardsView> {
                         var competition = entry.value; // ดึงค่าของการแข่งขัน
                         return Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
+                            horizontal: 20,
+                            vertical: 10,
+                          ),
                           child: Row(
                             children: [
                               Expanded(
@@ -118,7 +127,9 @@ class _MainPromoteAwardsViewState extends State<MainPromoteAwardsView> {
                                   maxLines: 3,
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
-                                        context, 18),
+                                      context,
+                                      18,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -140,10 +151,11 @@ class _MainPromoteAwardsViewState extends State<MainPromoteAwardsView> {
                                               height: screenHeight * 0.5,
                                               clipBehavior: Clip.antiAlias,
                                               decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15) // Adjust the radius as needed
-                                                  ),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  15,
+                                                ), // Adjust the radius as needed
+                                              ),
                                               child: Image.network(
                                                 competition.imageBuffalo ?? '',
                                                 fit: BoxFit.fitWidth,
@@ -165,13 +177,14 @@ class _MainPromoteAwardsViewState extends State<MainPromoteAwardsView> {
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      color: Colors.red[600],
-                                      borderRadius: BorderRadius.circular(20)),
+                                    color: Colors.red[600],
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
                                   width: 50,
                                   height: 50,
                                   child: const Icon(Icons.camera_alt),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         );
@@ -212,7 +225,7 @@ class _MainPromoteAwardsViewState extends State<MainPromoteAwardsView> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),

@@ -90,7 +90,7 @@ class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
                 ),
                 Card(
                   // ignore: deprecated_member_use
-                  color: Colors.white.withOpacity(0.8),
+                  color: Colors.white.withAlpha((0.6 * 255).round()),
                   child: SizedBox(
                     width: double.infinity,
                     child: Column(
