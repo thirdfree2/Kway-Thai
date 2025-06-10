@@ -43,7 +43,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
 
   Future<void> _showPasswordDialog(BuildContext context) async {
     final selectedFarm = Provider.of<SelectedFarm>(context, listen: false);
-    String _passwordController = ''; // ตัวแปรสำหรับเก็บรหัสผ่าน
+    String passwordController = ''; // ตัวแปรสำหรับเก็บรหัสผ่าน
 
     return showDialog<void>(
       context: context,
@@ -61,7 +61,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                       maxLength: 6,
                       keyboardType: TextInputType.number,
                       onChanged: (value) {
-                        _passwordController = value;
+                        passwordController = value;
                       },
                       decoration: const InputDecoration(
                         hintText: 'กรุณาใส่รหัสผ่าน 6 หลัก',
@@ -80,7 +80,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                 TextButton(
                   child: const Text('ยืนยัน'),
                   onPressed: () async {
-                    if (_passwordController.length == 6) {
+                    if (passwordController.length == 6) {
                       setState(() {
                         isLoading = true; // เปิดการโหลด
                       });
@@ -89,7 +89,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                         final response = await updateFarm(
                           farmName: _farmNameController.text,
                           farmId: selectedFarm.farmId.toString(),
-                          password: _passwordController,
+                          password: passwordController,
                         );
 
                         if (response == "Farm updated successfully") {
@@ -101,7 +101,8 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
-                                  'อัปเดตข้อมูลฟาร์มสำเร็จ ชื่อคอก/ฟาร์มจะเปลี่ยนภายหลัง'),
+                                'อัปเดตข้อมูลฟาร์มสำเร็จ ชื่อคอก/ฟาร์มจะเปลี่ยนภายหลัง',
+                              ),
                               backgroundColor: Colors.green,
                               duration: Duration(seconds: 2),
                             ),
@@ -110,7 +111,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                           Navigator.of(context).pop();
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                              builder: (context) => DetailFarmView(),
+                              builder: (context) => const DetailFarmView(),
                             ),
                           );
                         } else {
@@ -210,7 +211,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                     child: isEditMode
                         ? Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
+                              horizontal: 20,
+                              vertical: 10,
+                            ),
                             child: TextFormField(
                               controller: _farmNameController,
                               decoration: const InputDecoration(
@@ -231,7 +234,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                 farmNames,
                                 style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
-                                      context, 20),
+                                    context,
+                                    20,
+                                  ),
                                   color: Colors.black,
                                 ),
                               ),
@@ -239,9 +244,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                           ),
                   ),
                   IconButton(
-                    icon: Icon(isEditMode
-                        ? Icons.check
-                        : Icons.edit), // แสดงไอคอนตามสถานะ
+                    icon: Icon(
+                      isEditMode ? Icons.check : Icons.edit,
+                    ), // แสดงไอคอนตามสถานะ
                     onPressed: () {
                       if (isEditMode) {
                         // เมื่อเป็นสถานะ check (isEditMode = true) ให้แสดง dialog
@@ -260,7 +265,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                         });
                       }
                     },
-                  )
+                  ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -283,10 +288,12 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                               InkWell(
                                 onTap: () {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              RegisterFarmOwner()));
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RegisterFarmOwner(),
+                                    ),
+                                  );
                                 },
                                 child: Container(
                                   height: 50,
@@ -322,7 +329,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                   'สมาชิก (${users.length})',
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
-                                        context, 14),
+                                      context,
+                                      14,
+                                    ),
                                     color: Colors.white,
                                   ),
                                 ),
@@ -333,7 +342,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            RegisterFarmOwner(),
+                                            const RegisterFarmOwner(),
                                       ),
                                     );
                                   },
@@ -378,9 +387,10 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                     : 'https://placeholder.com/150';
                                 return InkWell(
                                   onTap: () {
-                                    Provider.of<SelectedFarmOwner>(context,
-                                            listen: false)
-                                        .setSelectedFarmOwner(
+                                    Provider.of<SelectedFarmOwner>(
+                                      context,
+                                      listen: false,
+                                    ).setSelectedFarmOwner(
                                       user.userId.toString() ?? '',
                                       user.nickname ?? '',
                                       user.userImages[0].imageUrl,
@@ -393,7 +403,8 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => MainFarmOwner(),
+                                        builder: (context) =>
+                                            const MainFarmOwner(),
                                       ),
                                     );
                                   },
@@ -415,12 +426,14 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                       ),
                                       const SizedBox(height: 5),
                                       Text(
-                                        user?.nickname ?? '',
+                                        user.nickname ?? '',
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontSize:
                                               ScreenUtils.calculateFontSize(
-                                                  context, 12),
+                                            context,
+                                            12,
+                                          ),
                                           color: Colors.white,
                                         ),
                                       ),
@@ -458,10 +471,12 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                               InkWell(
                                 onTap: () {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              RegisterBuffalo()));
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RegisterBuffalo(),
+                                    ),
+                                  );
                                 },
                                 child: Container(
                                   height: 50,
@@ -477,7 +492,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                         'ลงทะเบียนควาย',
                                         maxLines: 1,
                                         style: TextStyle(
-                                            color: Colors.white, fontSize: 8),
+                                          color: Colors.white,
+                                          fontSize: 8,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -501,7 +518,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                   'ควาย (${buffaloes.length})',
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
-                                        context, 14),
+                                      context,
+                                      14,
+                                    ),
                                     color: Colors.white,
                                   ),
                                 ),
@@ -511,7 +530,8 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => RegisterBuffalo(),
+                                        builder: (context) =>
+                                            const RegisterBuffalo(),
                                       ),
                                     );
                                   },
@@ -566,13 +586,14 @@ class _DetailFarmViewState extends State<DetailFarmView> {
 
                                 return InkWell(
                                   onTap: () {
-                                    Provider.of<SelectedBuffalo>(context,
-                                            listen: false)
-                                        .setSelectedBuffalo(buffalo);
+                                    Provider.of<SelectedBuffalo>(
+                                      context,
+                                      listen: false,
+                                    ).setSelectedBuffalo(buffalo);
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => Buffalo(),
+                                        builder: (context) => const Buffalo(),
                                       ),
                                     );
                                   },
@@ -598,7 +619,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                         style: TextStyle(
                                           fontSize:
                                               ScreenUtils.calculateFontSize(
-                                                  context, 12),
+                                            context,
+                                            12,
+                                          ),
                                           color: Colors.white,
                                         ),
                                         maxLines: 1,

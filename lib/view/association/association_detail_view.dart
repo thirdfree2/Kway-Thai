@@ -1,9 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/model/association_model.dart';
+import 'package:buffalo_thai/model/association_user_model.dart';
 import 'package:buffalo_thai/providers/selected_association.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/services/association_services.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
+import 'package:buffalo_thai/view/association/association_user/association_user.dart';
 import 'package:buffalo_thai/view/association/register_association_view.dart';
 import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,24 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
     futureAssociation = futureAssociation = fetchAssociationById(
       id: selectAsso.association?.associationId.toString() ?? '0',
     );
+  }
+
+  void navigateToViewUser(AssociationUserModel user) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => AssociationUser(user: user)),
+    );
+
+    if (!mounted) return;
+
+    if (result == true) {
+      final buffalo = Provider.of<SelectedAssociation>(context, listen: false);
+      setState(() {
+        futureAssociation = futureAssociation = fetchAssociationById(
+          id: buffalo.association?.associationId.toString() ?? '0',
+        );
+      });
+    }
   }
 
   void navigateToAddPage() async {
@@ -251,33 +271,38 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                                     ? user.image
                                     : 'https://via.placeholder.com/150';
 
-                                return Column(
-                                  children: [
-                                    AspectRatio(
-                                      aspectRatio: 1,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(15),
-                                        child: Image.network(
-                                          imageUrl,
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (_, __, ___) =>
-                                              const Icon(Icons.person),
+                                return InkWell(
+                                  onTap: () => navigateToViewUser(user),
+                                  child: Column(
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 1,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: Image.network(
+                                            imageUrl,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (_, __, ___) =>
+                                                const Icon(Icons.person),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      user.nickname,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: ScreenUtils.calculateFontSize(
-                                          context,
-                                          12,
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        user.nickname,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize:
+                                              ScreenUtils.calculateFontSize(
+                                            context,
+                                            12,
+                                          ),
+                                          color: Colors.black,
                                         ),
-                                        color: Colors.black,
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 );
                               },
                             ),

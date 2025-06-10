@@ -1,4 +1,3 @@
-import 'package:buffalo_thai/components/kwai_thai_bg.dart';
 import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/services/buffalo_services.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
@@ -102,7 +101,7 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                           Provider.of<SelectedBuffalo>(context, listen: false)
                               .buffalo;
 
-                      final result = await createVaccine(
+                      await createVaccine(
                         farmId: buffalo?.farmId.toString() ?? '1',
                         password: password,
                         buffaloId: buffalo?.id.toString() ?? '0',
@@ -123,6 +122,8 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                             )
                             .toList(),
                       );
+
+                      if (!context.mounted) return;
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -234,7 +235,7 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                             final item = vaccines[index];
                             return Card(
                               margin: const EdgeInsets.symmetric(vertical: 8),
-                              color: Colors.white.withOpacity(1),
+                              color: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -311,16 +312,6 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                               }
 
                               if (formKey.currentState?.validate() ?? false) {
-                                for (final item in vaccines) {
-                                  print({
-                                    "vaccineName": item["vaccineName"].text,
-                                    "doseNumber": item["doseNumber"].text,
-                                    "volume": item["volume"].text,
-                                    "injectionDate": item["injectionDate"].text,
-                                    "nextInjectionDate":
-                                        item["nextInjectionDate"].text,
-                                  });
-                                }
                                 showPasswordDialog();
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(

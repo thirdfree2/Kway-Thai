@@ -208,9 +208,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                                   ),
                                 );
 
-                                final imageUrl = profileImage != null
-                                    ? profileImage.imagePath
-                                    : 'https://placeholder.com/150';
+                                final imageUrl = profileImage.imagePath;
 
                                 return InkWell(
                                   onTap: () {
@@ -316,9 +314,8 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                               ),
                             );
 
-                            final imageUrl = profileImage != null
-                                ? profileImage.imagePath
-                                : 'https://placeholder.com/150';
+                            final imageUrl = profileImage.imagePath;
+
                             return InkWell(
                               onTap: () {
                                 Provider.of<SelectedBuffalo>(

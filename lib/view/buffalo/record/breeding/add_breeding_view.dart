@@ -170,15 +170,12 @@ class _AddBreedingViewState extends State<AddBreedingView> {
   }
 
   Widget _buildImagePicker() {
-    String? imageErrorText;
-
     Future<void> pickImage() async {
       final pickedImage =
           await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedImage != null) {
         setState(() {
           image = File(pickedImage.path); // ✅ เก็บในตัวแปร image ที่เป็น state
-          imageErrorText = null;
         });
       }
     }
@@ -189,9 +186,6 @@ class _AddBreedingViewState extends State<AddBreedingView> {
       selectedImage: image,
       onPickImage: () async {
         await pickImage();
-        setState(() {
-          imageErrorText = null; // clear error เมื่อเลือกรูป
-        });
       },
       labelName: 'เพิ่มรูปภาพ \n (Add Photo)',
     );
@@ -272,6 +266,8 @@ class _AddBreedingViewState extends State<AddBreedingView> {
                           imageFile: image!,
                         );
 
+                        if (!context.mounted) return;
+
                         if (res.statusCode == 201) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -298,6 +294,8 @@ class _AddBreedingViewState extends State<AddBreedingView> {
                         ),
                       );
                     } catch (e) {
+                      if (!context.mounted) return;
+
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(e.toString())),
                       );
@@ -316,7 +314,6 @@ class _AddBreedingViewState extends State<AddBreedingView> {
     }
 
     if (formKey.currentState?.validate() ?? false) {
-      // TODO: Save logic here
       // ScaffoldMessenger.of(context).showSnackBar(
       //   const SnackBar(content: Text("บันทึกสำเร็จ")),
       // );

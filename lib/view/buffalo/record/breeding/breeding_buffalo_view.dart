@@ -1,4 +1,3 @@
-import 'package:buffalo_thai/components/detail_section.dart';
 import 'package:buffalo_thai/components/kwai_thai_bg.dart';
 import 'package:buffalo_thai/components/label_value_text.dart';
 import 'package:buffalo_thai/model/buffalo_breeding_model.dart';
@@ -7,7 +6,6 @@ import 'package:buffalo_thai/services/buffalo_services.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/buffalo/record/breeding/add_breeding_view.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class BreedingBuffaloView extends StatefulWidget {
@@ -18,7 +16,6 @@ class BreedingBuffaloView extends StatefulWidget {
 }
 
 class _BreedingBuffaloViewState extends State<BreedingBuffaloView> {
-  @override
   late Future<List<BuffaloBreedingModel>> futureBreeding;
   bool isInit = true;
 
@@ -50,6 +47,7 @@ class _BreedingBuffaloViewState extends State<BreedingBuffaloView> {
     );
 
     if (result == true) {
+      if (!mounted) return;
       final buffalo =
           Provider.of<SelectedBuffalo>(context, listen: false).buffalo;
       setState(() {
@@ -171,16 +169,6 @@ class _BreedingBuffaloViewState extends State<BreedingBuffaloView> {
         ],
       ),
     );
-  }
-
-  String _formatThaiDate(DateTime dateStr) {
-    try {
-      return DateFormat('dd MMM yyyy', 'th').format(
-        DateTime(dateStr.year + 543, dateStr.month, dateStr.day),
-      );
-    } catch (_) {
-      return "ไม่พบวันที่";
-    }
   }
 
   Widget buildBreedingCard(BuffaloBreedingModel breeding) {

@@ -108,46 +108,42 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
       _birthPlaceController.text = buffalo.bornAt ?? '';
       _editColorController.text = buffalo.color;
 
-      _fatherNameController.text = buffalo.fatherName ?? '';
-      _fatherFarmNameController.text = buffalo.fatherFarmName ?? '';
-      _motherNameController.text = buffalo.motherName ?? '';
-      _motherFarmNameController.text = buffalo.motherFarmName ?? '';
+      _fatherNameController.text = buffalo.fatherName;
+      _fatherFarmNameController.text = buffalo.fatherFarmName;
+      _motherNameController.text = buffalo.motherName;
+      _motherFarmNameController.text = buffalo.motherFarmName;
 
-      _fatherGrandfatherNameController.text =
-          buffalo.fatherGrandfatherName ?? '';
+      _fatherGrandfatherNameController.text = buffalo.fatherGrandfatherName;
       _fatherGrandfatherFarmNameController.text =
-          buffalo.fatherGrandfatherFarmName ?? '';
-      _fatherGrandmotherNameController.text =
-          buffalo.fatherGrandmotherName ?? '';
+          buffalo.fatherGrandfatherFarmName;
+      _fatherGrandmotherNameController.text = buffalo.fatherGrandmotherName;
       _fatherGrandmotherFarmNameController.text =
-          buffalo.fatherGrandmotherFarmName ?? '';
+          buffalo.fatherGrandmotherFarmName;
 
-      _motherGrandfatherNameController.text =
-          buffalo.motherGrandfatherName ?? '';
+      _motherGrandfatherNameController.text = buffalo.motherGrandfatherName;
       _motherGrandfatherFarmNameController.text =
-          buffalo.motherGrandfatherFarmName ?? '';
-      _motherGrandmotherNameController.text =
-          buffalo.motherGrandmotherName ?? '';
+          buffalo.motherGrandfatherFarmName;
+      _motherGrandmotherNameController.text = buffalo.motherGrandmotherName;
       _motherGrandmotherFarmNameController.text =
-          buffalo.motherGrandmotherFarmName ?? '';
+          buffalo.motherGrandmotherFarmName;
 
       _fatherGreatGrandfatherNameController.text =
-          buffalo.fatherGreatGrandfatherName ?? '';
+          buffalo.fatherGreatGrandfatherName;
       _fatherGreatGrandfatherFarmNameController.text =
-          buffalo.fatherGreatGrandfatherFarmName ?? '';
+          buffalo.fatherGreatGrandfatherFarmName;
       _fatherGreatGrandmotherNameController.text =
-          buffalo.fatherGreatGrandmotherName ?? '';
+          buffalo.fatherGreatGrandmotherName;
       _fatherGreatGrandmotherFarmNameController.text =
-          buffalo.fatherGreatGrandmotherFarmName ?? '';
+          buffalo.fatherGreatGrandmotherFarmName;
 
       _motherGreatGrandfatherNameController.text =
-          buffalo.motherGreatGrandfatherName ?? '';
+          buffalo.motherGreatGrandfatherName;
       _motherGreatGrandfatherFarmNameController.text =
-          buffalo.motherGreatGrandfatherFarmName ?? '';
+          buffalo.motherGreatGrandfatherFarmName;
       _motherGreatGrandmotherNameController.text =
-          buffalo.motherGreatGrandmotherName ?? '';
+          buffalo.motherGreatGrandmotherName;
       _motherGreatGrandmotherFarmNameController.text =
-          buffalo.motherGreatGrandmotherFarmName ?? '';
+          buffalo.motherGreatGrandmotherFarmName;
 
       _currentFarmController.text = buffalo.currentFarm?.farmName ?? '';
 
@@ -614,8 +610,7 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                               try {
                                                 showLoadingDialog(context);
 
-                                                String result =
-                                                    await updateBuffalo(
+                                                await updateBuffalo(
                                                   name: _nameController.text,
                                                   birthDate:
                                                       _birthDateController.text,
@@ -696,10 +691,9 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                                       '',
                                                   imageFile: _selectedImage,
                                                 );
+                                                if (!context.mounted) return;
+
                                                 Navigator.of(context).pop();
-                                                print(
-                                                  'ลงทะเบียนฟาร์มสำเร็จ: $result',
-                                                );
                                                 Navigator.pop(context);
                                                 Navigator.pop(context);
                                                 Navigator.pop(context);
@@ -737,7 +731,6 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                                   },
                                                 );
                                               } catch (e) {
-                                                print(e);
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                   SnackBar(

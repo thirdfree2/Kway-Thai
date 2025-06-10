@@ -8,7 +8,6 @@ import 'package:buffalo_thai/view/farm/components/card_farm.dart';
 import 'package:provider/provider.dart';
 import 'package:buffalo_thai/providers/selected_region.dart';
 import 'package:buffalo_thai/view/farm/list_farm_view.dart';
-import 'package:stroke_text/stroke_text.dart';
 
 class FarmView extends StatefulWidget {
   const FarmView({super.key});

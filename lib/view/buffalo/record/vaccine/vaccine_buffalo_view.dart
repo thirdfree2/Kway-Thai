@@ -5,7 +5,6 @@ import 'package:buffalo_thai/services/buffalo_services.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/buffalo/record/vaccine/add_vaccine_view.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class VaccineBuffaloView extends StatefulWidget {
@@ -16,7 +15,6 @@ class VaccineBuffaloView extends StatefulWidget {
 }
 
 class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
-  @override
   late Future<List<BuffaloVaccineModel>> futureVaccine;
   bool isInit = true;
 
@@ -48,6 +46,8 @@ class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
     );
 
     if (result == true) {
+      if (!mounted) return;
+
       final buffalo =
           Provider.of<SelectedBuffalo>(context, listen: false).buffalo;
       setState(() {

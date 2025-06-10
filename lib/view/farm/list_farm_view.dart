@@ -9,7 +9,6 @@ import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/providers/selected_region.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
-import 'package:stroke_text/stroke_text.dart';
 
 class ListFarmView extends StatefulWidget {
   const ListFarmView({super.key});
@@ -279,10 +278,14 @@ class _ListFarmViewState extends State<ListFarmView> {
   ) async {
     try {
       List<FarmModel> farms = await fetchFarms();
+      if (!context.mounted) return;
       Provider.of<SelectedRegion>(context, listen: false)
           .setSelectedRegion(farms.isNotEmpty ? farms.first.region : '', farms);
     } catch (e) {
-      print('Failed to load farms: $e');
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     }
   }
 }
@@ -293,10 +296,14 @@ void loadRegionData(
 ) async {
   try {
     List<FarmModel> farms = await fetchFarms();
+    if (!context.mounted) return;
     Provider.of<SelectedRegion>(context, listen: false)
         .setSelectedRegion(farms.isNotEmpty ? farms.first.region : '', farms);
   } catch (e) {
-    print('Failed to load farms: $e');
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(e.toString())),
+    );
   }
 }
 
