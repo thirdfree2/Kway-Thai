@@ -399,6 +399,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                       user.position,
                                       user.phoneNumber ?? '',
                                       user.lineId ?? '',
+                                      user.associationCardUrl ?? '',
                                     );
                                     Navigator.push(
                                       context,

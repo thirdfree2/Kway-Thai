@@ -47,7 +47,7 @@ class _RecordBuffaloViewState extends State<RecordBuffaloView> {
                 ),
                 Center(
                   child: Text(
-                    "บันทึก/ข้อมูล \n (Data)",
+                    "ข้อมูล \n (Information)",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: ScreenUtils.calculateFontSize(context, 24),
@@ -64,8 +64,12 @@ class _RecordBuffaloViewState extends State<RecordBuffaloView> {
                         children: [
                           Expanded(
                             child: RecordCard(
-                              title: "การพัฒนาการ \n (Development)",
+                              title: "พัฒนาการ \n (Development)",
                               height: screenHeight * 0.3,
+                              imageAssetPath: 'assets/images/develop.png',
+                              imagePosition:
+                                  ImagePosition.bottomLeft, // หรือ bottomLeft
+                              imageOpacity: 1,
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -80,8 +84,12 @@ class _RecordBuffaloViewState extends State<RecordBuffaloView> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: RecordCard(
-                              title: "การผสมพันธุ์ \n (Breeding)",
+                              title: "ผสมพันธุ์ \n (Breeding)",
                               height: screenHeight * 0.3,
+                              imageAssetPath: 'assets/images/breeding.png',
+                              imagePosition:
+                                  ImagePosition.topRight, // หรือ bottomLeft
+                              imageOpacity: 1,
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -99,8 +107,12 @@ class _RecordBuffaloViewState extends State<RecordBuffaloView> {
                       const SizedBox(height: 10),
 
                       RecordCard(
-                        title: "การฉีดวัคซีน \n (Vaccine)",
+                        title: "ฉีดวัคซีน \n (Vaccine)",
                         height: screenHeight * 0.3,
+                        imageAssetPath: 'assets/images/vaccine.png',
+                        imagePosition:
+                            ImagePosition.topRight, // หรือ bottomLeft
+                        imageOpacity: 1,
                         onTap: () {
                           Navigator.push(
                             context,
@@ -122,41 +134,80 @@ class _RecordBuffaloViewState extends State<RecordBuffaloView> {
   }
 }
 
+enum ImagePosition {
+  topLeft,
+  topRight,
+  bottomLeft,
+  bottomRight;
+
+  bool get isTop => this == topLeft || this == topRight;
+  bool get isBottom => this == bottomLeft || this == bottomRight;
+  bool get isLeft => this == topLeft || this == bottomLeft;
+  bool get isRight => this == topRight || this == bottomRight;
+}
+
 class RecordCard extends StatelessWidget {
   const RecordCard({
     super.key,
     required this.title,
     required this.onTap,
+    this.imageAssetPath,
+    this.imagePosition = ImagePosition.topRight,
+    this.imageOpacity = 0.2,
     this.height = 200, // ค่า default ถ้าไม่ส่งมา
   });
   final String title;
   final VoidCallback onTap;
   final double height;
 
+  final String? imageAssetPath;
+  final ImagePosition imagePosition;
+  final double imageOpacity;
+
   @override
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(8),
-        onTap: onTap,
-        child: Container(
-          height: height,
-          decoration: BoxDecoration(
-            color: Colors.white.withAlpha((0.6 * 255).round()),
+      child: Stack(
+        children: [
+          if (imageAssetPath != null)
+            Positioned(
+              top: imagePosition.isTop ? 0 : null,
+              bottom: imagePosition.isBottom ? 0 : null,
+              left: imagePosition.isLeft ? 0 : null,
+              right: imagePosition.isRight ? 0 : null,
+              child: Opacity(
+                opacity: imageOpacity,
+                child: Image.asset(
+                  imageAssetPath!,
+                  width: 150,
+                  height: 120,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          InkWell(
             borderRadius: BorderRadius.circular(8),
-          ),
-          child: Center(
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+            onTap: onTap,
+            child: Container(
+              height: height,
+              decoration: BoxDecoration(
+                color: Colors.white.withAlpha((0.6 * 255).round()),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
+                child: Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -192,7 +192,7 @@ class _AddVaccineViewState extends State<AddVaccineView> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  'จดบันทึกการฉีดวัคซีน (Add Vaccine)',
+                                  'จดบันทึกฉีดวัคซีน (Add Vaccine)',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(

@@ -81,7 +81,7 @@ class _BreedingBuffaloViewState extends State<BreedingBuffaloView> {
             child: Column(
               children: [
                 Text(
-                  "การผสมพันธุ์ \n (Breeding)",
+                  "ผสมพันธุ์ \n (Breeding)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: ScreenUtils.calculateFontSize(context, 24),
@@ -108,7 +108,7 @@ class _BreedingBuffaloViewState extends State<BreedingBuffaloView> {
                     child: Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
-                        'ไม่พบข้อมูลการผสมพันธุ์ของควาย \n (Not Found Record)',
+                        'ไม่พบข้อมูลผสมพันธุ์ของควาย \n (Not Found Record)',
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -154,7 +154,7 @@ class _BreedingBuffaloViewState extends State<BreedingBuffaloView> {
                     ),
                     child: const Center(
                       child: Text(
-                        'เพิ่มการผสมพันธุ์ \n (Add Breeding)',
+                        'เพิ่มผสมพันธุ์ \n (Add Breeding)',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,

@@ -30,6 +30,19 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
   final TextEditingController _userIdController = TextEditingController();
 
   final TextEditingController _passwordController = TextEditingController();
+
+  File? _optionalImage;
+
+  Future<void> _pickOptionalImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _optionalImage = File(pickedImage.path);
+      });
+    }
+  }
+
   String? _selectedStatus;
   final List<String> _statusOptions = ['เจ้าของฟาร์ม', 'ผู้จัดการ', 'สมาชิก'];
   File? _selectedImage;
@@ -227,6 +240,48 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                               },
                             ),
                             const SizedBox(height: 10),
+                            const Text(
+                              'บัตรสมาคม (Association Member)',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            const SizedBox(height: 5),
+                            GestureDetector(
+                              onTap: _pickOptionalImage,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade200,
+                                  borderRadius: BorderRadius.circular(8),
+                                  border:
+                                      Border.all(color: Colors.grey.shade400),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(
+                                      Icons.attach_file,
+                                      color: Colors.black54,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      _optionalImage != null
+                                          ? _optionalImage!.path
+                                              .split('/')
+                                              .last // แสดงชื่อไฟล์
+                                          : 'เพิ่มบัตรสมาคม (Association Member)',
+                                      style: const TextStyle(
+                                        fontSize: 11,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
                             Container(
                               height: 50,
                               width: double.infinity,
@@ -240,7 +295,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                     try {
                                       await _showCodeDialog();
 
-                                      await updateUser(
+                                      await updateUserV2(
                                         firstName: _nameController.text,
                                         userId: _userIdController.text,
                                         lastName: _lastNameController.text,
@@ -251,6 +306,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                         lineId: _lineIdController.text,
                                         password: _passwordController.text,
                                         imageFile: _selectedImage,
+                                        associationImage: _optionalImage,
                                       );
                                       Navigator.pop(context);
                                       Navigator.pushReplacement(

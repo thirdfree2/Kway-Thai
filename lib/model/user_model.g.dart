@@ -14,6 +14,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       lineId: json['lineId'] as String? ?? '',
       position: json['position'] as String? ?? '',
       phoneNumber: json['phoneNumber'] as String? ?? '',
+      associationCardUrl: json['associationCardUrl'] as String? ?? '',
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       farmId: (json['farmId'] as num).toInt(),

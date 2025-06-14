@@ -30,6 +30,7 @@ class _MainFarmOwnerState extends State<MainFarmOwner> {
     final phone = selectFarmOwener.phone;
     final lineId = selectFarmOwener.lineId;
     final farmName = selectedFarm.farmNames;
+    final assoCard = selectFarmOwener.assoCard;
 
     return Scaffold(
       body: DecoratedBox(
@@ -96,19 +97,101 @@ class _MainFarmOwnerState extends State<MainFarmOwner> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      width: 120,
-                                      height: 120,
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                          15,
-                                        ), // Adjust the radius as needed
-                                      ),
-                                      child: Image.network(
-                                        imgUrl,
-                                        fit: BoxFit.cover,
-                                      ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Container(
+                                          width: 120,
+                                          height: 120,
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              15,
+                                            ), // Adjust the radius as needed
+                                          ),
+                                          child: Image.network(
+                                            imgUrl,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        if (assoCard != '')
+                                          InkWell(
+                                            onTap: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: const Center(
+                                                      child: Text(
+                                                        'บัตรสมาชิกสมาคม \n(Member Card)',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ),
+                                                    content: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Image.network(
+                                                          assoCard, // ✅ แสดงรูปบัตรจาก URL
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.of(
+                                                          context,
+                                                        ).pop(),
+                                                        child:
+                                                            const Text('ปิด'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 150,
+                                              decoration: BoxDecoration(
+                                                color: Colors.red.shade300,
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: const Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Center(
+                                                  child: Text(
+                                                    'บัตรสมาชิกสมาคม \n(Member Card)',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        // Container(
+                                        //   width: 120,
+                                        //   height: 120,
+                                        //   clipBehavior: Clip.antiAlias,
+                                        //   decoration: BoxDecoration(
+                                        //     borderRadius: BorderRadius.circular(
+                                        //       15,
+                                        //     ), // Adjust the radius as needed
+                                        //   ),
+                                        //   child: Image.network(
+                                        //     assoCard,
+                                        //     fit: BoxFit.cover,
+                                        //   ),
+                                        // ),
+                                      ],
                                     ),
                                     const SizedBox(
                                       height: 10,

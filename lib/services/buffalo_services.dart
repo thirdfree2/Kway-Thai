@@ -57,7 +57,8 @@ Future<List<BuffaloModel>> fetchHistoryBuffaloes() async {
   try {
     final response = await http.get(
       Uri.parse(
-          '${ApiUtils.baseUrl}/api/buffalo/history/?buffaloStatus=อนุมัติ&farmId=-1'),
+        '${ApiUtils.baseUrl}/api/buffalo/history/?buffaloStatus=อนุมัติ&farmId=-1',
+      ),
     );
 
     if (response.statusCode == 200) {
@@ -121,7 +122,8 @@ Future<List<BuffaloModel>> fetchAllBuffaloes() async {
   try {
     final response = await http.get(
       Uri.parse(
-          '${ApiUtils.baseUrl}/api/buffalo/?buffaloStatus=อนุมัติ&farmId=-1'),
+        '${ApiUtils.baseUrl}/api/buffalo/?buffaloStatus=อนุมัติ&farmId=-1',
+      ),
     );
 
     if (response.statusCode == 200) {
@@ -159,8 +161,11 @@ Future<List<BuffaloModel>> fetchBuffaloesPromoteBuff() async {
 }
 
 Future<List<BuffaloModel>> fetchBuffaloesByFarmId(String id) async {
-  final response = await http.get(Uri.parse(
-      '${ApiUtils.baseUrl}/api/buffalo/?farmId=$id&buffaloStatus=อนุมัติ'));
+  final response = await http.get(
+    Uri.parse(
+      '${ApiUtils.baseUrl}/api/buffalo/?farmId=$id&buffaloStatus=อนุมัติ',
+    ),
+  );
 
   if (response.statusCode == 200) {
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
@@ -266,11 +271,14 @@ Future<String> registerBuffalo({
   request.fields['password'] = password;
 
   if (imageFile != null) {
-    request.files.add(await http.MultipartFile.fromPath(
-      'image',
-      imageFile.path,
-      contentType: MediaType('image', basename(imageFile.path).split('.').last),
-    ));
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'image',
+        imageFile.path,
+        contentType:
+            MediaType('image', basename(imageFile.path).split('.').last),
+      ),
+    );
   }
 
   // Send the request
@@ -327,7 +335,7 @@ Future<String> uploadImageBuffalo({
   }
 }
 
-Future<String> createTrackingBuffalo({
+Future<http.Response> createTrackingBuffalo({
   required int buffaloId,
   required String password,
   required String farmId,
@@ -357,7 +365,7 @@ Future<String> createTrackingBuffalo({
   if (response.statusCode == 201) {
     final responseData = jsonDecode(response.body);
     if (responseData['message'] != null) {
-      return responseData['message'].toString();
+      return response;
     } else {
       throw Exception('Farm data not found.');
     }
@@ -387,19 +395,23 @@ Future<String> uploadVideoBuffalo({
 
   // เช็คว่า imageFile ไม่ใช่ null และเพิ่มไฟล์วิดีโอใน request
   if (imageFile != null) {
-    request.files.add(await http.MultipartFile.fromPath(
-      'image',
-      imageFile.path,
-      contentType: MediaType('image', 'jpeg'),
-    ));
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'image',
+        imageFile.path,
+        contentType: MediaType('image', 'jpeg'),
+      ),
+    );
   }
 
   if (videoFile != null) {
-    request.files.add(await http.MultipartFile.fromPath(
-      'video',
-      videoFile.path,
-      contentType: MediaType('video', 'mp4'),
-    ));
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'video',
+        videoFile.path,
+        contentType: MediaType('video', 'mp4'),
+      ),
+    );
   }
 
   try {
@@ -423,15 +435,15 @@ Future<String> uploadVideoBuffalo({
   }
 }
 
-Future<String> uploadVideoBuffaloWithLink(
-    {required int buffaloId,
-    required File? imageFile,
-    required String videoUrl,
-    required String password,
-    required String farmId,
-    required String title
-    // required String videoUrl,
-    }) async {
+Future<String> uploadVideoBuffaloWithLink({
+  required int buffaloId,
+  required File? imageFile,
+  required String videoUrl,
+  required String password,
+  required String farmId,
+  required String title,
+  // required String videoUrl,
+}) async {
   const String url = '${ApiUtils.baseUrl}/api/buffalo/buffaloClips';
   final uri = Uri.parse(url);
   final request = http.MultipartRequest('POST', uri);
@@ -445,11 +457,13 @@ Future<String> uploadVideoBuffaloWithLink(
 
   // เช็คว่า imageFile ไม่ใช่ null และเพิ่มไฟล์วิดีโอใน request
   if (imageFile != null) {
-    request.files.add(await http.MultipartFile.fromPath(
-      'image',
-      imageFile.path,
-      contentType: MediaType('image', 'jpeg'),
-    ));
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'image',
+        imageFile.path,
+        contentType: MediaType('image', 'jpeg'),
+      ),
+    );
   }
 
   try {
@@ -502,7 +516,8 @@ Future<String> createVaccine({
     // คุณสามารถ decode error message ได้ถ้าจำเป็น
     final error = jsonDecode(response.body);
     throw Exception(
-        "เกิดข้อผิดพลาด: ${error['message'] ?? response.statusCode}");
+      "เกิดข้อผิดพลาด: ${error['message'] ?? response.statusCode}",
+    );
   }
 }
 
@@ -544,37 +559,38 @@ Future<http.Response> createBreeding({
   }
 }
 
-Future<String> updateBuffalo(
-    {required String name,
-    required String buffaloId,
-    required String birthDate,
-    required String farmId,
-    required String birthMethod,
-    required String gender,
-    required String? fatherName,
-    required String? fatherFarmName,
-    required String? motherName,
-    required String? motherFarmName,
-    required String? fatherGrandfatherName,
-    required String? fatherGrandfatherFarmName,
-    required String? fatherGrandmotherName,
-    required String? fatherGrandmotherFarmName,
-    required String? motherGrandfatherName,
-    required String? motherGrandfatherFarmName,
-    required String? motherGrandmotherName,
-    required String? motherGrandmotherFarmName,
-    required String? fatherGreatGrandfatherName,
-    required String? fatherGreatGrandfatherFarmName,
-    required String? fatherGreatGrandmotherName,
-    required String? fatherGreatGrandmotherFarmName,
-    required String? motherGreatGrandfatherName,
-    required String? motherGreatGrandfatherFarmName,
-    required String? motherGreatGrandmotherName,
-    required String? motherGreatGrandmotherFarmName,
-    required String bornAt,
-    required String color,
-    required String password,
-    required File? imageFile}) async {
+Future<String> updateBuffalo({
+  required String name,
+  required String buffaloId,
+  required String birthDate,
+  required String farmId,
+  required String birthMethod,
+  required String gender,
+  required String? fatherName,
+  required String? fatherFarmName,
+  required String? motherName,
+  required String? motherFarmName,
+  required String? fatherGrandfatherName,
+  required String? fatherGrandfatherFarmName,
+  required String? fatherGrandmotherName,
+  required String? fatherGrandmotherFarmName,
+  required String? motherGrandfatherName,
+  required String? motherGrandfatherFarmName,
+  required String? motherGrandmotherName,
+  required String? motherGrandmotherFarmName,
+  required String? fatherGreatGrandfatherName,
+  required String? fatherGreatGrandfatherFarmName,
+  required String? fatherGreatGrandmotherName,
+  required String? fatherGreatGrandmotherFarmName,
+  required String? motherGreatGrandfatherName,
+  required String? motherGreatGrandfatherFarmName,
+  required String? motherGreatGrandmotherName,
+  required String? motherGreatGrandmotherFarmName,
+  required String bornAt,
+  required String color,
+  required String password,
+  required File? imageFile,
+}) async {
   String url = '${ApiUtils.baseUrl}/api/buffalo/update/$buffaloId';
   final uri = Uri.parse(url);
   final request = http.MultipartRequest('PUT', uri);
@@ -631,11 +647,14 @@ Future<String> updateBuffalo(
 
   // Send the request
   if (imageFile != null) {
-    request.files.add(await http.MultipartFile.fromPath(
-      'image',
-      imageFile.path,
-      contentType: MediaType('image', basename(imageFile.path).split('.').last),
-    ));
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'image',
+        imageFile.path,
+        contentType:
+            MediaType('image', basename(imageFile.path).split('.').last),
+      ),
+    );
   }
   final streamedResponse = await request.send();
   final response = await http.Response.fromStream(streamedResponse);

@@ -9,9 +9,9 @@ class SelectedFarmOwner with ChangeNotifier {
   String _phone = '';
   String _lineId = '';
   String _nickname = '';
+  String _assoCard = '';
 
-
-String get userId => _userId;
+  String get userId => _userId;
   String get nickname => _nickname;
   String get farmOwner => _farmOwner;
   String get urlImg => _urlImg;
@@ -19,8 +19,18 @@ String get userId => _userId;
   String get position => _position;
   String get phone => _phone;
   String get lineId => _lineId;
+  String get assoCard => _assoCard;
 
-  void setSelectedFarmOwner(String userId,String nickname,String urlImg,String farmOwner,String lastName, String position, String phone, String lineId) {
+  void setSelectedFarmOwner(
+      String userId,
+      String nickname,
+      String urlImg,
+      String farmOwner,
+      String lastName,
+      String position,
+      String phone,
+      String lineId,
+      String assoCard) {
     _userId = userId;
     _nickname = nickname;
     _urlImg = urlImg;
@@ -29,6 +39,7 @@ String get userId => _userId;
     _position = position;
     _phone = phone;
     _lineId = lineId;
+    _assoCard = assoCard;
     notifyListeners();
   }
 }

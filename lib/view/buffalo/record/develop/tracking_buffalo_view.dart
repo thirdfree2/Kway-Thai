@@ -88,7 +88,7 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "การพัฒนาการ (Development)",
+                              "พัฒนาการ (Development)",
                               style: TextStyle(
                                 fontSize: ScreenUtils.calculateFontSize(
                                   context,
@@ -118,7 +118,7 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                                 snapshot.data!.isEmpty) {
                               return const Center(
                                 child: Text(
-                                  'ไม่พบข้อมูลการพัฒนาของควาย \n (Not Found Record)',
+                                  'ไม่พบข้อมูลพัฒนาของควาย \n (Not Found Record)',
                                   textAlign: TextAlign.center,
                                 ),
                               );
@@ -205,7 +205,7 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                                             LabelValueText(
                                               label: "น้ำหนัก (Weight)",
                                               value:
-                                                  "${track.buffaloWeight} ซม.",
+                                                  "${track.buffaloWeight} กก.",
                                             ),
                                             if (track.createdAt != null)
                                               LabelValueText(
@@ -336,7 +336,7 @@ void showAddTrackingDialog(
                   height: screenHeight,
                   child: Scaffold(
                     appBar: AppBar(
-                      title: const Text("เพิ่มการพัฒนาการ \n (Development)"),
+                      title: const Text("เพิ่มพัฒนาการ \n (Development)"),
                       leading: IconButton(
                         icon: const Icon(Icons.close),
                         onPressed: () => Navigator.of(context).pop(),
@@ -385,7 +385,7 @@ void showAddTrackingDialog(
                             const SizedBox(height: 20),
                             CustomTextFormField(
                               controller: heightController,
-                              labelText: 'ส่วนสูง ม. (Height m.)',
+                              labelText: 'ส่วนสูง ซม. (Height cm.)',
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
                                   RegExp(
@@ -555,9 +555,9 @@ void showAddTrackingDialog(
                                                         // ignore: use_build_context_synchronously
                                                         scaffoldContext,
                                                       ).showSnackBar(
-                                                        const SnackBar(
+                                                        SnackBar(
                                                           content: Text(
-                                                            "เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง (Wrong password)",
+                                                            "เกิดข้อผิดพลาด: ${e.toString()}",
                                                           ),
                                                         ),
                                                       );

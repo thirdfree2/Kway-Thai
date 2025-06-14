@@ -5,6 +5,25 @@ part 'user_model.g.dart';
 
 @JsonSerializable()
 class UserModel {
+  // Updated type
+
+  UserModel({
+    required this.associationCardUrl,
+    required this.userId,
+    required this.firstName,
+    required this.lastName,
+    required this.nickname,
+    required this.lineId,
+    required this.position,
+    required this.phoneNumber,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.farmId,
+    required this.userImages,
+  });
+
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
   @JsonKey(name: 'userId')
   final int userId;
 
@@ -26,6 +45,9 @@ class UserModel {
   @JsonKey(name: 'phoneNumber', defaultValue: '')
   final String? phoneNumber;
 
+  @JsonKey(name: 'associationCardUrl', defaultValue: '')
+  final String? associationCardUrl;
+
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;
 
@@ -36,22 +58,6 @@ class UserModel {
   final int farmId;
 
   @JsonKey(name: 'UserImages', defaultValue: [])
-  final List<UserImageModel> userImages;  // Updated type
-
-  UserModel({
-    required this.userId,
-    required this.firstName,
-    required this.lastName,
-    required this.nickname,
-    required this.lineId,
-    required this.position,
-    required this.phoneNumber,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.farmId,
-    required this.userImages,
-  });
-
-  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
+  final List<UserImageModel> userImages;
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }

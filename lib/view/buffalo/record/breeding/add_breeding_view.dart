@@ -50,7 +50,7 @@ class _AddBreedingViewState extends State<AddBreedingView> {
                   ),
                   const Center(
                     child: Text(
-                      'จดบันทึกการผสมพันธุ์ \n (Add Breeding)',
+                      'จดบันทึกผสมพันธุ์ \n (Add Breeding)',
                       textAlign: TextAlign.center,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -153,8 +153,8 @@ class _AddBreedingViewState extends State<AddBreedingView> {
             child: Text('ผสมเทียม (Artificial)'),
           ),
           DropdownMenuItem(
-            value: 'ธรรมชาติ',
-            child: Text('ธรรมชาติ (Natural)'),
+            value: 'ผสมจริง',
+            child: Text('ผสมจริง (Natural)'),
           ),
         ],
         onChanged: (value) => setState(() => breedingMethod = value),
@@ -194,8 +194,10 @@ class _AddBreedingViewState extends State<AddBreedingView> {
   void _save() {
     void showPasswordDialog() {
       final passwordController = TextEditingController();
+      bool isLoading = false;
 
       showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (context) {
           return AlertDialog(
@@ -214,94 +216,97 @@ class _AddBreedingViewState extends State<AddBreedingView> {
                 child: const Text("ยกเลิก (Cancel)"),
               ),
               ElevatedButton(
-                onPressed: () async {
-                  final password = passwordController.text;
-                  if (password.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("กรุณากรอกรหัสผ่าน")),
-                    );
-                  } else {
-                    try {
-                      String convertThaiDateToIso(String thaiDate) {
-                        try {
-                          // แปลงจาก "06 ก.ค. 2568" → DateTime
-                          // ใช้ฟอร์แมต dd/MM/yyyy กับปี พ.ศ.
-                          final thDate =
-                              DateFormat('dd/MM/yyyy', 'th').parse(thaiDate);
-
-                          // แปลงจาก พ.ศ. เป็น ค.ศ.
-                          final christianDate = DateTime(
-                            thDate.year - 543,
-                            thDate.month,
-                            thDate.day,
-                          );
-
-                          return DateFormat('yyyy-MM-dd').format(christianDate);
-                        } catch (_) {
-                          return ""; // หรือ throw Error
-                        }
-                      }
-
-                      final buffalo =
-                          Provider.of<SelectedBuffalo>(context, listen: false)
-                              .buffalo;
-
-                      try {
-                        Response res = await createBreeding(
-                          farmId: buffalo?.farmId.toString() ?? '1',
-                          password: password,
-                          buffaloId: buffalo?.id.toString() ?? '0',
-                          maleName: maleNameController.text,
-                          breedingDate:
-                              convertThaiDateToIso(breedingDateController.text),
-                          breedingMethod: breedingMethod!,
-                          breedingCount:
-                              int.parse(breedingCountController.text),
-                          recheckDate:
-                              convertThaiDateToIso(recheckDateController.text),
-                          expectedBirthDate: convertThaiDateToIso(
-                            expectedBirthDateController.text,
-                          ),
-                          isNatural: breedingMethod == 'ธรรมชาติ' ? '1' : '0',
-                          imageFile: image!,
-                        );
-
-                        if (!context.mounted) return;
-
-                        if (res.statusCode == 201) {
+                onPressed: isLoading
+                    ? null
+                    : () async {
+                        final password = passwordController.text;
+                        if (password.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("บันทึกสำเร็จ (Save Success)"),
-                            ),
+                            const SnackBar(content: Text("กรุณากรอกรหัสผ่าน")),
                           );
-                          Navigator.pop(context);
-                          Navigator.pop(context, true);
+                        } else {
+                          setState(() => isLoading = true);
+
+                          try {
+                            String convertThaiDateToIso(String thaiDate) {
+                              try {
+                                final thDate = DateFormat('dd/MM/yyyy', 'th')
+                                    .parse(thaiDate);
+                                final christianDate = DateTime(
+                                  thDate.year - 543,
+                                  thDate.month,
+                                  thDate.day,
+                                );
+                                return DateFormat('yyyy-MM-dd')
+                                    .format(christianDate);
+                              } catch (_) {
+                                return "";
+                              }
+                            }
+
+                            final buffalo = Provider.of<SelectedBuffalo>(
+                              context,
+                              listen: false,
+                            ).buffalo;
+
+                            Response res = await createBreeding(
+                              farmId: buffalo?.farmId.toString() ?? '1',
+                              password: password,
+                              buffaloId: buffalo?.id.toString() ?? '0',
+                              maleName: maleNameController.text,
+                              breedingDate: convertThaiDateToIso(
+                                breedingDateController.text,
+                              ),
+                              breedingMethod: breedingMethod!,
+                              breedingCount:
+                                  int.parse(breedingCountController.text),
+                              recheckDate: convertThaiDateToIso(
+                                recheckDateController.text,
+                              ),
+                              expectedBirthDate: convertThaiDateToIso(
+                                expectedBirthDateController.text,
+                              ),
+                              isNatural:
+                                  breedingMethod == 'ผสมจริง' ? '1' : '0',
+                              imageFile: image!,
+                            );
+
+                            if (!context.mounted) return;
+                            setState(() => isLoading = false);
+
+                            if (res.statusCode == 201) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("บันทึกสำเร็จ (Save Success)"),
+                                ),
+                              );
+                              Navigator.pop(context); // ปิด dialog
+                              Navigator.pop(
+                                context,
+                                true,
+                              ); // ปิดหน้า AddBreedingView
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    "รหัสผ่านไม่ถูกต้อง (Wrong Password)",
+                                  ),
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            setState(() => isLoading = false);
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "รหัสผ่านไม่ถูกต้อง (Wrong Password)",
+                                ),
+                              ),
+                            );
+                          }
                         }
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content:
-                                Text("รหัสผ่านไม่ถูกต้อง (Wrong Password)"),
-                          ),
-                        );
-                      }
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            "บันทึกข้อมูลวัคซีนเรียบร้อย Record Success",
-                          ),
-                        ),
-                      );
-                    } catch (e) {
-                      if (!context.mounted) return;
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(e.toString())),
-                      );
-                    }
-                  }
-                },
+                      },
                 child: const Text(
                   "ยืนยัน \n (Confirm)",
                   textAlign: TextAlign.center,

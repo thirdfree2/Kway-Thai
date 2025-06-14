@@ -28,6 +28,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
   final TextEditingController _passwordController = TextEditingController();
   File? _selectedImage;
   String? _selectedStatus;
+  File? _optionalImage;
 
   final List<String> _statusOptions = ['เจ้าของฟาร์ม', 'ผู้จัดการ', 'สมาชิก'];
 
@@ -46,6 +47,16 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
     if (pickedImage != null) {
       setState(() {
         _selectedImage = File(pickedImage.path);
+      });
+    }
+  }
+
+  Future<void> _pickOptionalImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _optionalImage = File(pickedImage.path);
       });
     }
   }
@@ -331,6 +342,48 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                   ),
                                 ],
                               ),
+                              const SizedBox(height: 10),
+                              const Text(
+                                'บัตรสมาคม (Association Member)',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              const SizedBox(height: 5),
+                              GestureDetector(
+                                onTap: _pickOptionalImage,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade200,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border:
+                                        Border.all(color: Colors.grey.shade400),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.attach_file,
+                                        color: Colors.black54,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        _optionalImage != null
+                                            ? _optionalImage!.path
+                                                .split('/')
+                                                .last // แสดงชื่อไฟล์
+                                            : 'เพิ่มบัตรสมาคม (Association Member)',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                               const SizedBox(height: 80),
                               Container(
                                 height: 50,
@@ -352,7 +405,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
 
                                             // ส่งข้อมูลไปยัง API หลังจากกรอกรหัสถูกต้องแล้ว
                                             final userId =
-                                                await registerFarmOwner(
+                                                await registerFarmOwnerV2(
                                               firstName:
                                                   _firstNameController.text,
                                               lastName:
@@ -365,12 +418,12 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                               farmId: _farmIdController.text,
                                               lineId: _lineIdController.text,
                                               imageFile: imageFile,
+                                              associationImage: _optionalImage,
                                               password:
                                                   _passwordController.text,
                                               status: 'รอนุมัติ',
                                             );
                                             Navigator.pop(context);
-                                            // ทำการ pop หน้าหลังจากเสร็จสิ้นการทำงาน
                                             Navigator.pop(context);
                                             Navigator.pushReplacement(
                                               context,

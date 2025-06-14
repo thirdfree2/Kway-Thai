@@ -5,17 +5,18 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:buffalo_thai/utils/api_utils.dart';
 
-Future<String> registerFarmOwner(
-    {required String firstName,
-    required String lastName,
-    required String nickname,
-    required String position,
-    required String phoneNumber,
-    required String farmId,
-    required String lineId,
-    required String password,
-    required File? imageFile,
-    required String status}) async {
+Future<String> registerFarmOwner({
+  required String firstName,
+  required String lastName,
+  required String nickname,
+  required String position,
+  required String phoneNumber,
+  required String farmId,
+  required String lineId,
+  required String password,
+  required File? imageFile,
+  required String status,
+}) async {
   const String url = '${ApiUtils.baseUrl}/api/user/';
 
   final request = http.MultipartRequest('POST', Uri.parse(url))
@@ -28,12 +29,14 @@ Future<String> registerFarmOwner(
     ..fields['farmId'] = farmId
     ..fields['lineId'] = lineId
     ..fields['password'] = password
-    ..files.add(await http.MultipartFile.fromPath(
-      'image',
-      imageFile?.path ?? '',
-      contentType:
-          MediaType('image', basename(imageFile?.path ?? '').split('.').last),
-    ));
+    ..files.add(
+      await http.MultipartFile.fromPath(
+        'image',
+        imageFile?.path ?? '',
+        contentType:
+            MediaType('image', basename(imageFile?.path ?? '').split('.').last),
+      ),
+    );
 
   final response = await request.send();
 
@@ -43,7 +46,80 @@ Future<String> registerFarmOwner(
   } else {
     final responseData = await response.stream.bytesToString();
     throw Exception(
-        'Failed to register farm owner. Status code: ${response.statusCode}. Response body: $responseData');
+      'Failed to register farm owner. Status code: ${response.statusCode}. Response body: $responseData',
+    );
+  }
+}
+
+Future<String> registerFarmOwnerV2({
+  required String firstName,
+  required String lastName,
+  required String nickname,
+  required String position,
+  required String phoneNumber,
+  required String farmId,
+  required String lineId,
+  required String password,
+  required File imageFile, // รูปหลัก (จำเป็น)
+  File? associationImage, // รูป optional
+  required String status,
+}) async {
+  const String url = '${ApiUtils.baseUrl}/api/user/v2'; // ✅ URL ใหม่
+
+  final request = http.MultipartRequest('POST', Uri.parse(url))
+    ..fields['firstName'] = firstName
+    ..fields['lastName'] = lastName
+    ..fields['nickname'] = nickname
+    ..fields['position'] = position
+    ..fields['phoneNumber'] = phoneNumber
+    ..fields['farmId'] = farmId
+    ..fields['lineId'] = lineId
+    ..fields['password'] = password
+    ..fields['status'] = status;
+
+  // ✅ Profile image (จำเป็น)
+  request.files.add(
+    await http.MultipartFile.fromPath(
+      'profileimage',
+      imageFile.path,
+      // contentType: _detectMediaType(imageFile.path),
+    ),
+  );
+
+  // ✅ Association image (optional)
+  if (associationImage != null) {
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'associationimage',
+        associationImage.path,
+        // contentType: _detectMediaType(associationImage.path),
+      ),
+    );
+  }
+
+  final response = await request.send();
+
+  final responseData = await response.stream.bytesToString();
+
+  if (response.statusCode == 201) {
+    return responseData;
+  } else {
+    throw Exception(
+      'Failed to register farm owner. Status: ${response.statusCode}, Body: $responseData',
+    );
+  }
+}
+
+MediaType _detectMediaType(String path) {
+  final ext = path.split('.').last.toLowerCase();
+  switch (ext) {
+    case 'png':
+      return MediaType('image', 'png');
+    case 'jpg':
+    case 'jpeg':
+      return MediaType('image', 'jpeg');
+    default:
+      return MediaType('application', 'octet-stream');
   }
 }
 
@@ -73,6 +149,7 @@ Future<String> registerBuffaloOwner({
     return responseData['userId'];
   } else {
     throw Exception(
-        'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}');
+      'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}',
+    );
   }
 }

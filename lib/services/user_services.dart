@@ -9,7 +9,8 @@ import 'package:path/path.dart';
 
 Future<List<UserModel>> fetchUserByFarmId(String id) async {
   final response = await http.get(
-      Uri.parse('${ApiUtils.baseUrl}/api/user/?farmId=$id&status=อนุมัติ'));
+    Uri.parse('${ApiUtils.baseUrl}/api/user/?farmId=$id&status=อนุมัติ'),
+  );
 
   if (response.statusCode == 200) {
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
@@ -49,11 +50,14 @@ Future<String> updateUser({
     ..fields['farmId'] = farmId
     ..fields['password'] = password;
   if (imageFile != null && imageFile.path.isNotEmpty) {
-    request.files.add(await http.MultipartFile.fromPath(
-      'image',
-      imageFile.path,
-      contentType: MediaType('image', basename(imageFile.path).split('.').last),
-    ));
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'image',
+        imageFile.path,
+        contentType:
+            MediaType('image', basename(imageFile.path).split('.').last),
+      ),
+    );
   }
   final response = await request.send();
 
@@ -64,6 +68,65 @@ Future<String> updateUser({
   } else {
     final responseData = await response.stream.bytesToString();
     throw Exception(
-        'Failed to register farm owner. Status code: ${response.statusCode}. Response body: $responseData');
+      'Failed to register farm owner. Status code: ${response.statusCode}. Response body: $responseData',
+    );
+  }
+}
+
+Future<String> updateUserV2({
+  required String firstName,
+  required String userId,
+  required String lastName,
+  required String nickname,
+  required String position,
+  required String phoneNumber,
+  required String farmId,
+  required String lineId,
+  required String password,
+  required File? imageFile,
+  File? associationImage,
+}) async {
+  String url = '${ApiUtils.baseUrl}/api/user/v2/$userId';
+
+  final request = http.MultipartRequest('PUT', Uri.parse(url))
+    ..fields['firstName'] = firstName
+    ..fields['lastName'] = lastName
+    ..fields['nickname'] = nickname
+    ..fields['position'] = position
+    ..fields['phoneNumber'] = phoneNumber
+    ..fields['lineId'] = lineId
+    ..fields['farmId'] = farmId
+    ..fields['password'] = password;
+  if (imageFile != null && imageFile.path.isNotEmpty) {
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'profileimage',
+        imageFile.path,
+        contentType:
+            MediaType('image', basename(imageFile.path).split('.').last),
+      ),
+    );
+  }
+
+  if (associationImage != null) {
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'associationimage',
+        associationImage.path,
+        // contentType: _detectMediaType(associationImage.path),
+      ),
+    );
+  }
+  final response = await request.send();
+
+  if (response.statusCode == 200) {
+    final responseData = await response.stream.bytesToString();
+    print(responseData);
+    return responseData;
+  } else {
+    final responseData = await response.stream.bytesToString();
+    throw Exception(
+      'Failed to register farm owner. Status code: ${response.statusCode}. Response body: $responseData',
+    );
   }
 }

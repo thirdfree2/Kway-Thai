@@ -28,6 +28,8 @@ class _HomeViewState extends State<HomeView> {
   late Future<List<BuffaloModel>> allBuffalo;
   late Future<List<AnnouceModel>> annoucement;
 
+  bool _showLineQR = false;
+
   List<BuffaloModel> filteredBuffaloes = []; // รายการที่กรองแล้ว
   TextEditingController searchController = TextEditingController();
 
@@ -290,93 +292,160 @@ class _HomeViewState extends State<HomeView> {
                                 ),
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 5,
-                                    vertical: 10,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey
-                                            .withAlpha((0.2 * 255).round()),
-                                        offset: const Offset(2.0, 4.0),
-                                        blurRadius: 4.0,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Card(
-                                    color: Colors.white.withAlpha(128),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          QrImageView(
-                                            data:
-                                                'https://lin.ee/Uu7X7Vsa', // Replace with your Line ID URL
-                                            version: QrVersions.auto,
-                                            size: screenWidth * 0.2,
-                                          ),
-                                          const SizedBox(height: 2.0),
-                                          //line ID : @kwaythai
-                                          Text(
-                                            'line ID',
-                                            style: TextStyle(
-                                              fontSize:
-                                                  ScreenUtils.calculateFontSize(
-                                                context,
-                                                10,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 2.0),
-                                          Text(
-                                            '@kwaythai',
-                                            style: TextStyle(
-                                              fontSize:
-                                                  ScreenUtils.calculateFontSize(
-                                                context,
-                                                10,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            const SizedBox(
+                              height: 10,
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const AssociationListView(),
-                                  ),
-                                );
+                                setState(() {
+                                  _showLineQR = !_showLineQR;
+                                });
                               },
                               child: Container(
                                 width: 150,
                                 decoration: BoxDecoration(
-                                  color: Colors.red,
+                                  color: Colors.red.shade300,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: const Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Center(
                                     child: Text(
-                                      'สมาคม \n(Association)',
+                                      'ติดต่อ (Contact us)',
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                      ),
                                     ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Visibility(
+                              visible: _showLineQR,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 5,
+                                      vertical: 10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16.0),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey
+                                              .withAlpha((0.2 * 255).round()),
+                                          offset: const Offset(2.0, 4.0),
+                                          blurRadius: 4.0,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Card(
+                                      color: Colors.white.withAlpha(128),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            QrImageView(
+                                              data:
+                                                  'https://lin.ee/Uu7X7Vsa', // Replace with your Line ID URL
+                                              version: QrVersions.auto,
+                                              size: screenWidth * 0.2,
+                                            ),
+                                            const SizedBox(height: 2.0),
+                                            //line ID : @kwaythai
+                                            Text(
+                                              'line ID',
+                                              style: TextStyle(
+                                                fontSize: ScreenUtils
+                                                    .calculateFontSize(
+                                                  context,
+                                                  10,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 2.0),
+                                            Text(
+                                              '@kwaythai',
+                                              style: TextStyle(
+                                                fontSize: ScreenUtils
+                                                    .calculateFontSize(
+                                                  context,
+                                                  10,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Visibility(
+                              visible: !_showLineQR,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: InkWell(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AssociationListView(),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          // color: const Color.fromARGB(
+                                          //   255,
+                                          //   243,
+                                          //   243,
+                                          //   243,
+                                          // ),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        height: screenHeight * 0.13,
+                                        width: screenHeight * 0.13,
+                                        child: Center(
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            child: Image.asset(
+                                              'assets/images/asso_icon.jpg',
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      // const SizedBox(
+                                      //   height: 5,
+                                      // ),
+                                      // Text(
+                                      //   'สมาคม \n(Association)',
+                                      //   textAlign: TextAlign.center,
+                                      //   style: TextStyle(
+                                      //     fontSize:
+                                      //         ScreenUtils.calculateFontSize(
+                                      //       context,
+                                      //       10,
+                                      //     ),
+                                      //     color: Colors.white,
+                                      //   ),
+                                      // ),
+                                    ],
                                   ),
                                 ),
                               ),

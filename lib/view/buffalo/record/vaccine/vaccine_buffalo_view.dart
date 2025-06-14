@@ -102,7 +102,7 @@ class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "การฉีดวัคซีน (Vaccine)",
+                              "ฉีดวัคซีน (Vaccine)",
                               style: TextStyle(
                                 fontSize: ScreenUtils.calculateFontSize(
                                   context,
@@ -132,7 +132,7 @@ class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
                                 snapshot.data!.isEmpty) {
                               return const Center(
                                 child: Text(
-                                  'ไม่พบข้อมูลการฉีดวัคซีนของควาย \n (Not Found Record)',
+                                  'ไม่พบข้อมูลฉีดวัคซีนของควาย \n (Not Found Record)',
                                   textAlign: TextAlign.center,
                                 ),
                               );
@@ -183,7 +183,7 @@ class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
                           ),
                           child: const Center(
                             child: Text(
-                              'เพิ่มการฉีดวัคซีน \n (Add Vaccine)',
+                              'เพิ่มฉีดวัคซีน \n (Add Vaccine)',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
