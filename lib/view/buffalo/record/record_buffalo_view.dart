@@ -67,8 +67,7 @@ class _RecordBuffaloViewState extends State<RecordBuffaloView> {
                               title: "พัฒนาการ \n (Development)",
                               height: screenHeight * 0.3,
                               imageAssetPath: 'assets/images/develop.png',
-                              imagePosition:
-                                  ImagePosition.bottomLeft, // หรือ bottomLeft
+                              imageBottom: 0,
                               imageOpacity: 1,
                               onTap: () {
                                 Navigator.push(
@@ -87,9 +86,9 @@ class _RecordBuffaloViewState extends State<RecordBuffaloView> {
                               title: "ผสมพันธุ์ \n (Breeding)",
                               height: screenHeight * 0.3,
                               imageAssetPath: 'assets/images/breeding.png',
-                              imagePosition:
-                                  ImagePosition.topRight, // หรือ bottomLeft
                               imageOpacity: 1,
+                              imageBottom: -15,
+                              imageRight: 10,
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -110,9 +109,9 @@ class _RecordBuffaloViewState extends State<RecordBuffaloView> {
                         title: "ฉีดวัคซีน \n (Vaccine)",
                         height: screenHeight * 0.3,
                         imageAssetPath: 'assets/images/vaccine.png',
-                        imagePosition:
-                            ImagePosition.topRight, // หรือ bottomLeft
                         imageOpacity: 1,
+                        imageBottom: 20,
+                        imageRight: 45,
                         onTap: () {
                           Navigator.push(
                             context,
@@ -152,17 +151,26 @@ class RecordCard extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.imageAssetPath,
-    this.imagePosition = ImagePosition.topRight,
     this.imageOpacity = 0.2,
     this.height = 200, // ค่า default ถ้าไม่ส่งมา
+
+    this.imageTop,
+    this.imageBottom,
+    this.imageLeft,
+    this.imageRight,
   });
   final String title;
   final VoidCallback onTap;
   final double height;
 
   final String? imageAssetPath;
-  final ImagePosition imagePosition;
+  // final ImagePosition imagePosition;
   final double imageOpacity;
+
+  final double? imageTop;
+  final double? imageBottom;
+  final double? imageLeft;
+  final double? imageRight;
 
   @override
   Widget build(BuildContext context) {
@@ -172,10 +180,10 @@ class RecordCard extends StatelessWidget {
         children: [
           if (imageAssetPath != null)
             Positioned(
-              top: imagePosition.isTop ? 0 : null,
-              bottom: imagePosition.isBottom ? 0 : null,
-              left: imagePosition.isLeft ? 0 : null,
-              right: imagePosition.isRight ? 0 : null,
+              top: imageTop,
+              bottom: imageBottom,
+              left: imageLeft,
+              right: imageRight,
               child: Opacity(
                 opacity: imageOpacity,
                 child: Image.asset(

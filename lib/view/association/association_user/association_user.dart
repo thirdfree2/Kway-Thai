@@ -3,6 +3,7 @@ import 'package:buffalo_thai/model/association_model.dart';
 import 'package:buffalo_thai/model/association_user_model.dart';
 import 'package:buffalo_thai/providers/selected_association.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
+import 'package:buffalo_thai/view/association/association_user/update_association_user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -57,13 +58,14 @@ class _AssociationUserState extends State<AssociationUser> {
                             right: 0,
                             child: GestureDetector(
                               onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) =>
-                                //         const EditFarmOwnerScreen(), // Corrected syntax here
-                                //   ),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UpdateAssociationUser(
+                                      user: widget.user,
+                                    ), // Corrected syntax here
+                                  ),
+                                );
                               },
                               child: Container(
                                 decoration: BoxDecoration(

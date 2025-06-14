@@ -40,6 +40,9 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
   late TextEditingController _motherGreatGrandfatherNameController;
   late TextEditingController _motherGreatGrandmotherNameController;
 
+  late TextEditingController _breedNameController;
+  late TextEditingController _microchipController;
+
   late TextEditingController _fatherFarmNameController;
   late TextEditingController _motherFarmNameController;
   late TextEditingController _fatherGrandfatherFarmNameController;
@@ -56,9 +59,27 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
 
   String? _selectedGender;
   String? _selectedBirthMethod;
+  String? _selectedBreedType;
+  File? _microchipImage;
 
   final List<String> _genderOptions = ['ผู้', 'เมีย'];
   final List<String> _birthMethodOptions = ['ผสมเทียม', 'ผสมจริง'];
+  final List<String> _breedType = [
+    'ไทย',
+    'มูร่า',
+    'จัฟฟาราบัด',
+    'อื่นๆ (โปรดระบุ)',
+  ];
+
+  Future<void> _pickOptionalImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _microchipImage = File(pickedImage.path);
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -92,7 +113,8 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
     _fatherGreatGrandmotherFarmNameController = TextEditingController();
     _motherGreatGrandfatherFarmNameController = TextEditingController();
     _motherGreatGrandmotherFarmNameController = TextEditingController();
-
+    _breedNameController = TextEditingController();
+    _microchipController = TextEditingController();
     _currentFarmController = TextEditingController();
 
     // กำหนดค่าเริ่มต้นให้กับ TextEditingController และตัวแปรอื่นๆ
@@ -146,6 +168,9 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
           buffalo.motherGreatGrandmotherFarmName;
 
       _currentFarmController.text = buffalo.currentFarm?.farmName ?? '';
+
+      _breedNameController.text = buffalo.breedName ?? '';
+      _microchipController.text = buffalo.microchipNO ?? '';
 
       _selectedGender = buffalo.gender;
       _selectedBirthMethod = buffalo.birthMethod;
@@ -284,6 +309,9 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
     _motherGreatGrandfatherFarmNameController.dispose();
     _motherGreatGrandmotherNameController.dispose();
     _motherGreatGrandmotherFarmNameController.dispose();
+
+    _breedNameController.dispose();
+    _microchipController.dispose();
 
     super.dispose();
   }
@@ -482,6 +510,43 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                             ),
                           ],
                         ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: DropdownBuffalo(
+                                selectedStatus: _selectedBreedType,
+                                statusOptions: _breedType,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _breedNameController.text = newValue!;
+                                    _selectedBreedType = newValue;
+                                    if (newValue == 'อื่นๆ (โปรดระบุ)') {
+                                      _breedNameController.text = '';
+                                    }
+                                  });
+                                },
+                                name: 'สายพันธุ์',
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        if (_selectedBreedType == 'อื่นๆ (โปรดระบุ)')
+                          CustomTextFormField(
+                            controller: _breedNameController,
+                            labelText: 'สายพันธุ์',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'กรุณากรอกข้อมูล';
+                              }
+                              return null;
+                            },
+                          ),
                         // const SizedBox(
                         //   height: 15,
                         // ),
@@ -495,6 +560,51 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                         //     return null;
                         //   },
                         // ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        CustomTextFormField(
+                          controller: _microchipController,
+                          labelText: 'หมายเลขไมโครชิฟ (Microchip No.)',
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        GestureDetector(
+                          onTap: _pickOptionalImage,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.grey.shade400),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.attach_file,
+                                  color: Colors.black54,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  _microchipImage != null
+                                      ? _microchipImage!.path
+                                          .split('/')
+                                          .last // แสดงชื่อไฟล์
+                                      : 'หมายเลขไมโครชิฟ (Microchip No.)',
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                         const SizedBox(
                           height: 15,
                         ),
@@ -610,7 +720,13 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                               try {
                                                 showLoadingDialog(context);
 
-                                                await updateBuffalo(
+                                                await updateBuffaloV2(
+                                                  breedName:
+                                                      _breedNameController.text,
+                                                  microchipNO:
+                                                      _microchipController.text,
+                                                  microchipimage:
+                                                      _microchipImage,
                                                   name: _nameController.text,
                                                   birthDate:
                                                       _birthDateController.text,

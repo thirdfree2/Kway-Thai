@@ -48,15 +48,20 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
   }
 
   void navigateToAddPage() async {
+    final buffalo = Provider.of<SelectedAssociation>(context, listen: false);
+
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const RegisterAssociationView()),
+      MaterialPageRoute(
+        builder: (_) => RegisterAssociationView(
+          assoName: buffalo.association?.associationName ?? '',
+        ),
+      ),
     );
 
     if (!mounted) return;
 
     if (result == true) {
-      final buffalo = Provider.of<SelectedAssociation>(context, listen: false);
       setState(() {
         futureAssociation = futureAssociation = fetchAssociationById(
           id: buffalo.association?.associationId.toString() ?? '0',

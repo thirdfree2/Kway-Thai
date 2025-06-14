@@ -12,7 +12,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class RegisterAssociationView extends StatefulWidget {
-  const RegisterAssociationView({super.key});
+  const RegisterAssociationView({super.key, required this.assoName});
+  final String assoName;
 
   @override
   State<RegisterAssociationView> createState() =>
@@ -22,7 +23,6 @@ class RegisterAssociationView extends StatefulWidget {
 class _RegisterAssociationViewState extends State<RegisterAssociationView> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _farmNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _nicknameController = TextEditingController();
@@ -140,7 +140,7 @@ class _RegisterAssociationViewState extends State<RegisterAssociationView> {
                                         ),
                                         AutoSizeText(
                                           maxLines: 1,
-                                          _farmNameController.text,
+                                          widget.assoName,
                                           style: TextStyle(
                                             fontSize:
                                                 ScreenUtils.calculateFontSize(
@@ -243,16 +243,6 @@ class _RegisterAssociationViewState extends State<RegisterAssociationView> {
                                         return null;
                                       },
                                     ),
-                                    // child: CustomTextFormField(
-                                    //   controller: _phoneNumberController,
-                                    //   labelText: 'เบอร์โทร',
-                                    //   validator: (value) {
-                                    //     if (value == null || value.isEmpty) {
-                                    //       return 'กรุณากรอกข้อมูล';
-                                    //     }
-                                    //     return null;
-                                    //   },
-                                    // ),
                                   ),
                                   const SizedBox(width: 10),
                                   Expanded(

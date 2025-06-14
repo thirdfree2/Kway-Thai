@@ -49,6 +49,7 @@ class BuffaloModel {
     required this.buffaloStatus,
     this.bornAt,
     this.currentFarmId,
+    this.breedName,
     required this.farmId,
     required this.createdAt,
     required this.updatedAt,
@@ -91,6 +92,9 @@ class BuffaloModel {
   final String fatherName;
   @JsonKey(name: 'microchipNO', defaultValue: '')
   final String? microchipNO;
+
+  @JsonKey(name: 'breedName', defaultValue: '')
+  final String? breedName;
 
   @JsonKey(name: 'fatherGrandfatherId', defaultValue: null)
   final int? fatherGrandfatherId;

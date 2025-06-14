@@ -425,27 +425,27 @@ class _HomeViewState extends State<HomeView> {
                                             borderRadius:
                                                 BorderRadius.circular(20),
                                             child: Image.asset(
-                                              'assets/images/asso_icon.jpg',
+                                              'assets/images/asso_icon_2.jpg',
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                         ),
                                       ),
-                                      // const SizedBox(
-                                      //   height: 5,
-                                      // ),
-                                      // Text(
-                                      //   'สมาคม \n(Association)',
-                                      //   textAlign: TextAlign.center,
-                                      //   style: TextStyle(
-                                      //     fontSize:
-                                      //         ScreenUtils.calculateFontSize(
-                                      //       context,
-                                      //       10,
-                                      //     ),
-                                      //     color: Colors.white,
-                                      //   ),
-                                      // ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        'สมาคม \n(Association)',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize:
+                                              ScreenUtils.calculateFontSize(
+                                            context,
+                                            10,
+                                          ),
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),

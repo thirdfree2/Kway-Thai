@@ -120,3 +120,65 @@ Future<String> registerAssociationUser({
     );
   }
 }
+
+Future<String> updateAssociationUser({
+  required String associationUserId,
+  required int associationId,
+  required String password,
+  required String firstName,
+  required String lastName,
+  required String nickname,
+  required String lineId,
+  required String phoneNumber,
+  required String position,
+  File? profileImage,
+}) async {
+  final uri =
+      Uri.parse('${ApiUtils.baseUrl}/api/associations/user/$associationUserId');
+
+  var request = http.MultipartRequest('PUT', uri);
+
+  request.fields['associationId'] = associationId.toString();
+  request.fields['password'] = password;
+  request.fields['firstName'] = firstName;
+  request.fields['lastName'] = lastName;
+  request.fields['nickname'] = nickname;
+  request.fields['lineId'] = lineId;
+  request.fields['phoneNumber'] = phoneNumber;
+  request.fields['position'] = position;
+
+  print("🟡 Request Fields:");
+  request.fields.forEach((key, value) {
+    print("  $key: $value");
+  });
+
+  if (profileImage != null) {
+    print("📸 แนบรูปภาพ: ${profileImage.path}");
+    request.files.add(
+      await http.MultipartFile.fromPath('profileimage', profileImage.path),
+    );
+  } else {
+    print("⚠️ ไม่มีการแนบรูปภาพ");
+  }
+
+  final streamedResponse = await request.send();
+  final response = await http.Response.fromStream(streamedResponse);
+
+  print("📩 Status Code: ${response.statusCode}");
+  print("📦 Response Body: ${response.body}");
+
+  if (response.statusCode == 201) {
+    final responseData = jsonDecode(response.body);
+    if (responseData['message'] != null) {
+      print("✅ Success Message: ${responseData['message']}");
+      return responseData['message'].toString();
+    } else {
+      print("❌ ไม่พบ message ใน response");
+      throw Exception('Farm data not found.');
+    }
+  } else {
+    throw Exception(
+      '❌ Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}',
+    );
+  }
+}

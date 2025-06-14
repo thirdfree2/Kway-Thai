@@ -230,6 +230,12 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                                       buffalo?.color ?? '',
                                       Colors.black,
                                     ),
+                                  if (buffalo?.breedName != '')
+                                    _buildInfoRow(
+                                      'สายพันธุ์ ',
+                                      buffalo?.breedName ?? '',
+                                      Colors.red[800],
+                                    ),
                                   const SizedBox(height: 5),
                                   // ignore: unrelated_type_equality_checks
                                   if (buffalo?.birthDate != '')
@@ -376,10 +382,19 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    Image.network(
-                                      microChip, // ✅ แสดงรูปบัตรจาก URL
-                                      fit: BoxFit.cover,
-                                    ),
+                                    if (microChip != '')
+                                      Image.network(
+                                        microChip, // ✅ แสดงรูปบัตรจาก URL
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return const Text(
+                                            'ไม่พบรูปภาพ \n(Image Not Found)',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(color: Colors.red),
+                                          );
+                                        },
+                                      ),
                                   ],
                                 ),
                                 actions: [

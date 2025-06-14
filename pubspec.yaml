@@ -104,6 +104,7 @@ flutter:
     - assets/images/develop.png
     - assets/images/vaccine.png
     - assets/images/asso_icon.jpg
+    - assets/images/asso_icon_2.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
