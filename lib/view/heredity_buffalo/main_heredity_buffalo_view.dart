@@ -205,6 +205,7 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                                     createdAt: DateTime.now(),
                                     updatedAt: DateTime.now(),
                                     buffaloId: buffalo.id,
+                                    isMicrochipImage: false,
                                   ),
                                 );
 
@@ -311,6 +312,7 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                                 createdAt: DateTime.now(),
                                 updatedAt: DateTime.now(),
                                 buffaloId: buffalo.id,
+                                isMicrochipImage: false,
                               ),
                             );
 

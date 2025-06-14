@@ -110,19 +110,6 @@ Future<String> registerFarmOwnerV2({
   }
 }
 
-MediaType _detectMediaType(String path) {
-  final ext = path.split('.').last.toLowerCase();
-  switch (ext) {
-    case 'png':
-      return MediaType('image', 'png');
-    case 'jpg':
-    case 'jpeg':
-      return MediaType('image', 'jpeg');
-    default:
-      return MediaType('application', 'octet-stream');
-  }
-}
-
 Future<String> registerBuffaloOwner({
   required String farmId,
   required String name,

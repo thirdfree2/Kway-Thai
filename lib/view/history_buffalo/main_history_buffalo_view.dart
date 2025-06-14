@@ -205,6 +205,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                                     createdAt: DateTime.now(),
                                     updatedAt: DateTime.now(),
                                     buffaloId: buffalo.id,
+                                    isMicrochipImage: false,
                                   ),
                                 );
 
@@ -311,6 +312,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                                 createdAt: DateTime.now(),
                                 updatedAt: DateTime.now(),
                                 buffaloId: buffalo.id,
+                                isMicrochipImage: false,
                               ),
                             );
 

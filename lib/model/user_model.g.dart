@@ -7,6 +7,7 @@ part of 'user_model.dart';
 // **************************************************************************
 
 UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
+      associationCardUrl: json['associationCardUrl'] as String? ?? '',
       userId: (json['userId'] as num).toInt(),
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
@@ -14,7 +15,6 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       lineId: json['lineId'] as String? ?? '',
       position: json['position'] as String? ?? '',
       phoneNumber: json['phoneNumber'] as String? ?? '',
-      associationCardUrl: json['associationCardUrl'] as String? ?? '',
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       farmId: (json['farmId'] as num).toInt(),
@@ -32,6 +32,7 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'lineId': instance.lineId,
       'position': instance.position,
       'phoneNumber': instance.phoneNumber,
+      'associationCardUrl': instance.associationCardUrl,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
       'farmId': instance.farmId,

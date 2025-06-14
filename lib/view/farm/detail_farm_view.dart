@@ -578,6 +578,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                     createdAt: DateTime.now(),
                                     updatedAt: DateTime.now(),
                                     buffaloId: buffalo.id,
+                                    isMicrochipImage: false,
                                   ),
                                 );
 

@@ -300,6 +300,135 @@ Future<String> registerBuffalo({
   }
 }
 
+Future<String> registerBuffaloV2({
+  required String name,
+  required String birthDate,
+  required String farmId,
+  required String birthMethod,
+  required String gender,
+  required String? microchipNO,
+  required String? fatherName,
+  required String? fatherFarmName,
+  required String? motherName,
+  required String? motherFarmName,
+  required String? fatherGrandfatherName,
+  required String? fatherGrandfatherFarmName,
+  required String? fatherGrandmotherName,
+  required String? fatherGrandmotherFarmName,
+  required String? motherGrandfatherName,
+  required String? motherGrandfatherFarmName,
+  required String? motherGrandmotherName,
+  required String? motherGrandmotherFarmName,
+  required String? fatherGreatGrandfatherName,
+  required String? fatherGreatGrandfatherFarmName,
+  required String? fatherGreatGrandmotherName,
+  required String? fatherGreatGrandmotherFarmName,
+  required String? motherGreatGrandfatherName,
+  required String? motherGreatGrandfatherFarmName,
+  required String? motherGreatGrandmotherName,
+  required String? motherGreatGrandmotherFarmName,
+  required String? breedName,
+  required String bornAt,
+  required String color,
+  required String password,
+  required File? imageFile,
+  File? microchipimage,
+}) async {
+  const String url = '${ApiUtils.baseUrl}/api/buffalo/v2';
+  final uri = Uri.parse(url);
+  final request = http.MultipartRequest('POST', uri);
+
+  DateTime? selectedDate = DateFormat('dd/MM/yyyy').parse(birthDate);
+  String formattedDate = formatDateForBackend(selectedDate);
+  request.fields['name'] = name;
+  request.fields['birthDate'] = formattedDate;
+  request.fields['farmId'] = Uri.encodeComponent(farmId);
+  request.fields['gender'] = gender;
+  request.fields['birthMethod'] = birthMethod;
+  request.fields['color'] = color;
+  request.fields['bornAt'] = bornAt;
+
+  request.fields['fatherName'] = fatherName ?? '';
+  request.fields['fatherFarmName'] = fatherFarmName ?? '';
+  request.fields['breedName'] = breedName ?? '';
+  request.fields['microchipNO'] = microchipNO ?? '';
+
+  request.fields['motherName'] = motherName ?? '';
+  request.fields['motherFarmName'] = motherFarmName ?? '';
+
+  request.fields['fatherGrandfatherName'] = fatherGrandfatherName ?? '';
+  request.fields['fatherGrandfatherFarmName'] = fatherGrandfatherFarmName ?? '';
+
+  request.fields['fatherGrandmotherName'] = fatherGrandmotherName ?? '';
+  request.fields['fatherGrandmotherFarmName'] = fatherGrandmotherFarmName ?? '';
+
+  request.fields['motherGrandfatherName'] = motherGrandfatherName ?? '';
+  request.fields['motherGrandfatherFarmName'] = motherGrandfatherFarmName ?? '';
+
+  request.fields['motherGrandmotherName'] = motherGrandmotherName ?? '';
+  request.fields['motherGrandmotherFarmName'] = motherGrandmotherFarmName ?? '';
+
+  request.fields['fatherGreatGrandfatherName'] =
+      fatherGreatGrandfatherName ?? '';
+  request.fields['fatherGreatGrandfatherFarmName'] =
+      fatherGreatGrandfatherFarmName ?? '';
+
+  request.fields['fatherGreatGrandmotherName'] =
+      fatherGreatGrandmotherName ?? '';
+  request.fields['fatherGreatGrandmotherFarmName'] =
+      fatherGreatGrandmotherFarmName ?? '';
+
+  request.fields['motherGreatGrandfatherName'] =
+      motherGreatGrandfatherName ?? '';
+  request.fields['motherGreatGrandfatherFarmName'] =
+      motherGreatGrandfatherFarmName ?? '';
+
+  request.fields['motherGreatGrandmotherName'] =
+      motherGreatGrandmotherName ?? '';
+  request.fields['motherGreatGrandmotherFarmName'] =
+      motherGreatGrandmotherFarmName ?? '';
+
+  request.fields['password'] = password;
+
+  if (imageFile != null) {
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'profileimage',
+        imageFile.path,
+        contentType:
+            MediaType('image', basename(imageFile.path).split('.').last),
+      ),
+    );
+  }
+
+  if (microchipimage != null) {
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'microchipimage',
+        microchipimage.path,
+      ),
+    );
+  }
+
+  // Send the request
+  final streamedResponse = await request.send();
+  final response = await http.Response.fromStream(streamedResponse);
+
+  if (response.statusCode == 201) {
+    final responseData = jsonDecode(response.body);
+    if (responseData['buffalo'] != null &&
+        responseData['buffalo']['farmId'] != null) {
+      return responseData['buffalo']['farmId'].toString(); // Return the farmId
+    } else {
+      throw Exception('Farm data not found.');
+    }
+  } else {
+    throw Exception(
+      response.body,
+    );
+  }
+}
+
 Future<String> uploadImageBuffalo({
   required int buffaloId,
   required File? imageFile,

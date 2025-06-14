@@ -37,11 +37,29 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
         buffaloId: buffalo.id,
+        isMicrochipImage: false,
+      ),
+    );
+
+    final mircrochipImage = buffalo?.buffaloImages.firstWhere(
+      (image) => image.isMicrochipImage,
+      orElse: () => BuffaloImageModel(
+        imageId: 0,
+        imagePath: 'https://placeholder.com/150',
+        isProfileImage: false,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        buffaloId: buffalo.id,
+        isMicrochipImage: false,
       ),
     );
 
     final imageUrl = profileImage != null
         ? profileImage.imagePath
+        : 'https://placeholder.com/150';
+
+    final microChip = mircrochipImage != null
+        ? mircrochipImage.imagePath
         : 'https://placeholder.com/150';
 
     return Scaffold(
@@ -327,12 +345,96 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
           ),
           Positioned(
             right: screenWidth * 0.05,
-            bottom: screenHeight * 0.075,
+            bottom: screenHeight * 0.095,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Column(
                   children: [
+                    if (microChip != '')
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Center(
+                                  child: Text(
+                                    'หมายเลขไมโครชิฟ \n(Microchip No.)',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Center(
+                                      child: Text(
+                                        buffalo?.microchipNO ?? '',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Image.network(
+                                      microChip, // ✅ แสดงรูปบัตรจาก URL
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ],
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.of(
+                                      context,
+                                    ).pop(),
+                                    child: const Text('ปิด'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          width: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.red.shade300,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text(
+                                'หมายเลขไมโครชิฟ \n(Microchip No.)',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    // SizedBox(
+                    //   width: 150,
+                    //   child: Card(
+                    //     color: Colors.green[500],
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.all(8.0),
+                    //       child: Text(
+                    //         textAlign: TextAlign.center,
+                    //         buffalo?.farm?.farmName ?? 'Not Found 404',
+                    //         style: const TextStyle(color: Colors.white),
+                    //         maxLines: 2, // กำหนดจำนวนบรรทัดสูงสุดของข้อความ
+                    //         overflow: TextOverflow
+                    //             .ellipsis, // ทำให้ข้อความที่ยาวเกินไปแสดง ... (ellipsis)
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Text(
                       'สังกัดปัจจุบัน',
                       style: TextStyle(

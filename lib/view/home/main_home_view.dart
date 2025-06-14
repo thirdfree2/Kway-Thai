@@ -192,6 +192,7 @@ class _HomeViewState extends State<HomeView> {
                                             createdAt: DateTime.now(),
                                             updatedAt: DateTime.now(),
                                             buffaloId: firstBuffalo.id,
+                                            isMicrochipImage: false,
                                           ),
                                         );
 
@@ -502,6 +503,7 @@ class _HomeViewState extends State<HomeView> {
                                           createdAt: DateTime.now(),
                                           updatedAt: DateTime.now(),
                                           buffaloId: buffalo.id,
+                                          isMicrochipImage: false,
                                         ),
                                       );
 
@@ -1048,6 +1050,7 @@ class _HomeViewState extends State<HomeView> {
                                         createdAt: DateTime.now(),
                                         updatedAt: DateTime.now(),
                                         buffaloId: buffalo.id,
+                                        isMicrochipImage: false,
                                       ),
                                     );
                                     final imageUrl = profileImage.imagePath;

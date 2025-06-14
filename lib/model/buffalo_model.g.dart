@@ -49,6 +49,7 @@ BuffaloModel _$BuffaloModelFromJson(Map<String, dynamic> json) => BuffaloModel(
           json['motherGreatGrandfatherName'] as String? ?? '',
       motherGreatGrandmotherId:
           (json['motherGreatGrandmotherId'] as num?)?.toInt(),
+      microchipNO: json['microchipNO'] as String? ?? '',
       motherGreatGrandmotherName:
           json['motherGreatGrandmotherName'] as String? ?? '',
       gender: json['gender'] as String? ?? '',
@@ -112,9 +113,10 @@ Map<String, dynamic> _$BuffaloModelToJson(BuffaloModel instance) =>
       'birthMethod': instance.birthMethod,
       'gender': instance.gender,
       'color': instance.color,
+      'fatherFarmName': instance.fatherFarmName,
       'fatherId': instance.fatherId,
       'fatherName': instance.fatherName,
-      'fatherFarmName': instance.fatherFarmName,
+      'microchipNO': instance.microchipNO,
       'fatherGrandfatherId': instance.fatherGrandfatherId,
       'fatherGrandfatherName': instance.fatherGrandfatherName,
       'fatherGrandfatherFarmName': instance.fatherGrandfatherFarmName,

@@ -19,6 +19,8 @@ class RegisterBuffalo extends StatefulWidget {
 }
 
 class _RegisterBuffaloState extends State<RegisterBuffalo> {
+  File? _microchipImage;
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _controller = TextEditingController();
   final TextEditingController _farmNameController = TextEditingController();
@@ -46,6 +48,9 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
   final TextEditingController _motherGreatGrandmotherNameController =
       TextEditingController();
 
+  final TextEditingController _breedController = TextEditingController();
+  final TextEditingController _microchipNoController = TextEditingController();
+
   final TextEditingController _fatherFarmNameController =
       TextEditingController();
   final TextEditingController _motherFarmNameController =
@@ -72,9 +77,16 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
 
   String? _selectedGender;
   String? _selectedBirthMethod;
+  String? _selectedBreedType;
 
   final List<String> _genderOptions = ['ผู้', 'เมีย'];
   final List<String> _birthMethodOptions = ['ผสมเทียม', 'ผสมจริง'];
+  final List<String> _breedType = [
+    'ไทย',
+    'มูร่า',
+    'จัฟฟาราบัด',
+    'อื่นๆ (โปรดระบุ)',
+  ];
 
   Future<void> showLoadingDialog(BuildContext context) {
     return showDialog(
@@ -113,6 +125,16 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
     if (pickedImage != null) {
       setState(() {
         _selectedImage = File(pickedImage.path);
+      });
+    }
+  }
+
+  Future<void> _pickOptionalImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _microchipImage = File(pickedImage.path);
       });
     }
   }
@@ -305,6 +327,44 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                       const SizedBox(
                         height: 15,
                       ),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: DropdownBuffalo(
+                              selectedStatus: _selectedBreedType,
+                              statusOptions: _breedType,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  _breedController.text = newValue!;
+                                  _selectedBreedType = newValue;
+                                  if (newValue == 'อื่นๆ (โปรดระบุ)') {
+                                    _breedController.text = '';
+                                  }
+                                });
+                              },
+                              name: 'สายพันธุ์',
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      if (_selectedBreedType == 'อื่นๆ (โปรดระบุ)')
+                        CustomTextFormField(
+                          controller: _breedController,
+                          labelText: 'สายพันธุ์',
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'กรุณากรอกข้อมูล';
+                            }
+                            return null;
+                          },
+                        ),
+                      if (_selectedBreedType == 'อื่นๆ (โปรดระบุ)')
+                        const SizedBox(
+                          height: 15,
+                        ),
                       CustomTextFormField(
                         controller: _currentFarmController,
                         labelText: 'สังกัดปัจจุบัน',
@@ -314,6 +374,53 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                           }
                           return null;
                         },
+                      ),
+                      const SizedBox(height: 15),
+                      CustomTextFormField(
+                        controller: _microchipNoController,
+                        labelText: 'หมายเลขไมโครชิฟ (Microchip No.)',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'กรุณากรอกข้อมูล';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 5),
+                      GestureDetector(
+                        onTap: _pickOptionalImage,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.grey.shade400),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.attach_file,
+                                color: Colors.black54,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                _microchipImage != null
+                                    ? _microchipImage!.path
+                                        .split('/')
+                                        .last // แสดงชื่อไฟล์
+                                    : 'หมายเลขไมโครชิฟ (Microchip No.)',
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 15),
                       FamilyForm(
@@ -438,7 +545,7 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                 showLoadingDialog(context);
 
                                                 String result =
-                                                    await registerBuffalo(
+                                                    await registerBuffaloV2(
                                                   name:
                                                       _nicknameController.text,
                                                   birthDate:
@@ -515,6 +622,13 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                           .text,
                                                   bornAt: _birthPlaceController
                                                       .text,
+                                                  microchipNO:
+                                                      _microchipNoController
+                                                          .text,
+                                                  breedName:
+                                                      _breedController.text,
+                                                  microchipimage:
+                                                      _microchipImage,
                                                 );
                                                 print(result);
                                                 if (result ==

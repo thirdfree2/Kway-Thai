@@ -37,6 +37,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
         buffaloId: buffalo.id,
+        isMicrochipImage: false,
       ),
     );
 
