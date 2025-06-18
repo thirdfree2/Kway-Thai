@@ -4,6 +4,7 @@ import 'package:buffalo_thai/model/association_user_model.dart';
 import 'package:buffalo_thai/providers/selected_association.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/services/association_services.dart';
+import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/association/association_user/association_user.dart';
 import 'package:buffalo_thai/view/association/register_association_view.dart';
@@ -119,6 +120,8 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.width * 0.3;
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: DecoratedBox(
@@ -147,9 +150,9 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 5),
+                padding: const EdgeInsets.only(top: 5, left: 40, right: 40),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     FutureBuilder<AssociationModel>(
@@ -157,29 +160,96 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
+                          return const CircularProgressIndicator();
                         } else if (snapshot.hasError) {
-                          return Center(
-                            child: Text('เกิดข้อผิดพลาด: ${snapshot.error}'),
-                          );
+                          return Text('เกิดข้อผิดพลาด: ${snapshot.error}');
                         } else if (!snapshot.hasData) {
-                          return const Center(child: Text('ไม่พบข้อมูลสมาคม'));
+                          return const Text('ไม่พบข้อมูลสมาคม');
                         } else {
                           final association = snapshot.data!;
-
-                          return Text(
-                            association.associationName,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize:
-                                  ScreenUtils.calculateFontSize(context, 20),
-                              color: Colors.black,
+                          return GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (_) => Dialog(
+                                  backgroundColor: Colors.transparent,
+                                  insetPadding: EdgeInsets.zero, // เต็มจอ
+                                  child: GestureDetector(
+                                    onTap: () =>
+                                        Navigator.pop(context), // แตะเพื่อปิด
+                                    child: InteractiveViewer(
+                                      // ✅ ซูม/เลื่อน ได้
+                                      child: Center(
+                                        child: Image.network(
+                                          association.associationImage ??
+                                              ApiUtils.imageError,
+                                          fit: BoxFit.contain,
+                                          errorBuilder: (_, __, ___) =>
+                                              const Icon(
+                                            Icons.person,
+                                            size: 100,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            child: SizedBox(
+                              width: size,
+                              height: size,
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Image.network(
+                                    association.associationImage ??
+                                        ApiUtils.imageError,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (_, __, ___) =>
+                                        const Icon(Icons.person),
+                                  ),
+                                ),
+                              ),
                             ),
                           );
                         }
                       },
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: FutureBuilder<AssociationModel>(
+                          future: futureAssociation,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('เกิดข้อผิดพลาด: ${snapshot.error}');
+                            } else if (!snapshot.hasData) {
+                              return const Text('ไม่พบข้อมูลสมาคม');
+                            } else {
+                              final association = snapshot.data!;
+                              return Text(
+                                association.associationName,
+                                // association.associationImage ?? "",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: ScreenUtils.calculateFontSize(
+                                    context,
+                                    20,
+                                  ),
+                                  color: Colors.black,
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -203,11 +273,37 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                           .toList();
 
                       if (users.isEmpty) {
-                        return const Center(
-                          child: Text(
-                            'ไม่พบสมาชิกในสมาคมนี้ \n (Member Not fund)',
-                            textAlign: TextAlign.center,
-                          ),
+                        return Column(
+                          children: [
+                            const Center(
+                              child: Text(
+                                'ไม่พบสมาชิกในสมาคมนี้ \n (Member Not fund)',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            InkWell(
+                              onTap: () => navigateToAddPage(),
+                              child: Container(
+                                height: 50,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Center(
+                                  child: AutoSizeText(
+                                    'ลงทะเบียนสมาชิก \n(Register Member)',
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         );
                       }
 

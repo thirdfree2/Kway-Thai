@@ -14,6 +14,8 @@ class AddVaccineView extends StatefulWidget {
 }
 
 class _AddVaccineViewState extends State<AddVaccineView> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   final List<Map<String, dynamic>> vaccines = [
     {
       "vaccineName": TextEditingController(),
@@ -37,6 +39,11 @@ class _AddVaccineViewState extends State<AddVaccineView> {
   }
 
   void removeVaccine(int index) {
+    vaccines[index].forEach((key, controller) {
+      if (controller is TextEditingController) {
+        controller.dispose();
+      }
+    });
     setState(() {
       vaccines.removeAt(index);
     });
@@ -45,7 +52,6 @@ class _AddVaccineViewState extends State<AddVaccineView> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final formKey = GlobalKey<FormState>();
 
     void showPasswordDialog() {
       final passwordController = TextEditingController();

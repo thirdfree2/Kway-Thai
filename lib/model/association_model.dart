@@ -6,6 +6,20 @@ part 'association_model.g.dart';
 
 @JsonSerializable()
 class AssociationModel {
+  AssociationModel({
+    required this.associationId,
+    required this.associationName,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.password,
+    required this.approveType,
+    required this.associationUsers,
+    required this.farms,
+    this.associationImage,
+  });
+
+  factory AssociationModel.fromJson(Map<String, dynamic> json) =>
+      _$AssociationModelFromJson(json);
   final int associationId;
 
   @JsonKey(defaultValue: '')
@@ -16,6 +30,9 @@ class AssociationModel {
 
   @JsonKey(defaultValue: '')
   final String approveType;
+
+  @JsonKey(defaultValue: '')
+  final String? associationImage;
 
   @JsonKey(fromJson: _parseDateTime)
   final DateTime? createdAt;
@@ -31,20 +48,6 @@ class AssociationModel {
 
   @JsonKey(defaultValue: [])
   final List<FarmModel> farms;
-
-  AssociationModel({
-    required this.associationId,
-    required this.associationName,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.password,
-    required this.approveType,
-    required this.associationUsers,
-    required this.farms,
-  });
-
-  factory AssociationModel.fromJson(Map<String, dynamic> json) =>
-      _$AssociationModelFromJson(json);
   Map<String, dynamic> toJson() => _$AssociationModelToJson(this);
 }
 

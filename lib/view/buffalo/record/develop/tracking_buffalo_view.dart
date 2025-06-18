@@ -9,6 +9,7 @@ import 'package:buffalo_thai/view/farm_owner/register_buffalo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class TrackingBuffaloView extends StatefulWidget {
@@ -282,6 +283,10 @@ void showAddTrackingDialog(
   bool isLoading = false;
   final weightController = TextEditingController();
   final heightController = TextEditingController();
+  final datePickerController = TextEditingController();
+
+  bool useCustomDate = false;
+  DateTime? selectedDate;
 
   String? selectAgePeriod;
 
@@ -348,18 +353,45 @@ void showAddTrackingDialog(
                         key: formKey,
                         child: Column(
                           children: [
-                            DropdownBuffalo(
-                              validateName:
-                                  "กรุณาระบุอายุปัจจุบัน (Please enter current age)",
-                              selectedStatus: selectAgePeriod,
-                              statusOptions: agePeriodOptions,
-                              onChanged: (newValue) {
+                            CheckboxListTile(
+                              title: const Text(
+                                "ระบุวันที่เอง \n(Specify Date)",
+                                textAlign: TextAlign.center,
+                              ),
+                              value: useCustomDate,
+                              onChanged: (value) {
                                 setState(() {
-                                  selectAgePeriod = newValue;
+                                  useCustomDate = value ?? false;
                                 });
                               },
-                              name: 'อายุปัจจุบัน (Current Age)',
                             ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            if (useCustomDate)
+                              CustomDatePickerTextFormField(
+                                controller: datePickerController,
+                                labelText: 'ระบุวันที่เอง (Specify Date)',
+                                validator: (value) {
+                                  if (value == null || value.trim().isEmpty) {
+                                    return 'กรุณาระบุวันที่ (Please enter Date)';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            if (!useCustomDate)
+                              DropdownBuffalo(
+                                validateName:
+                                    "กรุณาระบุอายุปัจจุบัน (Please enter current age)",
+                                selectedStatus: selectAgePeriod,
+                                statusOptions: agePeriodOptions,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selectAgePeriod = newValue;
+                                  });
+                                },
+                                name: 'อายุปัจจุบัน (Current Age)',
+                              ),
                             const SizedBox(height: 20),
                             CustomTextFormField(
                               controller: weightController,
@@ -458,6 +490,24 @@ void showAddTrackingDialog(
                                     }
 
                                     if (isFormValid && isImageValid) {
+                                      String convertBuddhistToGregorian(
+                                        String input,
+                                      ) {
+                                        try {
+                                          final parts = input.split('/');
+                                          if (parts.length == 3) {
+                                            final day =
+                                                parts[0].padLeft(2, '0');
+                                            final month =
+                                                parts[1].padLeft(2, '0');
+                                            final year = int.parse(parts[2]) -
+                                                543; // แปลง พ.ศ. → ค.ศ.
+                                            return '$day-$month-$year';
+                                          }
+                                        } catch (_) {}
+                                        return input; // fallback ถ้าแปลงไม่ได้
+                                      }
+
                                       showDialog(
                                         barrierDismissible: false,
                                         context: context,
@@ -530,8 +580,12 @@ void showAddTrackingDialog(
                                                             int.parse(
                                                           heightController.text,
                                                         ),
-                                                        agePeriod:
-                                                            selectAgePeriod!,
+                                                        agePeriod: useCustomDate
+                                                            ? convertBuddhistToGregorian(
+                                                                datePickerController
+                                                                    .text,
+                                                              )
+                                                            : selectAgePeriod!,
                                                       );
 
                                                       ScaffoldMessenger.of(

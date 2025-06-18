@@ -226,20 +226,6 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
                             onPressed: () async {
                               try {
                                 await _showCodeDialog();
-
-                                // await updateAssociationUser(
-                                //   firstName: _nameController.text,
-                                //   userId: _userIdController.text,
-                                //   lastName: _lastNameController.text,
-                                //   nickname: _nickNameController.text,
-                                //   position: _selectedStatus ?? '',
-                                //   phoneNumber: _phoneController.text,
-                                //   farmId: _farmIdController.text,
-                                //   lineId: _lineIdController.text,
-                                //   password: _passwordController.text,
-                                //   imageFile: _selectedImage,
-                                //   associationImage: _optionalImage,
-                                // );
                                 await updateAssociationUser(
                                   associationId: associa.associationId,
                                   password: _passwordController.text,

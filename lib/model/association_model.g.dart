@@ -23,6 +23,7 @@ AssociationModel _$AssociationModelFromJson(Map<String, dynamic> json) =>
               ?.map((e) => FarmModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
+      associationImage: json['associationImage'] as String? ?? '',
     );
 
 Map<String, dynamic> _$AssociationModelToJson(AssociationModel instance) =>
@@ -31,6 +32,7 @@ Map<String, dynamic> _$AssociationModelToJson(AssociationModel instance) =>
       'associationName': instance.associationName,
       'password': instance.password,
       'approveType': instance.approveType,
+      'associationImage': instance.associationImage,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'associationUsers': instance.associationUsers,
