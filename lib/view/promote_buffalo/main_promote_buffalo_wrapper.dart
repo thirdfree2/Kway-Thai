@@ -82,27 +82,30 @@ class _PromoteBuffaloState extends State<PromoteBuffalo> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: _customIcon(Icons.home, 'หน้าแรก'),
+            icon: _customIcon(Icons.home, 'หน้าแรก \n(Main)'),
             label: '',
             backgroundColor: Colors.green[900],
           ),
           BottomNavigationBarItem(
-            icon: _customIcon(Icons.share, 'พันธุกรรม'),
+            icon: _customIcon(Icons.share, 'พันธุกรรม \n(Heredity)'),
             label: '',
             backgroundColor: Colors.green[900],
           ),
           BottomNavigationBarItem(
-            icon: _customIcon(Icons.photo, 'รูปภาพที่เกี่ยวข้อง'),
+            icon: _customIcon(Icons.photo, 'รูปภาพที่เกี่ยวข้อง \n(Image)'),
             label: '',
             backgroundColor: Colors.green[900],
           ),
           BottomNavigationBarItem(
-            icon: _customIcon(Icons.video_collection, 'วิดีโอที่เกี่ยวข้อง'),
+            icon: _customIcon(
+              Icons.video_collection,
+              'วิดีโอที่เกี่ยวข้อง \n(Video)',
+            ),
             label: '',
             backgroundColor: Colors.green[900],
           ),
           BottomNavigationBarItem(
-            icon: _customIcon(Icons.star, 'รางวัลประกวด'),
+            icon: _customIcon(Icons.star, 'รางวัลประกวด \n(Award)'),
             label: '',
             backgroundColor: Colors.green[900],
           ),
@@ -138,6 +141,7 @@ class _PromoteBuffaloState extends State<PromoteBuffalo> {
         ),
         Text(
           label,
+          textAlign: TextAlign.center,
           style: const TextStyle(fontSize: 10, color: Colors.white),
         ),
       ],

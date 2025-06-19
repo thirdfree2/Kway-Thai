@@ -119,7 +119,8 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                           children: [
                             Center(
                               child: Text(
-                                "ประวัติ",
+                                "ประวัติ \n(History)",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
                                     context,
@@ -149,6 +150,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.gender != '')
                                     _buildInfoRow(
                                       'ควายไทย เพศ ',
+                                      'Buffalo Gender',
                                       buffalo?.gender ?? '-',
                                       Colors.blue[800],
                                     ),
@@ -156,6 +158,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.color != '')
                                     _buildInfoRow(
                                       'สี ',
+                                      'Color',
                                       buffalo?.color ?? '',
                                       Colors.black,
                                     ),
@@ -163,6 +166,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.birthDate != '')
                                     _buildInfoRow(
                                       'เกิด ',
+                                      'Born',
                                       buffalo?.birthDate != '-'
                                           ? _formatDateToBuddhist(
                                               buffalo!.birthDate!,
@@ -174,6 +178,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.bornAt != '')
                                     _buildInfoRow(
                                       'เกิดที่ คอก/ฟาร์ม ',
+                                      'Born At',
                                       buffalo?.bornAt ?? '-',
                                       Colors.green[800],
                                     ),
@@ -181,6 +186,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.birthMethod != null)
                                     _buildInfoRow(
                                       'โดยวิธีการ ',
+                                      'Breeding Method',
                                       buffalo?.birthMethod ?? '-',
                                       Colors.red[800],
                                     ),
@@ -188,6 +194,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.fatherName != '')
                                     _buildInfoRow(
                                       'พ่อพันธุ์ คือ',
+                                      'Father Bleed',
                                       buffalo?.fatherName ?? '-',
                                       Colors.red[800],
                                     ),
@@ -195,6 +202,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.motherName != '')
                                     _buildInfoRow(
                                       'แม่พันธุ์ คือ ',
+                                      'Mother Bleed',
                                       buffalo?.motherName ?? '-',
                                       Colors.red[800],
                                     ),
@@ -202,6 +210,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.fatherGrandfatherName != '')
                                     _buildInfoRow(
                                       'สายเลือดทางปู่',
+                                      'Paternal Grandfather Bleed',
                                       buffalo?.fatherGrandfatherName ?? '-',
                                       Colors.pink[800],
                                     ),
@@ -209,6 +218,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.fatherGrandmotherName != '')
                                     _buildInfoRow(
                                       'สายเลือดทางย่า',
+                                      'Paternal Grandmother Bleed',
                                       buffalo?.fatherGrandmotherName ?? '-',
                                       Colors.pink[800],
                                     ),
@@ -216,6 +226,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.motherGrandfatherName != '')
                                     _buildInfoRow(
                                       'สายเลือดทางตา',
+                                      'Maternal Grandfather Bleed',
                                       buffalo?.motherGrandfatherName ?? '-',
                                       Colors.pink[800],
                                     ),
@@ -223,6 +234,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.motherGrandmotherName != '')
                                     _buildInfoRow(
                                       'สายเลือดทางยาย',
+                                      'Maternal Grandmother Bleed',
                                       buffalo?.motherGrandmotherName ?? '-',
                                       Colors.pink[800],
                                     ),
@@ -230,6 +242,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.fatherGreatGrandfatherName != '')
                                     _buildInfoRow(
                                       'สืบสายเลือดปู่ทวด',
+                                      'Paternal Great-Grandfather Bleed',
                                       buffalo?.fatherGreatGrandfatherName ??
                                           '-',
                                       Colors.pink[800],
@@ -238,6 +251,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.motherGreatGrandfatherName != '')
                                     _buildInfoRow(
                                       'สืบสายเลือดตาทวด',
+                                      'Maternal Great-Grandfather Bleed',
                                       buffalo?.motherGreatGrandfatherName ??
                                           '-',
                                       Colors.pink[800],
@@ -246,6 +260,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.fatherGreatGrandmotherName != '')
                                     _buildInfoRow(
                                       'สืบสายเลือดย่าทวด',
+                                      'Paternal Great-Grandmother Bleed',
                                       buffalo?.fatherGreatGrandmotherName ??
                                           '-',
                                       Colors.pink[800],
@@ -254,6 +269,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                   if (buffalo?.motherGreatGrandmotherName != '')
                                     _buildInfoRow(
                                       'สืบสายเลือดยายทวด',
+                                      'Maternal Great-Grandmother Bleed',
                                       buffalo?.motherGreatGrandmotherName ??
                                           '-',
                                       Colors.pink[800],
@@ -282,7 +298,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                   Column(
                     children: [
                       const Text(
-                        'สังกัดปัจจุบัน',
+                        'สังกัดปัจจุบัน \n(Current Under)',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.green,
@@ -329,7 +345,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                             onPressed: () {
                               Navigator.of(context).pop(); // Close the popup
                             },
-                            child: const Text("ปิด"),
+                            child: const Text("ปิด (Close)"),
                           ),
                         ],
                       );
@@ -355,18 +371,37 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
     );
   }
 
-  Widget _buildInfoRow(String label, String value, Color? color) {
+  Widget _buildInfoRow(
+    String label,
+    String labelEn,
+    String value,
+    Color? color,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Flexible(
-          child: AutoSizeText(
-            '$label ',
-            maxFontSize: 13,
-            maxLines: 2,
-            style:
-                TextStyle(fontSize: ScreenUtils.calculateFontSize(context, 13)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AutoSizeText(
+                '$label ',
+                maxFontSize: 13,
+                maxLines: 2,
+                style: TextStyle(
+                  fontSize: ScreenUtils.calculateFontSize(context, 13),
+                ),
+              ),
+              AutoSizeText(
+                '$labelEn ',
+                maxFontSize: 13,
+                maxLines: 2,
+                style: TextStyle(
+                  fontSize: ScreenUtils.calculateFontSize(context, 13),
+                ),
+              ),
+            ],
           ),
         ),
         Flexible(

@@ -45,24 +45,34 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('กรุณากรอกรหัส 6 หลัก'),
+          title: const Text(
+            'กรุณากรอกรหัส 6 หลัก \n(Enter Password)',
+            textAlign: TextAlign.center,
+          ),
           content: TextFormField(
             controller: _passwordController,
             decoration: const InputDecoration(
-              hintText: 'รหัส 6 หลัก',
+              hintText: 'รหัส 6 หลัก (Password)',
             ),
             keyboardType: TextInputType.number,
             maxLength: 6,
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('ยืนยัน'),
+              child: const Text(
+                'ยืนยัน \n(Confirm)',
+                textAlign: TextAlign.center,
+              ),
               onPressed: () {
                 if (_passwordController.text.length == 6) {
                   Navigator.of(context).pop(_passwordController.text);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('กรุณากรอกรหัสให้ครบ 6 หลัก')),
+                    const SnackBar(
+                      content: Text(
+                        'กรุณากรอกรหัสให้ครบ 6 หลัก (Please Enter Password)',
+                      ),
+                    ),
                   );
                 }
               },
@@ -126,10 +136,10 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                   ),
                                   const Expanded(
                                     child: Text(
-                                      'รางวัลงานประกวด',
+                                      'รางวัลงานประกวด \n(Competitive Award)',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: 24,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.red,
                                       ),
@@ -145,10 +155,10 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                     flex: 2,
                                     child: CustomTextFormField(
                                       controller: _rankController,
-                                      labelText: 'อันดับ',
+                                      labelText: 'อันดับ (Rank)',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -163,10 +173,10 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                     flex: 2,
                                     child: CustomTextFormField(
                                       controller: _generationController,
-                                      labelText: 'ประเภท/รุ่น',
+                                      labelText: 'ประเภท/รุ่น (Type)',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -189,7 +199,7 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                                 _selectedGender = newValue;
                                               });
                                             },
-                                            name: 'เพศ',
+                                            name: 'เพศ (Gender)',
                                           ),
                                         ),
                                       ],
@@ -199,10 +209,10 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                   Expanded(
                                     child: CustomTextFormField(
                                       controller: _colorController,
-                                      labelText: 'สี',
+                                      labelText: 'สี (Color)',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -216,10 +226,10 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                   Expanded(
                                     child: CustomTextFormField(
                                       controller: _awardNameController,
-                                      labelText: 'งานประกวด',
+                                      labelText: 'งานประกวด (Competitive Name)',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -233,10 +243,10 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                   Expanded(
                                     child: CustomTextFormField(
                                       controller: _provinceController,
-                                      labelText: 'จังหวัด',
+                                      labelText: 'จังหวัด (Province)',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -251,10 +261,10 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                     child: CustomDatePickerTextFormField(
                                       controller: _dateAwardController,
                                       labelText:
-                                          'วันที่ประกวด', // Label for birth date
+                                          'วันที่ประกวด (Competitive Date)', // Label for birth date
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -276,7 +286,7 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                               ),
                               const SizedBox(height: 10),
                               Container(
-                                height: 50,
+                                height: 60,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   color: Colors.red,
@@ -335,7 +345,7 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                               builder: (BuildContext context) {
                                                 return AlertDialog(
                                                   title: const Text(
-                                                    'ลงทะเบียนสำเร็จ',
+                                                    'ลงทะเบียนสำเร็จ (Success)',
                                                   ),
                                                   actions: <Widget>[
                                                     TextButton(
@@ -358,7 +368,7 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                                 return AlertDialog(
                                                   title: const Text('Error'),
                                                   content: const Text(
-                                                    'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.',
+                                                    'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่. (Wrong Password, Try again)',
                                                   ),
                                                   actions: <Widget>[
                                                     TextButton(
@@ -400,7 +410,8 @@ class _MainRegisterAwardState extends State<MainRegisterAward> {
                                       }
                                     },
                                     child: const Text(
-                                      'ยืนยันการเพิ่มรางวัลประกวด',
+                                      'ยืนยันการเพิ่มรางวัลประกวด \n(Add Competitive)',
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),
@@ -465,7 +476,13 @@ class ImagePickerWidget extends StatelessWidget {
         child: selectedImage == null
             ? const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Icon(Icons.add, size: 30), Text('เพิ่มรูปภาพ')],
+                children: [
+                  Icon(Icons.add, size: 30),
+                  Text(
+                    'เพิ่มรูปภาพ \n(Add Image)',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               )
             : Image.file(selectedImage!, fit: BoxFit.cover),
       ),

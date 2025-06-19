@@ -1,5 +1,4 @@
 import 'package:buffalo_thai/services/farm_services.dart';
-import 'package:buffalo_thai/view/farm/main_farm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -31,14 +30,15 @@ class _DetailFarmViewState extends State<DetailFarmView> {
 
   bool isEditMode = false;
   final TextEditingController _farmNameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  // final TextEditingController _passwordController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     final selectedFarm = Provider.of<SelectedFarm>(context, listen: false);
     futureBuffaloes = fetchBuffaloesByFarmId(selectedFarm.farmId);
     futureUser = fetchUserByFarmId(selectedFarm.farmId);
-    _farmNameController.text = selectedFarm.farmNames ?? '';
+    _farmNameController.text = selectedFarm.farmNames;
   }
 
   Future<void> _showPasswordDialog(BuildContext context) async {
@@ -91,6 +91,8 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                           farmId: selectedFarm.farmId.toString(),
                           password: passwordController,
                         );
+
+                        if (!context.mounted) return;
 
                         if (response == "Farm updated successfully") {
                           Navigator.of(context).pop(); // ปิด Dialog
@@ -163,17 +165,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
   @override
   Widget build(BuildContext context) {
     final selectedFarm = Provider.of<SelectedFarm>(context);
-    final region = selectedFarm.region;
-    final farmId = selectedFarm.farmId;
     final farmNames = selectedFarm.farmNames;
-
-    final List<String> farmerNames = [
-      'John Doe 1',
-      'John Doe 2',
-      'John Doe 3',
-      'John Doe 4',
-      'John Doe 5',
-    ];
 
     return Scaffold(
       body: DecoratedBox(
@@ -391,7 +383,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                       context,
                                       listen: false,
                                     ).setSelectedFarmOwner(
-                                      user.userId.toString() ?? '',
+                                      user.userId.toString(),
                                       user.nickname ?? '',
                                       user.userImages[0].imageUrl,
                                       user.firstName,
@@ -582,6 +574,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                   ),
                                 );
 
+                                // ignore: unnecessary_null_comparison
                                 final imageUrl = profileImage != null
                                     ? profileImage.imagePath
                                     : 'https://placeholder.com/150';

@@ -1,13 +1,9 @@
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:buffalo_thai/providers/selected_buffalo.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/providers/selected_farm_owner.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
 import 'package:buffalo_thai/view/farm_owner/edit_farm_owner.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stroke_text/stroke_text.dart';
 
 class MainFarmOwner extends StatefulWidget {
   const MainFarmOwner({super.key});

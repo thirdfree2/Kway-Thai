@@ -2,10 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/services/user_services.dart';
 import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
-import 'package:buffalo_thai/view/farm_owner/register_farm_owner.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:buffalo_thai/view/farm_owner/register_buffalo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:buffalo_thai/providers/selected_farm_owner.dart';
@@ -14,13 +12,13 @@ class EditFarmOwnerScreen extends StatefulWidget {
   const EditFarmOwnerScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _EditFarmOwnerScreenState createState() => _EditFarmOwnerScreenState();
 }
 
 class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
   late TextEditingController _nameController = TextEditingController();
   late TextEditingController _lastNameController = TextEditingController();
-  late TextEditingController _positionController = TextEditingController();
   late TextEditingController _phoneController = TextEditingController();
   late TextEditingController _lineIdController = TextEditingController();
   late TextEditingController _nickNameController = TextEditingController();
@@ -63,7 +61,6 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
     final farmOwner = Provider.of<SelectedFarmOwner>(context, listen: false);
     _nameController = TextEditingController(text: farmOwner.farmOwner);
     _lastNameController = TextEditingController(text: farmOwner.lastName);
-    _positionController = TextEditingController(text: farmOwner.position);
     _phoneController = TextEditingController(text: farmOwner.phone);
     _lineIdController = TextEditingController(text: farmOwner.lineId);
     _selectedStatus = farmOwner.position;

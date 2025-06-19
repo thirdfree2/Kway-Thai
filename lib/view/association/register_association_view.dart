@@ -105,12 +105,12 @@ class _RegisterAssociationViewState extends State<RegisterAssociationView> {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      'ลงทะเบียนสมาชิกสมาคม',
+                                      'ลงทะเบียนสมาชิกสมาคม \n(Register Association Member)',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontSize: ScreenUtils.calculateFontSize(
                                           context,
-                                          24,
+                                          13,
                                         ),
                                         fontWeight: FontWeight.bold,
                                         color: Colors.red,
@@ -128,13 +128,13 @@ class _RegisterAssociationViewState extends State<RegisterAssociationView> {
                                     child: Column(
                                       children: [
                                         AutoSizeText(
-                                          maxLines: 1,
-                                          'ลงทะเบียนสมาชิกสำหรับฟาร์ม',
+                                          'ลงทะเบียนสมาชิกสำหรับสมาคม \n(Regitser for Association)',
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize:
                                                 ScreenUtils.calculateFontSize(
                                               context,
-                                              8,
+                                              7,
                                             ),
                                           ),
                                         ),
@@ -168,10 +168,10 @@ class _RegisterAssociationViewState extends State<RegisterAssociationView> {
                                   Expanded(
                                     child: CustomTextFormField(
                                       controller: _firstNameController,
-                                      labelText: 'ชื่อ',
+                                      labelText: 'ชื่อ (Firstname)',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -181,10 +181,10 @@ class _RegisterAssociationViewState extends State<RegisterAssociationView> {
                                   Expanded(
                                     child: CustomTextFormField(
                                       controller: _lastNameController,
-                                      labelText: 'นามสกุล',
+                                      labelText: 'นามสกุล (Lastname)',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -198,10 +198,10 @@ class _RegisterAssociationViewState extends State<RegisterAssociationView> {
                                   Flexible(
                                     child: CustomTextFormField(
                                       controller: _nicknameController,
-                                      labelText: 'ชื่อเล่น',
+                                      labelText: 'ชื่อเล่น (Nickname)',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -234,11 +234,11 @@ class _RegisterAssociationViewState extends State<RegisterAssociationView> {
                                       controller: _phoneNumberController,
                                       decoration: const InputDecoration(
                                         border: OutlineInputBorder(),
-                                        labelText: 'เบอร์โทร',
+                                        labelText: 'เบอร์โทร (Phone)',
                                       ),
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -251,7 +251,7 @@ class _RegisterAssociationViewState extends State<RegisterAssociationView> {
                                       labelText: 'Line ID',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -261,7 +261,7 @@ class _RegisterAssociationViewState extends State<RegisterAssociationView> {
                               ),
                               const SizedBox(height: 80),
                               Container(
-                                height: 50,
+                                height: 80,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   color: Colors.red,
@@ -277,9 +277,13 @@ class _RegisterAssociationViewState extends State<RegisterAssociationView> {
                                             context: context,
                                             builder: (context) =>
                                                 const AlertDialog(
-                                              title: Text('โปรดเลือกภาพ'),
+                                              title: Text(
+                                                'โปรดเลือกภาพ \n (Plase Select Image)',
+                                                textAlign: TextAlign.center,
+                                              ),
                                               content: Text(
-                                                'กรุณาเลือกรูปภาพก่อนลงทะเบียน',
+                                                'กรุณาเลือกรูปภาพก่อนลงทะเบียน \n (Please Selecte Image Before Register)',
+                                                textAlign: TextAlign.center,
                                               ),
                                             ),
                                           );
@@ -289,7 +293,8 @@ class _RegisterAssociationViewState extends State<RegisterAssociationView> {
                                       }
                                     },
                                     child: const Text(
-                                      'ลงทะเบียน',
+                                      'ลงทะเบียน \n(Register)',
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),
@@ -367,7 +372,9 @@ class _RegisterAssociationViewState extends State<RegisterAssociationView> {
                       if (!context.mounted) return;
 
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("ลงทะเบียนสำเร็จ")),
+                        const SnackBar(
+                          content: Text("ลงทะเบียนสำเร็จ (Register Success)"),
+                        ),
                       );
 
                       Navigator.pop(context);
@@ -395,7 +402,9 @@ class _RegisterAssociationViewState extends State<RegisterAssociationView> {
       showPasswordDialog();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("กรุณากรอกข้อมูลให้ครบทุกช่อง")),
+        const SnackBar(
+          content: Text("กรุณากรอกข้อมูล (Please Enter)ให้ครบทุกช่อง"),
+        ),
       );
     }
   }
@@ -406,9 +415,11 @@ class ImagePickerWidget extends StatelessWidget {
     super.key,
     this.selectedImage,
     required this.onPickImage,
+    this.label = 'เพิ่มรูปภาพ \n(Add Image)',
   });
   final File? selectedImage;
   final VoidCallback onPickImage;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -423,9 +434,15 @@ class ImagePickerWidget extends StatelessWidget {
           color: Colors.white.withAlpha((0.6 * 255).round()),
         ),
         child: selectedImage == null
-            ? const Column(
+            ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Icon(Icons.add, size: 30), Text('เพิ่มรูปภาพ')],
+                children: [
+                  const Icon(Icons.add, size: 30),
+                  Text(
+                    label,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               )
             : Image.file(selectedImage!, fit: BoxFit.cover),
       ),

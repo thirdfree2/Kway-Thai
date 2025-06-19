@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
-import 'package:buffalo_thai/view/farm/list_farm_view.dart';
 import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
 import 'package:buffalo_thai/services/register_farm_ower_services.dart';
 
@@ -123,7 +122,6 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: DecoratedBox(
@@ -374,11 +372,14 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                             ? _optionalImage!.path
                                                 .split('/')
                                                 .last // แสดงชื่อไฟล์
-                                            : 'เพิ่มบัตรสมาคม (Association Member)',
+                                            : 'เพิ่มบัตรสมาคม \n(Association Member)',
+                                        textAlign: TextAlign.center,
                                         style: const TextStyle(
                                           fontSize: 14,
                                           color: Colors.black87,
                                         ),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
                                       ),
                                     ],
                                   ),
@@ -404,8 +405,8 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                             await _showCodeDialog();
 
                                             // ส่งข้อมูลไปยัง API หลังจากกรอกรหัสถูกต้องแล้ว
-                                            final userId =
-                                                await registerFarmOwnerV2(
+
+                                            await registerFarmOwnerV2(
                                               firstName:
                                                   _firstNameController.text,
                                               lastName:
@@ -423,6 +424,8 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                                   _passwordController.text,
                                               status: 'รอนุมัติ',
                                             );
+                                            if (!context.mounted) return;
+
                                             Navigator.pop(context);
                                             Navigator.pop(context);
                                             Navigator.pushReplacement(
@@ -453,7 +456,6 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                               },
                                             );
                                           } catch (e) {
-                                            print('Error: $e');
                                             Navigator.of(context).pop();
                                             // แสดง dialog แจ้งข้อผิดพลาด
                                             showDialog(
@@ -478,8 +480,6 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                             );
                                           }
                                         } else {
-                                          // ถ้าไม่ได้เลือกภาพให้แสดงข้อความแจ้งเตือน
-                                          print('Please select an image');
                                           showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
@@ -578,9 +578,10 @@ class StatusDropdown extends StatelessWidget {
       onChanged: onChanged,
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'สถานะ',
+        labelText: 'สถานะ (Status)',
       ),
-      validator: (value) => value == null ? 'กรุณาเลือกสถานะ' : null,
+      validator: (value) =>
+          value == null ? 'กรุณาเลือกสถานะ (Please Select)' : null,
     );
   }
 }
@@ -591,8 +592,10 @@ class ImagePickerWidget extends StatelessWidget {
     super.key,
     this.selectedImage,
     required this.onPickImage,
+    this.label = "เพิ่มรูปภาพ \n(Add Image)",
   });
   final File? selectedImage;
+  final String label;
   final VoidCallback onPickImage;
 
   @override
@@ -608,9 +611,15 @@ class ImagePickerWidget extends StatelessWidget {
           color: Colors.white.withAlpha((0.6 * 255).round()),
         ),
         child: selectedImage == null
-            ? const Column(
+            ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Icon(Icons.add, size: 30), Text('เพิ่มรูปภาพ')],
+                children: [
+                  const Icon(Icons.add, size: 30),
+                  Text(
+                    label,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               )
             : Image.file(selectedImage!, fit: BoxFit.cover),
       ),

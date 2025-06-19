@@ -1,4 +1,5 @@
 import 'package:buffalo_thai/components/kwai_thai_bg.dart';
+import 'package:buffalo_thai/components/label_member_text.dart';
 import 'package:buffalo_thai/model/association_model.dart';
 import 'package:buffalo_thai/model/association_user_model.dart';
 import 'package:buffalo_thai/providers/selected_association.dart';
@@ -98,80 +99,63 @@ class _AssociationUserState extends State<AssociationUser> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              Text(
-                                'ชื่อเล่น : ${widget.user.nickname}',
-                                style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                    context,
-                                    34,
-                                  ),
-                                  color: Colors.black,
-                                ),
+                              LabeledTextRow(
+                                labelTh: 'ชื่อเล่น',
+                                labelEn: 'Nickname',
+                                value: widget.user.nickname,
+                                fontSize:
+                                    ScreenUtils.calculateFontSize(context, 24),
                               ),
                               const SizedBox(
                                 height: 10,
                               ),
-                              Text(
-                                'นามสกุล : ${widget.user.lastName}',
-                                style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                    context,
-                                    22,
-                                  ),
-                                  color: Colors.black,
-                                ),
+                              LabeledTextRow(
+                                labelTh: 'นามสกุล',
+                                labelEn: 'Lastname',
+                                value: widget.user.lastName,
+                                fontSize:
+                                    ScreenUtils.calculateFontSize(context, 24),
                               ),
                               const SizedBox(
                                 height: 10,
                               ),
-                              Text(
-                                'ตำแหน่ง : ${widget.user.position}',
-                                style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                    context,
-                                    22,
-                                  ),
-                                  color: Colors.black,
-                                ),
+                              LabeledTextRow(
+                                labelTh: 'ตำแหน่ง',
+                                labelEn: 'Position',
+                                value: widget.user.position,
+                                fontSize:
+                                    ScreenUtils.calculateFontSize(context, 24),
                               ),
                               const SizedBox(
                                 height: 10,
                               ),
-                              Text(
-                                'ชื่อ : ${widget.user.firstName} ${widget.user.lastName}',
-                                style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                    context,
-                                    18,
-                                  ),
-                                  color: Colors.black,
-                                ),
+                              LabeledTextRow(
+                                labelTh: 'ชื่อ',
+                                labelEn: 'Name',
+                                value:
+                                    '${widget.user.firstName} ${widget.user.lastName}',
+                                fontSize:
+                                    ScreenUtils.calculateFontSize(context, 24),
                               ),
                               const SizedBox(
                                 height: 10,
                               ),
-                              Text(
-                                'เบอร์โทร : ${widget.user.phoneNumber}',
-                                style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                    context,
-                                    18,
-                                  ),
-                                  color: Colors.black,
-                                ),
+                              LabeledTextRow(
+                                labelTh: 'เบอร์โทร',
+                                labelEn: 'Phone',
+                                value: widget.user.phoneNumber,
+                                fontSize:
+                                    ScreenUtils.calculateFontSize(context, 24),
                               ),
                               const SizedBox(
                                 height: 10,
                               ),
-                              Text(
-                                'ID line : ${widget.user.lineId}',
-                                style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                    context,
-                                    18,
-                                  ),
-                                  color: Colors.black,
-                                ),
+                              LabeledTextRow(
+                                labelTh: 'ไลน์',
+                                labelEn: 'ID line',
+                                value: widget.user.lineId,
+                                fontSize:
+                                    ScreenUtils.calculateFontSize(context, 24),
                               ),
                             ],
                           ),
@@ -193,12 +177,13 @@ class _AssociationUserState extends State<AssociationUser> {
                     color: Colors.red,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  height: 50,
+                  height: 80,
                   width: 100,
                   child: GestureDetector(
                     child: Center(
                       child: Text(
-                        'ย้อนกลับ',
+                        'ย้อนกลับ \n(Back)',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: ScreenUtils.calculateFontSize(context, 18),

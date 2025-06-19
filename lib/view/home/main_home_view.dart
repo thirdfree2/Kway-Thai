@@ -286,7 +286,7 @@ class _HomeViewState extends State<HomeView> {
                                   fillColor: Colors.white
                                       .withAlpha((0.6 * 255).round()),
                                   prefixIcon: const Icon(Icons.search),
-                                  hintText: 'ค้นหา',
+                                  hintText: 'ค้นหา (Search)',
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),
@@ -598,19 +598,21 @@ class _HomeViewState extends State<HomeView> {
                       child: Column(
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const SizedBox(width: 20),
                               Text(
-                                "ข่าวประชาสัมพันธ์",
+                                "ข่าวประชาสัมพันธ์ (Announcement)",
                                 style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
                                     context,
-                                    20,
+                                    15,
                                   ),
                                   color: Colors.white,
                                 ),
                               ),
+                              const SizedBox(width: 20),
                             ],
                           ),
                           Padding(
@@ -651,8 +653,19 @@ class _HomeViewState extends State<HomeView> {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
-                                              title:
-                                                  const Text("ประชาสัมพันธ์"),
+                                              title: Center(
+                                                child: Text(
+                                                  "ข่าวประชาสัมพันธ์ (Announcement)",
+                                                  style: TextStyle(
+                                                    fontSize: ScreenUtils
+                                                        .calculateFontSize(
+                                                      context,
+                                                      12,
+                                                    ),
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
                                               content: Image.network(
                                                 annouce
                                                     .filepath, // ใช้ URL ของรูปภาพจาก AnnouceModel
@@ -708,7 +721,7 @@ class _HomeViewState extends State<HomeView> {
                                               (context, error, stackTrace) {
                                             return const Center(
                                               child: Text(
-                                                'ไม่สามารถโหลดรูปภาพได้',
+                                                'ไม่สามารถโหลดรูปภาพได้ \n(Image Not Found)',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   color: Colors.red,
@@ -788,7 +801,8 @@ class _HomeViewState extends State<HomeView> {
                                         height: 5,
                                       ),
                                       Text(
-                                        "คอก/ฟาร์ม",
+                                        "คอก/ฟาร์ม \n(Stall/Farm)",
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontSize:
                                               ScreenUtils.calculateFontSize(
@@ -840,7 +854,8 @@ class _HomeViewState extends State<HomeView> {
                                         height: 5,
                                       ),
                                       Text(
-                                        "ประวัติ",
+                                        "ประวัติ \n(History)",
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontSize:
                                               ScreenUtils.calculateFontSize(
@@ -892,7 +907,8 @@ class _HomeViewState extends State<HomeView> {
                                         height: 5,
                                       ),
                                       Text(
-                                        "พันธุกรรม",
+                                        "พันธุกรรม \n(Heredity)",
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontSize:
                                               ScreenUtils.calculateFontSize(
@@ -952,7 +968,8 @@ class _HomeViewState extends State<HomeView> {
                                       height: 5,
                                     ),
                                     Text(
-                                      "ลงทะเบียน",
+                                      "ลงทะเบียน \n(Register)",
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
                                         overflow: TextOverflow.ellipsis,
                                         fontSize: ScreenUtils.calculateFontSize(
@@ -989,7 +1006,8 @@ class _HomeViewState extends State<HomeView> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'พบควายที่ค้นหา (${filteredBuffaloes.length})',
+                                      'พบควายที่ค้นหา \n(Found) (${filteredBuffaloes.length})',
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontSize: ScreenUtils.calculateFontSize(
                                           context,
@@ -1014,7 +1032,8 @@ class _HomeViewState extends State<HomeView> {
                                           padding: EdgeInsets.all(8.0),
                                           child: Center(
                                             child: Text(
-                                              'ล้างการค้นหา',
+                                              'ล้างการค้นหา \n(Clear)',
+                                              textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: Colors.white,
                                               ),

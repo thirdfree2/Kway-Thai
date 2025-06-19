@@ -105,7 +105,8 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
               ),
               const SizedBox(height: 40),
               Text(
-                "พันธุกรรมเหล่ากอ",
+                "พันธุกรรมเหล่ากอ \n(Heredity)",
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: ScreenUtils.calculateFontSize(context, 30),
                   color: Colors.white,
@@ -122,7 +123,7 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                       fillColor: Colors.red,
                       prefixIcon: const Icon(Icons.search),
                       prefixIconColor: Colors.white,
-                      hintText: 'ค้นหา',
+                      hintText: 'ค้นหา (Search)',
                       hintStyle: const TextStyle(color: Colors.white),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
@@ -148,7 +149,7 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'พบควายที่ค้นหา (${filteredBuffaloes.length})',
+                                  'พบควายที่ค้นหา (Found) (${filteredBuffaloes.length})',
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                       context,

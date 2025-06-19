@@ -44,22 +44,12 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final associa = Provider.of<SelectedAssociation>(context, listen: false);
-  }
-
   late TextEditingController _nameController = TextEditingController();
   late TextEditingController _lastNameController = TextEditingController();
-  late TextEditingController _positionController = TextEditingController();
+  // late TextEditingController _positionController = TextEditingController();
   late TextEditingController _phoneController = TextEditingController();
   late TextEditingController _lineIdController = TextEditingController();
   late TextEditingController _nickNameController = TextEditingController();
-
-  final TextEditingController _farmNameController = TextEditingController();
-  final TextEditingController _farmIdController = TextEditingController();
-  final TextEditingController _userIdController = TextEditingController();
 
   final TextEditingController _passwordController = TextEditingController();
 
@@ -70,27 +60,51 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
     associa = selectAsso.association!;
     _nameController = TextEditingController(text: widget.user.firstName);
     _lastNameController = TextEditingController(text: widget.user.lastName);
-    _positionController = TextEditingController(text: widget.user.position);
+    // _positionController = TextEditingController(text: widget.user.position);
     _phoneController = TextEditingController(text: widget.user.phoneNumber);
     _lineIdController = TextEditingController(text: widget.user.lineId);
     _selectedStatus = widget.user.position;
     _nickNameController = TextEditingController(text: widget.user.nickname);
   }
 
-  Future<void> _showCodeDialog() async {
-    return showDialog<void>(
+  Future<String?> _showCodeDialog() async {
+    return showDialog<String>(
       context: context,
-      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('กรุณากรอกรหัส'),
+          title: const Text(
+            'กรุณากรอกรหัส \n(Please Enter Password)',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          ),
           content: TextFormField(
             controller: _passwordController,
             keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'รหัสผ่าน (Password)',
+            ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('ยืนยัน'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'ยกเลิก\n(Cancel)',
+                textAlign: TextAlign.center,
+              ),
+            ),
+            TextButton(
+              child: const Text(
+                'ยืนยัน \n(Confirm)',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).pop(_passwordController.text);
               },
@@ -108,21 +122,32 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
         child: Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(width: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(Icons.arrow_back),
+                  child: Row(
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(Icons.arrow_back),
+                      ),
+                    ],
                   ),
                 ),
-                const AutoSizeText(
-                  'แก้ไขสมาชิก',
-                  style: TextStyle(fontSize: 24),
+                const Center(
+                  child: AutoSizeText(
+                    'แก้ไขสมาชิก \n(Edit Member)',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 24),
+                  ),
                 ),
+                const SizedBox(width: 50),
               ],
             ),
             Padding(
@@ -145,10 +170,10 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
                       const SizedBox(height: 10),
                       CustomTextFormField(
                         controller: _nameController,
-                        labelText: 'ชื่อ',
+                        labelText: 'ชื่อ (Firstname)',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'กรุณากรอกข้อมูล';
+                            return 'กรุณากรอกข้อมูล (Please Enter)';
                           }
                           return null;
                         },
@@ -156,10 +181,10 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
                       const SizedBox(height: 10),
                       CustomTextFormField(
                         controller: _lastNameController,
-                        labelText: 'นามสกุล',
+                        labelText: 'นามสกุล (Lastname)',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'กรุณากรอกข้อมูล';
+                            return 'กรุณากรอกข้อมูล (Please Enter)';
                           }
                           return null;
                         },
@@ -167,10 +192,10 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
                       const SizedBox(height: 10),
                       CustomTextFormField(
                         controller: _nickNameController,
-                        labelText: 'ชื่อเล่น',
+                        labelText: 'ชื่อเล่น (Nickname)',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'กรุณากรอกข้อมูล';
+                            return 'กรุณากรอกข้อมูล (Please Enter)';
                           }
                           return null;
                         },
@@ -194,10 +219,10 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
                       const SizedBox(height: 10),
                       CustomTextFormField(
                         controller: _phoneController,
-                        labelText: 'เบอร์โทร',
+                        labelText: 'เบอร์โทร (Phone)',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'กรุณากรอกข้อมูล';
+                            return 'กรุณากรอกข้อมูล (Please Enter)';
                           }
                           return null;
                         },
@@ -208,14 +233,14 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
                         labelText: 'Line ID',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'กรุณากรอกข้อมูล';
+                            return 'กรุณากรอกข้อมูล (Please Enter)';
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 10),
                       Container(
-                        height: 50,
+                        height: 60,
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.red,
@@ -225,7 +250,11 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
                           child: TextButton(
                             onPressed: () async {
                               try {
-                                await _showCodeDialog();
+                                final password = await _showCodeDialog();
+
+                                if (password == null || password.isEmpty) {
+                                  return;
+                                }
                                 await updateAssociationUser(
                                   associationId: associa.associationId,
                                   password: _passwordController.text,
@@ -239,6 +268,10 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
                                   associationUserId: widget.user.associationId
                                       .toString(), // อย่าลืมตรวจ null ก่อนหน้า
                                 );
+                                if (!context.mounted) {
+                                  return;
+                                }
+
                                 Navigator.pop(context);
                                 Navigator.pop(context);
                                 Navigator.pushReplacement(
@@ -252,7 +285,10 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: const Text('ลงทะเบียนสำเร็จ'),
+                                      title: const Text(
+                                        'แก้ไขสำเร็จ \n(Update Success)',
+                                        textAlign: TextAlign.center,
+                                      ),
                                       actions: <Widget>[
                                         TextButton(
                                           child: const Text('OK'),
@@ -265,14 +301,14 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
                                   },
                                 );
                               } catch (e) {
-                                print("เกิดข้อผิดพลาด: $e");
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
                                       title: const Text('Error'),
                                       content: const Text(
-                                        'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.',
+                                        'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่. \n(Wrong Password)',
+                                        textAlign: TextAlign.center,
                                       ),
                                       actions: <Widget>[
                                         TextButton(
@@ -288,7 +324,8 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
                               }
                             },
                             child: const Text(
-                              'ยืนยันการแก้ไข',
+                              'ยืนยันการแก้ไข \n(Confirm Update)',
+                              textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white),
                             ),
                           ),

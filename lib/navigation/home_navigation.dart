@@ -22,16 +22,15 @@ class _HomeState extends State<Home> {
           settings: setting,
           builder: (BuildContext context) {
             if (setting.name == '/farm') {
-              return FarmView();
+              return const FarmView();
             }
             if (setting.name == '/buffHistory') {
-              return MainHistoryBuffaloView();
+              return const MainHistoryBuffaloView();
             }
             if (setting.name == '/buffHeredity') {
-              return MainHeredityBuffaloView();
-            }
-            else {
-              return HomeView();
+              return const MainHeredityBuffaloView();
+            } else {
+              return const HomeView();
             }
           },
         );

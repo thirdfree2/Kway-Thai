@@ -104,7 +104,8 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
               ),
               const SizedBox(height: 40),
               Text(
-                'ประวัติควายไทย',
+                'ประวัติควายไทย \n(History)',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: ScreenUtils.calculateFontSize(context, 30),
                   color: Colors.white,
@@ -121,7 +122,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                       fillColor: Colors.red,
                       prefixIcon: const Icon(Icons.search),
                       prefixIconColor: Colors.white,
-                      hintText: 'ค้นหา',
+                      hintText: 'ค้นหา (Search)',
                       hintStyle: const TextStyle(color: Colors.white),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
@@ -147,7 +148,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'พบควายที่ค้นหา (${filteredBuffaloes.length})',
+                                  'พบควายที่ค้นหา (Found) (${filteredBuffaloes.length})',
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                       context,

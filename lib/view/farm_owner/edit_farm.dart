@@ -1,11 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
-import 'package:buffalo_thai/services/user_services.dart';
 import 'package:buffalo_thai/view/farm/detail_farm_view.dart';
 import 'package:buffalo_thai/view/farm_owner/register_farm_owner.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:buffalo_thai/view/farm_owner/register_buffalo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:buffalo_thai/providers/selected_farm_owner.dart';
@@ -14,6 +10,7 @@ class EditFarm extends StatefulWidget {
   const EditFarm({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _EditFarmState createState() => _EditFarmState();
 }
 
@@ -57,8 +54,6 @@ class _EditFarmState extends State<EditFarm> {
     _nickNameController = TextEditingController(text: farmOwner.nickname);
   }
 
-  File? _selectedImage;
-
   Future<void> _showCodeDialog() async {
     return showDialog<void>(
       context: context,
@@ -94,16 +89,6 @@ class _EditFarmState extends State<EditFarm> {
         );
       },
     );
-  }
-
-  Future<void> _pickImage() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
-      setState(() {
-        _selectedImage = File(pickedImage.path);
-      });
-    }
   }
 
   @override
@@ -274,7 +259,6 @@ class _EditFarmState extends State<EditFarm> {
                                     },
                                   );
                                 } catch (e) {
-                                  print('$e');
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {

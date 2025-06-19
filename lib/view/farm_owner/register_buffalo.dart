@@ -630,7 +630,6 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                   microchipimage:
                                                       _microchipImage,
                                                 );
-                                                print(result);
                                                 if (result ==
                                                     'รหัสผ่านไม่ถูกต้อง') {
                                                   ScaffoldMessenger.of(context)

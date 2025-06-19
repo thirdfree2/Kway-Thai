@@ -50,22 +50,22 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
     if (_formKey.currentState!.validate()) {
       final imageFile = _selectedImage;
       if (imageFile == null) {
-        _showSnackBar(context, 'กรุณาเลือกภาพ');
+        _showSnackBar(context, 'กรุณาเลือกภาพ (Please Select Image)');
         return;
       }
 
       if (_selectedRegion == null) {
-        _showSnackBar(context, 'กรุณาเลือกภาค');
+        _showSnackBar(context, 'กรุณาเลือกภาค (Plase Select Zone)');
         return;
       }
 
       if (_selectedStatus == null) {
-        _showSnackBar(context, 'กรุณาเลือกสถานะ');
+        _showSnackBar(context, 'กรุณาเลือกสถานะ (Please Select Position)');
         return;
       }
 
       if (_digitController.text.length != 6) {
-        _showSnackBar(context, 'กรุณากรอกรหัส 6 หลัก');
+        _showSnackBar(context, 'กรุณากรอกรหัส 6 หลัก (Plase Enter Password)');
         return;
       }
 
@@ -94,8 +94,8 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
 
         _showDialog(
           context,
-          'ลงทะเบียนสำเร็จ',
-          'ข้อมูลฟาร์มและเจ้าของถูกลงทะเบียนเรียบร้อยแล้ว',
+          'ลงทะเบียนสำเร็จ\n(Registration Successful)',
+          'ข้อมูลฟาร์มและเจ้าของถูกลงทะเบียนเรียบร้อยแล้ว\n(Your farm and owner information has been successfully registered.)',
         );
       } catch (e) {
         _showSnackBar(context, 'เกิดข้อผิดพลาด: พบชื่อฟาร์มนี้แล้ว');
@@ -108,7 +108,10 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title),
+          title: Text(
+            title,
+            textAlign: TextAlign.center,
+          ),
           content: Text(message),
           actions: [
             TextButton(
@@ -116,7 +119,10 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
-              child: const Text('ตกลง'),
+              child: const Text(
+                'ตกลง \n(Confirm)',
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
         );
@@ -183,7 +189,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                 ),
                                 Expanded(
                                   child: Text(
-                                    'ลงทะเบียนสมาชิก',
+                                    'ลงทะเบียนสมาชิก \n(Register)',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: ScreenUtils.calculateFontSize(
@@ -209,17 +215,17 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                     children: [
                                       CustomTextFormField(
                                         controller: _farmNameController,
-                                        labelText: 'คอก/ฟาร์ม',
+                                        labelText: 'คอก/ฟาร์ม (Stall/Farm)',
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return 'กรุณากรอกข้อมูล';
+                                            return 'กรุณากรอกข้อมูล (Please Enter)';
                                           }
                                           return null;
                                         },
                                       ),
                                       const SizedBox(height: 8),
                                       StatusDropdown(
-                                        labelName: 'ภาค',
+                                        labelName: 'ภาค (Zone)',
                                         selectedStatus: _selectedRegion,
                                         statusOptions: _regionOptions,
                                         onChanged: (newValue) {
@@ -251,10 +257,10 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                 Expanded(
                                   child: CustomTextFormField(
                                     controller: _firstNameController,
-                                    labelText: 'ชื่อ',
+                                    labelText: 'ชื่อ (Firstname)',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'กรุณากรอกข้อมูล';
+                                        return 'กรุณากรอกข้อมูล (Please Enter)';
                                       }
                                       return null;
                                     },
@@ -264,10 +270,10 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                 Expanded(
                                   child: CustomTextFormField(
                                     controller: _lastNameController,
-                                    labelText: 'นามสกุล',
+                                    labelText: 'นามสกุล (Lastname)',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'กรุณากรอกข้อมูล';
+                                        return 'กรุณากรอกข้อมูล (Please Enter)';
                                       }
                                       return null;
                                     },
@@ -281,10 +287,10 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                 Flexible(
                                   child: CustomTextFormField(
                                     controller: _nicknameController,
-                                    labelText: 'ชื่อเล่น',
+                                    labelText: 'ชื่อเล่น (Nickname)',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'กรุณากรอกข้อมูล';
+                                        return 'กรุณากรอกข้อมูล (Please Enter)';
                                       }
                                       return null;
                                     },
@@ -297,7 +303,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                               children: [
                                 Flexible(
                                   child: StatusDropdown(
-                                    labelName: 'สถานะ',
+                                    labelName: 'สถานะ (Position)',
                                     selectedStatus: _selectedStatus,
                                     statusOptions: _statusOptions,
                                     onChanged: (newValue) {
@@ -315,10 +321,10 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                 Expanded(
                                   child: CustomTextFormField(
                                     controller: _phoneNumberController,
-                                    labelText: 'เบอร์โทร',
+                                    labelText: 'เบอร์โทร (Phone)',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'กรุณากรอกข้อมูล';
+                                        return 'กรุณากรอกข้อมูล (Please Enter)';
                                       }
                                       return null;
                                     },
@@ -331,7 +337,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                     labelText: 'Line ID',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'กรุณากรอกข้อมูล';
+                                        return 'กรุณากรอกข้อมูล (Please Enter)';
                                       }
                                       return null;
                                     },
@@ -352,7 +358,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                     obscureText: true, // ซ่อนข้อความที่พิมพ์
                                     decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
-                                      hintText: 'กรอกรหัส 6 หลัก',
+                                      hintText: 'กรอกรหัส 6 หลัก (Password)',
                                     ),
                                     maxLength: 6, // จำกัดความยาวที่ 6 หลัก
                                   ),
@@ -361,7 +367,7 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                             ),
                             const SizedBox(height: 10),
                             Container(
-                              height: 50,
+                              height: 70,
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 color: Colors.red,
@@ -372,7 +378,8 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
                                   onPressed:
                                       _validateAndSubmit, // เรียกใช้ validateAndSubmit
                                   child: const Text(
-                                    'ลงทะเบียน',
+                                    'ลงทะเบียน \n(Register)',
+                                    textAlign: TextAlign.center,
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
@@ -446,7 +453,8 @@ class StatusDropdown extends StatelessWidget {
         border: const OutlineInputBorder(),
         labelText: labelName,
       ),
-      validator: (value) => value == null ? 'กรุณาเลือกสถานะ' : null,
+      validator: (value) =>
+          value == null ? 'กรุณาเลือกสถานะ (Please select position)' : null,
     );
   }
 }
@@ -479,7 +487,8 @@ class ImagePickerWidget extends StatelessWidget {
                 children: [
                   Icon(Icons.add, size: 30),
                   Text(
-                    'เพิ่มรูปภาพ',
+                    'เพิ่มรูปภาพ \n(Add Image)',
+                    textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 10),
                   ),
                 ],

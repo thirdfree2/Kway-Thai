@@ -9,7 +9,6 @@ import 'package:buffalo_thai/view/farm_owner/register_buffalo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class TrackingBuffaloView extends StatefulWidget {
@@ -286,7 +285,6 @@ void showAddTrackingDialog(
   final datePickerController = TextEditingController();
 
   bool useCustomDate = false;
-  DateTime? selectedDate;
 
   String? selectAgePeriod;
 

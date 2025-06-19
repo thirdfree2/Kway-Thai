@@ -83,7 +83,7 @@ Future<String> updateUserV2({
   required String farmId,
   required String lineId,
   required String password,
-  required File? imageFile,
+  File? imageFile,
   File? associationImage,
 }) async {
   String url = '${ApiUtils.baseUrl}/api/user/v2/$userId';
@@ -100,7 +100,7 @@ Future<String> updateUserV2({
   if (imageFile != null && imageFile.path.isNotEmpty) {
     request.files.add(
       await http.MultipartFile.fromPath(
-        'profileimage',
+        'profileImage',
         imageFile.path,
         contentType:
             MediaType('image', basename(imageFile.path).split('.').last),
@@ -111,12 +111,16 @@ Future<String> updateUserV2({
   if (associationImage != null) {
     request.files.add(
       await http.MultipartFile.fromPath(
-        'associationimage',
+        'associationImage',
         associationImage.path,
-        // contentType: _detectMediaType(associationImage.path),
+        contentType:
+            MediaType('image', basename(imageFile?.path ?? '').split('.').last),
       ),
     );
   }
+
+  print(request);
+
   final response = await request.send();
 
   if (response.statusCode == 200) {
