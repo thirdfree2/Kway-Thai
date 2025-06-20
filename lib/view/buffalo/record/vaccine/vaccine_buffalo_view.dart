@@ -152,7 +152,7 @@ class _VaccineBuffaloViewState extends State<VaccineBuffaloView> {
                                   itemBuilder: (context, index) {
                                     return ExpandableVaccineCard(
                                       vaccine: vaccineList[index],
-                                      index: vaccineList.length - index,
+                                      index: vaccineList.length - index - 1,
                                     );
                                   },
                                 ),
@@ -239,7 +239,7 @@ class _ExpandableVaccineCardState extends State<ExpandableVaccineCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "ครั้งที่ (Vaccination Round): ${widget.index + 1}",
+                    "เข็มที่ (Vaccination Round): ${widget.index + 1}",
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,

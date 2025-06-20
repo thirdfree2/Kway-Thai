@@ -450,11 +450,11 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Text(
+                    const Text(
                       'สังกัดปัจจุบัน',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.green[900],
+                        color: Color.fromARGB(255, 0, 100, 7),
                       ),
                       textAlign: TextAlign.center,
                     ),
