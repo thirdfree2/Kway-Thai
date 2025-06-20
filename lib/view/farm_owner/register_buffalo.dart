@@ -116,7 +116,7 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
     super.didChangeDependencies();
     final selectedFarm = Provider.of<SelectedFarm>(context, listen: false);
     _farmIdController.text = selectedFarm.farmId;
-    _farmNameController.text = selectedFarm.farmNames ?? '';
+    _farmNameController.text = selectedFarm.farmNames;
   }
 
   Future<void> _pickImage() async {
@@ -630,6 +630,10 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                   microchipimage:
                                                       _microchipImage,
                                                 );
+
+                                                if (!context.mounted) {
+                                                  return;
+                                                }
                                                 if (result ==
                                                     'รหัสผ่านไม่ถูกต้อง') {
                                                   ScaffoldMessenger.of(context)
@@ -642,9 +646,6 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                   );
                                                 } else {
                                                   Navigator.of(context).pop();
-                                                  print(
-                                                    'ลงทะเบียนฟาร์มสำเร็จ: $result',
-                                                  );
                                                   Navigator.pop(context);
                                                   Navigator.pop(context);
                                                   Navigator.pop(context);
@@ -682,7 +683,6 @@ class _RegisterBuffaloState extends State<RegisterBuffalo> {
                                                   );
                                                 }
                                               } catch (e) {
-                                                print(e);
                                                 Navigator.of(context).pop();
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(

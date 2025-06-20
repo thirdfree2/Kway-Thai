@@ -305,6 +305,10 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                         imageFile: _selectedImage,
                                         associationImage: _optionalImage,
                                       );
+
+                                      if (!context.mounted) {
+                                        return;
+                                      }
                                       Navigator.pop(context);
                                       Navigator.pushReplacement(
                                         context,
@@ -331,7 +335,6 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                         },
                                       );
                                     } catch (e) {
-                                      print('$e');
                                       showDialog(
                                         context: context,
                                         builder: (BuildContext context) {

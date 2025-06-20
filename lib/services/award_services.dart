@@ -50,6 +50,7 @@ Future<String> addBuffaloAward({
     }
   } else {
     throw Exception(
-        'Failed to register buffalo award. Status code: ${response.statusCode}. Response body: ${response.reasonPhrase}');
+      'Failed to register buffalo award. Status code: ${response.statusCode}. Response body: ${response.reasonPhrase}',
+    );
   }
 }

@@ -124,6 +124,10 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
             farmId: selectedFarm.farmId,
           );
 
+          if (!mounted) {
+            return;
+          }
+
           if (msg == 'อัพโหลดคลิปวิดีโอและรูปภาพสำเร็จ') {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -142,7 +146,9 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
             );
           }
         } catch (e) {
-          print(e);
+          if (!mounted) {
+            return;
+          }
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('การอัปโหลดล้มเหลว: รหัสผ่านไม่ถูกต้อง'),
@@ -173,6 +179,9 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
           );
 
           if (msg == 'Buffalo clip created successfully') {
+            if (!mounted) {
+              return;
+            }
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('อัปโหลดสำเร็จ'),
@@ -180,6 +189,10 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                 duration: Duration(seconds: 2),
               ),
             );
+
+            if (!mounted) {
+              return;
+            }
 
             Navigator.pop(context);
             Navigator.of(context).pushReplacement(
@@ -189,7 +202,9 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
             );
           }
         } catch (e) {
-          print(e);
+          if (!mounted) {
+            return;
+          }
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('การอัปโหลดล้มเหลว: รหัสผ่านไม่ถูก'),
@@ -199,7 +214,6 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
           );
         }
       } else {
-        print('error');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('กรุณาเลือกรูปภาพและวิดีโอให้ครบถ้วน'),

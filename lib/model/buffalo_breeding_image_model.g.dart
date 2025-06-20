@@ -7,7 +7,8 @@ part of 'buffalo_breeding_image_model.dart';
 // **************************************************************************
 
 BuffaloBreedingImageModel _$BuffaloBreedingImageModelFromJson(
-        Map<String, dynamic> json) =>
+  Map<String, dynamic> json,
+) =>
     BuffaloBreedingImageModel(
       buffaloBreedingImageId: (json['BuffaloBreedingImageId'] as num).toInt(),
       imageType: json['imageType'] as String,
@@ -15,7 +16,8 @@ BuffaloBreedingImageModel _$BuffaloBreedingImageModelFromJson(
     );
 
 Map<String, dynamic> _$BuffaloBreedingImageModelToJson(
-        BuffaloBreedingImageModel instance) =>
+  BuffaloBreedingImageModel instance,
+) =>
     <String, dynamic>{
       'BuffaloBreedingImageId': instance.buffaloBreedingImageId,
       'imageType': instance.imageType,

@@ -4,6 +4,23 @@ part 'association_user_model.g.dart';
 
 @JsonSerializable()
 class AssociationUserModel {
+  factory AssociationUserModel.fromJson(Map<String, dynamic> json) =>
+      _$AssociationUserModelFromJson(json);
+
+  AssociationUserModel({
+    required this.associationUserId,
+    required this.firstName,
+    required this.lastName,
+    required this.nickname,
+    required this.lineId,
+    required this.phoneNumber,
+    required this.position,
+    required this.image,
+    required this.status,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.associationId,
+  });
   final int associationUserId;
 
   @JsonKey(defaultValue: '')
@@ -33,23 +50,5 @@ class AssociationUserModel {
   final DateTime createdAt;
   final DateTime updatedAt;
   final int associationId;
-
-  AssociationUserModel({
-    required this.associationUserId,
-    required this.firstName,
-    required this.lastName,
-    required this.nickname,
-    required this.lineId,
-    required this.phoneNumber,
-    required this.position,
-    required this.image,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.associationId,
-  });
-
-  factory AssociationUserModel.fromJson(Map<String, dynamic> json) =>
-      _$AssociationUserModelFromJson(json);
   Map<String, dynamic> toJson() => _$AssociationUserModelToJson(this);
 }

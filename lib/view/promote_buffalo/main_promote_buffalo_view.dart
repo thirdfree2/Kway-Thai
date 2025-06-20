@@ -163,10 +163,12 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                       Colors.black,
                                     ),
                                   const SizedBox(height: 5),
+                                  // ignore: unrelated_type_equality_checks
                                   if (buffalo?.birthDate != '')
                                     _buildInfoRow(
                                       'เกิด ',
                                       'Born',
+                                      // ignore: unrelated_type_equality_checks
                                       buffalo?.birthDate != '-'
                                           ? _formatDateToBuddhist(
                                               buffalo!.birthDate!,

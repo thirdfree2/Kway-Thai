@@ -33,21 +33,16 @@ Future<List<AssociationModel>> fetchAssociation() async {
 Future<AssociationModel> fetchAssociationById({required String id}) async {
   try {
     final uri = Uri.parse('${ApiUtils.baseUrl}/api/associations/$id');
-    print('[API] GET $uri');
 
     final response = await http.get(uri);
 
-    print('[API] Status Code: ${response.statusCode}');
-    print('[API] Body: ${response.body}');
-
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      print('[API] Decoded JSON: $jsonResponse');
 
       if (jsonResponse['response_status'] == 'SUCCESS') {
         Map<String, dynamic> associationJson = jsonResponse['data'];
         final model = AssociationModel.fromJson(associationJson);
-        print('[API] Mapped Model: $model');
+
         return model;
       } else {
         throw Exception('API response status is not SUCCESS');
@@ -55,9 +50,7 @@ Future<AssociationModel> fetchAssociationById({required String id}) async {
     } else {
       throw Exception('Failed to load buffaloes: ${response.statusCode}');
     }
-  } catch (e, stacktrace) {
-    print('[ERROR] $e');
-    print('[STACKTRACE] $stacktrace');
+  } catch (e) {
     throw Exception('Failed to load buffaloes: $e');
   }
 }
@@ -88,13 +81,6 @@ Future<String> registerAssociationUser({
 
   request.fields['status'] = 'ไม่อนุมัติ';
 
-  print("🟡 Request Fields:");
-  request.fields.forEach((key, value) {
-    print("  $key: $value");
-  });
-
-  print("📸 รูปภาพ path: ${profileImage.path}");
-
   request.files.add(
     await http.MultipartFile.fromPath('profileimage', profileImage.path),
   );
@@ -102,16 +88,11 @@ Future<String> registerAssociationUser({
   final streamedResponse = await request.send();
   final response = await http.Response.fromStream(streamedResponse);
 
-  print("📩 Status Code: ${response.statusCode}");
-  print("📦 Response Body: ${response.body}");
-
   if (response.statusCode == 201) {
     final responseData = jsonDecode(response.body);
     if (responseData['message'] != null) {
-      print("✅ Success Message: ${responseData['message']}");
       return responseData['message'].toString();
     } else {
-      print("❌ ไม่พบ message ใน response");
       throw Exception('Farm data not found.');
     }
   } else {
@@ -147,33 +128,19 @@ Future<String> updateAssociationUser({
   request.fields['phoneNumber'] = phoneNumber;
   request.fields['position'] = position;
 
-  print("🟡 Request Fields:");
-  request.fields.forEach((key, value) {
-    print("  $key: $value");
-  });
-
   if (profileImage != null) {
-    print("📸 แนบรูปภาพ: ${profileImage.path}");
     request.files.add(
       await http.MultipartFile.fromPath('profileimage', profileImage.path),
     );
-  } else {
-    print("⚠️ ไม่มีการแนบรูปภาพ");
   }
-
   final streamedResponse = await request.send();
   final response = await http.Response.fromStream(streamedResponse);
-
-  print("📩 Status Code: ${response.statusCode}");
-  print("📦 Response Body: ${response.body}");
 
   if (response.statusCode == 201) {
     final responseData = jsonDecode(response.body);
     if (responseData['message'] != null) {
-      print("✅ Success Message: ${responseData['message']}");
       return responseData['message'].toString();
     } else {
-      print("❌ ไม่พบ message ใน response");
       throw Exception('Farm data not found.');
     }
   } else {

@@ -3,26 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class InfoItem {
-  final String label;
-  final Object value;
-  final LabelValueType type;
-
   InfoItem({
     required this.label,
     required this.value,
     this.type = LabelValueType.text,
   });
+  final String label;
+  final Object value;
+  final LabelValueType type;
 }
 
 class InfoSection extends StatelessWidget {
-  final String? title;
-  final List<InfoItem> items;
-
   const InfoSection({
     super.key,
     this.title,
     required this.items,
   });
+  final String? title;
+  final List<InfoItem> items;
 
   String _formatThaiDate(DateTime date) {
     try {

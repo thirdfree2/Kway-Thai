@@ -4,16 +4,15 @@ import 'package:intl/intl.dart';
 enum LabelValueType { text, date }
 
 class LabelValueText extends StatelessWidget {
-  final String label;
-  final Object value;
-  final LabelValueType type;
-
   const LabelValueText({
     super.key,
     required this.label,
     required this.value,
     this.type = LabelValueType.text,
   });
+  final String label;
+  final Object value;
+  final LabelValueType type;
 
   String _formatThaiDate(DateTime dateStr) {
     try {

@@ -101,6 +101,7 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
       // รอให้ Future ทั้งหมดเสร็จสิ้น
       var results = await Future.wait(uploadFutures);
 
+      if (!context.mounted) return;
       // ตรวจสอบผลลัพธ์การอัปโหลดทั้งหมด
       bool hasError = false;
       for (var msg in results) {
@@ -143,6 +144,9 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
         // Delay navigation to allow the SnackBar to show up properly
         await Future.delayed(const Duration(seconds: 1));
 
+        if (!context.mounted) {
+          return;
+        }
         // Navigate after snack bars are shown
         Navigator.pop(context);
         Navigator.pop(context);
@@ -265,6 +269,9 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
                         onTap: () async {
                           try {
                             await _showCodeDialog(context);
+                            if (!context.mounted) {
+                              return;
+                            }
                             Navigator.pop(context);
                             Navigator.pop(context);
                             Navigator.of(context).pushReplacement(
@@ -273,7 +280,7 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
                               ),
                             );
                           } catch (e) {
-                            print(e);
+                            return;
                           }
                         },
                         child: Container(

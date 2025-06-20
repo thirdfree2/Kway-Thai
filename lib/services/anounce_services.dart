@@ -14,7 +14,6 @@ Future<List<AnnouceModel>> fetchAnnouce() async {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       if (jsonResponse['response_status'] == 'ERROR') {
         List<dynamic> farmsList = jsonResponse['data'];
-        print(farmsList);
         return farmsList.map((json) => AnnouceModel.fromJson(json)).toList();
       } else {
         throw Exception('API response status is not SUCCESS');

@@ -4,6 +4,20 @@ part 'buffalo_vaccine_record_model.g.dart';
 
 @JsonSerializable()
 class BuffaloVaccineRecordModel {
+  BuffaloVaccineRecordModel({
+    required this.buffaloVaccineRecordId,
+    this.vaccineName,
+    this.buffaloId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.doseNumber,
+    this.volume,
+    required this.injectionDate,
+    required this.nextInjectionDate,
+  });
+
+  factory BuffaloVaccineRecordModel.fromJson(Map<String, dynamic> json) =>
+      _$BuffaloVaccineRecordModelFromJson(json);
   final int buffaloVaccineRecordId;
 
   @JsonKey(defaultValue: '')
@@ -24,20 +38,5 @@ class BuffaloVaccineRecordModel {
 
   final DateTime createdAt;
   final DateTime updatedAt;
-
-  BuffaloVaccineRecordModel({
-    required this.buffaloVaccineRecordId,
-    this.vaccineName,
-    this.buffaloId,
-    required this.createdAt,
-    required this.updatedAt,
-    this.doseNumber,
-    this.volume,
-    required this.injectionDate,
-    required this.nextInjectionDate,
-  });
-
-  factory BuffaloVaccineRecordModel.fromJson(Map<String, dynamic> json) =>
-      _$BuffaloVaccineRecordModelFromJson(json);
   Map<String, dynamic> toJson() => _$BuffaloVaccineRecordModelToJson(this);
 }

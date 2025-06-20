@@ -17,7 +17,9 @@ class _MainAuthViewState extends State<MainAuthView> {
 
   void _login() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MainWrapper()));
+      context,
+      MaterialPageRoute(builder: (context) => const MainWrapper()),
+    );
     // if (_formKey.currentState!.validate()) {
     //   ScaffoldMessenger.of(context).showSnackBar(
     //     const SnackBar(content: Text('Logging in...')),
@@ -31,8 +33,9 @@ class _MainAuthViewState extends State<MainAuthView> {
       body: DecoratedBox(
         decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/images/background-2.jpg"),
-              fit: BoxFit.cover),
+            image: AssetImage("assets/images/background-2.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -44,8 +47,9 @@ class _MainAuthViewState extends State<MainAuthView> {
                 StrokeText(
                   text: "เข้าสู่ระบบ ควายไทย",
                   textStyle: TextStyle(
-                      fontSize: ScreenUtils.calculateFontSize(context, 28),
-                      color: Colors.red),
+                    fontSize: ScreenUtils.calculateFontSize(context, 28),
+                    color: Colors.red,
+                  ),
                   strokeColor: Colors.white,
                   strokeWidth: 6,
                 ),

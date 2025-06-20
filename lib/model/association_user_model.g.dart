@@ -7,7 +7,8 @@ part of 'association_user_model.dart';
 // **************************************************************************
 
 AssociationUserModel _$AssociationUserModelFromJson(
-        Map<String, dynamic> json) =>
+  Map<String, dynamic> json,
+) =>
     AssociationUserModel(
       associationUserId: (json['associationUserId'] as num).toInt(),
       firstName: json['firstName'] as String? ?? '',
@@ -24,7 +25,8 @@ AssociationUserModel _$AssociationUserModelFromJson(
     );
 
 Map<String, dynamic> _$AssociationUserModelToJson(
-        AssociationUserModel instance) =>
+  AssociationUserModel instance,
+) =>
     <String, dynamic>{
       'associationUserId': instance.associationUserId,
       'firstName': instance.firstName,

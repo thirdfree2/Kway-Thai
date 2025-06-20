@@ -7,7 +7,8 @@ part of 'buffalo_tracking_model.dart';
 // **************************************************************************
 
 BuffaloTrackingModel _$BuffaloTrackingModelFromJson(
-        Map<String, dynamic> json) =>
+  Map<String, dynamic> json,
+) =>
     BuffaloTrackingModel(
       (json['buffaloTrackingId'] as num).toInt(),
       (json['buffaloHeight'] as num?)?.toInt() ?? 0,
@@ -19,7 +20,8 @@ BuffaloTrackingModel _$BuffaloTrackingModelFromJson(
     );
 
 Map<String, dynamic> _$BuffaloTrackingModelToJson(
-        BuffaloTrackingModel instance) =>
+  BuffaloTrackingModel instance,
+) =>
     <String, dynamic>{
       'buffaloTrackingId': instance.id,
       'buffaloWeight': instance.buffaloWeight,

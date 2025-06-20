@@ -14,7 +14,6 @@ Future<List<UserModel>> fetchUserByFarmId(String id) async {
 
   if (response.statusCode == 200) {
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-    print(response.body);
     if (jsonResponse['response_status'] == 'SUCCESS') {
       List<dynamic> farmsList = jsonResponse['data'];
       return farmsList.map((json) => UserModel.fromJson(json)).toList();
@@ -63,7 +62,6 @@ Future<String> updateUser({
 
   if (response.statusCode == 200) {
     final responseData = await response.stream.bytesToString();
-    print(responseData);
     return responseData;
   } else {
     final responseData = await response.stream.bytesToString();
@@ -119,13 +117,10 @@ Future<String> updateUserV2({
     );
   }
 
-  print(request);
-
   final response = await request.send();
 
   if (response.statusCode == 200) {
     final responseData = await response.stream.bytesToString();
-    print(responseData);
     return responseData;
   } else {
     final responseData = await response.stream.bytesToString();

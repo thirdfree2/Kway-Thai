@@ -5,6 +5,19 @@ part 'farm_model.g.dart';
 
 @JsonSerializable()
 class FarmModel {
+  FarmModel({
+    required this.farmId,
+    required this.farmName,
+    required this.region,
+    this.phoneNumber,
+    this.lineId,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.associations,
+  });
+
+  factory FarmModel.fromJson(Map<String, dynamic> json) =>
+      _$FarmModelFromJson(json);
   final int farmId;
   final String farmName;
   final String region;
@@ -20,19 +33,5 @@ class FarmModel {
 
   @JsonKey(defaultValue: [])
   final List<AssociationModel> associations;
-
-  FarmModel({
-    required this.farmId,
-    required this.farmName,
-    required this.region,
-    this.phoneNumber,
-    this.lineId,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.associations,
-  });
-
-  factory FarmModel.fromJson(Map<String, dynamic> json) =>
-      _$FarmModelFromJson(json);
   Map<String, dynamic> toJson() => _$FarmModelToJson(this);
 }

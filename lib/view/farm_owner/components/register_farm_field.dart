@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
 
 class RegisterFarmField extends StatelessWidget {
-  final String label;
-  final TextEditingController controller;
-  final bool isDropdown;
-  final List<String>? dropdownItems;
-  final String? dropdownValue;
-  final void Function(String?)? onDropdownChanged;
-  final String? Function(String?)? validator;
-  final String? hintText;
-
-  const RegisterFarmField({super.key, 
+  const RegisterFarmField({
+    super.key,
     required this.label,
     required this.controller,
     this.isDropdown = false,
@@ -20,6 +12,14 @@ class RegisterFarmField extends StatelessWidget {
     this.validator,
     this.hintText,
   });
+  final String label;
+  final TextEditingController controller;
+  final bool isDropdown;
+  final List<String>? dropdownItems;
+  final String? dropdownValue;
+  final void Function(String?)? onDropdownChanged;
+  final String? Function(String?)? validator;
+  final String? hintText;
 
   @override
   Widget build(BuildContext context) {

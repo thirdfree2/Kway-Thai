@@ -4,6 +4,23 @@ part 'competitions_model.g.dart';
 
 @JsonSerializable()
 class CompetitionsModel {
+  CompetitionsModel({
+    required this.competitionId,
+    required this.name,
+    required this.rank,
+    this.color,
+    this.gender,
+    this.type,
+    this.province,
+    this.imageBuffalo,
+    this.date,
+    this.createdAt,
+    this.updatedAt,
+    this.buffaloId,
+  });
+
+  factory CompetitionsModel.fromJson(Map<String, dynamic> json) =>
+      _$CompetitionsModelFromJson(json);
   @JsonKey(name: 'competitionId', defaultValue: 0)
   final int competitionId;
 
@@ -32,33 +49,21 @@ class CompetitionsModel {
   final DateTime? date;
 
   @JsonKey(
-      name: 'createdAt', fromJson: _fromJsonDateTime, toJson: _toJsonDateTime)
+    name: 'createdAt',
+    fromJson: _fromJsonDateTime,
+    toJson: _toJsonDateTime,
+  )
   final DateTime? createdAt;
 
   @JsonKey(
-      name: 'updatedAt', fromJson: _fromJsonDateTime, toJson: _toJsonDateTime)
+    name: 'updatedAt',
+    fromJson: _fromJsonDateTime,
+    toJson: _toJsonDateTime,
+  )
   final DateTime? updatedAt;
 
   @JsonKey(name: 'buffaloId', defaultValue: null)
   final int? buffaloId;
-
-  CompetitionsModel({
-    required this.competitionId,
-    required this.name,
-    required this.rank,
-    this.color,
-    this.gender,
-    this.type,
-    this.province,
-    this.imageBuffalo,
-    this.date,
-    this.createdAt,
-    this.updatedAt,
-    this.buffaloId,
-  });
-
-  factory CompetitionsModel.fromJson(Map<String, dynamic> json) =>
-      _$CompetitionsModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$CompetitionsModelToJson(this);
 

@@ -17,7 +17,7 @@ class EditFarm extends StatefulWidget {
 class _EditFarmState extends State<EditFarm> {
   late TextEditingController _nameController = TextEditingController();
   late TextEditingController _lastNameController = TextEditingController();
-  late TextEditingController _positionController = TextEditingController();
+  // late TextEditingController _positionController = TextEditingController();
   late TextEditingController _phoneController = TextEditingController();
   late TextEditingController _lineIdController = TextEditingController();
   late TextEditingController _nickNameController = TextEditingController();
@@ -46,7 +46,7 @@ class _EditFarmState extends State<EditFarm> {
     final farmOwner = Provider.of<SelectedFarmOwner>(context, listen: false);
     _nameController = TextEditingController(text: farmOwner.farmOwner);
     _lastNameController = TextEditingController(text: farmOwner.lastName);
-    _positionController = TextEditingController(text: farmOwner.position);
+    // _positionController = TextEditingController(text: farmOwner.position);
     _phoneController = TextEditingController(text: farmOwner.phone);
     _lineIdController = TextEditingController(text: farmOwner.lineId);
     _selectedStatus = farmOwner.position;
@@ -234,6 +234,8 @@ class _EditFarmState extends State<EditFarm> {
                                   //     farmId: _farmIdController.text,
                                   //     lineId: _lineIdController.text,
                                   //     password: _passwordController.text);
+                                  if (!context.mounted) return;
+
                                   Navigator.pop(context);
                                   Navigator.pushReplacement(
                                     context,

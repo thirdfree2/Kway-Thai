@@ -5,6 +5,22 @@ part 'buffalo_breeding_model.g.dart';
 
 @JsonSerializable()
 class BuffaloBreedingModel {
+  BuffaloBreedingModel({
+    required this.buffaloBreedingId,
+    required this.maleName,
+    required this.breedingMethod,
+    required this.breedingCount,
+    required this.recheckDate,
+    required this.expectedBirthDate,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.buffaloId,
+    required this.buffaloBreedingImages,
+    required this.breedingDate,
+  });
+
+  factory BuffaloBreedingModel.fromJson(Map<String, dynamic> json) =>
+      _$BuffaloBreedingModelFromJson(json);
   @JsonKey(name: 'buffaloBreedingId')
   final int buffaloBreedingId;
 
@@ -37,23 +53,6 @@ class BuffaloBreedingModel {
 
   @JsonKey(name: 'BuffaloBreedingImages', defaultValue: [])
   final List<BuffaloBreedingImageModel> buffaloBreedingImages;
-
-  BuffaloBreedingModel({
-    required this.buffaloBreedingId,
-    required this.maleName,
-    required this.breedingMethod,
-    required this.breedingCount,
-    required this.recheckDate,
-    required this.expectedBirthDate,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.buffaloId,
-    required this.buffaloBreedingImages,
-    required this.breedingDate,
-  });
-
-  factory BuffaloBreedingModel.fromJson(Map<String, dynamic> json) =>
-      _$BuffaloBreedingModelFromJson(json);
   Map<String, dynamic> toJson() => _$BuffaloBreedingModelToJson(this);
 }
 

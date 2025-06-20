@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
 class LabelDateTimeText extends StatelessWidget {
-  final String label;
-  final String value;
-
   const LabelDateTimeText({
     super.key,
     required this.label,
     required this.value,
   });
+  final String label;
+  final String value;
 
   @override
   Widget build(BuildContext context) {

@@ -28,7 +28,6 @@ Future<String> registerFarm({
   );
   if (response.statusCode == 200) {
     final responseData = jsonDecode(response.body);
-    print(responseData);
     if (responseData['data'] != null &&
         responseData['data']['farmId'] != null) {
       return responseData['data']['farmId'].toString(); // ส่งคืนค่า farmId
@@ -37,19 +36,22 @@ Future<String> registerFarm({
     }
   } else {
     throw Exception(
-        'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}');
+      'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}',
+    );
   }
 }
 
 Future<List<FarmModel>> fetchFarmsByRegion(String region) async {
   final response = await http.get(
-      Uri.parse('${ApiUtils.baseUrl}/api/farm/byregionandname?farmStatus=อนุมัติ&region=$region'));
+    Uri.parse(
+      '${ApiUtils.baseUrl}/api/farm/byregionandname?farmStatus=อนุมัติ&region=$region',
+    ),
+  );
 
   if (response.statusCode == 200) {
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
     if (jsonResponse['response_status'] == 'SUCCESS') {
       List<dynamic> farmsList = jsonResponse['data'];
-      print(farmsList);
       return farmsList.map((json) => FarmModel.fromJson(json)).toList();
     } else {
       throw Exception('API response status is not SUCCESS');
@@ -80,15 +82,15 @@ Future<String> updateFarm({
   );
   if (response.statusCode == 200) {
     final responseData = jsonDecode(response.body);
-    if (responseData['message'] != null &&
-        responseData['message'] != null) {
+    if (responseData['message'] != null && responseData['message'] != null) {
       return responseData['message'].toString(); // ส่งคืนค่า farmId
     } else {
       throw Exception('เบอร์โทรศัพท์ถูกใช้แล้ว');
     }
   } else {
     throw Exception(
-        'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}');
+      'Failed to register farm owner. Status code: ${response.statusCode}. Response body: ${response.body}',
+    );
   }
 }
 

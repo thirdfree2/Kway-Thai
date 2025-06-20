@@ -20,9 +20,14 @@ class _BuffaloState extends State<Buffalo> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     MainBuffaloView(),
-    Text('Genetics',
-        style: TextStyle(
-            fontSize: 35, fontWeight: FontWeight.bold, color: Colors.white)),
+    Text(
+      'Genetics',
+      style: TextStyle(
+        fontSize: 35,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+    ),
     PhotoBuffaloView(),
     VideoBuffaloView(),
     MainAwardsView(),
@@ -46,7 +51,9 @@ class _BuffaloState extends State<Buffalo> {
     final buffalo =
         Provider.of<SelectedBuffalo>(context, listen: false).buffalo;
     final url = 'https://poonework.com/kw.html?${buffalo?.id ?? ''}';
+    // ignore: deprecated_member_use
     if (await canLaunch(url)) {
+      // ignore: deprecated_member_use
       await launch(
         url,
         forceSafariVC: false,
@@ -74,25 +81,30 @@ class _BuffaloState extends State<Buffalo> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: _customIcon(Icons.home, 'หน้าแรก'),
-              label: '',
-              backgroundColor: Colors.green[900]),
+            icon: _customIcon(Icons.home, 'หน้าแรก'),
+            label: '',
+            backgroundColor: Colors.green[900],
+          ),
           BottomNavigationBarItem(
-              icon: _customIcon(Icons.share, 'พันธุกรรม'),
-              label: '',
-              backgroundColor: Colors.green[900]),
+            icon: _customIcon(Icons.share, 'พันธุกรรม'),
+            label: '',
+            backgroundColor: Colors.green[900],
+          ),
           BottomNavigationBarItem(
-              icon: _customIcon(Icons.photo, 'รูปภาพที่เกี่ยวข้อง'),
-              label: '',
-              backgroundColor: Colors.green[900]),
+            icon: _customIcon(Icons.photo, 'รูปภาพที่เกี่ยวข้อง'),
+            label: '',
+            backgroundColor: Colors.green[900],
+          ),
           BottomNavigationBarItem(
-              icon: _customIcon(Icons.video_collection, 'วิดีโอที่เกี่ยวข้อง'),
-              label: '',
-              backgroundColor: Colors.green[900]),
+            icon: _customIcon(Icons.video_collection, 'วิดีโอที่เกี่ยวข้อง'),
+            label: '',
+            backgroundColor: Colors.green[900],
+          ),
           BottomNavigationBarItem(
-              icon: _customIcon(Icons.star, 'รางวัลประกวด'),
-              label: '',
-              backgroundColor: Colors.green[900]),
+            icon: _customIcon(Icons.star, 'รางวัลประกวด'),
+            label: '',
+            backgroundColor: Colors.green[900],
+          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.red[900],
@@ -120,12 +132,12 @@ class _BuffaloState extends State<Buffalo> {
             color: Colors.black,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         Text(
           label,
-          style: TextStyle(fontSize: 10, color: Colors.white),
+          style: const TextStyle(fontSize: 10, color: Colors.white),
         ),
       ],
     );

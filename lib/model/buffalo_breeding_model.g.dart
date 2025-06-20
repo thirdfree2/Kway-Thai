@@ -7,7 +7,8 @@ part of 'buffalo_breeding_model.dart';
 // **************************************************************************
 
 BuffaloBreedingModel _$BuffaloBreedingModelFromJson(
-        Map<String, dynamic> json) =>
+  Map<String, dynamic> json,
+) =>
     BuffaloBreedingModel(
       buffaloBreedingId: (json['buffaloBreedingId'] as num).toInt(),
       maleName: json['maleName'] as String,
@@ -19,15 +20,19 @@ BuffaloBreedingModel _$BuffaloBreedingModelFromJson(
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       buffaloId: (json['buffaloId'] as num).toInt(),
       buffaloBreedingImages: (json['BuffaloBreedingImages'] as List<dynamic>?)
-              ?.map((e) =>
-                  BuffaloBreedingImageModel.fromJson(e as Map<String, dynamic>))
+              ?.map(
+                (e) => BuffaloBreedingImageModel.fromJson(
+                  e as Map<String, dynamic>,
+                ),
+              )
               .toList() ??
           [],
       breedingDate: DateTime.parse(json['breedingDate'] as String),
     );
 
 Map<String, dynamic> _$BuffaloBreedingModelToJson(
-        BuffaloBreedingModel instance) =>
+  BuffaloBreedingModel instance,
+) =>
     <String, dynamic>{
       'buffaloBreedingId': instance.buffaloBreedingId,
       'maleName': instance.maleName,

@@ -22,15 +22,16 @@ class SelectedFarmOwner with ChangeNotifier {
   String get assoCard => _assoCard;
 
   void setSelectedFarmOwner(
-      String userId,
-      String nickname,
-      String urlImg,
-      String farmOwner,
-      String lastName,
-      String position,
-      String phone,
-      String lineId,
-      String assoCard) {
+    String userId,
+    String nickname,
+    String urlImg,
+    String farmOwner,
+    String lastName,
+    String position,
+    String phone,
+    String lineId,
+    String assoCard,
+  ) {
     _userId = userId;
     _nickname = nickname;
     _urlImg = urlImg;

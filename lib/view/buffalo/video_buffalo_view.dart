@@ -84,7 +84,6 @@ class _VideoBuffaloViewState extends State<VideoBuffaloView> {
                       return InkWell(
                         onTap: () async {
                           final url = buffalo?.buffaloClips[index].url;
-                          print(url);
                           if (url != null &&
                               await canLaunchUrl(Uri.parse(url))) {
                             await launchUrl(
@@ -92,6 +91,9 @@ class _VideoBuffaloViewState extends State<VideoBuffaloView> {
                               mode: LaunchMode.externalApplication,
                             );
                           } else {
+                            if (!context.mounted) {
+                              return;
+                            }
                             // แสดงข้อความแจ้งเตือนเมื่อไม่สามารถเปิด URL ได้
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

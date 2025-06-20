@@ -51,7 +51,9 @@ class _PromoteBuffaloState extends State<PromoteBuffalo> {
     final buffalo =
         Provider.of<SelectedBuffalo>(context, listen: false).buffalo;
     final url = 'https://poonework.com/kw.html?${buffalo?.id ?? ''}';
+    // ignore: deprecated_member_use
     if (await canLaunch(url)) {
+      // ignore: deprecated_member_use
       await launch(
         url,
         forceSafariVC: false,

@@ -92,6 +92,10 @@ class _MainFarmRegisterState extends State<MainFarmRegister> {
           password: _digitController.text,
         );
 
+        if (!mounted) {
+          return;
+        }
+
         _showDialog(
           context,
           'ลงทะเบียนสำเร็จ\n(Registration Successful)',

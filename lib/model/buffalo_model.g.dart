@@ -82,14 +82,17 @@ BuffaloModel _$BuffaloModelFromJson(Map<String, dynamic> json) => BuffaloModel(
       greatGrandfather: json['greatGrandfather'] == null
           ? null
           : BuffaloModel.fromJson(
-              json['greatGrandfather'] as Map<String, dynamic>),
+              json['greatGrandfather'] as Map<String, dynamic>,
+            ),
       greatGrandmother: json['greatGrandmother'] == null
           ? null
           : BuffaloModel.fromJson(
-              json['greatGrandmother'] as Map<String, dynamic>),
+              json['greatGrandmother'] as Map<String, dynamic>,
+            ),
       buffaloImages: (json['BuffaloImages'] as List<dynamic>?)
               ?.map(
-                  (e) => BuffaloImageModel.fromJson(e as Map<String, dynamic>))
+                (e) => BuffaloImageModel.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           [],
       buffaloBreedingImages:
@@ -101,7 +104,8 @@ BuffaloModel _$BuffaloModelFromJson(Map<String, dynamic> json) => BuffaloModel(
       histories: json['Histories'] as List<dynamic>? ?? [],
       competitions: (json['Competitions'] as List<dynamic>?)
               ?.map(
-                  (e) => CompetitionsModel.fromJson(e as Map<String, dynamic>))
+                (e) => CompetitionsModel.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           [],
     );

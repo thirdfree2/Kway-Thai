@@ -16,9 +16,6 @@ class _PhotoBuffaloViewState extends State<PhotoBuffaloView> {
   @override
   void initState() {
     super.initState();
-    final buffalo =
-        Provider.of<SelectedBuffalo>(context, listen: false).buffalo;
-    print(buffalo?.buffaloImages);
   }
 
   @override
