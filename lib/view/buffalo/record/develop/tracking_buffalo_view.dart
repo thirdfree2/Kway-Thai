@@ -353,7 +353,7 @@ void showAddTrackingDialog(
                           children: [
                             CheckboxListTile(
                               title: const Text(
-                                "ระบุวันเกิด \n(Birthday)",
+                                "นับจากวันเกิด \n(Count of Birthday)",
                                 textAlign: TextAlign.center,
                               ),
                               value: useCustomDate,
@@ -369,7 +369,7 @@ void showAddTrackingDialog(
                             if (useCustomDate)
                               CustomDatePickerTextFormField(
                                 controller: datePickerController,
-                                labelText: 'วันที่บันทึก (Record Date)',
+                                labelText: 'วันเกิด (Birthday)',
                                 validator: (value) {
                                   if (value == null || value.trim().isEmpty) {
                                     return 'กรุณาระบุวันที่ (Please enter Date)';
