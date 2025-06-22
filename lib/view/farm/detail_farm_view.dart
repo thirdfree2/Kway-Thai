@@ -51,7 +51,10 @@ class _DetailFarmViewState extends State<DetailFarmView> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('ใส่รหัสผ่าน 6 หลัก'),
+              title: const Text(
+                'ใส่รหัสผ่าน 6 หลัก \n(Password)',
+                textAlign: TextAlign.center,
+              ),
               content: isLoading // ตรวจสอบสถานะ isLoading
                   ? const Center(
                       child:
@@ -64,12 +67,15 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                         passwordController = value;
                       },
                       decoration: const InputDecoration(
-                        hintText: 'กรุณาใส่รหัสผ่าน 6 หลัก',
+                        hintText: 'กรุณาใส่รหัสผ่าน 6 หลัก (Password)',
                       ),
                     ),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('ยกเลิก'),
+                  child: const Text(
+                    'ยกเลิก \n(Close)',
+                    textAlign: TextAlign.center,
+                  ),
                   onPressed: () {
                     if (!isLoading) {
                       Navigator.of(context)
@@ -78,7 +84,10 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                   },
                 ),
                 TextButton(
-                  child: const Text('ยืนยัน'),
+                  child: const Text(
+                    'ยืนยัน \n(Confirm)',
+                    textAlign: TextAlign.center,
+                  ),
                   onPressed: () async {
                     if (passwordController.length == 6) {
                       setState(() {
@@ -103,7 +112,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
-                                'อัปเดตข้อมูลฟาร์มสำเร็จ ชื่อคอก/ฟาร์มจะเปลี่ยนภายหลัง',
+                                'อัปเดตข้อมูลฟาร์มสำเร็จ ชื่อคอก/ฟาร์มจะเปลี่ยนภายหลัง (Update Success)',
                               ),
                               backgroundColor: Colors.green,
                               duration: Duration(seconds: 2),
@@ -123,8 +132,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
 
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content:
-                                  Text('เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง'),
+                              content: Text(
+                                'เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง (Wrong Password)',
+                              ),
                               backgroundColor: Colors.red,
                               duration: Duration(seconds: 2),
                             ),
@@ -137,7 +147,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง'),
+                            content: Text(
+                              'เกิดข้อผิดพลาด: รหัสผ่านไม่ถูกต้อง (Wrong Password)',
+                            ),
                             backgroundColor: Colors.red,
                             duration: Duration(seconds: 2),
                           ),
@@ -146,7 +158,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('กรุณาใส่รหัสให้ครบ 6 หลัก'),
+                          content: Text(
+                            'กรุณาใส่รหัสให้ครบ 6 หลัก (Please Enter Password)',
+                          ),
                           backgroundColor: Colors.red,
                           duration: Duration(seconds: 2),
                         ),
@@ -210,7 +224,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                               controller: _farmNameController,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
-                                labelText: 'ชื่อฟาร์ม',
+                                labelText: 'ชื่อฟาร์ม (Farm Name)',
                               ),
                               onFieldSubmitted: (newValue) {
                                 setState(() {
@@ -276,7 +290,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                         return Center(
                           child: Column(
                             children: [
-                              const Text('ไม่พบสมาชิกในฟาร์มนี้'),
+                              const Text(
+                                'ไม่พบสมาชิกในฟาร์มนี้ (Not Found this Farm)',
+                              ),
                               InkWell(
                                 onTap: () {
                                   Navigator.push(
@@ -296,7 +312,8 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                   ),
                                   child: const Center(
                                     child: AutoSizeText(
-                                      'ลงทะเบียนสมาชิก',
+                                      'ลงทะเบียนสมาชิก \n(Register)',
+                                      textAlign: TextAlign.center,
                                       maxLines: 1,
                                       style: TextStyle(color: Colors.white),
                                     ),
@@ -318,7 +335,8 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  'สมาชิก (${users.length})',
+                                  'สมาชิก \n(Member) (${users.length})',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                       context,
@@ -347,7 +365,8 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                     ),
                                     child: const Center(
                                       child: Text(
-                                        'ลงทะเบียนสมาชิก',
+                                        'ลงทะเบียนสมาชิก \n(Register Member)',
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.white,
@@ -460,7 +479,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                         return Center(
                           child: Column(
                             children: [
-                              const Text('ไม่พบควายในฟาร์มนี้'),
+                              const Text(
+                                'ไม่พบควายในฟาร์มนี้ \n(Buffalo Not Found)',
+                              ),
                               InkWell(
                                 onTap: () {
                                   Navigator.push(
@@ -482,8 +503,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                     padding: EdgeInsets.all(8.0),
                                     child: Center(
                                       child: AutoSizeText(
-                                        'ลงทะเบียนควาย',
-                                        maxLines: 1,
+                                        'ลงทะเบียนควาย \n(Register Buffalo)',
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 8,
@@ -508,7 +530,8 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'ควาย (${buffaloes.length})',
+                                  'ควาย \n(Buffalo) (${buffaloes.length})',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                       context,
@@ -537,8 +560,9 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                     ),
                                     child: const Center(
                                       child: AutoSizeText(
-                                        'ลงทะเบียนควาย',
-                                        maxLines: 1,
+                                        'ลงทะเบียนควาย \n(Register Buffalo)',
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
                                         style: TextStyle(color: Colors.white),
                                       ),
                                     ),

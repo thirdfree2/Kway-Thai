@@ -63,7 +63,8 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                   child: Column(
                     children: [
                       Text(
-                        "รางวัลงานประกวด",
+                        "รางวัลงานประกวด \n(Competitive Award)",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: ScreenUtils.calculateFontSize(context, 26),
                           color: Colors.black,
@@ -96,7 +97,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                                 ),
                               ),
                               Text(
-                                "(รางวัล)",
+                                "(รางวัล) \n(Award)",
                                 style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
                                     context,
@@ -168,7 +169,7 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
-                                            child: const Text("ปิด"),
+                                            child: const Text("ปิด (Close)"),
                                           ),
                                         ],
                                       );
@@ -215,7 +216,8 @@ class _MainAwardsViewState extends State<MainAwardsView> {
                           ),
                           child: const Center(
                             child: Text(
-                              'เพิ่มรางวัลงานประกวด',
+                              'เพิ่มรางวัลงานประกวด \n(Add Competitive Award)',
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
                               ),

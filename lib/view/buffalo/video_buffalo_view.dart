@@ -147,7 +147,8 @@ class _VideoBuffaloViewState extends State<VideoBuffaloView> {
                         ),
                         child: const Center(
                           child: Text(
-                            'เพิ่มวิดีโอ',
+                            'เพิ่มวิดีโอ \n(Add Video)',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
                             ),

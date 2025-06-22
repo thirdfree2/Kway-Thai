@@ -67,30 +67,49 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
     _nickNameController = TextEditingController(text: farmOwner.nickname);
   }
 
-  Future<void> _showCodeDialog() async {
-    return showDialog<void>(
+  Future<String?> _showCodeDialog() async {
+    return showDialog<String>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('กรุณากรอกรหัส 6 หลัก'),
+          title: const Text(
+            'กรุณากรอกรหัส 6 หลัก \n(Password)',
+            textAlign: TextAlign.center,
+          ),
           content: TextFormField(
             controller: _passwordController,
             decoration: const InputDecoration(
-              hintText: 'รหัส 6 หลัก',
+              hintText: 'รหัส 6 หลัก (Password)',
             ),
             keyboardType: TextInputType.number,
             maxLength: 6,
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('ยืนยัน'),
+              onPressed: () {
+                Navigator.pop(context, 'Close');
+              },
+              child: const Text(
+                'ยกเลิก \n(Cancel)',
+                textAlign: TextAlign.center,
+              ),
+            ),
+            TextButton(
+              child: const Text(
+                'ยืนยัน \nConfirm',
+                textAlign: TextAlign.center,
+              ),
               onPressed: () {
                 if (_passwordController.text.length == 6) {
                   Navigator.of(context).pop(_passwordController.text);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('กรุณากรอกรหัสให้ครบ 6 หลัก')),
+                    const SnackBar(
+                      content: Text(
+                        'กรุณากรอกรหัสให้ครบ 6 หลัก (Please Enter Password)',
+                      ),
+                    ),
                   );
                 }
               },
@@ -143,8 +162,8 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                         ),
                       ),
                       const AutoSizeText(
-                        'แก้ไขสมาชิก',
-                        style: TextStyle(fontSize: 24),
+                        'แก้ไขสมาชิก (Edit Member)',
+                        style: TextStyle(fontSize: 18),
                       ),
                     ],
                   ),
@@ -168,10 +187,10 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                             const SizedBox(height: 10),
                             CustomTextFormField(
                               controller: _nameController,
-                              labelText: 'ชื่อ',
+                              labelText: 'ชื่อ (Firstname)',
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
+                                  return 'กรุณากรอกข้อมูล (Please Enter)';
                                 }
                                 return null;
                               },
@@ -179,10 +198,10 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                             const SizedBox(height: 10),
                             CustomTextFormField(
                               controller: _lastNameController,
-                              labelText: 'นามสกุล',
+                              labelText: 'นามสกุล (Lastname)',
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
+                                  return 'กรุณากรอกข้อมูล (Please Enter)';
                                 }
                                 return null;
                               },
@@ -190,10 +209,10 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                             const SizedBox(height: 10),
                             CustomTextFormField(
                               controller: _nickNameController,
-                              labelText: 'ชื่อเล่น',
+                              labelText: 'ชื่อเล่น (Nickname)',
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
+                                  return 'กรุณากรอกข้อมูล (Please Enter)';
                                 }
                                 return null;
                               },
@@ -217,10 +236,10 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                             const SizedBox(height: 10),
                             CustomTextFormField(
                               controller: _phoneController,
-                              labelText: 'เบอร์โทร',
+                              labelText: 'เบอร์โทร (Phone)',
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
+                                  return 'กรุณากรอกข้อมูล (Please Enter) (Please Enter)';
                                 }
                                 return null;
                               },
@@ -231,7 +250,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                               labelText: 'Line ID',
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'กรุณากรอกข้อมูล';
+                                  return 'กรุณากรอกข้อมูล (Please Enter) (Please Enter)';
                                 }
                                 return null;
                               },
@@ -269,6 +288,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                               .split('/')
                                               .last // แสดงชื่อไฟล์
                                           : 'เพิ่มบัตรสมาคม (Association Member)',
+                                      overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                         fontSize: 11,
                                         color: Colors.black87,
@@ -280,7 +300,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                             ),
                             const SizedBox(height: 10),
                             Container(
-                              height: 50,
+                              height: 60,
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 color: Colors.red,
@@ -290,7 +310,11 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                 child: TextButton(
                                   onPressed: () async {
                                     try {
-                                      await _showCodeDialog();
+                                      final password = await _showCodeDialog();
+
+                                      if (password == 'Close') {
+                                        return;
+                                      }
 
                                       await updateUserV2(
                                         firstName: _nameController.text,
@@ -301,7 +325,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                         phoneNumber: _phoneController.text,
                                         farmId: _farmIdController.text,
                                         lineId: _lineIdController.text,
-                                        password: _passwordController.text,
+                                        password: password ?? '',
                                         imageFile: _selectedImage,
                                         associationImage: _optionalImage,
                                       );
@@ -321,8 +345,9 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title:
-                                                const Text('ลงทะเบียนสำเร็จ'),
+                                            title: const Text(
+                                              'ลงทะเบียนสำเร็จ (Success)',
+                                            ),
                                             actions: <Widget>[
                                               TextButton(
                                                 child: const Text('OK'),
@@ -341,7 +366,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                           return AlertDialog(
                                             title: const Text('Error'),
                                             content: const Text(
-                                              'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.',
+                                              'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่. (Wrong Password)',
                                             ),
                                             actions: <Widget>[
                                               TextButton(
@@ -357,7 +382,8 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                     }
                                   },
                                   child: const Text(
-                                    'ยืนยันการแก้ไข',
+                                    'ยืนยันการแก้ไข \n(Confirm Update Member)',
+                                    textAlign: TextAlign.center,
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
@@ -370,9 +396,12 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: const Text('ยืนยันการลบสมาชิก'),
+                                      title: const Text(
+                                        'ยืนยันการลบสมาชิก (DeleteMember)',
+                                      ),
                                       content: const Text(
-                                        'กรุณายืนยันเพือทำการลบสมาชิก',
+                                        'กรุณายืนยันเพือทำการลบสมาชิก \n(Confirm Delete Member)',
+                                        textAlign: TextAlign.center,
                                       ),
                                       actions: <Widget>[
                                         Row(
@@ -380,7 +409,10 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             TextButton(
-                                              child: const Text('ยกเลิก'),
+                                              child: const Text(
+                                                'ยกเลิก \n(Close)',
+                                                textAlign: TextAlign.center,
+                                              ),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },
@@ -400,7 +432,8 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                                 Navigator.of(context).pop();
                                               },
                                               child: const Text(
-                                                'ยืนยัน',
+                                                'ยืนยัน \n(Confirm)',
+                                                textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                 ),
@@ -414,7 +447,7 @@ class _EditFarmOwnerScreenState extends State<EditFarmOwnerScreen> {
                                 );
                               },
                               child: const Text(
-                                'ลบสมาชิก',
+                                'ลบสมาชิก (Delete Member)',
                                 style: TextStyle(color: Colors.red),
                               ),
                             ),
@@ -482,7 +515,7 @@ class StatusDropdown extends StatelessWidget {
       }).toList(),
       onChanged: onChanged,
       decoration: const InputDecoration(
-        labelText: 'ตำแหน่ง',
+        labelText: 'ตำแหน่ง (Position)',
         border: OutlineInputBorder(),
       ),
     );
@@ -513,7 +546,13 @@ class ImagePickerWidget extends StatelessWidget {
         child: selectedImage == null
             ? const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Icon(Icons.add, size: 30), Text('เพิ่มรูปภาพ')],
+                children: [
+                  Icon(Icons.add, size: 30),
+                  Text(
+                    'เพิ่มรูปภาพ \n(Add Image)',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               )
             : ClipRRect(
                 borderRadius: BorderRadius.circular(10),

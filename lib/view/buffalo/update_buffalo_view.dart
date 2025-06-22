@@ -172,6 +172,13 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
       _breedNameController.text = buffalo.breedName ?? '';
       _microchipController.text = buffalo.microchipNO ?? '';
 
+      if (_breedType.contains(buffalo.breedName)) {
+        _selectedBreedType = buffalo.breedName;
+      } else {
+        _selectedBreedType = 'อื่นๆ (โปรดระบุ)';
+        _breedNameController.text = buffalo.breedName ?? '';
+      }
+
       _selectedGender = buffalo.gender;
       _selectedBirthMethod = buffalo.birthMethod;
     }
@@ -188,7 +195,7 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
               const CircularProgressIndicator(),
               const SizedBox(width: 20),
               Text(
-                'กำลังโหลด...',
+                'กำลังโหลด... (Loading...)',
                 style: TextStyle(
                   fontSize: ScreenUtils.calculateFontSize(context, 16),
                 ),
@@ -356,7 +363,7 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                             ),
                             Expanded(
                               child: Text(
-                                'แก้ไขข้อมูลควาย',
+                                'แก้ไขข้อมูลควาย (Update Buffalo)',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
@@ -371,23 +378,12 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                             const SizedBox(width: 10),
                           ],
                         ),
-                        const SizedBox(height: 20),
                         Row(
                           children: [
                             Expanded(
                               flex: 1,
                               child: Column(
                                 children: [
-                                  AutoSizeText(
-                                    maxLines: 1,
-                                    'ลงทะเบียนควายสำหรับฟาร์ม',
-                                    style: TextStyle(
-                                      fontSize: ScreenUtils.calculateFontSize(
-                                        context,
-                                        8,
-                                      ),
-                                    ),
-                                  ),
                                   AutoSizeText(
                                     maxLines: 1,
                                     _farmNameController.text,
@@ -422,10 +418,10 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                             Expanded(
                               child: CustomTextFormField(
                                 controller: _nameController,
-                                labelText: 'ชื่อควาย',
+                                labelText: 'ชื่อควาย (Buffalo Name)',
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'กรุณากรอกข้อมูล';
+                                    return 'กรุณากรอกข้อมูล (Please Enter)';
                                   }
                                   return null;
                                 },
@@ -435,10 +431,11 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                             Expanded(
                               child: CustomDatePickerTextFormField(
                                 controller: _birthDateController,
-                                labelText: 'วันเกิด', // Label for birth date
+                                labelText:
+                                    'วันเกิด (Birthdate)', // Label for birth date
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'กรุณากรอกข้อมูล';
+                                    return 'กรุณากรอกข้อมูล (Please Enter)';
                                   }
                                   return null;
                                 },
@@ -449,10 +446,10 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                         const SizedBox(height: 10),
                         CustomTextFormField(
                           controller: _birthPlaceController,
-                          labelText: 'เกิดที่ (คอกฟาร์ม)',
+                          labelText: 'เกิดที่ (คอกฟาร์ม) (Born At)',
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'กรุณากรอกข้อมูล';
+                              return 'กรุณากรอกข้อมูล (Please Enter)';
                             }
                             return null;
                           },
@@ -460,10 +457,10 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                         const SizedBox(height: 10),
                         CustomTextFormField(
                           controller: _editColorController,
-                          labelText: 'สี',
+                          labelText: 'สี (Color)',
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'กรุณากรอกข้อมูล';
+                              return 'กรุณากรอกข้อมูล (Please Enter)';
                             }
                             return null;
                           },
@@ -483,7 +480,7 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                           _selectedBirthMethod = newValue;
                                         });
                                       },
-                                      name: 'วิธีการผสมพันธุ์',
+                                      name: 'วิธีการผสมพันธุ์ (Breed Method)',
                                     ),
                                   ),
                                 ],
@@ -502,7 +499,7 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                           _selectedGender = newValue;
                                         });
                                       },
-                                      name: 'เพศ',
+                                      name: 'เพศ (Gender)',
                                     ),
                                   ),
                                 ],
@@ -528,7 +525,7 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                     }
                                   });
                                 },
-                                name: 'สายพันธุ์',
+                                name: 'สายพันธุ์ (Breed)',
                               ),
                             ),
                           ],
@@ -539,10 +536,10 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                         if (_selectedBreedType == 'อื่นๆ (โปรดระบุ)')
                           CustomTextFormField(
                             controller: _breedNameController,
-                            labelText: 'สายพันธุ์',
+                            labelText: 'สายพันธุ์ (Breed)',
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกข้อมูล';
+                                return 'กรุณากรอกข้อมูล (Please Enter)';
                               }
                               return null;
                             },
@@ -555,7 +552,7 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                         //   labelText: 'สังกัดปัจจุบัน',
                         //   validator: (value) {
                         //     if (value == null || value.isEmpty) {
-                        //       return 'กรุณากรอกข้อมูล';
+                        //       return 'กรุณากรอกข้อมูล (Please Enter)';
                         //     }
                         //     return null;
                         //   },
@@ -590,15 +587,18 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                   color: Colors.black54,
                                 ),
                                 const SizedBox(width: 8),
-                                Text(
-                                  _microchipImage != null
-                                      ? _microchipImage!.path
-                                          .split('/')
-                                          .last // แสดงชื่อไฟล์
-                                      : 'หมายเลขไมโครชิฟ (Microchip No.)',
-                                  style: const TextStyle(
-                                    fontSize: 11,
-                                    color: Colors.black87,
+                                Expanded(
+                                  child: Text(
+                                    _microchipImage != null
+                                        ? _microchipImage!.path
+                                            .split('/')
+                                            .last // แสดงชื่อไฟล์
+                                        : 'หมายเลขไมโครชิฟ (Microchip No.)',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.black87,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -610,80 +610,91 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                         ),
                         FamilyForm(
                           nameController: _fatherNameController,
-                          buffaloNameText: 'พ่อชื่อ',
+                          buffaloNameText: 'พ่อชื่อ (Father Name)',
                           farmController: _fatherFarmNameController,
-                          buffaloHeadText: 'ข้อมูลพ่อ',
+                          buffaloHeadText: 'ข้อมูลพ่อ (Father)',
                         ),
                         const SizedBox(height: 15),
                         FamilyForm(
                           nameController: _motherNameController,
-                          buffaloNameText: 'แม่ชื่อ',
+                          buffaloNameText: 'แม่ชื่อ (Mother Name)',
                           farmController: _motherFarmNameController,
                           buffaloHeadText: 'ข้อมูลแม่',
                         ),
                         const SizedBox(height: 15),
                         FamilyForm(
                           nameController: _fatherGrandfatherNameController,
-                          buffaloNameText: 'ปู่ชื่อ',
+                          buffaloNameText:
+                              'ปู่ชื่อ (Paternal Grandfather Name)',
                           farmController: _fatherGrandfatherFarmNameController,
-                          buffaloHeadText: 'ข้อมูลปู่',
+                          buffaloHeadText: 'ข้อมูลปู่ (Paternal Grandfather)',
                         ),
                         const SizedBox(height: 15),
                         FamilyForm(
                           nameController: _fatherGrandmotherNameController,
-                          buffaloNameText: 'ย่าชื่อ',
+                          buffaloNameText:
+                              'ย่าชื่อ (Paternal Grandmother Name)',
                           farmController: _fatherGrandmotherFarmNameController,
-                          buffaloHeadText: 'ข้อมูลย่า',
+                          buffaloHeadText: 'ข้อมูลย่า (Paternal Grandmother)',
                         ),
                         const SizedBox(height: 15),
                         FamilyForm(
                           nameController: _motherGrandfatherNameController,
-                          buffaloNameText: 'ตาชื่อ',
+                          buffaloNameText: 'ตาชื่อ (Maternal Grandfather Name)',
                           farmController: _motherGrandfatherFarmNameController,
-                          buffaloHeadText: 'ข้อมูลตา',
+                          buffaloHeadText: 'ข้อมูลตา (Maternal Grandfather)',
                         ),
                         const SizedBox(height: 15),
                         FamilyForm(
                           nameController: _motherGrandmotherNameController,
-                          buffaloNameText: 'ยายชื่อ',
+                          buffaloNameText:
+                              'ยายชื่อ (Maternal Grandmother Name)',
                           farmController: _motherGrandmotherFarmNameController,
-                          buffaloHeadText: 'ข้อมูลยาย',
+                          buffaloHeadText: 'ข้อมูลยาย (Maternal Grandmother)',
                         ),
                         const SizedBox(height: 15),
                         FamilyForm(
                           nameController: _motherGreatGrandfatherNameController,
-                          buffaloNameText: 'ตาทวดชื่อ',
+                          buffaloNameText:
+                              'ตาทวดชื่อ (Maternal Great-Grandfather Name)',
                           farmController:
                               _motherGreatGrandfatherFarmNameController,
-                          buffaloHeadText: 'ข้อมูลตาทวด',
+                          buffaloHeadText:
+                              'ข้อมูลตาทวด (Maternal Great-Grandfather)',
                         ),
                         const SizedBox(height: 15),
                         FamilyForm(
                           nameController: _motherGreatGrandmotherNameController,
-                          buffaloNameText: 'ยายทวดชื่อ',
+                          buffaloNameText:
+                              'ยายทวดชื่อ (Maternal Great-Grandmother Name)',
                           farmController:
                               _motherGreatGrandmotherFarmNameController,
-                          buffaloHeadText: 'ข้อมูลยายทวด',
+                          buffaloHeadText:
+                              'ข้อมูลยายทวด (Maternal Great-Grandmother)',
                         ),
                         const SizedBox(height: 15),
                         FamilyForm(
                           nameController: _fatherGreatGrandfatherNameController,
-                          buffaloNameText: 'ปู่ทวดชื่อ',
+                          buffaloNameText:
+                              'ปู่ทวดชื่อ (Paternal Great-Grandfather Name)',
                           farmController:
                               _fatherGreatGrandfatherFarmNameController,
-                          buffaloHeadText: 'ข้อมูลปู่ทวด',
+                          buffaloHeadText:
+                              'ข้อมูลปู่ทวด (Paternal Great-Grandfather)',
                         ),
                         const SizedBox(height: 15),
                         FamilyForm(
                           nameController: _fatherGreatGrandmotherNameController,
-                          buffaloNameText: 'ย่าทวดชื่อ',
+                          buffaloNameText:
+                              'ย่าทวดชื่อ (Paternal Great-Grandmother Name)',
                           farmController:
                               _fatherGreatGrandmotherFarmNameController,
-                          buffaloHeadText: 'ข้อมูลย่าทวด',
+                          buffaloHeadText:
+                              'ข้อมูลย่าทวด (Paternal Great-Grandmother)',
                         ),
                         const SizedBox(height: 30),
                         Container(
-                          height: 50,
+                          height: 70,
                           width: screenWidth / 2,
                           decoration: BoxDecoration(
                             color: Colors.red,
@@ -696,16 +707,29 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: const Text('ลงทะเบียนสำเร็จ'),
                                       content: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
-                                          const Text('โปรดกรอกรหัสของฟาร์ม'),
+                                          const Text(
+                                            'ระบุรหัสผ่าน (Password)',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          const Text(
+                                            'โปรดกรอกรหัสของฟาร์ม \n(Please Enter Password)',
+                                            textAlign: TextAlign.center,
+                                          ),
                                           TextField(
                                             controller: _controller,
                                             keyboardType: TextInputType.number,
                                             decoration: const InputDecoration(
-                                              hintText: 'กรอกรหัส 6 หลัก',
+                                              hintText:
+                                                  'กรอกรหัส 6 หลัก (Password)',
                                             ),
                                             maxLength: 6,
                                           ),
@@ -713,7 +737,10 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                       ),
                                       actions: <Widget>[
                                         TextButton(
-                                          child: const Text('ตกลง'),
+                                          child: const Text(
+                                            'ตกลง \n(Confirm)',
+                                            textAlign: TextAlign.center,
+                                          ),
                                           onPressed: () async {
                                             String farmCode = _controller.text;
                                             if (farmCode.length == 6) {
@@ -820,10 +847,10 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                                       (BuildContext context) {
                                                     return AlertDialog(
                                                       title: const Text(
-                                                        'ลงทะเบียนสำเร็จ',
+                                                        'ลงทะเบียนสำเร็จ (Success)',
                                                       ),
                                                       content: const Text(
-                                                        'ข้อมูลฟาร์มถูกลงทะเบียนเรียบร้อยแล้ว',
+                                                        'ข้อมูลฟาร์มถูกลงทะเบียนเรียบร้อยแล้ว (Updated)',
                                                       ),
                                                       actions: <Widget>[
                                                         TextButton(
@@ -861,7 +888,7 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                                   .showSnackBar(
                                                 const SnackBar(
                                                   content: Text(
-                                                    'กรุณากรอกรหัสฟาร์มให้ครบ 6 หลัก',
+                                                    'กรุณากรอกรหัสฟาร์มให้ครบ 6 หลัก (Enter Password)',
                                                   ),
                                                 ),
                                               );
@@ -874,7 +901,7 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
                                 );
                               },
                               child: const Text(
-                                'ลงทะเบียน',
+                                'บันทึก \n(Save)',
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
@@ -1079,7 +1106,7 @@ class FamilyForm extends StatelessWidget {
         const SizedBox(height: 8),
         CustomTextFormField(
           controller: farmController,
-          labelText: 'สังกัด',
+          labelText: 'สังกัด (Current Under)',
         ),
       ],
     );

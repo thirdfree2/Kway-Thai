@@ -32,6 +32,7 @@ class _ListFarmViewState extends State<ListFarmView> {
     final selectedRegion = Provider.of<SelectedRegion>(context);
     final region = selectedRegion.region;
     final farms = selectedRegion.farms;
+    final regionEn = selectedRegion.regionEn;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final viewInsets = MediaQuery.of(context).viewInsets.bottom;
@@ -79,9 +80,10 @@ class _ListFarmViewState extends State<ListFarmView> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'คอก/ฟาร์ม',
+                      'คอก/ฟาร์ม \n(Stall/Farm)',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: ScreenUtils.calculateFontSize(context, 28),
+                        fontSize: ScreenUtils.calculateFontSize(context, 24),
                         color: Colors.black,
                       ),
                     ),
@@ -98,7 +100,7 @@ class _ListFarmViewState extends State<ListFarmView> {
                             fillColor:
                                 Colors.white.withAlpha((0.6 * 255).round()),
                             prefixIcon: const Icon(Icons.search),
-                            hintText: 'ค้นหา',
+                            hintText: 'ค้นหา (Search)',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20.0),
                             ),
@@ -124,10 +126,11 @@ class _ListFarmViewState extends State<ListFarmView> {
                   ),
                   child: Center(
                     child: Text(
-                      'ภาค$region (${filteredFarms.length})',
+                      'ภาค$region \n($regionEn) (${filteredFarms.length})',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: ScreenUtils.calculateFontSize(context, 18),
+                        fontSize: ScreenUtils.calculateFontSize(context, 16),
                       ),
                     ),
                   ),
@@ -204,7 +207,7 @@ class _ListFarmViewState extends State<ListFarmView> {
                           if (region != 'เหนือ')
                             Flexible(
                               child: CustomButton(
-                                label: 'ภาคเหนือ',
+                                label: 'ภาคเหนือ \n(North)',
                                 onPressed: () {
                                   loadRegionData(context, fetchFarmsNorth);
                                 },
@@ -213,7 +216,7 @@ class _ListFarmViewState extends State<ListFarmView> {
                           if (region != 'อีสาน')
                             Flexible(
                               child: CustomButton(
-                                label: 'ภาคอีสาน',
+                                label: 'ภาคอีสาน \n(Northeastern)',
                                 onPressed: () {
                                   loadRegionData(context, fetchFarmsNortheast);
                                 },
@@ -222,7 +225,7 @@ class _ListFarmViewState extends State<ListFarmView> {
                           if (region != 'ตะวันออก')
                             Flexible(
                               child: CustomButton(
-                                label: 'ภาคตะวันออก',
+                                label: 'ภาคตะวันออก (Eastern)',
                                 onPressed: () {
                                   loadRegionData(context, fetchFarmsEast);
                                 },
@@ -239,7 +242,7 @@ class _ListFarmViewState extends State<ListFarmView> {
                     if (region != 'ตะวันตก')
                       Flexible(
                         child: CustomButton(
-                          label: 'ภาคตะวันตก',
+                          label: 'ภาคตะวันตก \n(Western)',
                           onPressed: () {
                             loadRegionData(context, fetchFarmsWest);
                           },
@@ -248,7 +251,7 @@ class _ListFarmViewState extends State<ListFarmView> {
                     if (region != 'ใต้')
                       Flexible(
                         child: CustomButton(
-                          label: 'ภาคใต้',
+                          label: 'ภาคใต้ \n(South)',
                           onPressed: () {
                             loadRegionData(context, fetchFarmsSouth);
                           },
@@ -257,7 +260,7 @@ class _ListFarmViewState extends State<ListFarmView> {
                     if (region != 'กลาง')
                       Flexible(
                         child: CustomButton(
-                          label: 'ภาคกลาง',
+                          label: 'ภาคกลาง \n(Central)',
                           onPressed: () {
                             loadRegionData(context, fetchFarmsCentral);
                           },
@@ -328,7 +331,8 @@ class CustomButton extends StatelessWidget {
         child: Center(
           child: AutoSizeText(
             label,
-            maxLines: 1,
+            maxLines: 2,
+            textAlign: TextAlign.center,
             minFontSize: 10,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(color: Colors.white),

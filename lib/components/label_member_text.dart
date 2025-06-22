@@ -32,14 +32,16 @@ class LabeledTextRow extends StatelessWidget {
           ],
         ),
         const SizedBox(width: 10),
-        Text(
-          ': $value',
-          style: TextStyle(
-            fontSize: fontSize,
-            color: Colors.black,
+        Expanded(
+          child: Text(
+            ': $value',
+            style: TextStyle(
+              fontSize: fontSize,
+              color: Colors.black,
+            ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
           ),
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
         ),
       ],
     );

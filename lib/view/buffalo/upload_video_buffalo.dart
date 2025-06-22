@@ -62,7 +62,7 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('กรุณาใส่รหัสผ่าน 6 หลัก'),
+          title: const Text('กรุณาใส่รหัสผ่าน 6 หลัก (Please Enter Password)'),
           content: TextField(
             maxLength: 6,
             keyboardType: TextInputType.number,
@@ -72,18 +72,24 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
               });
             },
             decoration: const InputDecoration(
-              hintText: 'ใส่รหัสผ่าน',
+              hintText: 'ใส่รหัสผ่าน (Password)',
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('ยกเลิก'),
+              child: const Text(
+                'ยกเลิก \n(Close)',
+                textAlign: TextAlign.center,
+              ),
               onPressed: () {
                 Navigator.of(context).pop(); // ปิด Dialog
               },
             ),
             TextButton(
-              child: const Text('ยืนยัน'),
+              child: const Text(
+                'ยืนยัน \n(Confirm)',
+                textAlign: TextAlign.center,
+              ),
               onPressed: () {
                 if (_inputCode.length == 6) {
                   Navigator.of(context).pop(); // ปิด Dialog
@@ -91,7 +97,9 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('กรุณากรอกรหัสผ่านให้ครบ 6 หลัก'),
+                      content: Text(
+                        'กรุณากรอกรหัสผ่านให้ครบ 6 หลัก (Please Enter Password)',
+                      ),
                       backgroundColor: Colors.red,
                       duration: Duration(seconds: 2),
                     ),
@@ -131,7 +139,7 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
           if (msg == 'อัพโหลดคลิปวิดีโอและรูปภาพสำเร็จ') {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('อัปโหลดสำเร็จ'),
+                content: Text('อัปโหลดสำเร็จ (Success)'),
                 backgroundColor: Colors.green,
                 duration: Duration(seconds: 2),
               ),
@@ -151,7 +159,9 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
           }
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('การอัปโหลดล้มเหลว: รหัสผ่านไม่ถูกต้อง'),
+              content: Text(
+                'การอัปโหลดล้มเหลว: รหัสผ่านไม่ถูกต้อง (Wrong Password)',
+              ),
               backgroundColor: Colors.red,
               duration: Duration(seconds: 2),
             ),
@@ -160,7 +170,9 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('กรุณาเลือกรูปภาพและวิดีโอให้ครบถ้วน'),
+            content: Text(
+              'กรุณาเลือกรูปภาพและวิดีโอให้ครบถ้วน (Please Check Video Upload)',
+            ),
             backgroundColor: Colors.red,
             duration: Duration(seconds: 2),
           ),
@@ -184,7 +196,7 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
             }
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('อัปโหลดสำเร็จ'),
+                content: Text('อัปโหลดสำเร็จ (Upload Success)'),
                 backgroundColor: Colors.green,
                 duration: Duration(seconds: 2),
               ),
@@ -207,7 +219,8 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
           }
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('การอัปโหลดล้มเหลว: รหัสผ่านไม่ถูก'),
+              content:
+                  Text('การอัปโหลดล้มเหลว: รหัสผ่านไม่ถูก (Wrong Password)'),
               backgroundColor: Colors.red,
               duration: Duration(seconds: 2),
             ),
@@ -216,7 +229,9 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('กรุณาเลือกรูปภาพและวิดีโอให้ครบถ้วน'),
+            content: Text(
+              'กรุณาเลือกรูปภาพและวิดีโอให้ครบถ้วน  (Please Check Video Upload)',
+            ),
             backgroundColor: Colors.red,
             duration: Duration(seconds: 2),
           ),
@@ -260,7 +275,8 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                         ),
                         const SizedBox(height: 10),
                         const Text(
-                          'เพิ่มคลิปวิดีโอและรูปภาพ',
+                          'เพิ่มคลิปวิดีโอและรูปภาพ \n(Add Video and Video Image)',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black,
@@ -291,11 +307,15 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                               ),
                               child: const Center(
                                 child: AutoSizeText(
-                                  'อัปโหลดคลิป',
-                                  maxLines: 1,
+                                  'อัปโหลดคลิป \n(Upload File Video)',
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
                                   minFontSize: 10,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ),
                             ),
@@ -322,11 +342,15 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                               ),
                               child: const Center(
                                 child: AutoSizeText(
-                                  'แนบลิงค์วิดีโอ',
-                                  maxLines: 1,
+                                  'แนบลิงค์วิดีโอ \n(Upload Link Video)',
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
                                   minFontSize: 10,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ),
                             ),
@@ -354,7 +378,10 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Icon(Icons.add, size: 30),
-                                                Text('เพิ่มปกคลิป'),
+                                                Text(
+                                                  'เพิ่มปกคลิป \n(Video Image)',
+                                                  textAlign: TextAlign.center,
+                                                ),
                                               ],
                                             )
                                           : Image.file(
@@ -381,7 +408,10 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Icon(Icons.add, size: 30),
-                                                Text('เพิ่มคลิปวิดีโอ'),
+                                                Text(
+                                                  'เพิ่มคลิปวิดีโอ \n(Add Video)',
+                                                  textAlign: TextAlign.center,
+                                                ),
                                               ],
                                             )
                                           : const Column(
@@ -393,7 +423,10 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                                                   color: Colors.green,
                                                   size: 30,
                                                 ),
-                                                Text('อัพโหลดสำเร็จ'),
+                                                Text(
+                                                  'อัพโหลดสำเร็จ \n(Upload Success)',
+                                                  textAlign: TextAlign.center,
+                                                ),
                                               ],
                                             ),
                                     ),
@@ -420,7 +453,10 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Icon(Icons.add, size: 30),
-                                                Text('เพิ่มปกคลิป'),
+                                                Text(
+                                                  'เพิ่มปกคลิป \n(Add Video Image)',
+                                                  textAlign: TextAlign.center,
+                                                ),
                                               ],
                                             )
                                           : ClipRRect(
@@ -446,10 +482,10 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                                   const SizedBox(height: 10),
                                   CustomTextFormField(
                                     controller: _linkController,
-                                    labelText: 'แนบลิ้งค์วิดีโอ',
+                                    labelText: 'แนบลิ้งค์วิดีโอ (Link Video)',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'กรุณากรอกข้อมูล';
+                                        return 'กรุณากรอกข้อมูล (Please Enter)';
                                       }
                                       return null;
                                     },
@@ -469,7 +505,8 @@ class _UploadVideoBuffaloState extends State<UploadVideoBuffalo> {
                             ),
                             child: const Center(
                               child: Text(
-                                'อัปโหลด',
+                                'อัปโหลด \n(Upload)',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),

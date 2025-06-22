@@ -1,3 +1,4 @@
+import 'package:buffalo_thai/components/label_member_text.dart';
 import 'package:buffalo_thai/providers/selected_farm.dart';
 import 'package:buffalo_thai/providers/selected_farm_owner.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
@@ -143,8 +144,11 @@ class _MainFarmOwnerState extends State<MainFarmOwner> {
                                                             Navigator.of(
                                                           context,
                                                         ).pop(),
-                                                        child:
-                                                            const Text('ปิด'),
+                                                        child: const Text(
+                                                          'ปิด (Close)',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
                                                       ),
                                                     ],
                                                   );
@@ -192,81 +196,81 @@ class _MainFarmOwnerState extends State<MainFarmOwner> {
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    Text(
-                                      'ชื่อเล่น : $nickname',
-                                      style: TextStyle(
+                                    if (nickname != '')
+                                      LabeledTextRow(
+                                        labelTh: 'ชื่อเล่น',
+                                        labelEn: 'Nickname',
+                                        value: nickname,
                                         fontSize: ScreenUtils.calculateFontSize(
                                           context,
-                                          34,
+                                          24,
                                         ),
-                                        color: Colors.black,
                                       ),
-                                    ),
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    Text(
-                                      'นามสกุล : $lastName',
-                                      style: TextStyle(
+                                    if (lastName != '')
+                                      LabeledTextRow(
+                                        labelTh: 'นามสกุล',
+                                        labelEn: 'Lastname',
+                                        value: lastName,
                                         fontSize: ScreenUtils.calculateFontSize(
                                           context,
-                                          22,
+                                          24,
                                         ),
-                                        color: Colors.black,
                                       ),
-                                    ),
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    Text(
-                                      'ตำแหน่ง : $position',
-                                      style: TextStyle(
+                                    if (position != '')
+                                      LabeledTextRow(
+                                        labelTh: 'ตำแหน่ง',
+                                        labelEn: 'Position',
+                                        value: position,
                                         fontSize: ScreenUtils.calculateFontSize(
                                           context,
-                                          22,
+                                          24,
                                         ),
-                                        color: Colors.black,
                                       ),
-                                    ),
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    Text(
-                                      'ชื่อ : $farmerName $lastName',
-                                      style: TextStyle(
+                                    if (farmerName != '')
+                                      LabeledTextRow(
+                                        labelTh: 'ชื่อ',
+                                        labelEn: 'Name',
+                                        value: '$farmerName $lastName',
                                         fontSize: ScreenUtils.calculateFontSize(
                                           context,
-                                          18,
+                                          24,
                                         ),
-                                        color: Colors.black,
                                       ),
-                                    ),
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    Text(
-                                      'เบอร์โทร : $phone',
-                                      style: TextStyle(
+                                    if (phone != '')
+                                      LabeledTextRow(
+                                        labelTh: 'เบอร์โทร',
+                                        labelEn: 'Phone',
+                                        value: phone,
                                         fontSize: ScreenUtils.calculateFontSize(
                                           context,
-                                          18,
+                                          24,
                                         ),
-                                        color: Colors.black,
                                       ),
-                                    ),
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    Text(
-                                      'ID line : $lineId',
-                                      style: TextStyle(
+                                    if (lineId != '')
+                                      LabeledTextRow(
+                                        labelTh: 'ไลน์',
+                                        labelEn: 'ID line',
+                                        value: lineId,
                                         fontSize: ScreenUtils.calculateFontSize(
                                           context,
-                                          18,
+                                          24,
                                         ),
-                                        color: Colors.black,
                                       ),
-                                    ),
                                   ],
                                 ),
                               ],
@@ -287,12 +291,13 @@ class _MainFarmOwnerState extends State<MainFarmOwner> {
                           color: Colors.red,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        height: 50,
+                        height: 80,
                         width: 100,
                         child: GestureDetector(
                           child: Center(
                             child: Text(
-                              'ย้อนกลับ',
+                              'ย้อนกลับ \n(Back)',
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize:

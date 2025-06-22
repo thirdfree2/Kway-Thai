@@ -29,12 +29,13 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
     });
   }
 
-  Future<void> _showCodeDialog(BuildContext context) async {
-    return showDialog<void>(
+  Future<String?> _showCodeDialog(BuildContext context) async {
+    return showDialog<String>(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('ใส่รหัส 6 หลัก'),
+          title: const Text('ใส่รหัส 6 หลัก (Password)'),
           content: TextField(
             maxLength: 6,
             keyboardType: TextInputType.number,
@@ -44,26 +45,34 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
               });
             },
             decoration: const InputDecoration(
-              hintText: 'กรุณาใส่รหัส 6 หลัก',
+              hintText: 'กรุณาใส่รหัส 6 หลัก (Password)',
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('ยกเลิก'),
+              child: const Text(
+                'ยกเลิก \n(Close)',
+                textAlign: TextAlign.center,
+              ),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.pop(context, 'Close');
               },
             ),
             TextButton(
-              child: const Text('ยืนยัน'),
+              child: const Text(
+                'ยืนยัน \n(Confirm)',
+                textAlign: TextAlign.center,
+              ),
               onPressed: () async {
                 if (_inputCode.length == 6) {
-                  Navigator.of(context).pop();
+                  Navigator.pop(context, _inputCode);
                   await _uploadImages(context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('กรุณาใส่รหัสให้ครบ 6 หลัก'),
+                      content: Text(
+                        'กรุณาใส่รหัสให้ครบ 6 หลัก (Please Enter Password)',
+                      ),
                       backgroundColor: Colors.red,
                       duration: Duration(seconds: 2),
                     ),
@@ -108,7 +117,10 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
         if (msg == "Buffalo image inserted successfully") {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('อัปโหลดรูปภาพสำเร็จ'),
+              content: Text(
+                'อัปโหลดรูปภาพสำเร็จ \n(Succes)',
+                textAlign: TextAlign.center,
+              ),
               backgroundColor: Colors.green,
               duration: Duration(seconds: 2),
             ),
@@ -116,7 +128,7 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
         } else if (msg == "รหัสผ่านไม่ถูกต้อง") {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('รหัสผ่านไม่ถูกต้อง'),
+              content: Text('รหัสผ่านไม่ถูกต้อง (Wrong Password)'),
               backgroundColor: Colors.red,
               duration: Duration(seconds: 2),
             ),
@@ -135,7 +147,9 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('อัปโหลดรูปภาพทั้งหมดเสร็จสิ้นแล้ว'),
+            content: Text(
+              'อัปโหลดรูปภาพทั้งหมดเสร็จสิ้นแล้ว (Upload Image Success)',
+            ),
             backgroundColor: Colors.blue,
             duration: Duration(seconds: 2),
           ),
@@ -166,7 +180,7 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('การอัปโหลดล้มเหลว'),
+          content: Text('การอัปโหลดล้มเหลว (Fail Upload)'),
           backgroundColor: Colors.red,
           duration: Duration(seconds: 2),
         ),
@@ -204,7 +218,8 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'เพิ่มรูปภาพ',
+                  'เพิ่มรูปภาพ \n(Add Image)',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: ScreenUtils.calculateFontSize(context, 24),
                     color: Colors.white,
@@ -228,7 +243,10 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(Icons.add, size: 30),
-                                    Text('รูปโปรไฟล์'),
+                                    Text(
+                                      'รูปโปรไฟล์ \n(Image)',
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ],
                                 )
                               : GridView.builder(
@@ -268,7 +286,10 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
                       InkWell(
                         onTap: () async {
                           try {
-                            await _showCodeDialog(context);
+                            final password = await _showCodeDialog(context);
+                            if (password == 'Close') {
+                              return;
+                            }
                             if (!context.mounted) {
                               return;
                             }
@@ -292,7 +313,8 @@ class _UploadImageBuffaloViewState extends State<UploadImageBuffaloView> {
                           ),
                           child: const Center(
                             child: Text(
-                              'เพิ่มรูปภาพ',
+                              'เพิ่มรูปภาพ \n(Add Image)',
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
                               ),

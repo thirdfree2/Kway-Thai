@@ -686,7 +686,10 @@ class _HomeViewState extends State<HomeView> {
                                                     Navigator.of(context)
                                                         .pop(); // ปิด Popup
                                                   },
-                                                  child: const Text("ปิด"),
+                                                  child: const Text(
+                                                    "ปิด \n(Close)",
+                                                    textAlign: TextAlign.center,
+                                                  ),
                                                 ),
                                               ],
                                             );

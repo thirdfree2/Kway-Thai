@@ -126,9 +126,10 @@ class _FarmViewState extends State<FarmView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'คอก/ฟาร์ม',
+                        'คอก/ฟาร์ม \n(Stall/Farm)',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: ScreenUtils.calculateFontSize(context, 28),
+                          fontSize: ScreenUtils.calculateFontSize(context, 25),
                           color: Colors.black,
                         ),
                       ),
@@ -164,7 +165,7 @@ class _FarmViewState extends State<FarmView> {
                                       onPressed: _clearSearch,
                                     )
                                   : null,
-                              hintText: 'ค้นหา',
+                              hintText: 'ค้นหา (Search)',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20.0),
                               ),
@@ -200,7 +201,8 @@ class _FarmViewState extends State<FarmView> {
                                 height: 30,
                               ),
                               Text(
-                                "ผลลัพธ์การค้นหา",
+                                "ผลลัพธ์การค้นหา \n(Result)",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: ScreenUtils.calculateFontSize(
                                     context,
@@ -305,7 +307,7 @@ class _FarmViewState extends State<FarmView> {
                                   children: [
                                     FarmCard(
                                       region:
-                                          'ภาคเหนือ (${filteredFarmsNorth.length})',
+                                          'ภาคเหนือ \n(North) (${filteredFarmsNorth.length})',
                                       farms: filteredFarmsNorth
                                           .map((farm) => farm.farmName)
                                           .toList(),
@@ -316,7 +318,7 @@ class _FarmViewState extends State<FarmView> {
                                           context,
                                           listen: false,
                                         ).setSelectedRegion(
-                                          'ภาคเหนือ',
+                                          'เหนือ',
                                           filteredFarmsNorth,
                                         );
                                         Navigator.push(
@@ -330,7 +332,7 @@ class _FarmViewState extends State<FarmView> {
                                     ),
                                     FarmCard(
                                       region:
-                                          'ภาคอีสาน (${filteredFarmsNortheast.length})',
+                                          'ภาคอีสาน \n(Northeastern)  (${filteredFarmsNortheast.length})',
                                       farms: filteredFarmsNortheast
                                           .map((farm) => farm.farmName)
                                           .toList(),
@@ -341,7 +343,7 @@ class _FarmViewState extends State<FarmView> {
                                           context,
                                           listen: false,
                                         ).setSelectedRegion(
-                                          'ภาคอีสาน',
+                                          'อีสาน',
                                           filteredFarmsNortheast,
                                         );
                                         Navigator.push(
@@ -360,7 +362,7 @@ class _FarmViewState extends State<FarmView> {
                                   children: [
                                     FarmCard(
                                       region:
-                                          'ภาคกลาง (${filteredFarmsCentral.length})',
+                                          'ภาคกลาง \n(Central) (${filteredFarmsCentral.length})',
                                       farms: filteredFarmsCentral
                                           .map((farm) => farm.farmName)
                                           .toList(),
@@ -371,7 +373,7 @@ class _FarmViewState extends State<FarmView> {
                                           context,
                                           listen: false,
                                         ).setSelectedRegion(
-                                          'ภาคกลาง',
+                                          'กลาง',
                                           filteredFarmsCentral,
                                         );
                                         Navigator.push(
@@ -385,7 +387,7 @@ class _FarmViewState extends State<FarmView> {
                                     ),
                                     FarmCard(
                                       region:
-                                          'ภาคใต้ (${filteredFarmsSouth.length})',
+                                          'ภาคใต้ \n(South) (${filteredFarmsSouth.length})',
                                       farms: filteredFarmsSouth
                                           .map((farm) => farm.farmName)
                                           .toList(),
@@ -396,7 +398,7 @@ class _FarmViewState extends State<FarmView> {
                                           context,
                                           listen: false,
                                         ).setSelectedRegion(
-                                          'ภาคใต้',
+                                          'ใต้',
                                           filteredFarmsSouth,
                                         );
                                         Navigator.push(
@@ -415,7 +417,7 @@ class _FarmViewState extends State<FarmView> {
                                   children: [
                                     FarmCard(
                                       region:
-                                          'ภาคตะวันตก (${filteredFarmsWest.length})',
+                                          'ภาคตะวันตก\n(Western) (${filteredFarmsWest.length})',
                                       farms: filteredFarmsWest
                                           .map((farm) => farm.farmName)
                                           .toList(),
@@ -426,7 +428,7 @@ class _FarmViewState extends State<FarmView> {
                                           context,
                                           listen: false,
                                         ).setSelectedRegion(
-                                          'ภาคตะวันตก',
+                                          'ตะวันตก',
                                           filteredFarmsWest,
                                         );
                                         Navigator.push(
@@ -440,7 +442,7 @@ class _FarmViewState extends State<FarmView> {
                                     ),
                                     FarmCard(
                                       region:
-                                          'ภาคตะวันออก (${filteredFarmsEast.length})',
+                                          'ภาคตะวันออก \n(Eastern) (${filteredFarmsEast.length})',
                                       farms: filteredFarmsEast
                                           .map((farm) => farm.farmName)
                                           .toList(),
@@ -451,7 +453,7 @@ class _FarmViewState extends State<FarmView> {
                                           context,
                                           listen: false,
                                         ).setSelectedRegion(
-                                          'ภาคตะวันออก',
+                                          'ตะวันออก',
                                           filteredFarmsEast,
                                         );
                                         Navigator.push(

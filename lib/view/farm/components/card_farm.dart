@@ -29,18 +29,20 @@ class FarmCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 15),
+                padding: const EdgeInsets.only(top: 15, right: 10, left: 10),
                 child: Container(
-                  width: 120,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.red,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
                     child: AutoSizeText(
                       region,
-                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
                       minFontSize: 10,
+                      maxFontSize: 18,
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
@@ -68,7 +70,7 @@ class FarmCard extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 10),
                     child: InkWell(
                       onTap: onMorePressed,
-                      child: const Text('เพิ่มเติม >>>'),
+                      child: const Text('เพิ่มเติม (More) >>>'),
                     ),
                   ),
                 ],

@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
-import 'package:buffalo_thai/view/register_award/main_register_award.dart';
 
 class MainPromoteAwardsView extends StatefulWidget {
   const MainPromoteAwardsView({super.key});
@@ -194,41 +193,41 @@ class _MainPromoteAwardsViewState extends State<MainPromoteAwardsView> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MainRegisterAward(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          height: 50,
-                          width: 250,
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'เพิ่มรางวัลงานประกวด \n(Add Competitive Award)',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.end,
+                //     children: [
+                //       InkWell(
+                //         onTap: () {
+                //           Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //               builder: (context) => const MainRegisterAward(),
+                //             ),
+                //           );
+                //         },
+                //         child: Container(
+                //           height: 50,
+                //           width: 250,
+                //           decoration: BoxDecoration(
+                //             color: Colors.red,
+                //             borderRadius: BorderRadius.circular(10),
+                //           ),
+                //           child: const Center(
+                //             child: Text(
+                //               'เพิ่มรางวัลงานประกวด \n(Add Competitive Award)',
+                //               textAlign: TextAlign.center,
+                //               style: TextStyle(
+                //                 color: Colors.white,
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),

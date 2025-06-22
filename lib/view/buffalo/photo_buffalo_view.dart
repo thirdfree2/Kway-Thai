@@ -122,7 +122,8 @@ class _PhotoBuffaloViewState extends State<PhotoBuffaloView> {
                             ),
                             child: const Center(
                               child: Text(
-                                'เพิ่มรูปภาพ',
+                                'เพิ่มรูปภาพ \n(Add Image)',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,
                                 ),

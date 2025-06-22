@@ -162,6 +162,13 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                       buffalo?.color ?? '',
                                       Colors.black,
                                     ),
+                                  if (buffalo?.breedName != '')
+                                    _buildInfoRow(
+                                      'สายพันธุ์ ',
+                                      'Breed ',
+                                      buffalo?.breedName ?? '',
+                                      Colors.red[800],
+                                    ),
                                   const SizedBox(height: 5),
                                   // ignore: unrelated_type_equality_checks
                                   if (buffalo?.birthDate != '')

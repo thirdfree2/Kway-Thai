@@ -60,8 +60,8 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
     }
   }
 
-  Future<void> _showCodeDialog() async {
-    return showDialog<void>(
+  Future<String?> _showCodeDialog() async {
+    return showDialog<String>(
       context: context,
       barrierDismissible:
           false, // Prevent dismissing the dialog by tapping outside
@@ -78,7 +78,19 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('ยืนยัน'),
+              onPressed: () {
+                Navigator.pop(context, 'Close');
+              },
+              child: const Text(
+                'ยกเลิก \n(Cancel)',
+                textAlign: TextAlign.center,
+              ),
+            ),
+            TextButton(
+              child: const Text(
+                'ยืนยัน \n(Confirm)',
+                textAlign: TextAlign.center,
+              ),
               onPressed: () {
                 if (_passwordController.text.length == 6) {
                   Navigator.of(context).pop(
@@ -86,7 +98,11 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                   ); // ส่งรหัส 6 หลักกลับเป็น string
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('กรุณากรอกรหัสให้ครบ 6 หลัก')),
+                    const SnackBar(
+                      content: Text(
+                        'กรุณากรอกรหัสให้ครบ 6 หลัก (Please Enter Password)',
+                      ),
+                    ),
                   );
                 }
               },
@@ -239,10 +255,10 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                   Expanded(
                                     child: CustomTextFormField(
                                       controller: _firstNameController,
-                                      labelText: 'ชื่อ',
+                                      labelText: 'ชื่อ (Firstname)',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -252,10 +268,10 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                   Expanded(
                                     child: CustomTextFormField(
                                       controller: _lastNameController,
-                                      labelText: 'นามสกุล',
+                                      labelText: 'นามสกุล (Lastname)',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -269,10 +285,10 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                   Flexible(
                                     child: CustomTextFormField(
                                       controller: _nicknameController,
-                                      labelText: 'ชื่อเล่น',
+                                      labelText: 'ชื่อเล่น (Nickname)',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -305,11 +321,11 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                       controller: _phoneNumberController,
                                       decoration: const InputDecoration(
                                         border: OutlineInputBorder(),
-                                        labelText: 'เบอร์โทร',
+                                        labelText: 'เบอร์โทร (Phone)',
                                       ),
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -319,7 +335,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                     //   labelText: 'เบอร์โทร',
                                     //   validator: (value) {
                                     //     if (value == null || value.isEmpty) {
-                                    //       return 'กรุณากรอกข้อมูล';
+                                    //       return 'กรุณากรอกข้อมูล (Please Enter)';
                                     //     }
                                     //     return null;
                                     //   },
@@ -332,7 +348,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                       labelText: 'Line ID',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'กรุณากรอกข้อมูล';
+                                          return 'กรุณากรอกข้อมูล (Please Enter)';
                                         }
                                         return null;
                                       },
@@ -385,9 +401,9 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 80),
+                              const SizedBox(height: 50),
                               Container(
-                                height: 50,
+                                height: 60,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   color: Colors.red,
@@ -400,11 +416,15 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                         final imageFile = _selectedImage;
                                         if (imageFile != null) {
                                           try {
-                                            showLoadingDialog(context);
-                                            // แสดง dialog เพื่อกรอกรหัส 6 หลัก
-                                            await _showCodeDialog();
+                                            final password =
+                                                await _showCodeDialog();
 
-                                            // ส่งข้อมูลไปยัง API หลังจากกรอกรหัสถูกต้องแล้ว
+                                            if (password == 'Close') {
+                                              return;
+                                            }
+                                            if (!context.mounted) return;
+
+                                            showLoadingDialog(context);
 
                                             await registerFarmOwnerV2(
                                               firstName:
@@ -424,6 +444,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                                   _passwordController.text,
                                               status: 'รอนุมัติ',
                                             );
+
                                             if (!context.mounted) return;
 
                                             Navigator.pop(context);
@@ -441,7 +462,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                               builder: (BuildContext context) {
                                                 return AlertDialog(
                                                   title: const Text(
-                                                    'ลงทะเบียนสำเร็จ',
+                                                    'ลงทะเบียนสำเร็จ (Success)',
                                                   ),
                                                   actions: <Widget>[
                                                     TextButton(
@@ -464,7 +485,7 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                                 return AlertDialog(
                                                   title: const Text('Error'),
                                                   content: const Text(
-                                                    'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่.',
+                                                    'รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่. (Wrong Password)',
                                                   ),
                                                   actions: <Widget>[
                                                     TextButton(
@@ -506,7 +527,8 @@ class _RegisterFarmOwnerState extends State<RegisterFarmOwner> {
                                       }
                                     },
                                     child: const Text(
-                                      'ลงทะเบียน',
+                                      'ลงทะเบียน \n(Register)',
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),

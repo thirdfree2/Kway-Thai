@@ -149,7 +149,8 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'พบควายที่ค้นหา (Found) (${filteredBuffaloes.length})',
+                                  'พบควายที่ค้นหา \n(Found) (${filteredBuffaloes.length})',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                       context,
@@ -173,7 +174,8 @@ class _MainHeredityBuffaloViewState extends State<MainHeredityBuffaloView> {
                                       padding: EdgeInsets.all(8.0),
                                       child: Center(
                                         child: Text(
-                                          'ล้างการค้นหา',
+                                          'ล้างการค้นหา \n(Clear)',
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(color: Colors.white),
                                         ),
                                       ),
