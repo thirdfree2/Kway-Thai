@@ -1,3 +1,4 @@
+import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:buffalo_thai/view/buffalo/record/record_buffalo_view.dart';
 import 'package:buffalo_thai/view/buffalo/update_buffalo_view.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
       (image) => image.isProfileImage,
       orElse: () => BuffaloImageModel(
         imageId: 0,
-        imagePath: 'https://placeholder.com/150',
+        imagePath: ApiUtils.imageError,
         isProfileImage: false,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
@@ -45,7 +46,7 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
       (image) => image.isMicrochipImage,
       orElse: () => BuffaloImageModel(
         imageId: 0,
-        imagePath: 'https://placeholder.com/150',
+        imagePath: ApiUtils.imageError,
         isProfileImage: false,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
@@ -54,13 +55,12 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
       ),
     );
 
-    final imageUrl = profileImage != null
-        ? profileImage.imagePath
-        : 'https://placeholder.com/150';
+    final imageUrl =
+        profileImage != null ? profileImage.imagePath : ApiUtils.imageError;
 
     final microChip = mircrochipImage != null
         ? mircrochipImage.imagePath
-        : 'https://placeholder.com/150';
+        : ApiUtils.imageError;
 
     return Scaffold(
       body: Stack(

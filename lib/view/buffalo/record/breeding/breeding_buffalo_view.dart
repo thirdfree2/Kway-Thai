@@ -222,17 +222,17 @@ class _BreedingBuffaloViewState extends State<BreedingBuffaloView> {
                 ),
                 LabelValueText(
                   label: "วันที่เช็คกลับสัด (Recheck date)",
-                  value: breeding.expectedBirthDate,
+                  value: breeding.recheckDate,
                   type: LabelValueType.date,
                 ),
                 LabelValueText(
                   label: "กำหนดคลอด (Expected Birth)",
-                  value: breeding.breedingDate,
+                  value: breeding.expectedBirthDate,
                   type: LabelValueType.date,
                 ),
                 LabelValueText(
                   label: "วันที่บันทึก (Created At)",
-                  value: breeding.breedingDate,
+                  value: breeding.createdAt,
                   type: LabelValueType.date,
                 ),
               ],

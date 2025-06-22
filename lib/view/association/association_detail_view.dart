@@ -274,32 +274,49 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
 
                       if (users.isEmpty) {
                         return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Center(
-                              child: Text(
-                                'ไม่พบสมาชิกในสมาคมนี้ \n (Member Not fund)',
-                                textAlign: TextAlign.center,
+                            Card(
+                              color: const Color.fromARGB(
+                                255,
+                                243,
+                                243,
+                                243,
                               ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            InkWell(
-                              onTap: () => navigateToAddPage(),
-                              child: Container(
-                                height: 50,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Center(
-                                  child: AutoSizeText(
-                                    'ลงทะเบียนสมาชิก \n(Register Member)',
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    const Text(
+                                      'ไม่พบสมาชิกในสมาคมนี้ \n (Member Not fund)',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () => navigateToAddPage(),
+                                      child: Container(
+                                        height: 50,
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: const Center(
+                                          child: AutoSizeText(
+                                            'ลงทะเบียนสมาชิก \n(Register Member)',
+                                            textAlign: TextAlign.center,
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -370,7 +387,7 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                                 final user = users[index];
                                 final imageUrl = user.image.isNotEmpty
                                     ? user.image
-                                    : 'https://via.placeholder.com/150';
+                                    : ApiUtils.imageError;
 
                                 return InkWell(
                                   onTap: () => navigateToViewUser(user),
@@ -431,8 +448,37 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                       final farm = association.farms;
 
                       if (farm.isEmpty) {
-                        return const Center(
-                          child: Text('ไม่พบสมาชิกในสมาคมนี้'),
+                        const String errorThai =
+                            'ไม่พบฟาร์มในสมาคมนี้ \nกรุณาติดต่อเจ้าหน้าที่เพื่อขอเพิ่มฟาร์มเข้ากับสมาคม';
+                        const String errorEng =
+                            '(No farms found in this association.\nPlease contact the staff to request adding your farm to the association.)';
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 80),
+                          child: Column(
+                            children: [
+                              Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: RichText(
+                                    textAlign: TextAlign.center,
+                                    text: const TextSpan(
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                      ),
+                                      children: [
+                                        TextSpan(text: '$errorThai\n\n'),
+                                        TextSpan(
+                                          text: errorEng,
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         );
                       }
 

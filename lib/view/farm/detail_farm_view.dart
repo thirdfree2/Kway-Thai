@@ -1,4 +1,5 @@
 import 'package:buffalo_thai/services/farm_services.dart';
+import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -395,7 +396,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                 final user = users[index];
                                 final imageUrl = user.userImages.isNotEmpty
                                     ? user.userImages[0].imageUrl
-                                    : 'https://placeholder.com/150';
+                                    : ApiUtils.imageError;
                                 return InkWell(
                                   onTap: () {
                                     Provider.of<SelectedFarmOwner>(
@@ -589,7 +590,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                   (image) => image.isProfileImage,
                                   orElse: () => BuffaloImageModel(
                                     imageId: 0,
-                                    imagePath: 'https://placeholder.com/150',
+                                    imagePath: ApiUtils.imageError,
                                     isProfileImage: false,
                                     createdAt: DateTime.now(),
                                     updatedAt: DateTime.now(),
@@ -601,7 +602,7 @@ class _DetailFarmViewState extends State<DetailFarmView> {
                                 // ignore: unnecessary_null_comparison
                                 final imageUrl = profileImage != null
                                     ? profileImage.imagePath
-                                    : 'https://placeholder.com/150';
+                                    : ApiUtils.imageError;
 
                                 return InkWell(
                                   onTap: () {

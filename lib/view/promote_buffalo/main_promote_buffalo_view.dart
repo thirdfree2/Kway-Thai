@@ -1,3 +1,4 @@
+import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,7 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
       (image) => image.isProfileImage,
       orElse: () => BuffaloImageModel(
         imageId: 0,
-        imagePath: 'https://placeholder.com/150',
+        imagePath: ApiUtils.imageError,
         isProfileImage: false,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
@@ -41,9 +42,8 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
       ),
     );
 
-    final imageUrl = profileImage != null
-        ? profileImage.imagePath
-        : 'https://placeholder.com/150';
+    final imageUrl =
+        profileImage != null ? profileImage.imagePath : ApiUtils.imageError;
 
     return Scaffold(
       backgroundColor: Colors.green[200],

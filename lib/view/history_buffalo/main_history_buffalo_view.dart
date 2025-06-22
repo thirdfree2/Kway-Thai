@@ -1,6 +1,7 @@
 import 'package:buffalo_thai/model/buffalo_image_model.dart';
 import 'package:buffalo_thai/model/buffalo_model.dart';
 import 'package:buffalo_thai/services/buffalo_services.dart';
+import 'package:buffalo_thai/utils/api_utils.dart';
 import 'package:buffalo_thai/utils/screen_utils.dart';
 import 'package:buffalo_thai/view/promote_buffalo/main_promote_buffalo_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -203,7 +204,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                                   (image) => image.isProfileImage,
                                   orElse: () => BuffaloImageModel(
                                     imageId: 0,
-                                    imagePath: 'https://placeholder.com/150',
+                                    imagePath: ApiUtils.imageError,
                                     isProfileImage: false,
                                     createdAt: DateTime.now(),
                                     updatedAt: DateTime.now(),
@@ -310,7 +311,7 @@ class _MainHistoryBuffaloViewState extends State<MainHistoryBuffaloView> {
                               (image) => image.isProfileImage,
                               orElse: () => BuffaloImageModel(
                                 imageId: 0,
-                                imagePath: 'https://placeholder.com/150',
+                                imagePath: ApiUtils.imageError,
                                 isProfileImage: false,
                                 createdAt: DateTime.now(),
                                 updatedAt: DateTime.now(),

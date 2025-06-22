@@ -176,8 +176,9 @@ class _ListFarmViewState extends State<ListFarmView> {
                                             horizontal: 20,
                                           ),
                                           child: Text(
-                                            '00${index + 1} ${filteredFarms[index].farmName} '
-                                            '${filteredFarms[index].associations.map((a) => 'A${a.associationId}').join(' ')}',
+                                            '00${index + 1} '
+                                            '${filteredFarms[index].associations.map((a) => 'A${a.associationId}').join(' ')} '
+                                            '${filteredFarms[index].farmName} ',
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                             ),
