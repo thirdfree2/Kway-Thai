@@ -264,6 +264,18 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                                       ),
                                       Colors.red[900],
                                     ),
+                                  if (buffalo?.birthDate != '')
+                                    _buildInfoRow(
+                                      'อายุ ',
+                                      '(Age)',
+                                      // ignore: unrelated_type_equality_checks
+                                      buffalo?.birthDate != ''
+                                          ? _formatDateToBuddhist(
+                                              buffalo!.birthDate!,
+                                            ) // เรียกฟังก์ชันสำหรับแปลงวันที่
+                                          : '',
+                                      Colors.red[900],
+                                    ),
                                   const SizedBox(height: 5),
                                   if (buffalo?.bornAt != '')
                                     _buildInfoRow(

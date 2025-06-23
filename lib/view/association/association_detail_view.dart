@@ -275,6 +275,9 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
                           Card(
                             color: const Color.fromARGB(
                               255,
@@ -317,6 +320,9 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                                 ],
                               ),
                             ),
+                          ),
+                          const SizedBox(
+                            height: 20,
                           ),
                         ],
                       );
