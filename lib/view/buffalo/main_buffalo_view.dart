@@ -1,4 +1,5 @@
 import 'package:buffalo_thai/utils/api_utils.dart';
+import 'package:buffalo_thai/utils/custom_date_utils.dart';
 import 'package:buffalo_thai/view/buffalo/record/record_buffalo_view.dart';
 import 'package:buffalo_thai/view/buffalo/update_buffalo_view.dart';
 import 'package:flutter/material.dart';
@@ -252,6 +253,15 @@ class _MainBuffaloViewState extends State<MainBuffaloView> {
                                               buffalo!.birthDate!,
                                             ) // เรียกฟังก์ชันสำหรับแปลงวันที่
                                           : '',
+                                      Colors.red[900],
+                                    ),
+                                  if (buffalo?.birthDate != '')
+                                    _buildInfoRow(
+                                      'อายุ ',
+                                      '(Age)',
+                                      CustomDateUtils.calculateAgeInDetail(
+                                        buffalo!.birthDate!,
+                                      ),
                                       Colors.red[900],
                                     ),
                                   const SizedBox(height: 5),

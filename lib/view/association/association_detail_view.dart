@@ -132,7 +132,7 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
           ),
         ),
         child: SafeArea(
-          child: Column(
+          child: ListView(
             children: [
               const SizedBox(height: 25),
               Row(
@@ -254,319 +254,310 @@ class _AssociationDetailViewState extends State<AssociationDetailView> {
                   ],
                 ),
               ),
-              Expanded(
-                child: FutureBuilder<AssociationModel>(
-                  future: futureAssociation,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text('เกิดข้อผิดพลาด: ${snapshot.error}'),
-                      );
-                    } else if (!snapshot.hasData) {
-                      return const Center(child: Text('ไม่พบข้อมูลสมาคม'));
-                    } else {
-                      final association = snapshot.data!;
-                      final users = association.associationUsers
-                          .where((user) => user.status == 'อนุมัติ')
-                          .toList();
+              FutureBuilder<AssociationModel>(
+                future: futureAssociation,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('เกิดข้อผิดพลาด: ${snapshot.error}'),
+                    );
+                  } else if (!snapshot.hasData) {
+                    return const Center(child: Text('ไม่พบข้อมูลสมาคม'));
+                  } else {
+                    final association = snapshot.data!;
+                    final users = association.associationUsers
+                        .where((user) => user.status == 'อนุมัติ')
+                        .toList();
 
-                      if (users.isEmpty) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Card(
-                              color: const Color.fromARGB(
-                                255,
-                                243,
-                                243,
-                                243,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    const Text(
-                                      'ไม่พบสมาชิกในสมาคมนี้ \n (Member Not fund)',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () => navigateToAddPage(),
-                                      child: Container(
-                                        height: 50,
-                                        width: 150,
-                                        decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: const Center(
-                                          child: AutoSizeText(
-                                            'ลงทะเบียนสมาชิก \n(Register Member)',
-                                            textAlign: TextAlign.center,
-                                            maxLines: 2,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      }
-
+                    if (users.isEmpty) {
                       return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 40),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'สมาชิก \n(Member) (${users.length})',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: ScreenUtils.calculateFontSize(
-                                      context,
-                                      14,
-                                    ),
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () => navigateToAddPage(),
-                                  child: Container(
-                                    height: 50,
-                                    width: 150,
-                                    decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: const Center(
-                                      child: AutoSizeText(
-                                        'ลงทะเบียนสมาชิก \n(Register Member)',
-                                        textAlign: TextAlign.center,
-                                        maxLines: 2,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                          Card(
+                            color: const Color.fromARGB(
+                              255,
+                              243,
+                              243,
+                              243,
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                          SizedBox(
-                            height: 250,
-                            child: GridView.builder(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                                childAspectRatio: 0.75,
-                              ),
-                              itemCount: users.length,
-                              itemBuilder: (context, index) {
-                                final user = users[index];
-                                final imageUrl = user.image.isNotEmpty
-                                    ? user.image
-                                    : ApiUtils.imageError;
-
-                                return InkWell(
-                                  onTap: () => navigateToViewUser(user),
-                                  child: Column(
-                                    children: [
-                                      AspectRatio(
-                                        aspectRatio: 1,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          child: Image.network(
-                                            imageUrl,
-                                            fit: BoxFit.cover,
-                                            errorBuilder: (_, __, ___) =>
-                                                const Icon(Icons.person),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        user.nickname,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize:
-                                              ScreenUtils.calculateFontSize(
-                                            context,
-                                            12,
-                                          ),
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ],
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    'ไม่พบสมาชิกในสมาคมนี้ \n (Member Not fund)',
+                                    textAlign: TextAlign.center,
                                   ),
-                                );
-                              },
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  InkWell(
+                                    onTap: () => navigateToAddPage(),
+                                    child: Container(
+                                      height: 50,
+                                      width: 150,
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: const Center(
+                                        child: AutoSizeText(
+                                          'ลงทะเบียนสมาชิก \n(Register Member)',
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
                       );
                     }
-                  },
-                ),
-              ),
-              Expanded(
-                child: FutureBuilder<AssociationModel>(
-                  future: futureAssociation,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text('เกิดข้อผิดพลาด: ${snapshot.error}'),
-                      );
-                    } else if (!snapshot.hasData) {
-                      return const Center(child: Text('ไม่พบข้อมูลสมาคม'));
-                    } else {
-                      final association = snapshot.data!;
-                      final farm = association.farms;
 
-                      if (farm.isEmpty) {
-                        const String errorThai =
-                            'ไม่พบฟาร์มในสมาคมนี้ \nกรุณาติดต่อเจ้าหน้าที่เพื่อขอเพิ่มฟาร์มเข้ากับสมาคม';
-                        const String errorEng =
-                            '(No farms found in this association.\nPlease contact the staff to request adding your farm to the association.)';
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 80),
-                          child: Column(
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: const TextSpan(
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black,
-                                      ),
-                                      children: [
-                                        TextSpan(text: '$errorThai\n\n'),
-                                        TextSpan(
-                                          text: errorEng,
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                      ],
+                              Text(
+                                'สมาชิก \n(Member) (${users.length})',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: ScreenUtils.calculateFontSize(
+                                    context,
+                                    14,
+                                  ),
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () => navigateToAddPage(),
+                                child: Container(
+                                  height: 50,
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Center(
+                                    child: AutoSizeText(
+                                      'ลงทะเบียนสมาชิก \n(Register Member)',
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      style: TextStyle(color: Colors.white),
                                     ),
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        );
-                      }
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 40),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'สมาชิก คอก/ฟาร์ม (Farm Member) (${farm.length})',
-                                  style: TextStyle(
-                                    fontSize: ScreenUtils.calculateFontSize(
-                                      context,
-                                      14,
-                                    ),
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          height: 250,
+                          child: GridView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: 0.75,
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                          SizedBox(
-                            height: 250,
-                            child: GridView.builder(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              // scrollDirection: Axis.horizontal, // 👉 สำคัญมาก
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 1,
-                                mainAxisSpacing: 10,
-                                childAspectRatio: 3.5, // ปรับความกว้างของการ์ด
-                              ),
-                              itemCount: farm.length,
-                              itemBuilder: (context, index) {
-                                final f = farm[index];
-                                return InkWell(
-                                  onTap: () {
-                                    Provider.of<SelectedFarm>(
-                                      context,
-                                      listen: false,
-                                    ).setSelectedFarm(
-                                      f.region,
-                                      f.farmName,
-                                      f.farmId.toString(),
-                                    );
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const DetailFarmView(),
-                                      ),
-                                    );
-                                  },
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    color: Colors.white,
-                                    elevation: 3,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12),
-                                      child: Center(
-                                        child: Text(
-                                          '00${index + 1} ${f.farmName}',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14,
-                                          ),
-                                          textAlign: TextAlign.center,
+                            itemCount: users.length,
+                            itemBuilder: (context, index) {
+                              final user = users[index];
+                              final imageUrl = user.image.isNotEmpty
+                                  ? user.image
+                                  : ApiUtils.imageError;
+
+                              return InkWell(
+                                onTap: () => navigateToViewUser(user),
+                                child: Column(
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 1,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: Image.network(
+                                          imageUrl,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (_, __, ___) =>
+                                              const Icon(Icons.person),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      user.nickname,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: ScreenUtils.calculateFontSize(
+                                          context,
+                                          12,
+                                        ),
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
-                        ],
+                        ),
+                      ],
+                    );
+                  }
+                },
+              ),
+              FutureBuilder<AssociationModel>(
+                future: futureAssociation,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('เกิดข้อผิดพลาด: ${snapshot.error}'),
+                    );
+                  } else if (!snapshot.hasData) {
+                    return const Center(child: Text('ไม่พบข้อมูลสมาคม'));
+                  } else {
+                    final association = snapshot.data!;
+                    final farm = association.farms;
+
+                    if (farm.isEmpty) {
+                      const String errorThai =
+                          'ไม่พบฟาร์มในสมาคมนี้ \nกรุณาติดต่อเจ้าหน้าที่เพื่อขอเพิ่มฟาร์มเข้ากับสมาคม';
+                      const String errorEng =
+                          '(No farms found in this association.\nPlease contact the staff to request adding your farm to the association.)';
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 80),
+                        child: Column(
+                          children: [
+                            Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: RichText(
+                                  textAlign: TextAlign.center,
+                                  text: const TextSpan(
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                    ),
+                                    children: [
+                                      TextSpan(text: '$errorThai\n\n'),
+                                      TextSpan(
+                                        text: errorEng,
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       );
                     }
-                  },
-                ),
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'สมาชิก คอก/ฟาร์ม (Farm Member) (${farm.length})',
+                                style: TextStyle(
+                                  fontSize: ScreenUtils.calculateFontSize(
+                                    context,
+                                    14,
+                                  ),
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          height: 250,
+                          child: GridView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            // scrollDirection: Axis.horizontal, // 👉 สำคัญมาก
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 1,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: 3.5, // ปรับความกว้างของการ์ด
+                            ),
+                            itemCount: farm.length,
+                            itemBuilder: (context, index) {
+                              final f = farm[index];
+                              return InkWell(
+                                onTap: () {
+                                  Provider.of<SelectedFarm>(
+                                    context,
+                                    listen: false,
+                                  ).setSelectedFarm(
+                                    f.region,
+                                    f.farmName,
+                                    f.farmId.toString(),
+                                  );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DetailFarmView(),
+                                    ),
+                                  );
+                                },
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  color: Colors.white,
+                                  elevation: 3,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Center(
+                                      child: Text(
+                                        '00${index + 1} ${f.farmName}',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                },
               ),
             ],
           ),

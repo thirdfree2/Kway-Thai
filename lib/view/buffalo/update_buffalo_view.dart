@@ -195,7 +195,8 @@ class _UpdateBuffaloViewState extends State<UpdateBuffaloView> {
               const CircularProgressIndicator(),
               const SizedBox(width: 20),
               Text(
-                'กำลังโหลด... (Loading...)',
+                'กำลังโหลด... \n(Loading...)',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: ScreenUtils.calculateFontSize(context, 16),
                 ),
