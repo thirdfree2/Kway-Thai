@@ -172,27 +172,24 @@ class _MainPromoteBuffaloViewState extends State<MainPromoteBuffaloView> {
                                     ),
                                   const SizedBox(height: 5),
                                   // ignore: unrelated_type_equality_checks
-                                  if (buffalo?.birthDate != '')
+                                  if (buffalo?.birthDate != null) ...[
                                     _buildInfoRow(
-                                      'เกิด ',
+                                      'เกิด',
                                       'Born',
-                                      // ignore: unrelated_type_equality_checks
-                                      buffalo?.birthDate != '-'
-                                          ? _formatDateToBuddhist(
-                                              buffalo!.birthDate!,
-                                            ) // เรียกฟังก์ชันสำหรับแปลงวันที่
-                                          : '-',
-                                      Colors.red[900],
-                                    ),
-                                  if (buffalo?.birthDate != '')
-                                    _buildInfoRow(
-                                      'อายุ ',
-                                      '(Age)',
-                                      CustomDateUtils.calculateAgeInDetail(
+                                      _formatDateToBuddhist(
                                         buffalo!.birthDate!,
                                       ),
                                       Colors.red[900],
                                     ),
+                                    _buildInfoRow(
+                                      'อายุ',
+                                      '(Age)',
+                                      CustomDateUtils.calculateAgeInDetail(
+                                        buffalo.birthDate!,
+                                      ),
+                                      Colors.red[900],
+                                    ),
+                                  ],
                                   const SizedBox(height: 5),
                                   if (buffalo?.bornAt != '')
                                     _buildInfoRow(
