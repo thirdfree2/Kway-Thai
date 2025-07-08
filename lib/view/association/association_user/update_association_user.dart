@@ -265,7 +265,8 @@ class _UpdateAssociationUserState extends State<UpdateAssociationUser> {
                                   phoneNumber: _phoneController.text,
                                   position: _selectedStatus ?? '',
                                   profileImage: _selectedImage,
-                                  associationUserId: widget.user.associationId
+                                  associationUserId: widget
+                                      .user.associationUserId
                                       .toString(), // อย่าลืมตรวจ null ก่อนหน้า
                                 );
                                 if (!context.mounted) {
