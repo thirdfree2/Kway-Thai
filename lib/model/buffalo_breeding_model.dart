@@ -7,6 +7,8 @@ part 'buffalo_breeding_model.g.dart';
 class BuffaloBreedingModel {
   BuffaloBreedingModel({
     required this.buffaloBreedingId,
+    required this.farmName,
+    required this.femaleName,
     required this.maleName,
     required this.breedingMethod,
     required this.breedingCount,
@@ -26,6 +28,12 @@ class BuffaloBreedingModel {
 
   @JsonKey(name: 'maleName')
   final String maleName;
+
+  @JsonKey(name: 'farmName', defaultValue: '')
+  final String? farmName;
+
+  @JsonKey(name: 'femaleName', defaultValue: '')
+  final String? femaleName;
 
   @JsonKey(name: 'breedingMethod')
   final String breedingMethod;

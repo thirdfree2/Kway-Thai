@@ -207,6 +207,19 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                                               value:
                                                   "${track.buffaloWeight} กก.",
                                             ),
+                                            if (track.bodyLength != null)
+                                              LabelValueText(
+                                                label:
+                                                    "ยาวรอบลำตัว (Body Length)",
+                                                value:
+                                                    "${track.bodyLength} กก.",
+                                              ),
+                                            if (track.chestGirth != null)
+                                              LabelValueText(
+                                                label: "รอบอก (Chest Girth)",
+                                                value:
+                                                    "${track.chestGirth} กก.",
+                                              ),
                                             if (track.createdAt != null)
                                               LabelValueText(
                                                 label: "วันที่บันทึก (Date)",
@@ -282,6 +295,8 @@ void showAddTrackingDialog(
   bool isLoading = false;
   final weightController = TextEditingController();
   final heightController = TextEditingController();
+  final bodyLengthController = TextEditingController();
+  final chestGirthController = TextEditingController();
   final datePickerController = TextEditingController();
 
   bool useCustomDate = false;
@@ -435,6 +450,50 @@ void showAddTrackingDialog(
                               },
                             ),
                             const SizedBox(height: 20),
+                            CustomTextFormField(
+                              controller: bodyLengthController,
+                              labelText: 'ยาวลำตัว ซม. (Body Length cm.)',
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(
+                                    r'^\d*\.?\d{0,2}',
+                                  ),
+                                ), // รองรับทศนิยม 2 ตำแหน่ง
+                              ],
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                decimal: true,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'กรุณาระบุยาวลำตัว (Please enter Body Length)';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            CustomTextFormField(
+                              controller: chestGirthController,
+                              labelText: 'รอบอก ซม. (Chest cm.)',
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(
+                                    r'^\d*\.?\d{0,2}',
+                                  ),
+                                ), // รองรับทศนิยม 2 ตำแหน่ง
+                              ],
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                decimal: true,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'กรุณาระบุรอบอก (Please enter Chest)';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20),
                             ImagePickerWidget(
                               width: 150,
                               height: 150,
@@ -573,6 +632,14 @@ void showAddTrackingDialog(
                                                         buffaloWeight:
                                                             int.parse(
                                                           weightController.text,
+                                                        ),
+                                                        bodyLength: int.parse(
+                                                          bodyLengthController
+                                                              .text,
+                                                        ),
+                                                        chestGirth: int.parse(
+                                                          chestGirthController
+                                                              .text,
                                                         ),
                                                         buffaloHeight:
                                                             int.parse(

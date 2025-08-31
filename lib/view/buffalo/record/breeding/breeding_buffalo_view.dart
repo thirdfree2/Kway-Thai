@@ -199,6 +199,15 @@ class _BreedingBuffaloViewState extends State<BreedingBuffaloView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (breeding.farmName != '')
+                  Text(
+                    "คอก/ฟาร์ม (Stall/Farm): ${breeding.farmName ?? ''}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                if (breeding.farmName != '') const SizedBox(height: 6),
                 Text(
                   "ชื่อพ่อพันธุ์ (Stud): ${breeding.maleName}",
                   style: const TextStyle(
@@ -207,6 +216,15 @@ class _BreedingBuffaloViewState extends State<BreedingBuffaloView> {
                   ),
                 ),
                 const SizedBox(height: 6),
+                if (breeding.femaleName != '')
+                  Text(
+                    "ชื่อแม่พันธุ์ (Dam): ${breeding.femaleName ?? ''}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                if (breeding.femaleName != '') const SizedBox(height: 6),
                 LabelValueText(
                   label: "วิธีผสม (Method)",
                   value: breeding.breedingMethod,

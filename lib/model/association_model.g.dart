@@ -15,9 +15,8 @@ AssociationModel _$AssociationModelFromJson(Map<String, dynamic> json) =>
       password: json['password'] as String? ?? '',
       approveType: json['approveType'] as String? ?? '',
       associationUsers: (json['associationUsers'] as List<dynamic>?)
-              ?.map(
-                (e) => AssociationUserModel.fromJson(e as Map<String, dynamic>),
-              )
+              ?.map((e) =>
+                  AssociationUserModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
       farms: (json['farms'] as List<dynamic>?)

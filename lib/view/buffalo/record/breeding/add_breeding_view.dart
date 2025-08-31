@@ -20,6 +20,8 @@ class _AddBreedingViewState extends State<AddBreedingView> {
   final formKey = GlobalKey<FormState>();
 
   final maleNameController = TextEditingController();
+  final farmNameController = TextEditingController();
+  final femaleNameController = TextEditingController();
   final breedingCountController = TextEditingController();
   final breedingDateController = TextEditingController();
   final recheckDateController = TextEditingController();
@@ -67,8 +69,16 @@ class _AddBreedingViewState extends State<AddBreedingView> {
                       child: Column(
                         children: [
                           _buildTextField(
+                            farmNameController,
+                            'คอก/ฟาร์ม (Stall/Farm)',
+                          ),
+                          _buildTextField(
                             maleNameController,
                             'ชื่อพ่อพันธุ์ (Stud)',
+                          ),
+                          _buildTextField(
+                            femaleNameController,
+                            'ชื่อแม่พันธุ์ (Dam)',
                           ),
                           _buildDropdownMethod(),
                           _buildTextField(
@@ -253,7 +263,9 @@ class _AddBreedingViewState extends State<AddBreedingView> {
                               farmId: buffalo?.farmId.toString() ?? '1',
                               password: password,
                               buffaloId: buffalo?.id.toString() ?? '0',
+                              farmName: farmNameController.text,
                               maleName: maleNameController.text,
+                              femaleName: femaleNameController.text,
                               breedingDate: convertThaiDateToIso(
                                 breedingDateController.text,
                               ),

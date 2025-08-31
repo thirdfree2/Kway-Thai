@@ -11,6 +11,8 @@ class BuffaloTrackingModel {
     this.id,
     this.buffaloHeight,
     this.buffaloWeight,
+    this.chestGirth,
+    this.bodyLength,
     this.agePeriod,
     this.imagePath,
     this.createdAt,
@@ -24,6 +26,12 @@ class BuffaloTrackingModel {
 
   @JsonKey(name: 'buffaloHeight', defaultValue: 0)
   final int buffaloHeight;
+
+  @JsonKey(name: 'chestGirth', defaultValue: 0)
+  final int? chestGirth;
+
+  @JsonKey(name: 'bodyLength', defaultValue: 0)
+  final int? bodyLength;
 
   @JsonKey(name: 'agePeriod', defaultValue: '')
   final String agePeriod;

@@ -7,8 +7,7 @@ part of 'buffalo_vaccine_record_model.dart';
 // **************************************************************************
 
 BuffaloVaccineRecordModel _$BuffaloVaccineRecordModelFromJson(
-  Map<String, dynamic> json,
-) =>
+        Map<String, dynamic> json) =>
     BuffaloVaccineRecordModel(
       buffaloVaccineRecordId: (json['buffaloVaccineRecordId'] as num).toInt(),
       vaccineName: json['vaccineName'] as String? ?? '',
@@ -22,8 +21,7 @@ BuffaloVaccineRecordModel _$BuffaloVaccineRecordModelFromJson(
     );
 
 Map<String, dynamic> _$BuffaloVaccineRecordModelToJson(
-  BuffaloVaccineRecordModel instance,
-) =>
+        BuffaloVaccineRecordModel instance) =>
     <String, dynamic>{
       'buffaloVaccineRecordId': instance.buffaloVaccineRecordId,
       'vaccineName': instance.vaccineName,

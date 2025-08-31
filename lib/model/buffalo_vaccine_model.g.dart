@@ -9,11 +9,8 @@ part of 'buffalo_vaccine_model.dart';
 BuffaloVaccineModel _$BuffaloVaccineModelFromJson(Map<String, dynamic> json) =>
     BuffaloVaccineModel(
       buffaloVaccineRecords: (json['BuffaloVaccineRecords'] as List<dynamic>?)
-              ?.map(
-                (e) => BuffaloVaccineRecordModel.fromJson(
-                  e as Map<String, dynamic>,
-                ),
-              )
+              ?.map((e) =>
+                  BuffaloVaccineRecordModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
       buffaloVaccineId: (json['buffaloVaccineId'] as num).toInt(),
@@ -23,8 +20,7 @@ BuffaloVaccineModel _$BuffaloVaccineModelFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$BuffaloVaccineModelToJson(
-  BuffaloVaccineModel instance,
-) =>
+        BuffaloVaccineModel instance) =>
     <String, dynamic>{
       'buffaloVaccineId': instance.buffaloVaccineId,
       'buffaloId': instance.buffaloId,

@@ -39,196 +39,200 @@ class _MainAwardsViewState extends State<MainAwardsView> {
         child: SafeArea(
           child: SizedBox(
             height: screenHeight,
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        size: 30,
-                      ),
-                    ),
-                  ],
-                ),
-                Card(
-                  color: Colors.white.withAlpha((0.6 * 255).round()),
-                  child: Column(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Row(
                     children: [
-                      Text(
-                        "รางวัลงานประกวด \n(Competitive Award)",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: ScreenUtils.calculateFontSize(context, 26),
-                          color: Colors.black,
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: const Icon(
+                          Icons.arrow_back,
+                          size: 30,
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      // การแสดงชื่อควาย
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            buffalo?.name ?? "ชื่อควาย",
-                            style: TextStyle(
-                              fontSize:
-                                  ScreenUtils.calculateFontSize(context, 24),
-                              color: Colors.red,
+                    ],
+                  ),
+                  Card(
+                    color: Colors.white.withAlpha((0.6 * 255).round()),
+                    child: Column(
+                      children: [
+                        Text(
+                          "รางวัลงานประกวด \n(Competitive Award)",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize:
+                                ScreenUtils.calculateFontSize(context, 26),
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        // การแสดงชื่อควาย
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              buffalo?.name ?? "ชื่อควาย",
+                              style: TextStyle(
+                                fontSize:
+                                    ScreenUtils.calculateFontSize(context, 24),
+                                color: Colors.red,
+                              ),
                             ),
-                          ),
-                          Column(
-                            children: [
-                              Text(
-                                '${buffalo?.competitions.length ?? 0}',
-                                style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                    context,
-                                    28,
-                                  ),
-                                  color: Colors.black,
-                                ),
-                              ),
-                              Text(
-                                "(รางวัล) \n(Award)",
-                                style: TextStyle(
-                                  fontSize: ScreenUtils.calculateFontSize(
-                                    context,
-                                    20,
-                                  ),
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      // แสดงข้อมูลการแข่งขันทั้งหมด
-                      ...competitions.asMap().entries.map((entry) {
-                        int index = entry.key; // ดึง index ของรายการ
-                        var competition = entry.value; // ดึงค่าของการแข่งขัน
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 10,
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: AutoSizeText(
-                                  "(${index + 1}) ${competition.rank}, ${competition.type} เพศ ${buffalo?.gender ?? ''}, สี ${competition.color ?? ''} ${competition.name} ${competition.province}, ${formatDateToBuddhist(competition.date!)} ",
-                                  maxLines: 3,
+                            Column(
+                              children: [
+                                Text(
+                                  '${buffalo?.competitions.length ?? 0}',
                                   style: TextStyle(
                                     fontSize: ScreenUtils.calculateFontSize(
                                       context,
-                                      18,
+                                      28,
+                                    ),
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  "(รางวัล) \n(Award)",
+                                  style: TextStyle(
+                                    fontSize: ScreenUtils.calculateFontSize(
+                                      context,
+                                      20,
+                                    ),
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        // แสดงข้อมูลการแข่งขันทั้งหมด
+                        ...competitions.asMap().entries.map((entry) {
+                          int index = entry.key; // ดึง index ของรายการ
+                          var competition = entry.value; // ดึงค่าของการแข่งขัน
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 10,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: AutoSizeText(
+                                    "(${index + 1}) ${competition.rank}, ${competition.type} เพศ ${buffalo?.gender ?? ''}, สี ${competition.color ?? ''} ${competition.name} ${competition.province}, ${formatDateToBuddhist(competition.date!)} ",
+                                    maxLines: 3,
+                                    style: TextStyle(
+                                      fontSize: ScreenUtils.calculateFontSize(
+                                        context,
+                                        18,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  // แสดงรูปภาพเมื่อคลิก
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            const SizedBox(
-                                              height: 20,
-                                            ),
-                                            Container(
-                                              width: screenWidth,
-                                              height: screenHeight * 0.5,
-                                              clipBehavior: Clip.antiAlias,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  15,
-                                                ), // Adjust the radius as needed
+                                InkWell(
+                                  onTap: () {
+                                    // แสดงรูปภาพเมื่อคลิก
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const SizedBox(
+                                                height: 20,
                                               ),
-                                              child: Image.network(
-                                                competition.imageBuffalo ?? '',
-                                                fit: BoxFit.fitWidth,
+                                              Container(
+                                                width: screenWidth,
+                                                height: screenHeight * 0.5,
+                                                clipBehavior: Clip.antiAlias,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    15,
+                                                  ), // Adjust the radius as needed
+                                                ),
+                                                child: Image.network(
+                                                  competition.imageBuffalo ??
+                                                      '',
+                                                  fit: BoxFit.fitWidth,
+                                                ),
                                               ),
+                                            ],
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text("ปิด (Close)"),
                                             ),
                                           ],
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text("ปิด (Close)"),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.red[600],
-                                    borderRadius: BorderRadius.circular(20),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.red[600],
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    width: 50,
+                                    height: 50,
+                                    child: const Icon(Icons.camera_alt),
                                   ),
-                                  width: 50,
-                                  height: 50,
-                                  child: const Icon(Icons.camera_alt),
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MainRegisterAward(),
+                              ],
                             ),
                           );
-                        },
-                        child: Container(
-                          height: 50,
-                          width: 250,
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'เพิ่มรางวัลงานประกวด \n(Add Competitive Award)',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
+                        }),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MainRegisterAward(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            height: 50,
+                            width: 250,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'เพิ่มรางวัลงานประกวด \n(Add Competitive Award)',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

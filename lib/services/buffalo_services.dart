@@ -471,6 +471,8 @@ Future<http.Response> createTrackingBuffalo({
   required File? imageFile,
   required int buffaloWeight,
   required int buffaloHeight,
+  required int chestGirth,
+  required int bodyLength,
   required String agePeriod,
 }) async {
   const String url = '${ApiUtils.baseUrl}/api/buffalo/tracking';
@@ -479,6 +481,8 @@ Future<http.Response> createTrackingBuffalo({
 
   request.fields['buffaloWeight'] = buffaloWeight.toString();
   request.fields['buffaloHeight'] = buffaloHeight.toString();
+  request.fields['chestGirth'] = chestGirth.toString();
+  request.fields['bodyLength'] = bodyLength.toString();
   request.fields['agePeriod'] = agePeriod.toString();
   request.fields['buffaloId'] = buffaloId.toString();
   request.fields['password'] = password;
@@ -654,7 +658,9 @@ Future<http.Response> createBreeding({
   required String farmId,
   required String password,
   required String buffaloId,
+  required String farmName,
   required String maleName,
+  required String femaleName,
   required String breedingDate,
   required String breedingMethod,
   required int breedingCount,
@@ -670,6 +676,8 @@ Future<http.Response> createBreeding({
     ..fields['password'] = password
     ..fields['buffaloId'] = buffaloId
     ..fields['maleName'] = maleName
+    ..fields['farmName'] = farmName
+    ..fields['femaleName'] = femaleName
     ..fields['breedingMethod'] = breedingMethod
     ..fields['breedingDate'] = breedingDate
     ..fields['breedingCount'] = breedingCount.toString()
