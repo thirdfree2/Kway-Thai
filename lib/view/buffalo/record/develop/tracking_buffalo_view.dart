@@ -212,13 +212,13 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                                                 label:
                                                     "ยาวรอบลำตัว (Body Length)",
                                                 value:
-                                                    "${track.bodyLength} กก.",
+                                                    "${track.bodyLength} ซม.",
                                               ),
                                             if (track.chestGirth != null)
                                               LabelValueText(
                                                 label: "รอบอก (Chest Girth)",
                                                 value:
-                                                    "${track.chestGirth} กก.",
+                                                    "${track.chestGirth} ซม.",
                                               ),
                                             if (track.createdAt != null)
                                               LabelValueText(
