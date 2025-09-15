@@ -209,8 +209,7 @@ class _TrackingBuffaloViewState extends State<TrackingBuffaloView> {
                                             ),
                                             if (track.bodyLength != null)
                                               LabelValueText(
-                                                label:
-                                                    "ยาวรอบลำตัว (Body Length)",
+                                                label: "ยาวลำตัว (Body Length)",
                                                 value:
                                                     "${track.bodyLength} ซม.",
                                               ),
