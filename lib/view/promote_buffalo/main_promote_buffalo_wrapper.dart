@@ -50,7 +50,8 @@ class _PromoteBuffaloState extends State<PromoteBuffalo> {
   Future<void> _openGeneticsLink() async {
     final buffalo =
         Provider.of<SelectedBuffalo>(context, listen: false).buffalo;
-    final url = 'https://poonework.com/kw.html?${buffalo?.id ?? ''}';
+    final url =
+        'https://kwaythai-service.tsd2024.com/kw.html?${buffalo?.id ?? ''}';
     // ignore: deprecated_member_use
     if (await canLaunch(url)) {
       // ignore: deprecated_member_use
